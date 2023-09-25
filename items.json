@@ -1,0 +1,15 @@
+{
+    "1": {
+        "name": "Key1",
+        "description": "Key to everything",
+        "image": "images/key.png"
+    },
+
+    "2": {
+        "name": "Key2",
+        "description": "Key to almost everything",
+        "image": "images/key.png"
+    }
+    
+
+}
