@@ -1,0 +1,15 @@
+@page "/game"
+
+
+<p>@text</p>
+
+<Rooms.HM305 OnTextChange="changeText" />
+
+@code {
+    private string text = "Old Text";
+
+    private void changeText(string newText)
+    {
+        text = newText;
+    }
+}
