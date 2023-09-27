@@ -39,8 +39,9 @@ graph TD
 
     Button -- Signal --> Room
 
-    Room -- Signal --> Game --> A["Replace Room"]
-    Room --> R["Replace Slide"]
+    Room{"Room"} -- Signal --> Game{"Game"} --> A["Replace Room"]
+    Room --> B["Replace Slide"]
+    Room --> C["Execute Function"]
 ```
 
 #### Data Structures
@@ -73,8 +74,6 @@ public struct Button
   - `"action"`: The button does not change the slide, but triggers an action. The `method` field is needed for this. Will raise an error if `method` is `null`.
 
 - `string? method`: The method that is called when the button is clicked. Can be `null`, as often no function call is required. Only neccessary for `"action"` buttons, but can be used for `"internal"` and `"external"` buttons as well, if needed.
-
-````
 
 `Slide` registers `onclick` event on one of it's buttons
 
