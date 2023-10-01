@@ -122,11 +122,10 @@ If external, `Room` sends Signal to parent (highest level) `Game`
 `Inventory.json` contains a list with all the items the player has in their inventory
 
 ```json
-{
-  "itemID": {
-    "amount": 1
-  }
-}
+[
+  "itemID",
+  "item2ID"
+]
 ```
 
 #### Methods
