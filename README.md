@@ -62,6 +62,20 @@ public struct Button
         this.method = method;
     }
 }
+
+public struct Signal
+{
+  public string ActionType { get; }
+  public string ActionTarget { get; }
+  public string[]? args  { get; }
+
+  public Signal(string ActionType, string ActionTarget, string[]? args = null)
+  {
+    this.ActionType = ActionType;
+    this.ActionTarget = ActionTarget;
+    this.args = args;
+  }
+}
 ```
 
 - `string id`: A unique identifier of the button in the room.
@@ -103,7 +117,7 @@ If external, `Room` sends Signal to parent (highest level) `Game`
     "image": "path/to/image.png"
   }
 }
-````
+```
 
 `Inventory.json` contains a list with all the items the player has in their inventory
 
