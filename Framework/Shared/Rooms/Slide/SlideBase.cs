@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Components;
+using Room;
 
 namespace Room.Slide;
 
 public class SlideBase : ComponentBase
 {
 	[Parameter]
-	public EventCallback<string[]> OnSlideChange { get; set; }
+	public EventCallback<Room.RoomBase.Signal> OnSlideSignal { get; set; }
 
 	protected async Task ChangeSlide()
 	{
-		await OnSlideChange.InvokeAsync(/*slide name goes here*/);
+		await OnSlideSignal.InvokeAsync(/*slide name goes here*/);
 	}
 }
