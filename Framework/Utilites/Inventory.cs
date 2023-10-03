@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+
 public class Inventory
 {
     // Define the items list as a static field to make it accessible to all instances of the class.

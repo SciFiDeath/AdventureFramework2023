@@ -1,9 +1,7 @@
-
 using System;
 using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
-
 
 class Item
 {
@@ -20,9 +18,9 @@ class Item
     }
 }
 
+
 class Items
-{   
-    
+{
     public static void JsonToDict(string path = "items.json")
     {
         string Path = path;
@@ -51,7 +49,13 @@ class Items
         {
             Console.WriteLine("The JSON file was not found.");
         }
-
     }
 }
 
+public partial class Program
+{
+    public static void Main()
+    {
+        Items.JsonToDict("inventory.json");
+    }
+}
