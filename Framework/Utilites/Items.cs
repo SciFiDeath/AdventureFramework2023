@@ -3,59 +3,48 @@ using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
 
-class Item
+namespace InventoryLibrary
 {
-    public string Name { get; }
-    public string Description { get; }
-    public string Image { get; }
-
-    public Item(string name, string description, string image)
+    public class Item
     {
-        // Initialize the non-nullable variables in the constructor.
-        this.Name = name;
-        this.Description = description;
-        this.Image = image;
-    }
-}
+        public string Name { get; }
+        public string Description { get; }
+        public string Image { get; }
 
-
-class Items
-{
-    public static void JsonToDict(string path = "items.json")
-    {
-        string Path = path;
-
-        try
+        public Item(string name, string description, string image)
         {
-            // Read JSON data from the file into a string.
-            string jsonString = File.ReadAllText(Path);
+            this.Name = name;
+            this.Description = description;
+            this.Image = image;
+        }
+    }
 
-            // Deserialize the JSON data into a dictionary where the keys are integers.
-            Dictionary<int, Item> items = JsonSerializer.Deserialize<Dictionary<int, Item>>(jsonString);
+    public class Items
+    {
+        public static void JsonToDict(string path = "items.json")
+        {
+            string Path = path;
 
-            foreach (var kvp in items)
+            try
             {
-                int key = kvp.Key;
-                Item item = kvp.Value;
+                string jsonString = File.ReadAllText(Path);
+                Dictionary<int, Item> items = JsonSerializer.Deserialize<Dictionary<int, Item>>(jsonString);
 
-                Console.WriteLine($"Key: {key}");
-                Console.WriteLine($"Name: {item.Name}");
-                Console.WriteLine($"Description: {item.Description}");
-                Console.WriteLine($"Image: {item.Image}");
+                foreach (var kvp in items)
+                {
+                    int key = kvp.Key;
+                    Item item = kvp.Value;
+
+                    Console.WriteLine($"Key: {key}");
+                    Console.WriteLine($"Name: {item.Name}");
+                    Console.WriteLine($"Description: {item.Description}");
+                    Console.WriteLine($"Image: {item.Image}");
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("The JSON file was not found.");
             }
         }
-
-        catch (FileNotFoundException)
-        {
-            Console.WriteLine("The JSON file was not found.");
-        }
-    }
-}
-
-public partial class Program
-{
-    public static void Main()
-    {
-        Items.JsonToDict("inventory.json");
     }
 }
