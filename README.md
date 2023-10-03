@@ -47,39 +47,64 @@ graph TD
 #### Data Structures
 
 ```csharp
-public struct Button
-{
-    public string id { get; }
-    public string points { get; }
-    public string type { get; }
-    public string? method { get; }
+/*
+Button struct is used to define a button in a room.
 
-    public Button(string id, string points, string type, string? method = null)
-    {
-        this.id = id;
-        this.points = points;
-        this.type = type;
-        this.method = method;
-    }
+* Id: The id of the button. Must be unique in the room the button is in.
+* Points: The points of the button. Must be a valid SVG polygon points string.
+* Action: The action of the button. Must be a valid action string.
+Valid actions are: 
+	* "route": Change to a different room/slide. Args: {"internal/external", "roomId/slideId"}.
+	* "inventory": Add/remove item from inventory. Args: {"itemId", "amount" (negative for removing)}.
+	* "sound": Play a sound. Args: {"soundId", "some stuff to be added when we actually implement it"}.
+* Args: The arguments of the button. Must be a valid action arguments string array
+*/
+public readonly struct Button
+{
+	public readonly string Id;
+	public readonly string Points;
+	public readonly string Action;
+	public readonly string[] Args;
+	
+	public Button(string Id, string Points, string Action, string[] Args)
+	{
+		this.Id = Id;
+		this.Points = Points;
+		this.Action = Action;
+		this.Args = Args;
+	}
+	
+	public Signal GetSignal()
+	{
+		return new Signal(Action, Args);
+	}
 }
 
-public struct Signal
+/*
+Bascially a button without the id and points.
+*/
+public readonly struct Signal 
 {
-  public string ActionType { get; }
-  public string ActionTarget { get; }
-  public string[]? args  { get; }
-
-  public Signal(string ActionType, string ActionTarget, string[]? args = null)
-  {
-    this.ActionType = ActionType;
-    this.ActionTarget = ActionTarget;
-    this.args = args;
-  }
-}
+	public readonly string Action;
+	public readonly string[] Args;
+	
+	public Signal(string Action, string[] Args)
+	{
+		this.Action = Action;
+		this.Args = Args;
+	}
+}	
 ```
+* `Id`: The id of the button. Must be unique in the room the button is in.
+* `Points`: The points of the button. Must be a valid SVG polygon points string.
+* `Action`: The action of the button. Must be a valid action string.
+Valid actions are: 
+	* `"route"`: Change to a different room/slide. Args: `{"internal/external", "roomId/slideId"}`.
+	* `"inventory"`: Add/remove item from inventory. Args: `{"itemId", "amount (negative for removing)"}`.
+	* `"sound"`: Play a sound. Args: {"soundId", "some stuff to be added when we actually implement it"}.
+* Args: The arguments of the button. Must be a valid action arguments string array
 
-- `string id`: A unique identifier of the button in the room.
-
+<!-- - `string id`: A unique identifier of the button in the room. 
 - `string points`: The points for the svg polygon. The points are relative to the svg's size
 - `string type`: The type of the button. Can be `"internal"`, `"external"` or `"action"`. Needed for correct routing
 
@@ -88,7 +113,7 @@ public struct Signal
   - `"action"`: The button does not change the slide, but triggers an action. The `method` field is needed for this. Will raise an error if `method` is `null`.
 
 - `string? method`: The method that is called when the button is clicked. Can be `null`, as often no function call is required. Only neccessary for `"action"` buttons, but can be used for `"internal"` and `"external"` buttons as well, if needed.
-
+-->
 `Slide` registers `onclick` event on one of it's buttons
 
 `Slide` sends `Signal` to parent `Room`
