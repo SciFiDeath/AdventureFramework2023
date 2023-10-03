@@ -4,13 +4,23 @@ using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
 
-private class Item
+
+class Item
 {
-    public string name { get; set; }
-    public string description { get; set; }
-    public string image { get; set; }
+    public string Name { get; }
+    public string Description { get; }
+    public string Image { get; }
+
+    public Item(string name, string description, string image)
+    {
+        // Initialize the non-nullable variables in the constructor.
+        this.Name = name;
+        this.Description = description;
+        this.Image = image;
+    }
 }
-public class Items
+
+class Items
 {   
     
     public static void JsonToDict(string path = "items.json")
@@ -31,9 +41,9 @@ public class Items
                 Item item = kvp.Value;
 
                 Console.WriteLine($"Key: {key}");
-                Console.WriteLine($"Name: {item.name}");
-                Console.WriteLine($"Description: {item.description}");
-                Console.WriteLine($"Image: {item.image}");
+                Console.WriteLine($"Name: {item.Name}");
+                Console.WriteLine($"Description: {item.Description}");
+                Console.WriteLine($"Image: {item.Image}");
             }
         }
 
@@ -44,4 +54,4 @@ public class Items
 
     }
 }
-Items.JsonToDict();
+
