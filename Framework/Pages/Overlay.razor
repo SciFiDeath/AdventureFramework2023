@@ -1,0 +1,63 @@
+@using InventoryLibrary
+@using Newtonsoft.Json.Linq
+
+<div class="overlay" @style="overlayStyle">
+    @if (showOverlay)
+    {
+        foreach (var itemId in itemIds)
+        {
+            var item = items.ContainsKey(itemId) ? items[itemId] : null;
+
+            if (item != null)
+            {
+                <div class="overlay-item">
+                    <img src="@item.Image" alt="@item.Name" />
+                    <p>@item.Name</p>
+                    <p>@item.Description</p>
+                </div>
+            }
+        }
+    }
+</div>
+
+@code {
+    private Dictionary<string, Item> items = new Dictionary<string, Item>();
+    private List<string> itemIds = new List<string>();
+    private bool showOverlay = false;
+    private string overlayStyle => showOverlay ? "display: block;" : "display: none;"
+
+    private Inventory inventory = new Inventory();
+
+    [Inject] private IJSRuntime JSRuntime { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load inventory from "inventory.json" if it exists.
+        inventory.LoadFromFile("inventory.json");
+    }
+
+    private async Task ToggleOverlay()
+    {
+        // Update the list of item IDs to display.
+        itemIds = inventory.GetItems();
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
+        showOverlay = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Listen for the "i" key press after the component has rendered.
+            await JSRuntime.InvokeAsync<string>("addKeyPressListener", ToggleOverlay);
+
+            // Load JSON data from the "items.json" file when the component initializes.
+            Items.JsonToDict("items.json", (loadedItems) =>
+            {
+                items = loadedItems;
+                StateHasChanged();
+            });
+        }
+    }
+}
