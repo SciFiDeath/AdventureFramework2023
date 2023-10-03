@@ -4,19 +4,19 @@
 
 ### Upper Level: Laurin
 
-- Receive Signals
-- Room Component Management
+-   Receive Signals
+-   Room Component Management
 
 ### Room Template: Jona
 
-- Navigation, Slides
-- CSS
+-   Navigation, Slides
+-   CSS
 
 ### Utility Functions, Inventory: Dimitri
 
-- Helper Functions (e.g. Write to Inventory, Send to Upper Level)
-- Inventory display
-- Item list with metadata (name, image, description)
+-   Helper Functions (e.g. Write to Inventory, Send to Upper Level)
+-   Inventory display
+-   Item list with metadata (name, image, description)
 
 ## New TODO
 
@@ -47,25 +47,13 @@ graph TD
 #### Data Structures
 
 ```csharp
-/*
-Button struct is used to define a button in a room.
-
-* Id: The id of the button. Must be unique in the room the button is in.
-* Points: The points of the button. Must be a valid SVG polygon points string.
-* Action: The action of the button. Must be a valid action string.
-Valid actions are: 
-	* "route": Change to a different room/slide. Args: {"internal/external", "roomId/slideId"}.
-	* "inventory": Add/remove item from inventory. Args: {"itemId", "amount" (negative for removing)}.
-	* "sound": Play a sound. Args: {"soundId", "some stuff to be added when we actually implement it"}.
-* Args: The arguments of the button. Must be a valid action arguments string array
-*/
 public readonly struct Button
 {
 	public readonly string Id;
 	public readonly string Points;
 	public readonly string Action;
 	public readonly string[] Args;
-	
+
 	public Button(string Id, string Points, string Action, string[] Args)
 	{
 		this.Id = Id;
@@ -73,7 +61,7 @@ public readonly struct Button
 		this.Action = Action;
 		this.Args = Args;
 	}
-	
+
 	public Signal GetSignal()
 	{
 		return new Signal(Action, Args);
@@ -83,28 +71,28 @@ public readonly struct Button
 /*
 Bascially a button without the id and points.
 */
-public readonly struct Signal 
+public readonly struct Signal
 {
 	public readonly string Action;
 	public readonly string[] Args;
-	
+
 	public Signal(string Action, string[] Args)
 	{
 		this.Action = Action;
 		this.Args = Args;
 	}
-}	
+}
 ```
-* `Id`: The id of the button. Must be unique in the room the button is in.
-* `Points`: The points of the button. Must be a valid SVG polygon points string.
-* `Action`: The action of the button. Must be a valid action string.
-Valid actions are: 
-	* `"route"`: Change to a different room/slide. Args: `{"internal/external", "roomId/slideId"}`.
-	* `"inventory"`: Add/remove item from inventory. Args: `{"itemId", "amount (negative for removing)"}`.
-	* `"sound"`: Play a sound. Args: {"soundId", "some stuff to be added when we actually implement it"}.
-* Args: The arguments of the button. Must be a valid action arguments string array
 
-<!-- - `string id`: A unique identifier of the button in the room. 
+-   `Id`: The id of the button. Must be unique in the room the button is in.
+-   `Points`: The points of the button. Must be a valid SVG polygon points string.
+-   `Action`: The action of the button. Must be a valid action string.
+    Valid actions are:
+    _ `"route"`: Change to a different room/slide. Args: `{"internal/external", "roomId/slideId"}`.
+    _ `"inventory"`: Add/remove item from inventory. Args: `{"itemId", "amount (negative for removing)"}`. \* `"sound"`: Play a sound. Args: {"soundId", "some stuff to be added when we actually implement it"}.
+-   Args: The arguments of the button. Must be a valid action arguments string array
+
+<!-- - `string id`: A unique identifier of the button in the room.
 - `string points`: The points for the svg polygon. The points are relative to the svg's size
 - `string type`: The type of the button. Can be `"internal"`, `"external"` or `"action"`. Needed for correct routing
 
@@ -114,6 +102,7 @@ Valid actions are:
 
 - `string? method`: The method that is called when the button is clicked. Can be `null`, as often no function call is required. Only neccessary for `"action"` buttons, but can be used for `"internal"` and `"external"` buttons as well, if needed.
 -->
+
 `Slide` registers `onclick` event on one of it's buttons
 
 `Slide` sends `Signal` to parent `Room`
@@ -136,21 +125,18 @@ If external, `Room` sends Signal to parent (highest level) `Game`
 
 ```json
 {
-  "itemID": {
-    "name": "Display name of the item",
-    "description": "Description of the item (also displayed in inventory)",
-    "image": "path/to/image.png"
-  }
+    "itemID": {
+        "name": "Display name of the item",
+        "description": "Description of the item (also displayed in inventory)",
+        "image": "path/to/image.png"
+    }
 }
 ```
 
 `Inventory.json` contains a list with all the items the player has in their inventory
 
 ```json
-[
-  "itemID",
-  "item2ID"
-]
+["itemID", "item2ID"]
 ```
 
 #### Methods
