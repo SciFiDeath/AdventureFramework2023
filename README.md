@@ -155,8 +155,8 @@ If external, `Room` sends Signal to parent (highest level) `Game`
 
 #### Methods
 
-`void addItem(string itemID, int amount=1)` adds `amount` of `itemID` to the inventory
+`void addItem(string itemID)` adds `itemID` to the inventory
 
-`void removeItem(string itemID, int amount=1)` removes `amount` of `itemID` from the inventory
+`void removeItem(string itemID)` removes `itemID` from the inventory
 
 `bool getItem(string itemID)` returns `true` if `itemID` is in the inventory, `false` otherwise
