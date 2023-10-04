@@ -1,5 +1,103 @@
 # AdventureFramework2023
 
+# TODO for Holidays
+
+### Slides
+
+-   Slides.json - giant file with data in it, described in ProjectStructure.md
+-   Slide.razor - component that takes an id and gets the data from Slides.json and displays accordingly, also with checking for visibility of certain buttons in GameState.json
+-   SlideBase.cs - base class for Slide.razor, contains the logic
+-   If a button was clicked, raise an event with the button id
+
+### Game
+
+-   Game.razor - component that contains the current slide and the inventory
+-   GameBase.cs - base class for Game.razor, contains the logic
+-   If a button was clicked, execute the actions that are in the Slides.json for this button
+
+Possible actions:
+
+-   MethodName - args
+-   Route - SlideId
+-   (Iventory - ItemId, Add/Remove)
+-   InventoryAdd - ItemId
+-   InventoryRemove - ItemId
+-   Sound - SoundId
+
+... idk what else
+
+Structure should look something like this:
+
+```mermaid
+graph TD
+
+	Game{"Game"} -- SlideId --> Slide["SlideComponent"] -- format --> Button1["Button1"]
+	Slide -- format --> Button2["Button2"]
+	Slide -- format --> Button3["Button3"]
+	Button1 -- onclick --> Slide
+	Game -- executes --> Action["Action"]
+	Slide -- Button1Id --> Game
+```
+
+# Tasks
+
+To sum up the tasks we have to do:
+
+Slide (Jona?):
+
+-   Slide takes SlideId and "constructs" itself with all buttons from Slides.json (and GameState.json for visibility and such)
+-   Slide raises event with ButtonId when a button is clicked
+
+Communication (Laurin?):
+
+-   Game takes ButtonId and executes actions accordingly
+
+Other (Dimitri?):
+
+-   A bunch of functions for actions; i.e. Inventory, Sound, GameState update, etc.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 ## TODO
 
 ### Upper Level: Laurin
