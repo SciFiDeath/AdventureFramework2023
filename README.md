@@ -15,6 +15,11 @@
 -   GameBase.cs - base class for Game.razor, contains the logic
 -   If a button was clicked, execute the actions that are in the Slides.json for this button
 
+### Other
+
+-   Methods for the actions that can be triggered by buttons
+-   Some function that checks the Slides.json and GameState.json for obvious errors such as typos and stuff (not strictly neccessary, but would make our life easier, especially of others contribute)
+
 Possible actions:
 
 -   MethodName - args
@@ -24,20 +29,7 @@ Possible actions:
 -   InventoryRemove - ItemId
 -   Sound - SoundId
 
-... idk what else
-
-Structure should look something like this:
-
-```mermaid
-graph TD
-
-	Game{"Game"} -- SlideId --> Slide["SlideComponent"] -- format --> Button1["Button1"]
-	Slide -- format --> Button2["Button2"]
-	Slide -- format --> Button3["Button3"]
-	Button1 -- onclick --> Slide
-	Game -- executes --> Action["Action"]
-	Slide -- Button1Id --> Game
-```
+## More detailed info in ProjectStructure.md
 
 # Tasks
 
@@ -51,6 +43,7 @@ Slide (Jona?):
 Communication (Laurin?):
 
 -   Game takes ButtonId and executes actions accordingly
+-   "JSON-Checker" (checks for obvious errors in the big json files)
 
 Other (Dimitri?):
 
