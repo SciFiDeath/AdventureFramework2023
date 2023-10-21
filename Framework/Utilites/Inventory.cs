@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-
 public class Inventory
 {
     // Define the items list as a static field to make it accessible to all instances of the class.
@@ -18,7 +13,7 @@ public class Inventory
         }
 
         // Save the updated inventory to the file.
-        SaveToFile("inventory.json");
+        SaveToFile();
     }
 
     public static void AddItem(string id)
@@ -26,7 +21,7 @@ public class Inventory
         items.Add(id);
 
         // Save the updated inventory to the file.
-        SaveToFile("inventory.json");
+        SaveToFile();
     }
 
     public static List<string> GetItems()
@@ -34,24 +29,13 @@ public class Inventory
         return items;
     }
 
-    public static void SaveToFile(string fileName)
+    public static void SaveToFile()
     {
-        string json = JsonConvert.SerializeObject(items);
-        File.WriteAllText(fileName, json);
+        JsonUtility.SaveToJson<List<string>>(items, "inventory.json");
     }
 
-    public static void LoadFromFile(string fileName)
+    public static void LoadFromFile()
     {
-        if (File.Exists(fileName))
-        {
-            string json = File.ReadAllText(fileName);
-            items = JsonConvert.DeserializeObject<List<string>>(json);
-        }
-        else
-        {
-            // Handle the case when the file doesn't exist, you can choose to do nothing or throw an exception.
-            // For now, let's create an empty inventory.
-            items = new List<string>();
-        }
+        JsonUtility.LoadFromJson<List<string>>("inventory.json");
     }
 }
