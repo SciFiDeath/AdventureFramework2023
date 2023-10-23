@@ -1,63 +1,30 @@
-@using InventoryLibrary
-@using Newtonsoft.Json.Linq
-
-<div class="overlay" @style="overlayStyle">
-    @if (showOverlay)
-    {
-        foreach (var itemId in itemIds)
+@* Chat GPT Code *@
+<div class="overlay @OverlayClass" style="display: @overlayDisplay">
+    <div class="overlay-content">
+        @if (Images != null && Images.Any())
         {
-            var item = items.ContainsKey(itemId) ? items[itemId] : null;
-
-            if (item != null)
-            {
-                <div class="overlay-item">
-                    <img src="@item.Image" alt="@item.Name" />
-                    <p>@item.Name</p>
-                    <p>@item.Description</p>
-                </div>
-            }
+            <div class="image-row">
+                @foreach (var image in Images)
+                {
+                    @* <img src="@image.Value["image"]" alt="@image.Value["description"]" /> *@
+                }
+            </div>
         }
-    }
+        @ChildContent
+    </div>
 </div>
 
 @code {
-    private Dictionary<string, Item> items = new Dictionary<string, Item>();
-    private List<string> itemIds = new List<string>();
-    private bool showOverlay = false;
-    private string overlayStyle => showOverlay ? "display: block;" : "display: none;"
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
+    [Parameter] public List<string> Images { get; set; } = new List<string>(); @* TODO use Inventory class and then @inject Inventory Inventory *@
 
-    private Inventory inventory = new Inventory();
+    private string overlayDisplay = "none";
+    private bool isOverlayVisible = false;
 
-    [Inject] private IJSRuntime JSRuntime { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    private void ToggleOverlay()
     {
-        // Load inventory from "inventory.json" if it exists.
-        inventory.LoadFromFile("inventory.json");
-    }
-
-    private async Task ToggleOverlay()
-    {
-        // Update the list of item IDs to display.
-        itemIds = inventory.GetItems();
-        await JSRuntime.InvokeVoidAsync("scrollToTop");
-        showOverlay = true;
-        await InvokeAsync(StateHasChanged);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // Listen for the "i" key press after the component has rendered.
-            await JSRuntime.InvokeAsync<string>("addKeyPressListener", ToggleOverlay);
-
-            // Load JSON data from the "items.json" file when the component initializes.
-            Items.JsonToDict("items.json", (loadedItems) =>
-            {
-                items = loadedItems;
-                StateHasChanged();
-            });
-        }
+        isOverlayVisible = !isOverlayVisible;
+        overlayDisplay = isOverlayVisible ? "block" : "none";
     }
 }
