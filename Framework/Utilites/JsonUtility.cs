@@ -1,20 +1,22 @@
 using System.Text.Json;
-
-public class JsonUtility
+namespace JsonUtilities
 {
-    public static T LoadFromJson<T>(string fileName)
+    public class JsonUtility
     {
-        if (File.Exists(fileName))
+        public static T LoadFromJson<T>(string fileName)
         {
-            string json = File.ReadAllText(fileName);
-            return JsonSerializer.Deserialize<T>(json);
+            if (File.Exists(fileName))
+            {
+                string json = File.ReadAllText(fileName);
+                return JsonSerializer.Deserialize<T>(json);
+            }
+            return default;
         }
-        return default;
-    }
 
-    public static void SaveToJson<T>(T data, string fileName)
-    {
-        string json = JsonSerializer.Serialize(data);
-        File.WriteAllText(fileName, json);
+        public static void SaveToJson<T>(T data, string fileName)
+        {
+            string json = JsonSerializer.Serialize(data);
+            File.WriteAllText(fileName, json);
+        }
     }
 }

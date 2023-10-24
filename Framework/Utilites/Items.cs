@@ -1,46 +1,29 @@
 using System.Text.Json;
 
-
-public class Item
+namespace Utilities
 {
-    public string Name { get; }
-    public string Description { get; }
-    public string Image { get; }
-
-    public Item(string name, string description, string image)
+    
+    public class Item
     {
-        this.Name = name;
-        this.Description = description;
-        this.Image = image;
-    }
-}
+        public string Name { get; }
+        public string Description { get; }
+        public string Image { get; }
 
-public class Items
-{
-    public static void JsonToDict(string path = "items.json")
-    {
-        string Path = path;
-
-        try
+        public Item(string name, string description, string image)
         {
-            string jsonString = File.ReadAllText(Path);
-            Dictionary<int, Item> items = JsonSerializer.Deserialize<Dictionary<int, Item>>(jsonString);
-
-            foreach (var kvp in items)
-            {
-                int key = kvp.Key;
-                Item item = kvp.Value;
-
-                Console.WriteLine($"Key: {key}");
-                Console.WriteLine($"Name: {item.Name}");
-                Console.WriteLine($"Description: {item.Description}");
-                Console.WriteLine($"Image: {item.Image}");
-            }
-        }
-        catch (FileNotFoundException)
-        {
-            Console.WriteLine("The JSON file was not found.");
+            this.Name = name;
+            this.Description = description;
+            this.Image = image;
         }
     }
-}
 
+    public class Items
+    {
+        public static void LoadItems()
+        {
+            Dictionary<string, Item> Items = JsonUtility.LoadFromJson<Dictionary<string, Item>>("items.json");
+        }
+        
+    }
+
+}
