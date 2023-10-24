@@ -1,10 +1,39 @@
 @inherits Room.HM305Base
 @namespace Room
+@inject HttpClient Http
 
-<div>
+<div id="viewHM305"> <!-- blue -->
+    <img src="HM305/images/start.jpg" alt="monday left me broken...">
+    <br>
+    <br>
 
-    <p>Test</p>
-    <svg viewBox="0 0 80 80">
-        <polygon points=@Points style="fill: black" />
+    <svg viewBox="0 0 1920 865"> <!-- min_x | min_y | gridding_x | gridding_y  -> divide viewBox in 10000 x 10000 pieces -> points-->
+        <polygon points=@Points id="blackboard" ></polygon> <!-- x,y x,y ... -->
     </svg>
 </div>
+
+@code {
+    @using System.Text.Json;
+    // Code for fetching the json file
+    public class JsonData { // Class for json file
+        public InternalData? Internal { get; set; }
+        public ExternalData? External { get; set; }
+    }
+
+    public class InternalData {
+        public string? Blackboard { get; set; }
+    }
+
+    public class ExternalData {
+        public string? ButtonId { get; set; }
+    }
+
+    // Make new JsonData object 
+    public JsonData? jsonData;
+    public string? json_string; // Removed the 'public' keyword
+
+    protected override async Task OnInitializedAsync() {
+        jsonData = await Http.GetFromJsonAsync<JsonData>("HM305/HM305.json");
+        json_string = JsonSerializer.Serialize(jsonData); // Assign the value directly
+    }
+}

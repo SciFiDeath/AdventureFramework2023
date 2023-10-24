@@ -1,0 +1,28 @@
+#viewHM305{
+    /* background-image: url('images/start.jpg');
+    background-repeat: no-repeat; /* Ensure the image doesn't repeat */
+    /*background-size: cover; Scale the image to cover the entire div */
+    background-color: beige;
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+#viewHM305 img{
+    width: 100%;
+}
+
+
+svg{
+    /* background-color: rgba(0, 255, 255, 0.253); */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+} 
+
+polygon{
+    fill: rgba(255, 0, 0, 0.5);
+}
