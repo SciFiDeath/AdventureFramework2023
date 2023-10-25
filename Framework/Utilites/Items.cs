@@ -1,6 +1,7 @@
 using System.Text.Json;
+using JsonUtilities;
 
-namespace Utilities
+namespace InventoryItems
 {
     
     public class Item

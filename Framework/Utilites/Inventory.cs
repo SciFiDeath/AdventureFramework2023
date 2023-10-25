@@ -1,14 +1,15 @@
+using JsonUtilities;
 
-namespace JsonUtilities
+namespace InventoryItems
 {
     public class Inventory
     {
         // Define the items list as a static field to make it accessible to all instances of the class.
-        private static List<string> inventory = new List<string>();
+        private static readonly List<string> items = new(); //? public for every file to access, like inventory overlay or mini-games
 
-        public static void RemoveItem(string id)
+        public void RemoveItem(string id)
         {
-            bool removed = inventory.Remove(id);
+            bool removed = items.Remove(id);
 
             if (!removed)
             {
@@ -19,39 +20,27 @@ namespace JsonUtilities
             SaveInventory();
         }
 
-        public static void AddItem(string id)
+        public void AddItem(string id)
         {
-            inventory.Add(id);
+            items.Add(id);
 
             // Save the updated inventory to the file.
             SaveInventory();
         }
 
-        public static List<string> GetItems()
+        public List<string> GetItems()
         {
-            return inventory;
+            return items;
         }
 
         public static void SaveInventory(string path="inventory.json")
         {
-            JsonUtility.SaveToJson<List<string>>(inventory, "inventory.json");
+            JsonUtility.SaveToJson(items, path);
         }
 
-        public static void LoadInventory(string path="inventory.json", bool overwrite = false)
-        {   
-            if (inventory.Count == 0 || overwrite == true)
-            {
-                inventory = JsonUtility.LoadFromJson<List<string>>(path);
-            }
-
-            else
-            {
-                throw new ArgumentException("Inventory is not Empty and would be overwritten by loading. Set overwrite to true to overwrite");
-            }
+        public static void LoadInventory(string path="inventory.json" )
+        {
+            JsonUtility.LoadFromJson<List<string>>(path);
         }
     }
-
 }
-
-
-

@@ -1,10 +1,14 @@
-using JsonUtilities;
+using InventoryItems;
 
-Inventory invent = new Inventory();
-invent.LoadInventory();
-List<string> inv = inventory.GetItems();
-
-foreach (string item in inv)
+class Test
 {
-    Console.WriteLine(item);
+    static void Main(string[] args)
+    {
+        Inventory inventory = new();
+        List<string> InventoryItems = inventory.GetItems();
+        foreach (var item in InventoryItems)
+        {
+            Console.WriteLine(item);
+        } 
+    }
 }
