@@ -13,27 +13,24 @@
 </div>
 
 @code {
-    @using System.Text.Json;
-    // Code for fetching the json file
-    public class JsonData { // Class for json file
-        public InternalData? Internal { get; set; }
-        public ExternalData? External { get; set; }
-    }
+    @* private HttpClient httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:7106/") }; *@
+    @* private string? myData;
 
-    public class InternalData {
-        public string? Blackboard { get; set; }
-    }
+    protected override async Task OnInitializedAsync()
+    {
+        myData = await Http.GetFromJsonAsync<string?>("HM305/HM305.json");
+    } *@
+    @using System.Net.Http;
+    @using System.Threading.Tasks;
 
-    public class ExternalData {
-        public string? ButtonId { get; set; }
-    }
-
-    // Make new JsonData object 
-    public JsonData? jsonData;
-    public string? json_string; // Removed the 'public' keyword
-
-    protected override async Task OnInitializedAsync() {
-        jsonData = await Http.GetFromJsonAsync<JsonData>("HM305/HM305.json");
-        json_string = JsonSerializer.Serialize(jsonData); // Assign the value directly
+    @* private readonly HttpClient httpClient = new HttpClient(); *@
+    private string? jsonData;
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("HM305/HM305.json");
+        response.EnsureSuccessStatusCode();
+        jsonData = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(jsonData);
+        Console.WriteLine("rep");
     }
 }
