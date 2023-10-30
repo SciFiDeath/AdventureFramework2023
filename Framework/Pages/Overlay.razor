@@ -1,11 +1,19 @@
+@page "/inventory"
+@inject HttpClient Http
+
+<PageTitle>Inventory Test</PageTitle>
+
+<h1>Test Inventory</h1>
+
+<p>This component demonstrates the Inventory overlay.</p>
 @* Chat GPT Code *@
 @using InventoryItems;
 <div class="overlay @OverlayClass" style="display: @overlayDisplay">
     <div class="overlay-content">
-        @if (Images != null)
+        @if (images != null)
         {
             <div class="image-row">
-                @foreach (var img in Images)
+                @foreach (var img in images)
                 {
 
                     <img src="@img" alt=@img />
@@ -19,7 +27,7 @@
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
-    [Parameter] public string images = Items.GetProperties("image"); 
+    private List<string> images = Items.GetProperties("image"); 
     
 
     private string overlayDisplay = "none";

@@ -20,7 +20,7 @@ namespace InventoryItems
 
     public class Items
     {   
-        public static readonly Dictionary<string, Item> items = new();
+        public static Dictionary<string, Item> items = new();
 
         //Load Json into Dictionary<string, Item>
         public static void LoadItems()
@@ -47,7 +47,7 @@ namespace InventoryItems
                 if (propertyInfo != null)
                 {
                     // Get the value of the property and add it to the list
-                    string propertyValue = propertyInfo.GetValue(pair.Value) as string;
+                    string? propertyValue = propertyInfo.GetValue(pair.Value) as string;
                     propertyValues.Add(propertyValue);
                 }
                 else
