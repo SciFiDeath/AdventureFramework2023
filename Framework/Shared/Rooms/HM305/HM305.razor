@@ -1,6 +1,6 @@
 @inherits Room.HM305Base
 @namespace Room
-@inject HttpClient Http
+@inject HttpClient Http 
 
 <div id="viewHM305"> <!-- blue -->
     <img src="HM305/images/start.jpg" alt="monday left me broken...">
@@ -13,24 +13,17 @@
 </div>
 
 @code {
-    @* private HttpClient httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:7106/") }; *@
-    @* private string? myData;
-
-    protected override async Task OnInitializedAsync()
+    @using System.Net.Http; // for http
+    @using System.Threading.Tasks; // for async
+    @using System.Text.Json; // for json
+    private Dictionary<string, object>? jsonDataDict; // dictionary to store json data
+    protected override async Task OnInitializedAsync() // called when component is initialized
     {
-        myData = await Http.GetFromJsonAsync<string?>("HM305/HM305.json");
-    } *@
-    @using System.Net.Http;
-    @using System.Threading.Tasks;
-
-    @* private readonly HttpClient httpClient = new HttpClient(); *@
-    private string? jsonData;
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await Http.GetAsync("HM305/HM305.json");
-        response.EnsureSuccessStatusCode();
-        jsonData = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(jsonData);
-        Console.WriteLine("rep");
+        var response = await Http.GetAsync("HM305/HM305.json"); // fetch json file
+        response.EnsureSuccessStatusCode(); // throw if not success
+        var jsonDataString = await response.Content.ReadAsStringAsync(); // read json file as string
+        jsonDataDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonDataString); // convert json string to dictionary
+        Console.WriteLine(jsonDataDict);
     }
+    
 }
