@@ -19,7 +19,7 @@
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
-    [Parameter] public string images = Items.GetProperties("image"); @* TODO use Inventory and Items class and then @inject Inventory Inventory and Items *@
+    [Parameter] public string images = Items.GetProperties("image"); 
     
 
     private string overlayDisplay = "none";
