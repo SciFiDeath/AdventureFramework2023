@@ -20,15 +20,47 @@ namespace InventoryItems
 
     public class Items
     {   
-        public static Dictionary<string, Item> items = new();
+        public static readonly Dictionary<string, Item> items = new();
 
         //Load Json into Dictionary<string, Item>
         //TODO create a method that returns a list of item properties like images or descriptions
         public static void LoadItems()
         {
-            Dictionary<string, Item> items = JsonUtility.LoadFromJson<Dictionary<string, Item>>("items.json");
+            items = JsonUtility.LoadFromJson<Dictionary<string, Item>>("items.json");
         }
         
+        public static List<string> GetProperties(string propertyName)
+{
+    // Make sure items.json has been read
+    if (items.Count() == 0)
+    {
+        LoadItems();
+    }
+
+    // Declare a list of property values
+    List<string> propertyValues = new List<string>();
+
+    //iterate through pairs in items
+    foreach (KeyValuePair<string, Item> pair in items)
+    {
+        //get info about property for getting Property value using parameter
+        var propertyInfo = pair.Value.GetType().GetProperty(propertyName);
+        if (propertyInfo != null)
+        {
+            // Get the value of the property and add it to the list
+            string propertyValue = propertyInfo.GetValue(pair.Value) as string;
+            propertyValues.Add(propertyValue);
+        }
+        else
+        {
+            // Handle the case where the property with the given name doesn't exist
+            // You can choose to skip, log an error, or handle it as needed.
+        }
+    }
+
+    return propertyValues;
+}
+
     }
 
 }

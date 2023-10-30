@@ -2,17 +2,16 @@
 @using InventoryItems;
 <div class="overlay @OverlayClass" style="display: @overlayDisplay">
     <div class="overlay-content">
-        @* @if (Images != null && Images.Any())
+        @if (Images != null)
         {
             <div class="image-row">
-                @foreach (var image in Images)
+                @foreach (var img in Images)
                 {
-                    //@inject Items Items 
 
-                    <img src="items.@image" alt="@]" />
+                    <img src="@img" alt=@img />
                 }
             </div>
-        } *@
+        }
         @ChildContent
     </div>
 </div>
@@ -20,7 +19,7 @@
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
-    //[Parameter] public List<string> Images { get; set; } = new List<string>(); @* TODO use Inventory and Items class and then @inject Inventory Inventory and Items *@
+    [Parameter] public string images = Items.GetProperties("image"); @* TODO use Inventory and Items class and then @inject Inventory Inventory and Items *@
     
 
     private string overlayDisplay = "none";
