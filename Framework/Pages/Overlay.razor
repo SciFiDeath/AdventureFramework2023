@@ -1,17 +1,18 @@
 @* Chat GPT Code *@
+@using InventoryItems;
 <div class="overlay @OverlayClass" style="display: @overlayDisplay">
     <div class="overlay-content">
-        @if (Images != null && Images.Any())
+        @* @if (Images != null && Images.Any())
         {
             <div class="image-row">
                 @foreach (var image in Images)
                 {
-                    @inject Items Items 
+                    //@inject Items Items 
 
-                    @* <img src="items.@image" alt="@]" /> *@
+                    <img src="items.@image" alt="@]" />
                 }
             </div>
-        }
+        } *@
         @ChildContent
     </div>
 </div>
