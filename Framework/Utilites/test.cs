@@ -1,6 +1,6 @@
 using InventoryItems;
 
-class Test
+class TryOut
 {
     static void Main(string[] args)
     {
