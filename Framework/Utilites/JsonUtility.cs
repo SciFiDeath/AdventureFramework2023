@@ -4,12 +4,19 @@ namespace JsonUtilities
     public class JsonUtility
     {
         public static T LoadFromJson<T>(string fileName)
-        {
+        {   
+            Console.WriteLine(fileName);
+            Console.WriteLine(File.Exists(fileName));
+            //TODO Use http for fetching json, jona & laurin
             if (File.Exists(fileName))
             {
                 string json = File.ReadAllText(fileName);
+                Console.WriteLine("printing json");
+                Console.WriteLine(json);
+
                 return JsonSerializer.Deserialize<T>(json);
             }
+            
             return default;
         }
 

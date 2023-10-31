@@ -28,16 +28,17 @@ namespace InventoryItems
             items = JsonUtility.LoadFromJson<Dictionary<string, Item>>("items.json");
         }
         
-        public static List<string> GetProperties(string propertyName)
+        public List<string> GetProperties(string propertyName)
         {
             // Make sure items.json has been read
-            if (items.Count() == 0)
+            if (items.Count == 0)
             {
                 LoadItems();
             }
-
+            Console.WriteLine("items to be printed");
+            Console.WriteLine(items);
             // Declare a list of property values
-            List<string> propertyValues = new List<string>();
+            List<string> propertyValues = new();
 
             //iterate through pairs in items
             foreach (KeyValuePair<string, Item> pair in items)
