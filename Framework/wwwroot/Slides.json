@@ -1,0 +1,38 @@
+{
+    "Slide1": {
+        "Image": "path/to/image.jpg",
+        "Buttons": [
+            {
+                "Id": "Button1",
+                "Points": "1,1 2,4 6,5 3,4",
+                "Actions": [["Route", "Slide2"]]
+            },
+            {
+                "Id": "Button2",
+                "Points": "1,1 2,4 6,5 3,4",
+                "Actions": [
+                    ["Require", "Item1"],
+                    ["Route", "Slide2"]
+                ]
+            }
+        ]
+    },
+    "Slide2": {
+        "Image": "path/to/image.jpg",
+        "Buttons": [
+            {
+                "Id": "Button1",
+                "Points": "1,1 2,4 6,5 3,4",
+                "Actions": [["Route", "Slide1"]]
+            },
+            {
+                "Id": "Button2",
+                "Points": "1,1 2,4 6,5 3,4",
+                "Actions": [
+                    ["Require", "Item1"],
+                    ["Route", "Slide1"]
+                ]
+            }
+        ]
+    }
+}

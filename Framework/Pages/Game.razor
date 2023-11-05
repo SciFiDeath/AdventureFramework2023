@@ -1,0 +1,9 @@
+@page "/game"
+@namespace Framework.Game
+@inherits Framework.Game.GameBase
+
+@if (Slides == null) {
+    <p>Loading...</p>
+} else {
+    <p>@Slides["Slide1"].Buttons[0].Points</p>
+}
