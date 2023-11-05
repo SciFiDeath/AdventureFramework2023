@@ -1,0 +1,54 @@
+@page "/inventory"
+
+<PageTitle>Inventory Test</PageTitle>
+
+<h1>Test Inventory</h1>
+
+<p>This component demonstrates the Inventory overlay.</p>
+
+@using InventoryItems
+
+<div class="overlay @OverlayClass" style="display: @overlayDisplay">
+    <div class="overlay-content">
+        <img src="" />
+        @if (images != null)
+        {
+            <div class="image-row">
+                @foreach (var img in images)
+                {
+                    <img src="@img" alt="hello" />
+                }
+            </div>
+        }
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
+
+    private Items itemsObj = new Items();
+    private List<string> images;
+    
+    private string overlayDisplay = "none";
+    private bool isOverlayVisible = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load data asynchronously
+        images = await LoadImagesAsync();
+    }
+
+    private async Task<List<string>> LoadImagesAsync()
+    {
+        // Load images data asynchronously
+        return await Task.Run(() => itemsObj.GetProperties("image"));
+    }
+
+    private void ToggleOverlay()
+    {
+        isOverlayVisible = !isOverlayVisible;
+        overlayDisplay = isOverlayVisible ? "block" : "none";
+    }
+}

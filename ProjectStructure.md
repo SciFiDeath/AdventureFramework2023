@@ -86,6 +86,89 @@ Some Actions I think we'll need:
 -   `Require(ItemId, HintText)` - requires the specified item to be in the inventory, if it isn't, a hint is displayed
 -   `ToggleVisibility(ButtonId)` - toggles the visibility of the specified button
 
+### Deserialization of Slides.json
+
+I think it is best to have two classes for the json deserializer:
+
+-   Slides
+-   Slide
+-   Button <br>
+    (maybe Action, but that could be overcomplicating things unnecessarily)
+
+```csharp
+
+// I don't know enough about json deserialization in C#, but I think you'll get the idea
+
+class Button
+{
+    public string Id { get; set; }
+    public string? Points { get; set; }
+    public string? Image { get; set; }
+    public List<List<string>> Actions { get; set; }
+    // public List<Action> Actions { get; set; } // If we decide to implement actions as a class
+}
+
+class Slide
+{
+    public string Image { get; set; }
+    public List<Button> Buttons { get; set; }
+}
+
+class Slides
+{
+    public Dictionary<string, Slide> Slides { get; set; }
+}
+```
+
+### SlideBase.cs
+
+A basic class for all the slides, that contains enough functionality for a standard slide to function without any additional code and just the SlideId.
+Any custom slide will be a child of this class and can override/expand the functionality.
+
+```csharp
+
+class SlideBase : ComponentBase
+{
+    [Parameter]
+    public string SlideId { get; set; }
+
+    public Slide Slide { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // load the slide from the json file
+        Slide = Slides[SlideId]; // Something like that, idk how it works exactly
+    }
+
+    public void ButtonClick(string buttonId)
+    {
+        // execute the actions of the button
+        foreach (var action in Slide.Buttons[buttonId].Actions)
+        {
+            ExecuteAction(action);
+        }
+    }
+
+    // idk exactly, but something like that I guess
+    public void ExecuteAction(List<string> args)
+    {
+        // execute actions accordingly
+        switch (args[0])
+        {
+            case "Route":
+                Route(args[1]); // maybe also have the full code in here, depends on the size of the method
+                break;
+            ... // other actions
+        }
+    }
+}
+
+```
+
+### ButtonBase.cs?
+
+I don't know if this is needed, but I'll just throw the idea into the room. Maybe we could use it, but it really depends on how we implement everything, so we'll see.
+
 ### GameState.json (not sure about the structure yet)
 
 ```json
