@@ -1,0 +1,46 @@
+{
+    "HM305":{ // ID of Room
+        "Start": { // current Slide ID
+            "Image": "HM305/images/start.jpg", // Path to start image
+            "Buttons": [ // List of all button elements 
+                {
+                    "Id": "Blackboard", // ID of HTML element, only slidewise unique
+                    "Points": "1319,176 1319,339 1081,336 1081,208", // String of all points as coords, eg. "x,y x,y x,y x,y" for a rectangle
+                    "Redirection": "Blackboard" // ID of slide to redirect to
+                    // "Image": ["HM305/images/blackboard.jpg", "Pos(top, left, width, height)"] // Path to image and position of image in list
+                    // some examples of actions
+                    // "Actions": [
+                    //     ["ActionType", "ActionArgs"], // general syntax, if more than one arg is needed, we'll switch the args to a list
+                    //     ["Require", ["ItemId", "HintText"]],
+                    //     ["InventoryAdd", "ItemId"],
+                    //     ["InventoryRemove", "ItemId"],
+                    //     ["Sound", "SoundId"],
+                    //     ["Route", "SlideId"]
+                    //     // ["Method", "MethodName"] // a bit risky and error-prone, but it could be a possibility
+                    // ]
+                }
+            ]
+        },
+        "Blackboard": { // current Slide ID
+            "Image": "HM305/images/blackboard.jpg", // Path to start image
+            "Buttons": [ // List of all button elements 
+                {
+                    "Id": "Blackboard", // ID of HTML element, only slidewise unique
+                    "Points": "1319,176 1319,339 1081,336 1081,208", // String of all points as coords, eg. "x,y x,y x,y x,y" for a rectangle
+                    "Redirection": "HM305" // ID of slide to redirect to
+                    // "Image": ["HM305/images/blackboard.jpg", "Pos(top, left, width, height)"] // Path to image and position of image in list
+                    // some examples of actions
+                    // "Actions": [
+                    //     ["ActionType", "ActionArgs"], // general syntax, if more than one arg is needed, we'll switch the args to a list
+                    //     ["Require", ["ItemId", "HintText"]],
+                    //     ["InventoryAdd", "ItemId"],
+                    //     ["InventoryRemove", "ItemId"],
+                    //     ["Sound", "SoundId"],
+                    //     ["Route", "SlideId"]
+                    //     // ["Method", "MethodName"] // a bit risky and error-prone, but it could be a possibility
+                    // ]
+                }
+            ]
+        }
+    }   
+}

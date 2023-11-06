@@ -3,27 +3,81 @@
 @inject HttpClient Http 
 
 <div id="viewHM305"> <!-- blue -->
-    <img src="HM305/images/start.jpg" alt="monday left me broken...">
+    <img src=@slideImgSource alt="monday left me broken...">
     <br>
     <br>
 
     <svg viewBox="0 0 1920 865"> <!-- min_x | min_y | gridding_x | gridding_y  -> divide viewBox in 10000 x 10000 pieces -> points-->
-        <polygon points=@Points id="blackboard" ></polygon> <!-- x,y x,y ... -->
+        <polygon points=@Points id=@PolygonID @onclick="GoToNextSlide"></polygon> <!-- x,y x,y ... -->
     </svg>
 </div>
 
-@code {
+
+@code{
     @using System.Net.Http; // for http
     @using System.Threading.Tasks; // for async
     @using System.Text.Json; // for json
-    private Dictionary<string, object>? jsonDataDict; // dictionary to store json data
+    private Dictionary<string, object>? jsonDataDict; // dictionary to store the complete json data
+    private Dictionary<string, object>? slideDict; // dictionary to store slide data
+    private List<Dictionary<string, string>>? buttonsList; // List to store data of all buttons 
+    private List<string> PointsList = new List<string> {"huan"}; // List to store points of all polygons    
+
+    private string? slideID = "HM305"; // ID of current slide
+    private string? slideImgSource; // Source of Background Image of current slide
+    private string? PolygonID; // ID of current polygon
+
     protected override async Task OnInitializedAsync() // called when component is initialized
     {
-        var response = await Http.GetAsync("HM305/HM305.json"); // fetch json file
+        var response = await Http.GetAsync("slides.json"); // fetch json file
         response.EnsureSuccessStatusCode(); // throw if not success
         var jsonDataString = await response.Content.ReadAsStringAsync(); // read json file as string
         jsonDataDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonDataString); // convert json string to dictionary
-        Console.WriteLine(jsonDataDict);
+        UpdateJSONData(slideID); // Update the variables based on the json data
+    }
+    
+    void UpdateJSONData(string? slideID){
+        // Split the whole json in singular dicts
+        slideDict = GetDictFromJSON(jsonDataDict, slideID); // Dict that contains all data of current slide
+        // Construct List that contains all buttons of the current slide
+        if (slideDict["Buttons"] is JsonElement element){ // if its a JSON element 
+            string jsonRaw = element.GetRawText(); // get the raw text 
+            buttonsList = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(jsonRaw); // Convert the raw text to a dictionary
+        }
+
+        // Set the variables based on the dicts
+        slideImgSource = ((JsonElement)slideDict["ImageSrc"]).GetString(); // Set the source of the background image
+        // Add the points of the current button to the list
+        @* if (buttonsList?.Count == 1){ // if there is only one button, dont loop, just add
+                string points = buttonsList[0]["Points"];
+                PointsList[0] = points;
+                Console.WriteLine(PointsList[0]); 
+
+            }
+        else{ 
+            for (int i = 0; i < buttonsList?.Count; i++){
+                string points = buttonsList[0]["Points"];
+                PointsList[i] = points;
+            } 
+        }
+         *@
+    }
+
+
+    // Function to convert the json objects to dictionaries
+    private Dictionary<string, object> GetDictFromJSON(Dictionary<string, object> dict, string dictKey){
+        if (dict[dictKey] is JsonElement element){ // if its a JSON element 
+            string jsonRaw = element.GetRawText(); // get the raw text 
+            return JsonSerializer.Deserialize<Dictionary<string, object>>(jsonRaw); // Convert the raw text to a dictionary
+            }
+        return null;
+    }
+
+    void GoToNextSlide(){
+        Console.WriteLine("GoToNextSlide");
+        // Change src of html img
+        
+        // Change points of svg polygon
+
     }
     
 }

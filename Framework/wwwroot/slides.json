@@ -1,0 +1,28 @@
+{ 
+    "HM305": { 
+        "ImageSrc": "HM305/images/start.jpg", 
+        "Buttons": [ 
+            {
+                "htmlID": "Blackboard", 
+                "Points": "1319,176 1319,339 1081,336 1081,208", 
+                "Redirection": "Blackboard" 
+            },
+            {
+                "htmlID": "Whiteboard", 
+                "Points": "100,100 100,300 300,300 300,100", 
+                "Redirection": "Blackboard" 
+            }
+        ]
+        
+    },
+    "BlackboardHM305": { 
+        "ImageSrc": "HM305/images/blackboard.jpg", 
+        "Buttons": [ 
+            {
+                "htmlID": "Back", 
+                "Points": "0,0 100,100 100,0 0,100", 
+                "Redirection": "HM305" 
+            }
+        ]
+    }
+} 
