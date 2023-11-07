@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dimit\\GitHub\\AdventureFramework2023\\Template\\Template.csproj": {}
+    "C:\\Users\\jkrei\\GitHub_repos\\AdventureFramework2023\\Template\\Template.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dimit\\GitHub\\AdventureFramework2023\\Template\\Template.csproj": {
+    "C:\\Users\\jkrei\\GitHub_repos\\AdventureFramework2023\\Template\\Template.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dimit\\GitHub\\AdventureFramework2023\\Template\\Template.csproj",
+        "projectUniqueName": "C:\\Users\\jkrei\\GitHub_repos\\AdventureFramework2023\\Template\\Template.csproj",
         "projectName": "Template",
-        "projectPath": "C:\\Users\\dimit\\GitHub\\AdventureFramework2023\\Template\\Template.csproj",
-        "packagesPath": "C:\\Users\\dimit\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dimit\\GitHub\\AdventureFramework2023\\Template\\obj\\",
+        "projectPath": "C:\\Users\\jkrei\\GitHub_repos\\AdventureFramework2023\\Template\\Template.csproj",
+        "packagesPath": "C:\\Users\\jkrei\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jkrei\\GitHub_repos\\AdventureFramework2023\\Template\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dimit\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jkrei\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -61,8 +61,20 @@
           "warn": true,
           "downloadDependencies": [
             {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.22, 6.0.22]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.22, 6.0.22]"
+            },
+            {
               "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-              "version": "[6.0.16, 6.0.16]"
+              "version": "[6.0.22, 6.0.22]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.22, 6.0.22]"
             }
           ],
           "frameworkReferences": {
@@ -70,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

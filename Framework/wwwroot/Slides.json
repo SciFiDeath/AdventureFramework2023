@@ -1,11 +1,11 @@
 {
-    "Slide1": {
-        "Image": "path/to/image.jpg",
+    "HM305": {
+        "Image": "images/HM305_fromEntrance.jpg",
         "Buttons": [
             {
-                "Id": "Button1",
+                "Id": "beamer",
                 "Points": "1,1 2,4 6,5 3,4",
-                "Actions": [["Route", "Slide2"]]
+                "Actions": [["Route", "HM305Beamer"]]
             },
             {
                 "Id": "Button2",
@@ -17,13 +17,13 @@
             }
         ]
     },
-    "Slide2": {
-        "Image": "path/to/image.jpg",
+    "HM305Beamer": {
+        "Image": "images/HM305_beamer.jpg",
         "Buttons": [
             {
                 "Id": "Button1",
                 "Points": "1,1 2,4 6,5 3,4",
-                "Actions": [["Route", "Slide1"]]
+                "Actions": [["Route", "HM305"]]
             },
             {
                 "Id": "Button2",

@@ -11,10 +11,12 @@ namespace Framework.Game;
 // I though everything in one file would be a bit messy, so I split it up
 public partial class GameBase : ComponentBase
 {
-	protected Dictionary<string, Slide> Slides {get; set; } = null!;
+	protected Dictionary<string, JsonSlide> Slides {get; set; } = null!;
 	
 	protected override async Task OnInitializedAsync()
 	{
 		Slides = await GetSlides("Slides.json");
 	}
+
+	protected string SlideId = "HM305";
 }

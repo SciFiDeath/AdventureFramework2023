@@ -4,13 +4,13 @@ using System.Net.Http.Json;
 
 namespace Framework.Slides;
 
-public interface ISlidesDeserializer
-{
-	Task<Dictionary<string, Slide>> GetSlides(string url);
-	Task<Dictionary<string, Slide>> GetSlidesUnsafe(string url);
-}
+// public interface ISlidesDeserializer
+// {
+// 	Task<Dictionary<string, JsonSlide>> GetSlides(string url);
+// 	Task<Dictionary<string, JsonSlide>> GetSlidesUnsafe(string url);
+// }
 
-public class SlidesDeserializer : ISlidesDeserializer
+public class SlidesDeserializer
 {
 	private readonly HttpClient _httpClient;
 	
@@ -19,14 +19,14 @@ public class SlidesDeserializer : ISlidesDeserializer
 		_httpClient = httpClient;
 	}
 	
-	private async Task<Dictionary<string, Slide>> FetchSlidesAsync(string url)
+	private async Task<Dictionary<string, JsonSlide>> FetchSlidesAsync(string url)
 	{
 		// assign return value from GetFromJsonAsync to slides if it is not null, otherwise throw an exception
-		var slides = await _httpClient.GetFromJsonAsync<Dictionary<string, Slide>>(url) ?? throw new Exception("Slides is null");
+		var slides = await _httpClient.GetFromJsonAsync<Dictionary<string, JsonSlide>>(url) ?? throw new Exception("Slides is null");
 		return slides;
 	}
 	
-	private static void VerifySlides(Dictionary<string, Slide> slides)
+	private static void VerifySlides(Dictionary<string, JsonSlide> slides)
 	{
 		// idk, check every value to make sure it's not null
 		// if you want no buttons/action, just set Buttons/Actions to an empty list
@@ -61,7 +61,7 @@ public class SlidesDeserializer : ISlidesDeserializer
 		});
 	}
 	
-	public async Task<Dictionary<string, Slide>> GetSlides(string url)
+	public async Task<Dictionary<string, JsonSlide>> GetSlides(string url)
 	{
 		var slides = await FetchSlidesAsync(url);
 		try
@@ -77,7 +77,7 @@ public class SlidesDeserializer : ISlidesDeserializer
 	}
 	
 	// doesn't verify slides, is faster but could result in unexpected behavior
-	public async Task<Dictionary<string, Slide>> GetSlidesUnsafe(string url)
+	public async Task<Dictionary<string, JsonSlide>> GetSlidesUnsafe(string url)
 	{
 		return await FetchSlidesAsync(url);
 	}

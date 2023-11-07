@@ -1,0 +1,23 @@
+body{
+    width: 100%;
+    background-color: blue;
+}
+
+#view_slide{
+    /* margin-top: 1000px;
+    position: relative;
+    max-width: 100%;
+    height: auto;
+    overflow: auto; */
+    position: fixed;
+    top:0;
+    left:0;
+    max-width: 100%;
+    object-fit: cover;
+    
+    
+}
+
+#view_slide img{
+    height: 100%;
+}

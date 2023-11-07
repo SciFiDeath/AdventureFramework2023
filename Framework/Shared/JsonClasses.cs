@@ -1,12 +1,12 @@
 namespace Framework.Slides.JsonClasses;
 
-public class Slide
+public class JsonSlide
 {
 	public string? Image { get; set; }
-	public List<Button>? Buttons { get; set; }
+	public List<JsonButton>? Buttons { get; set; }
 }
 
-public class Button
+public class JsonButton
 {
 	public string? Id { get; set; }
 	public string? Points { get; set; }
