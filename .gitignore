@@ -454,3 +454,12 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 *.sln
+
+Framework1/
+Test/
+Tempate/
+Testing/
+test/
+tetsstststst/
+EmptyTemplate/
+BlazorApp/

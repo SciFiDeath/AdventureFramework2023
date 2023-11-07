@@ -13,8 +13,16 @@ public partial class GameBase : ComponentBase
 {
 	protected Dictionary<string, Slide> Slides {get; set; } = null!;
 	
+	protected string SlideId { get; set; } = "Slide1";
+	
 	protected override async Task OnInitializedAsync()
 	{
 		Slides = await GetSlides("Slides.json");
+	}
+	
+	protected void SlideChange(string slideName)
+	{
+		SlideId = slideName;
+		StateHasChanged(); // test with and without this line
 	}
 }

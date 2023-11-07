@@ -2,8 +2,12 @@
 @namespace Framework.Game
 @inherits Framework.Game.GameBase
 
-@if (Slides == null) {
-    <p>Loading...</p>
-} else {
-    <p>@Slides["Slide1"].Buttons[0].Points</p>
-}
+
+
+@* <DynamicComponent 
+    Type=@typeof(Framework.Slides.Slide) 
+    Parameters=@(new Dictionary<string, object> {
+        {"Slide", Slides[SlideId]}
+    })
+/> *@
+
