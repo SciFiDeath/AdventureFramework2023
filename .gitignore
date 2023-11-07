@@ -457,9 +457,9 @@ $RECYCLE.BIN/
 
 Framework1/
 Test/
-Tempate/
+Template/
 Testing/
-test/
+tests/
 tetsstststst/
 EmptyTemplate/
 BlazorApp/
