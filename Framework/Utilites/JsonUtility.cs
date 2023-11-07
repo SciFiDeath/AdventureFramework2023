@@ -1,24 +1,24 @@
+using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+using Framework.Slides;
 namespace JsonUtilities
 {
     public class JsonUtility
-    {
-        public static T LoadFromJson<T>(string fileName)
-        {   
-            Console.WriteLine(fileName);
-            Console.WriteLine(File.Exists(fileName));
-            //TODO Use http for fetching json, jona & laurin
-            if (File.Exists(fileName))
-            {
-                string json = File.ReadAllText(fileName);
-                Console.WriteLine("printing json");
-                Console.WriteLine(json);
+{
+    private readonly HttpClient _httpClient;
 
-                return JsonSerializer.Deserialize<T>(json);
-            }
-            
-            return default;
-        }
+    public JsonUtility(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task<T> LoadFromJsonAsync<T>(string fileName)
+    {
+        // assign return value from GetFromJsonAsync to slides if it is not null, otherwise throw an exception
+        var json = await _httpClient.GetFromJsonAsync<T>(fileName) ?? throw new Exception("Slides is null");
+        return json;
+    }
 
         public static void SaveToJson<T>(T data, string fileName)
         {
