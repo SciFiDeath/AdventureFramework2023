@@ -20,20 +20,26 @@ namespace InventoryItems
 
     public class Items
     {   
+        private readonly HttpClient _httpClient;
+        public Items(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
         public static Dictionary<string, Item> items = new();
 
         //Load Json into Dictionary<string, Item>
-        public static void LoadItems()
-        {
-            items = JsonUtility.LoadFromJson<Dictionary<string, Item>>("items.json");
-        }
         
+        public async Task LoadItemsAsync(string path = "items.json")
+        {
+            var jsonUtility = new JsonUtility(_httpClient);
+            items = await jsonUtility.LoadFromJsonAsync<Dictionary<string, Item>>(path);
+        }
         public List<string> GetProperties(string propertyName)
         {
             // Make sure items.json has been read
             if (items.Count == 0)
             {
-                LoadItems();
+                throw new Exception("No items read, Call LoadItemsAsync() first.");
             }
             Console.WriteLine("items to be printed");
             Console.WriteLine(items);

@@ -1,11 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using JsonUtilities;
 
 namespace InventoryItems
 {
     public class Inventory
     {
-        // Define the items list as a static field to make it accessible to all instances of the class.
-        private static readonly List<string> items = new(); //? public for every file to access, like inventory overlay or mini-games
+        private readonly HttpClient _httpClient;
+        private static List<string> items = new();
+
+        public Inventory(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
         public void RemoveItem(string id)
         {
@@ -33,14 +42,17 @@ namespace InventoryItems
             return items;
         }
 
-        public static void SaveInventory(string path="inventory.json")
+        public async Task LoadInventoryAsync(string path = "inventory.json")
         {
-            JsonUtility.SaveToJson(items, path);
+            var jsonUtility = new JsonUtility(_httpClient);
+            items = await jsonUtility.LoadFromJsonAsync<List<string>>(path);
         }
 
-        public static void LoadInventory(string path="inventory.json" )
+        public async void SaveInventory(string path = "inventory.json")
         {
-            JsonUtility.LoadFromJson<List<string>>(path);
+            var jsonUtility = new JsonUtility(_httpClient);
+            //TODO: This doesn't work yet because i will do saving the file later
+            //await jsonUtility.SaveToJsonAsync(items, path);
         }
     }
 }
