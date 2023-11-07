@@ -5,7 +5,7 @@
 
 <div id="view_slide"> <!-- Div with entire Game in it-->
     @* <img src=@SlideData.Image alt="ry namako rehetra"> <!-- Backgroundimage of slide --> *@
-
+    <p>Hello WO</p>
     <svg> <!-- SVG containing all the buttons of current slide-->
         @if (SlideData != null) { 
             @foreach (var item in SlideData.Buttons) { <!-- Create all buttons--> 
@@ -13,6 +13,7 @@
             }
         }
     </svg>
+    
 
 </div>
 

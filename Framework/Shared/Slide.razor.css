@@ -18,6 +18,10 @@ body{
     
 }
 
+p {
+    color : red;
+}
+
 #view_slide img{
     height: 100%;
 }
