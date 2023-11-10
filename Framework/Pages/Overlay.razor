@@ -1,5 +1,7 @@
 @page "/inventory"
 
+@inject HttpClient HttpClient
+
 <PageTitle>Inventory Test</PageTitle>
 
 <h1>Test Inventory</h1>
@@ -28,15 +30,15 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
 
-    private Items itemsObj = new Items();
-    private List<string> images;
+    private Items itemsObj = null!;
+    private List<string>? images;
     
     private string overlayDisplay = "none";
     private bool isOverlayVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
-        // Load data asynchronously
+        itemsObj = new Items(HttpClient);
         images = await LoadImagesAsync();
     }
 
