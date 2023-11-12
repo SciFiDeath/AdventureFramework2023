@@ -22,6 +22,10 @@
                 }
             </div>
         }
+        else {
+            Console.WriteLine("Error in Blazor, Inventory Images");
+        }
+        
         @ChildContent
     </div>
 </div>
@@ -43,7 +47,9 @@
     }
 
     private async Task<List<string>> LoadImagesAsync()
-    {
+    {   
+        await itemsObj.LoadItemsAsync();
+        //ItemsObj.LoadItemsAsync();
         // Load images data asynchronously
         return await Task.Run(() => itemsObj.GetProperties("image"));
     }

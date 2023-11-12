@@ -42,7 +42,14 @@ namespace InventoryItems
                 throw new Exception("No items read, Call LoadItemsAsync() first.");
             }
             Console.WriteLine("items to be printed");
-            Console.WriteLine(items);
+            
+            
+            for(int x=0; x< items.Count; x++)
+            {
+                Console.WriteLine("{0} and {1}", items.Keys.ElementAt(x), 
+                                    items[ items.Keys.ElementAt(x)]);
+            }
+
             // Declare a list of property values
             List<string> propertyValues = new();
 
