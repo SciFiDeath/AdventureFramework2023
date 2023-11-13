@@ -6,11 +6,15 @@
 
 
 <div id="view_slide"> <!-- Div with entire Game in it-->
-    <img src=@SlideData.Image alt="ry namako rehetra"> <!-- Backgroundimage of slide -->
-    <svg> <!-- SVG containing all the buttons of current slide-->
+    <img id="backgroundImg" src=@SlideData.Image alt="ry namako rehetra"> <!-- Backgroundimage of slide -->
+    <svg id="viewBox" viewBox="0 0 1000 1000"> <!-- SVG containing all the buttons of current slide-->
         @if (SlideData != null) { 
-            @foreach (var item in SlideData.Buttons) { <!-- Create all buttons--> 
-                <polygon points="@item.Points" backgroundcolor="red"/>
+            int counter = 0; 
+            foreach (var item in SlideData.Buttons) { <!-- Create all buttons--> 
+                var localCounter = counter; <!-- Local counter for buttons-Id (Numbers)-->
+                <polygon id=@localCounter points="@item.Points" backgroundcolor="red" @onclick="() => HandlePolygonClick(localCounter)"/>
+                counter++;
+                Console.WriteLine(localCounter);
             }
         }
     </svg> 
@@ -22,8 +26,19 @@
 
 
 
+
 @code{
+    public EventCallback OnPolygonClick { get; set; }
+
+    private async Task HandlePolygonClick(int id)
+    {
+        await OnPolygonClick.InvokeAsync(id); 
+    }
+
+
     [Parameter]
     public JsonSlide SlideData { get; set; } = null!; // Get the slide data 
 }
+
+
 

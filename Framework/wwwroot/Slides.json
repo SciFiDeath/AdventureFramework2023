@@ -4,7 +4,7 @@
         "Buttons": [
             {
                 "Id": "beamer",
-                "Points": "1,1 2,4 6,5 3,4",
+                "Points": "100,100 0,100 100,0 0,0",
                 "Actions": [["Route", "HM305Beamer"]]
             },
             {
