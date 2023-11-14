@@ -1,0 +1,40 @@
+@namespace Framework.Slides
+@using Framework.Slides.JsonClasses
+@inherits ComponentBase
+
+
+<p>@ButtonData.GetType().ToString()</p>
+
+
+<polygon id="Test" points=@Points backgroundcolor=@Id @onclick="OnClick"/>
+
+
+@code {
+    [Parameter]
+    public JsonButton ButtonData {get; set;} = null!;
+
+    @* private string Id => ButtonData.Id = null!;
+    private string Points => ButtonData.Points = null!; *@
+    private string Id;
+    private string Points;
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine(ButtonData);
+        Console.WriteLine("Test");
+        Console.WriteLine(ButtonData.Points);
+        Id = ButtonData.Id = null!;
+        Points = ButtonData.Points = null!;
+        if (ButtonData == null) { Console.WriteLine("Null you idiot");}
+        StateHasChanged();
+    }
+
+
+    [Parameter]
+    public EventCallback<JsonButton> OnButtonClick {get; set;}
+
+    private async Task OnClick()
+    {
+        await OnButtonClick.InvokeAsync(ButtonData);
+    }
+}

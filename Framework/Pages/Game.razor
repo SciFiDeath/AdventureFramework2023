@@ -10,15 +10,14 @@
     @* <p>@Slides["Slide1"].Buttons[0].Points</p> *@
     <DynamicComponent Type=@typeof(Framework.Slides.Slide) 
     Parameters=@(new Dictionary<string, object>{
-        {"SlideData", Slides[SlideId]},
-        {"OnPolygonClick", (Action<int>)HandlePolygonClick}
+        {"SlideData", Slides[SlideId]}, {"OnSlideChange", (Action)HandlePolygonClick}
         }) />
 }   
 
 
 @code {
-    private void HandlePolygonClick(int id){
-        SlideId = Slides[SlideId].Buttons[id].Actions[0][1];
+    private void HandlePolygonClick() {
+        SlideId = Slides[SlideId].Buttons[0].Actions[0][1];
         Console.WriteLine(SlideId);
     }
 }
