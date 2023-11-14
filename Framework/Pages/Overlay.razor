@@ -1,5 +1,7 @@
 @page "/inventory"
 
+@inject HttpClient HttpClient
+
 <PageTitle>Inventory Test</PageTitle>
 
 <h1>Test Inventory</h1>
@@ -8,18 +10,25 @@
 
 @using InventoryItems
 
-<div class="overlay @OverlayClass" style="display: @overlayDisplay">
+<div class="overlay @OverlayClass" style="display: block">
     <div class="overlay-content">
-        <img src="" />
-        @if (images != null)
+        
+        @if (InventoryItemsProps != null)
         {
             <div class="image-row">
-                @foreach (var img in images)
-                {
-                    <img src="@img" alt="hello" />
+                @foreach (var values in InventoryItemsProps)
+                {   
+                    Console.WriteLine(values);
+                    <img src="@values.Image" alt="hello" />
                 }
+                
             </div>
         }
+        else {
+           
+            Console.WriteLine("Error in Blazor, Inventory Images");
+        }
+        
         @ChildContent
     </div>
 </div>
@@ -28,22 +37,50 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
 
-    private Items itemsObj = new Items();
-    private List<string> images;
+    private Items itemsObj = null!;
+    private string? image;
     
-    private string overlayDisplay = "none";
-    private bool isOverlayVisible = false;
+    Item? OneItem;
+    private string overlayDisplay = "block";
+    private bool isOverlayVisible = true;
 
+    private Inventory inventory = null!;
+
+    private List<Item>? InventoryItemsProps;
     protected override async Task OnInitializedAsync()
-    {
-        // Load data asynchronously
-        images = await LoadImagesAsync();
+    {   
+        // create instance of Items
+        itemsObj = new Items(HttpClient);
+        await itemsObj.LoadItemsAsync();
+        //create instance of Inventory
+        inventory = new Inventory(HttpClient);
+
+        Console.WriteLine("Created Inventory");
+        await inventory.LoadInventoryAsync(); 
+        Console.WriteLine("loaded Inventory");
+
+        InventoryItemsProps = inventory.GetPropertiesByList();
+        foreach (Item item in InventoryItemsProps)
+        {   
+            Console.WriteLine(item.Description);
+            Console.WriteLine(item.Image);
+        }
+        Console.WriteLine("loaded Inventory and got Properties");
+        
+        //image = OneItem.Image;
+
+        
+        await InvokeAsync(StateHasChanged);
+
+
     }
 
-    private async Task<List<string>> LoadImagesAsync()
-    {
+    private async Task<Item> LoadPropertiesAsync()
+    {   
+
+        await itemsObj.LoadItemsAsync();
         // Load images data asynchronously
-        return await Task.Run(() => itemsObj.GetProperties("image"));
+        return await Task.Run(() => itemsObj.GetPropertiesByName("goldkey"));
     }
 
     private void ToggleOverlay()

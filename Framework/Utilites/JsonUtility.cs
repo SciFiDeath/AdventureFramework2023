@@ -15,8 +15,8 @@ namespace JsonUtilities
 
     public async Task<T> LoadFromJsonAsync<T>(string fileName)
     {
-        // assign return value from GetFromJsonAsync to slides if it is not null, otherwise throw an exception
-        var json = await _httpClient.GetFromJsonAsync<T>(fileName) ?? throw new Exception("Slides is null");
+        // assign return value from GetFromJsonAsync to output if it is not null, otherwise throw an exception
+        var json = await _httpClient.GetFromJsonAsync<T>(fileName) ?? throw new Exception("GetFromJsonAsync is null");
         return json;
     }
 
