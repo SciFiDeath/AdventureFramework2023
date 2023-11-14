@@ -10,19 +10,21 @@
 
 @using InventoryItems
 
-<div class="overlay @OverlayClass" style="display: @overlayDisplay">
+<div class="overlay @OverlayClass" style="display: block">
     <div class="overlay-content">
-        <img src="" />
-        @if (images != null)
+        
+        @if (image != null)
         {
             <div class="image-row">
-                @foreach (var img in images)
+                @* @foreach (var img in images)
                 {
                     <img src="@img" alt="hello" />
-                }
+                } *@
+                <img src="@image" alt="hello" />
             </div>
         }
         else {
+           
             Console.WriteLine("Error in Blazor, Inventory Images");
         }
         
@@ -35,23 +37,36 @@
     [Parameter] public string OverlayClass { get; set; } = "custom-overlay";
 
     private Items itemsObj = null!;
-    private List<string>? images;
+    private string? image;
     
-    private string overlayDisplay = "none";
-    private bool isOverlayVisible = false;
+    Item? OneItem;
+    private string overlayDisplay = "block";
+    private bool isOverlayVisible = true;
 
     protected override async Task OnInitializedAsync()
     {
         itemsObj = new Items(HttpClient);
-        images = await LoadImagesAsync();
+        Console.WriteLine("image before LoadImagesAsync");
+        Console.WriteLine(image);
+        OneItem = await LoadImagesAsync();
+        Console.WriteLine(OneItem);
+        image = OneItem.Image;
+        Console.WriteLine("image after");
+
+        Console.WriteLine(image);
+        
+        await InvokeAsync(StateHasChanged);
+        Console.WriteLine("State has changed");
+
+
     }
 
-    private async Task<List<string>> LoadImagesAsync()
+    private async Task<Item> LoadImagesAsync()
     {   
         await itemsObj.LoadItemsAsync();
         //ItemsObj.LoadItemsAsync();
         // Load images data asynchronously
-        return await Task.Run(() => itemsObj.GetProperties("image"));
+        return await Task.Run(() => itemsObj.GetPropertiesByName("goldkey"));
     }
 
     private void ToggleOverlay()

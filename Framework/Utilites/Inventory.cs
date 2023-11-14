@@ -48,7 +48,7 @@ namespace InventoryItems
             items = await jsonUtility.LoadFromJsonAsync<List<string>>(path);
         }
 
-        public async void SaveInventory(string path = "inventory.json")
+        public /*async*/ void SaveInventory(string path = "inventory.json")
         {
             var jsonUtility = new JsonUtility(_httpClient);
             //TODO: This doesn't work yet because i will do saving the file later
