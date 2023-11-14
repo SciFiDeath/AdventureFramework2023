@@ -13,14 +13,15 @@
 <div class="overlay @OverlayClass" style="display: block">
     <div class="overlay-content">
         
-        @if (image != null)
+        @if (InventoryItemsProps != null)
         {
             <div class="image-row">
-                @* @foreach (var img in images)
-                {
-                    <img src="@img" alt="hello" />
-                } *@
-                <img src="@image" alt="hello" />
+                @foreach (var values in InventoryItemsProps)
+                {   
+                    Console.WriteLine(values);
+                    <img src="@values.Image" alt="hello" />
+                }
+                
             </div>
         }
         else {
@@ -43,28 +44,41 @@
     private string overlayDisplay = "block";
     private bool isOverlayVisible = true;
 
-    protected override async Task OnInitializedAsync()
-    {
-        itemsObj = new Items(HttpClient);
-        Console.WriteLine("image before LoadImagesAsync");
-        Console.WriteLine(image);
-        OneItem = await LoadImagesAsync();
-        Console.WriteLine(OneItem);
-        image = OneItem.Image;
-        Console.WriteLine("image after");
+    private Inventory inventory = null!;
 
-        Console.WriteLine(image);
+    private List<Item>? InventoryItemsProps;
+    protected override async Task OnInitializedAsync()
+    {   
+        // create instance of Items
+        itemsObj = new Items(HttpClient);
+        await itemsObj.LoadItemsAsync();
+        //create instance of Inventory
+        inventory = new Inventory(HttpClient);
+
+        Console.WriteLine("Created Inventory");
+        await inventory.LoadInventoryAsync(); 
+        Console.WriteLine("loaded Inventory");
+
+        InventoryItemsProps = inventory.GetPropertiesByList();
+        foreach (Item item in InventoryItemsProps)
+        {   
+            Console.WriteLine(item.Description);
+            Console.WriteLine(item.Image);
+        }
+        Console.WriteLine("loaded Inventory and got Properties");
+        
+        //image = OneItem.Image;
+
         
         await InvokeAsync(StateHasChanged);
-        Console.WriteLine("State has changed");
 
 
     }
 
-    private async Task<Item> LoadImagesAsync()
+    private async Task<Item> LoadPropertiesAsync()
     {   
+
         await itemsObj.LoadItemsAsync();
-        //ItemsObj.LoadItemsAsync();
         // Load images data asynchronously
         return await Task.Run(() => itemsObj.GetPropertiesByName("goldkey"));
     }
