@@ -1,10 +1,10 @@
-@namespace Framework.Slides
+@inherits SlideBase
+
 @using Framework.Slides.JsonClasses
 
-@* HTML *@
-<link rel="stylesheet" href="Slide.razor.css" />
+@namespace Framework.Slides
 
-
+@* 
 <div id="view_slide"> <!-- Div with entire Game in it-->
     <img id="backgroundImg" src=@SlideData.Image alt="ry namako rehetra"> <!-- Backgroundimage of slide -->
     @* <svg id="viewBox" viewBox="0 0 1000 1000"> <!-- SVG containing all the buttons of current slide-->
@@ -15,14 +15,32 @@
                 @* Console.WriteLine(localCounter); 
             }
         }
-    </svg>  *@
+    </svg>  
 	<svg>
-		@* <polygon id="Test" points=@SlideData.Buttons[0].Points @onclick="async () => await SlideChange(SlideData.Buttons[0].Actions[0][1])" /> *@
-		<polygon id="Test" points=@SlideData.Buttons[0].Points @onclick="() => PrintTest()" />
+		@* <polygon id="Test" points=@SlideData.Buttons[0].Points @onclick="async () => await SlideChange(SlideData.Buttons[0].Actions[0][1])" /> 
+		<polygon id="Test" points=@SlideData.Buttons["beamer"].Points @onclick='() => {OnSlideChange.InvokeAsync("Tefst");}' />
 	</svg>
 
-    
+     
 
+</div>
+
+*@
+
+<div id="main-container">
+	<img id="bg-img" src="@SlideData.Image" alt="ry namako rehetra">
+	<svg id="svg">
+		@foreach (var buttonKey in SlideData.Buttons.Keys.ToList())
+		{
+			<polygon 
+			id="@buttonKey"
+			fill="yellow"
+			points="@SlideData.Buttons[buttonKey].Points" 
+			@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
+			/>
+			<p>@SlideData.Buttons[buttonKey].Points</p>
+		}
+	</svg>
 </div>
 
 
@@ -31,7 +49,7 @@
 
 
 @code{
-    [Parameter]
+    @* [Parameter]
     public JsonSlide SlideData { get; set; } = null!; // Get the slide data 
 
 	private string Test = "Tssdfgnfjdrheswdfiogvnk";
@@ -49,9 +67,9 @@
 		await OnSlideChange.InvokeAsync(slideName);
 	}
 
-    private async Task HandleButtonClick(JsonButton button)
+    private void HandleButtonClick(JsonButton button)
     {
-        await EvaluateActions(button.Actions);
+        EvaluateActions(button.Actions);
     }
 
     private async Task EvaluateActions(List<List<string>> actions)
@@ -73,7 +91,7 @@
 					break;
 			}
 		}
-	}
+	} *@
 }
 
 

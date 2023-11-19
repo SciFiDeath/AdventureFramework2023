@@ -34,12 +34,16 @@ public partial class GameBase
 			{
 				throw new Exception($"Slide {key} has a null buttons");
 			}
-			slide.Buttons.ForEach(button =>
+			slide.Buttons.Keys.ToList().ForEach(buttonKey =>
+			
+			
 			{
-				if (button.Id == null)
-				{
-					throw new Exception($"Slide {key} has a button with a null id");
-				}
+				var button = slide.Buttons[buttonKey];
+				// outdated, since Id is no longer included in the object
+				// if (button.Id == null)
+				// {
+				// 	throw new Exception($"Slide {key} has a button with a null id");
+				// }
 				if (button.Points == null && button.Image == null)
 				{
 					throw new Exception($"Slide {key} has a button with a null points and null image");

@@ -1,4 +1,4 @@
-@namespace Framework.Slides
+@* @namespace Framework.Slides
 @using Framework.Slides.JsonClasses
 @inherits ComponentBase
 
@@ -14,7 +14,7 @@
     public JsonButton ButtonData {get; set;} = null!;
 
     @* private string Id => ButtonData.Id = null!;
-    private string Points => ButtonData.Points = null!; *@
+    private string Points => ButtonData.Points = null!; 
     private string Id;
     private string Points;
 
@@ -37,4 +37,4 @@
     {
         await OnButtonClick.InvokeAsync(ButtonData);
     }
-}
+} *@

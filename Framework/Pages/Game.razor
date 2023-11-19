@@ -2,23 +2,12 @@
 @namespace Framework.Game
 @inherits Framework.Game.GameBase
 
-<link rel="stylesheet" href="Slide.razor.css" />
-
 @if (Slides == null) {
     <p>Loading...</p>
 } else {
-    @* <p>@Slides["Slide1"].Buttons[0].Points</p> *@
-    <DynamicComponent Type=@typeof(Framework.Slides.Slide) 
+    @* <DynamicComponent Type=@typeof(Framework.Slides.Slide) 
     Parameters=@(new Dictionary<string, object>{
-        {"SlideData", Slides[SlideId]}, {"OnSlideChange", (Action)HandlePolygonClick}
-        }) />
+        {"SlideData", Slides[SlideId]}, {"OnSlideChange", EventCallback.Factory.Create<string>(this, ChangeSlide)}
+        }) /> *@
+    <DynamicComponent Type=@typeof(Framework.Slides.Slide) Parameters="Parameters.GetParameterDictionary()" />
 }   
-
-
-@code {
-    private void HandlePolygonClick() {
-        SlideId = Slides[SlideId].Buttons[0].Actions[0][1];
-        Console.WriteLine(SlideId);
-    }
-}
-
