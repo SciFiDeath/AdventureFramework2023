@@ -10,7 +10,7 @@
                 "Points": "1,1 2,4 6,5 3,4",
                 "Actions": [
                     ["Require", "Item1"],
-                    ["Route", "Slide2"]
+                    ["Route", "HM305Beamer"]
                 ]
             }
         }
