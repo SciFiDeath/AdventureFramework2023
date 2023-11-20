@@ -29,13 +29,14 @@
 
 <div id="main-container">
 	<img id="bg-img" src="@SlideData.Image" alt="ry namako rehetra">
-	<svg id="svg">
+	<svg id="svg" viewBox="0,0, 1718,967">
 		@foreach (var buttonKey in SlideData.Buttons.Keys.ToList())
 		{
 			<polygon 
 			id="@buttonKey"
 			fill="yellow"
 			points="@SlideData.Buttons[buttonKey].Points" 
+			
 			@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
 			/>
 		}
@@ -48,6 +49,8 @@
 
 
 @code{
+	// https://www.image-map.net/
+
     @* [Parameter]
     public JsonSlide SlideData { get; set; } = null!; // Get the slide data 
 
