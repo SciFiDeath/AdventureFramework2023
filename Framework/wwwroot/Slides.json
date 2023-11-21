@@ -1,13 +1,13 @@
 {
     "HM305": {
-        "Image": "images/HM305_fromEntrance_re.jpg",
+        "Image": "images/HM305_fromEntrance.jpg",
         "Buttons": {
-            "beamer": {
+            "Blackboard": {
                 "Points": "1085,285 1085,440 1282,441 1288,254",
-                "Actions": [["Route", "HM305Beamer"]]
+                "Actions": [["Route", "HM305blackboard"]]
             },
-            "Button2": {
-                "Points": "1,1 2,4 6,5 3,4",
+            "Beamer": {
+                "Points": "915,197,956,217,956,248,918,256,868,244,869,217",
                 "Actions": [
                     ["Require", "Item1"],
                     ["Route", "HM305Beamer"]
@@ -16,18 +16,24 @@
         }
     },
     "HM305Beamer": {
-        "Image": "images/HM305_beamer_re.jpg",
+        "Image": "images/HM305_beamer.jpg",
         "Buttons": {
-            "Button1": {
-                "Points": "28,909,170,909,170,956,28,956",
+            "key": {
+                "Points": "760,525 875,525 875,480 760,480",
                 "Actions": [["Route", "HM305"]]
             },
-            "Button2": {
-                "Points": "1,1 2,4 6,5 3,4",
-                "Actions": [
-                    ["Require", "Item1"],
-                    ["Route", "HM305"]
-                ]
+            "Back": {
+                "Points": "28,909,170,909,170,956,28,956",
+                "Actions": [["Route", "HM305"]]
+            }
+        }
+    },
+    "HM305blackboard": {
+        "Image": "images/HM305_blackboard.jpg",
+        "Buttons": {
+            "Back": {
+                "Points": "28,909,170,909,170,956,28,956",
+                "Actions": [["Route", "HM305"]]
             }
         }
     }
