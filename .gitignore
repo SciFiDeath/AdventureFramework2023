@@ -455,6 +455,7 @@ $RECYCLE.BIN/
 
 *.sln
 
+<<<<<<< HEAD
 Framework1/
 Test/
 Template/
@@ -463,3 +464,13 @@ tests/
 tetsstststst/
 EmptyTemplate/
 BlazorApp/
+=======
+BlazorApp/
+CleanBlazor/
+EmptyTemplate/
+Template/
+Test/
+Testing/
+tetsstststst/
+tests/
+>>>>>>> main_slideGen

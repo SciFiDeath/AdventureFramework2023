@@ -1,0 +1,84 @@
+/* #main-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+} */
+
+/* 
+#bg-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: contain;
+    z-index: 1;
+} */
+
+/* body,
+html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+} */
+
+#main-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#bg-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    left: 0;
+}
+
+svg {
+    position: absolute;
+    aspect-ratio: 16/9;
+    top: 0;
+    height: 100%;
+}
+
+@media (max-aspect-ratio: 16/9) {
+    svg {
+        position: absolute;
+        aspect-ratio: 16/9;
+        left: 0;
+        width: 100%;
+    }
+}
+
+/* svg {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: calc( * calc(16 / 9));
+    left: calc(50% - calc(100% * calc(9 / 16) / 2));
+} */
+
+/* @media (max-aspect-ratio: 16/9) { */
+/* svg {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: calc(100% * calc(16 / 9));
+        /* 50% - half of the height 
+        top: calc(50% - calc(100% * calc(16 / 9) / 2));
+    } */
+
+svg > polygon:hover {
+    cursor: pointer;
+}

@@ -2,12 +2,12 @@
 @namespace Framework.Game
 @inherits Framework.Game.GameBase
 
-
-
-@* <DynamicComponent 
-    Type=@typeof(Framework.Slides.Slide) 
-    Parameters=@(new Dictionary<string, object> {
-        {"Slide", Slides[SlideId]}
-    })
-/> *@
-
+@if (Slides == null) {
+    <p>Loading...</p>
+} else {
+    @* <DynamicComponent Type=@typeof(Framework.Slides.Slide) 
+    Parameters=@(new Dictionary<string, object>{
+        {"SlideData", Slides[SlideId]}, {"OnSlideChange", EventCallback.Factory.Create<string>(this, ChangeSlide)}
+        }) /> *@
+    <DynamicComponent Type=@typeof(Framework.Slides.Slide) Parameters="Parameters.GetParameterDictionary()" />
+}   
