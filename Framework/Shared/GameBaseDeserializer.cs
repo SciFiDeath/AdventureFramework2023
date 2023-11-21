@@ -1,4 +1,5 @@
 using Framework.Slides.JsonClasses;
+using JsonUtilities;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
@@ -10,6 +11,7 @@ public partial class GameBase
 {
 	[Inject]
 	HttpClient Http {get; set; } = null!;
+	
 	private async Task<Dictionary<string, JsonSlide>> FetchSlidesAsync(string url)
 	{
 		// assign return value from GetFromJsonAsync to slides if it is not null, otherwise throw an exception
