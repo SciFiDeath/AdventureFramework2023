@@ -1,8 +1,0 @@
-{
-    "internal": {
-        "buttonId": "slideId"
-    },
-    "external": {
-        "buttonId": "roomId."
-    }
-}

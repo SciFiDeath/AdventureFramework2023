@@ -9,7 +9,7 @@ namespace InventoryItems
     public class Inventory
     {
         private readonly HttpClient _httpClient;
-        private static List<string> items = new();
+        private static List<string> inventoryItems = new();
 
         public Inventory(HttpClient httpClient)
         {
@@ -18,7 +18,7 @@ namespace InventoryItems
 
         public void RemoveItem(string id)
         {
-            bool removed = items.Remove(id);
+            bool removed = inventoryItems.Remove(id);
 
             if (!removed)
             {
@@ -31,7 +31,7 @@ namespace InventoryItems
 
         public void AddItem(string id)
         {
-            items.Add(id);
+            inventoryItems.Add(id);
 
             // Save the updated inventory to the file.
             SaveInventory();
@@ -39,20 +39,39 @@ namespace InventoryItems
 
         public List<string> GetItems()
         {
-            return items;
+            return inventoryItems;
         }
 
         public async Task LoadInventoryAsync(string path = "inventory.json")
-        {
+        {   
+            Console.WriteLine("start LoadInventory");
             var jsonUtility = new JsonUtility(_httpClient);
-            items = await jsonUtility.LoadFromJsonAsync<List<string>>(path);
+            inventoryItems = await jsonUtility.LoadFromJsonAsync<List<string>>(path);
+            Console.WriteLine("end of LoadInventory");
         }
 
-        public async void SaveInventory(string path = "inventory.json")
+        public /*async*/ void SaveInventory(string path = "inventory.json")
         {
             var jsonUtility = new JsonUtility(_httpClient);
             //TODO: This doesn't work yet because i will do saving the file later
             //await jsonUtility.SaveToJsonAsync(items, path);
+        }
+
+        public List<Item> GetPropertiesByList()
+        {   
+            Console.WriteLine("start function");
+            List<Item> InventoryItemsList = new();
+
+            Items items = new Items(_httpClient);
+
+            Console.WriteLine("before for loop");
+            foreach (string ItemName in inventoryItems)
+            {
+                InventoryItemsList.Add(items.GetPropertiesByName(ItemName));
+                Console.WriteLine("each GetPropertiesByName");
+            }
+
+            return InventoryItemsList;
         }
     }
 }
