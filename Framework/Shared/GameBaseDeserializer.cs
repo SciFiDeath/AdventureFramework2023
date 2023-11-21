@@ -9,13 +9,17 @@ namespace Framework.Game;
 // Put it in a separate file to make it easier to read
 public partial class GameBase
 {
+	// [Inject]
+	// HttpClient Http {get; set; } = null!;
+	
 	[Inject]
-	HttpClient Http {get; set; } = null!;
+	JsonUtility JsonUtility {get; set; } = null!;
 	
 	private async Task<Dictionary<string, JsonSlide>> FetchSlidesAsync(string url)
 	{
 		// assign return value from GetFromJsonAsync to slides if it is not null, otherwise throw an exception
-		var slides = await Http.GetFromJsonAsync<Dictionary<string, JsonSlide>>(url) ?? throw new Exception("Slides is null");
+		// var slides = await Http.GetFromJsonAsync<Dictionary<string, JsonSlide>>(url) ?? throw new Exception("Slides is null");
+		var slides = await JsonUtility.LoadFromJsonAsync<Dictionary<string, JsonSlide>>(url);
 		return slides;
 	}
 	
