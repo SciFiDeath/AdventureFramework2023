@@ -48,18 +48,6 @@ namespace InventoryItems
 
         }
 
-        public List<Item> GetPropertiesByList(List<string> inventory)
-        {   
-            List<Item> InventoryItemsList = new();
-
-            foreach (string ItemName in inventory)
-            {
-                InventoryItemsList.Add(GetPropertiesByName(ItemName));
-            }
-
-            return InventoryItemsList;
-        }
-
     }
 
 }

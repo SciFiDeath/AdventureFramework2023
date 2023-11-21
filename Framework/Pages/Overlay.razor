@@ -55,9 +55,7 @@
         //create instance of Inventory
         inventory = new Inventory(HttpClient);
 
-        Console.WriteLine("Created Inventory");
         await inventory.LoadInventoryAsync(); 
-        Console.WriteLine("loaded Inventory");
 
         InventoryItemsProps = inventory.GetPropertiesByList();
         foreach (Item item in InventoryItemsProps)
@@ -65,12 +63,11 @@
             Console.WriteLine(item.Description);
             Console.WriteLine(item.Image);
         }
-        Console.WriteLine("loaded Inventory and got Properties");
         
         //image = OneItem.Image;
 
         
-        await InvokeAsync(StateHasChanged);
+        //await InvokeAsync(StateHasChanged);
 
 
     }

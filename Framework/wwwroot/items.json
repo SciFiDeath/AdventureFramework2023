@@ -5,10 +5,10 @@
         "image": "InventoryImages/key.png"
     },
 
-    "keygold": {
-        "name": "Key2",
+    "sufacecharger": {
+        "name": "Surface Charger",
         "description": "Key to almost everything",
-        "image": "InventoryImages/key2.png"
+        "image": "InventoryImages/SurfaceCharger.jpeg"
     }
     
 

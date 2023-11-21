@@ -2,9 +2,9 @@ using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Framework.Slides;
-namespace JsonUtilities
-{
-    public class JsonUtility
+namespace JsonUtilities;
+
+public class JsonUtility
 {
     private readonly HttpClient _httpClient;
 
@@ -20,10 +20,11 @@ namespace JsonUtilities
         return json;
     }
 
-        public static void SaveToJson<T>(T data, string fileName)
-        {
-            string json = JsonSerializer.Serialize(data);
-            File.WriteAllText(fileName, json);
-        }
+    public static void SaveToJson<T>(T data, string fileName)
+    {
+        string json = JsonSerializer.Serialize(data);
+        File.WriteAllText(fileName, json);
     }
+
 }
+

@@ -1,0 +1,17 @@
+
+<Overlay IsVisible="@isOverlayVisible">
+    <p>This content is overlaid.</p>
+</Overlay>
+
+<h1>Inventory Overlay Test</h1>
+
+<a href="/game">Game</a>
+
+@code {
+    private bool isOverlayVisible = false;
+
+    private void ToggleOverlay()
+    {
+        isOverlayVisible = !isOverlayVisible;
+    }
+}
