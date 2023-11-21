@@ -17,41 +17,67 @@
     z-index: 1;
 } */
 
-body,
+/* body,
 html {
     height: 100%;
     margin: 0;
     overflow: hidden;
-}
+} */
 
 #main-container {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     width: 100vw;
-    height: calc(100vw * 9 / 16); /* 16:9 aspect ratio */
-    max-width: 177.78vh; /* Maximum height to maintain 16:9 ratio */
-    max-height: 100vh;
+    height: 100vh;
+    background-color: black;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #bg-img {
+    position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-}
-
-#backgroundImg {
-    z-index: 1;
+    object-fit: contain;
+    left: 0;
 }
 
 svg {
     position: absolute;
+    aspect-ratio: 16/9;
     top: 0;
-    left: 0;
-    z-index: 2;
+    height: 100%;
 }
+
+@media (max-aspect-ratio: 16/9) {
+    svg {
+        position: absolute;
+        aspect-ratio: 16/9;
+        left: 0;
+        width: 100%;
+    }
+}
+
+/* svg {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: calc( * calc(16 / 9));
+    left: calc(50% - calc(100% * calc(9 / 16) / 2));
+} */
+
+/* @media (max-aspect-ratio: 16/9) { */
+/* svg {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: calc(100% * calc(16 / 9));
+        /* 50% - half of the height 
+        top: calc(50% - calc(100% * calc(16 / 9) / 2));
+    } */
 
 svg > polygon:hover {
     cursor: pointer;

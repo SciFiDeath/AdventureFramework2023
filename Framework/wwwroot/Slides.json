@@ -1,9 +1,9 @@
 {
     "HM305": {
-        "Image": "images/HM305_fromEntrance.jpg",
+        "Image": "images/HM305_fromEntrance_re.jpg",
         "Buttons": {
             "beamer": {
-                "Points": "1000,257,1230,231,1225,393,997,396",
+                "Points": "1085,285 1085,440 1282,441 1288,254",
                 "Actions": [["Route", "HM305Beamer"]]
             },
             "Button2": {
@@ -16,7 +16,7 @@
         }
     },
     "HM305Beamer": {
-        "Image": "images/HM305_beamer.jpg",
+        "Image": "images/HM305_beamer_re.jpg",
         "Buttons": {
             "Button1": {
                 "Points": "28,909,170,909,170,956,28,956",
