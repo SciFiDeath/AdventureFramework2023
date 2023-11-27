@@ -1,41 +1,41 @@
-using System.Dynamic;
-using System.Text.Json;
-using JsonUtilities;
+using JsonUtilities; // For Fetching Json. Async Functions
+using Microsoft.AspNetCore.Components; // For Injecting.
 
 namespace InventoryItems
-{
+{   
     public class Item
     {
+        //* Declare Item Object to use as Type in Json file loading *//
         public string Name { get; }
         public string Description { get; }
         public string Image { get; }
 
         public Item(string name, string description, string image)
         {
-            this.Name = name;
-            this.Description = description;
-            this.Image = image;
+            Name = name;
+            Description = description;
+            Image = image;
         }
     }
 
     public class Items
     {   
-        private readonly HttpClient _httpClient;
-        public Items(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
+        [Inject]
+	    protected JsonUtility JsonUtility { get; set; } = null!;
+        
         public static Dictionary<string, Item> items = new();
 
-        //Load Json into Dictionary<string, Item>
         
         public async Task LoadItemsAsync(string path = "items.json")
         {
-            var jsonUtility = new JsonUtility(_httpClient);
-            items = await jsonUtility.LoadFromJsonAsync<Dictionary<string, Item>>(path);
+            //* Load Items from items.json *// TODO needs error checking
+            
+            items = await JsonUtility.LoadFromJsonAsync<Dictionary<string, Item>>(path);
         }
-        public Item GetPropertiesByName(string ItemName) //used to be propertyName, don't know why
+        public Item GetPropertiesByName(string ItemName) 
         {
+            //*Returns Item Object With: Name, Desc. and Image Path*// 
+
             // Make sure items.json has been read
             if (items.Count == 0)
             {
