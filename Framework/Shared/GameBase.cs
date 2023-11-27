@@ -2,6 +2,9 @@ using Framework.Slides.JsonClasses;
 using Framework.Slides;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
+using Framework.Game.Parameters;
+
+using System.Diagnostics.CodeAnalysis;
 
 namespace Framework.Game;
 
@@ -11,18 +14,33 @@ namespace Framework.Game;
 // I though everything in one file would be a bit messy, so I split it up
 public partial class GameBase : ComponentBase
 {
-	protected Dictionary<string, Slide> Slides {get; set; } = null!;
+	protected Dictionary<string, JsonSlide> Slides {get; set; } = null!;
 	
-	protected string SlideId { get; set; } = "Slide1";
+	protected string SlideId { get; set; } = null!;
+	protected SlideComponentParameters Parameters { get; set; } = null!;
+	// protected Dictionary<string, object?> ParametersDictionary { get; set; } = null!;
+	
 	
 	protected override async Task OnInitializedAsync()
 	{
-		Slides = await GetSlides("Slides.json");
+		Slides = await GetSlidesUnsafe("Slides.json");
+		SlideId = Slides.Keys.First();
+		Parameters = new SlideComponentParameters() 
+		{
+			SlideData = Slides[SlideId],
+			OnSlideChange = EventCallback.Factory.Create<string>(this, ChangeSlide)
+		};
 	}
 	
-	protected void SlideChange(string slideName)
-	{
-		SlideId = slideName;
-		StateHasChanged(); // test with and without this line
+	protected static void HandlePolygonClick(string thing) {
+		Console.WriteLine(thing);
 	}
+
+	protected void ChangeSlide(string slideId) {
+		Parameters.SlideData = Slides[slideId];
+		StateHasChanged();
+	}
+
+
+	
 }

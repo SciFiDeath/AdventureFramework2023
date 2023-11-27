@@ -25,6 +25,4 @@ public class JsonUtility
         string json = JsonSerializer.Serialize(data);
         File.WriteAllText(fileName, json);
     }
-
 }
-
