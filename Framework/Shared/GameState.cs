@@ -8,6 +8,8 @@ public class GameState
 {
     [Inject]
 	protected JsonUtility JsonUtility { get; set; } = null!;
+
+    //Initialize Inventory
     private static List<string> ItemsInInventory = new();
 
     private static Dictionary<string, bool> State = new();
@@ -17,7 +19,16 @@ public class GameState
         State = await JsonUtility.LoadFromJsonAsync<Dictionary<string, bool>>(path);
     }
 
-    
+    public void ChangeVisibility(string name)
+    {
+        State[name] = !State[name];
+    }
+
+    public bool CheckVisibility(string name)
+    {
+        return State[name];
+    }
+
     public void RemoveItem(string id)
     {
         bool removed = ItemsInInventory.Remove(id);
@@ -41,6 +52,8 @@ public class GameState
     {
         return ItemsInInventory;
     }
+
+
 
 }
 
