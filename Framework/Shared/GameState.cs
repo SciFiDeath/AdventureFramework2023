@@ -1,18 +1,27 @@
 using Microsoft.AspNetCore.Components;
 
 using JsonUtilities;
+using Items;
 
-namespace InventoryItems;
+using System.Runtime.CompilerServices;
+
+namespace GameStateInventory;
 
 public class GameState
 {
-    [Inject]
+
 	protected JsonUtility JsonUtility { get; set; } = null!;
 
+    protected Items.Items Items {get; set;} = null!;
     //Initialize Inventory
     private static List<string> ItemsInInventory = new();
 
-    private static Dictionary<string, bool> State = new();
+    public static Dictionary<string, bool> State = new();
+
+    public GameState(JsonUtility jsonUtility)
+    {
+        JsonUtility = jsonUtility;
+    }
     
     public async Task LoadGameStateAsync(string path = "gamestate.json")
     {
@@ -41,7 +50,12 @@ public class GameState
     }
 
     public void AddItem(string id)
-    {
+    {   
+        if (Items.DoesItemExist(id) == false)
+        {
+            throw new Exception("Item doesn't exist in items.json Dictionary");
+        }
+        //TODO FIX THIS
         ItemsInInventory.Add(id);
     }
     public bool CheckForItem(string id)
