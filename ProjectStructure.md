@@ -53,29 +53,39 @@ wwwroot
 {
     "SlideId": {
         "Image": "Path/To/Image",
-        "Buttons": [
-            {
-                "Id": "ButtonId",
-                "Points": "Points",
-                "Image": ["Path/To/Image", "Pos(top, left, width, height)"], // points and image are mutually exclusive
-                // some examples of actions
+        "Buttons" : {
+            "ButtonId": {
+                "Points": "Points" || "x,y,width,height",
+                "Image": "Path/To/Image",
                 "Actions": [
-                    ["ActionType", "ActionArgs"], // general syntax, if more than one arg is needed, we'll switch the args to a list
+                    ["ActionType", "ActionArgs"]
+                    general syntax, if more than one arg is needed, we'll switch the args to a list
                     ["Require", ["ItemId", "HintText"]]
                     ["InventoryAdd", "ItemId"],
                     ["InventoryRemove", "ItemId"],
                     ["Sound", "SoundId"],
                     ["Route", "SlideId"],
                     // ["Method", "MethodName"] // a bit risky and error-prone, but it could be a possobility
-                    ...
                 ]
             },
-        ...
-        ]
+            ...
+        }
     },
 ...
 }
 ```
+
+If "Image" is null, the button will be a polygon and the "Points" property will be used accordingly.
+
+If "Image" is not null, the button will be an image and the "Points" property will define x, y, width, height of the image. As not all of the attributes are needed, the syntax is a bit different. The values are comma seperated in the order x, y, width, height. If a value is not needed, just put an empty string in its place. For example, if you only want to define the width and height, but not the x and y, the syntax would be " , , width, height".
+
+Examples:
+
+-   `Points: "13, , 60, "` only x, and width
+-   `Points: " , 13, , 60"` only y, and height
+-   `Points: "13, 13, , "` only x, y
+-   `Points: " , , 60, 60"` only width, height
+-   `Points: "13, 13, 60, 60"` all values
 
 Some Actions I think we'll need:
 

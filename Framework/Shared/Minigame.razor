@@ -1,0 +1,25 @@
+@* 
+Three possible approaches:
+    0. We need to loop over the component-objects (PolygonButton for example) in a fixed 
+       way, this is true for all approches
+    1. Use a switch statement to determine the type of svg element to render, then pass
+       the appropriate props to the element.
+    2. Make a method for the component-object that returns a RenderFragment with the 
+       appropriate svg element and props.
+    3. Make a method for the component-object that returns a MarkupString with the 
+       appropriate svg element and props.
+
+    1. is the most readable, but requires a lot of code and maybe performance is not
+       optimal. But maybe it is, because the compiler can optimize the switch statement.
+       The point is, I don't know how fast it would be.
+    2. Really elegant, but could lead to some bugs, because the compiler can't check
+       the correctness of the returned RenderFragment. Also I heard that RenderFragments
+       are not the fastest, but I think that is only for RenderFragments with Parameters.
+    3. I would say that this is the fastest, but also potentially the most error prone.
+       Also, I don't know if it could fall back in performance when rerendering, because
+       it is treated as a string and also no intellisense for anything.
+
+I think I will go with 2. for now, but I will definitely implement all of them to then 
+benchmark them. But even if I do this, the interface the others will interact with, 
+i.e. the class that they make and all this stuff, sould always stay the same.
+*@
