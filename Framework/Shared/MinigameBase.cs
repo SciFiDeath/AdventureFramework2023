@@ -3,23 +3,50 @@ using Microsoft.AspNetCore.Components;
 using System;
 namespace Framework.Minigames;
 
-public class MinigameBase : ComponentBase
-{
-	[Parameter] public MinigameDefBase? Minigame { get; set; }
+/*
+Current Plan:
 
-    protected override void OnInitialized()
-    {
-        
-    }
-}
+MinigameBase(ComponentBase):
+	The base class for the Minigame Razor Component
+	Two approaches for passing the data:
+		Pass a string of the class which is the MGD for the Minigame, 
+		then use reflection to create an instance of the class and use it
+		Or create the instance on the Game-Level and pass it to the MG
+		-> I would say it doesn't really matter, but the first one hides away
+		the data from the Game-Level, which is kinda nice
+	The MGB will render in the different elements contained in the MGD
+	It also contains an EventCallback for when the Minigame is finished
+	This Callback returns a bool, when it's false, nothing happens and the 
+	player gets routed to the previous slide, when it's true, the Game 
+	executes the actions specified in the json file
 
-public abstract class MinigameDefBase
+MinigameDefBase:
+	The base class for the Minigame Definition
+	This is the class that will be subclassed by the others to create a minigame
+	It contains all the data and logic that is needed for the minigame
+	
+SvgElement and Subclasses:
+	A class that represents an SVG Element
+	Contains style and other attributes
+	Some subclasses will have additional methods to make changing state a bit easier
+
+Slides.json things:
+	I will have to add the possibility to make slides of type Minigame
+	They will have actions, that can be executed just like the actions of slide buttons. 
+	With this level of polymorphism, I just have to make every property in the 
+	JsonClasses nullable and then make my own checks, as there are certain conditions
+	to when null is fine and when not, more complicated than the compiler can check.
+*/
+
+
+
+public abstract class MinigameBase : ComponentBase
 {
 	protected List<SVGElement> Elements { get; set; } = new();
 	
 	public abstract string BackgroundImage { get; set; }
 	
-	public MinigameDefBase()
+	protected override void OnInitialized()
 	{
 		// create a list with all the elements in the Minigame
 		// so that we don't have to use reflection every time
@@ -180,7 +207,7 @@ public class Rectangle : SVGElement
 	}
 }
 
-public class MiniTest : MinigameDefBase
+public class MiniTest : MinigameBase
 {
 	public override string BackgroundImage { get; set; } = "images/HM305_beamer.jpg";
 	
