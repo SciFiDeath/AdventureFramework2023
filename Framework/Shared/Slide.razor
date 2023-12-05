@@ -10,7 +10,7 @@
 	<svg id="svg" viewBox="0,0, 1920,1080">
 		@foreach (var buttonKey in SlideData.Buttons.Keys.ToList())
 		{
-			var ButtonElement = SlideData.Buttons[buttonKey]; 
+			var ButtonElement = SlideData.Buttons[buttonKey] = null!; 
 			if(ButtonElement.Image == null) { // Button is a Polygon
 			<polygon 
 				id="@buttonKey"
