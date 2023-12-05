@@ -14,4 +14,7 @@ builder.Services.AddScoped<JsonUtility>();
 
 builder.Services.AddScoped<GameState>();
 
+builder.Services.AddScoped<FrameworkItems.Items>();
+
+
 await builder.Build().RunAsync();

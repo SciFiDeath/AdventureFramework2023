@@ -1,7 +1,7 @@
 using JsonUtilities; // For Fetching Json. Async Functions
 using Microsoft.AspNetCore.Components; // For Injecting.
 
-namespace Items
+namespace FrameworkItems
 {
 
 public class Item
@@ -32,7 +32,8 @@ public class Items
     
     public async Task LoadItemsAsync(string path = "items.json")
     {
-        //* Load Items from items.json *// TODO needs error checking
+        //* Load Items from items.json *
+        // TODO needs error checking
         
         items = await JsonUtility.LoadFromJsonAsync<Dictionary<string, Item>>(path);
     }
@@ -54,6 +55,7 @@ public class Items
 
     public bool DoesItemExist(string ItemName)
     {
+        Console.WriteLine("Start of DoesItemExist");
         return items.ContainsKey(ItemName);
     }
 
