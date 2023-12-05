@@ -2,18 +2,25 @@ using Microsoft.AspNetCore.Components;
 using System;
 namespace Framework.Minigames;
 
-public class MinigameBase : ComponentBase
+
+public abstract class MinigameBase : ComponentBase
 {
+	protected List<SVGElement> Elements { get; set; } = new();
 	
 
-	protected Dictionary<string, object?> GetParameterDictionary()
+	protected override void OnInitialized()
 	{
-		Dictionary<string, object?> parameters = new();
-		foreach (var property in this.GetType().GetProperties())
+		// create a list with all the elements in the Minigame
+		// so that we don't have to use reflection every time
+		// the thing renders
+		foreach (var property in GetType().GetProperties())
 		{
-			parameters.Add(property.Name, property.GetValue(this));
+			if (property.GetType().IsSubclassOf(typeof(SVGElement)))
+			{
+				Elements.Add(property.GetValue(this));
+			}
 		}
-		return parameters;
+		
 	}
 }
 
@@ -23,13 +30,20 @@ public sealed class StyleAttribute : Attribute {}
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
 public sealed class HtmlAttribute : Attribute {}
 
-public abstract class SVGButton
+[AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
+public sealed class ElementAttribute : Attribute {}
+
+[AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+public sealed class CallbackAttribute : Attribute {}
+
+
+public abstract class SVGElement
 {
 	[Html] public string? Style { get => GetStyle(); }
 	
+	// public abstract RenderFragment GetElement();
 	
-	
-	
+		
 	public string? GetStyle()
 	{
 		string style = "";
@@ -73,7 +87,31 @@ public abstract class SVGButton
 		}
 		return kebab;
 	}
+	
+	public static string Translate(string key)
+	{
+		// for EventHandlers
+		// everything that starts with an "On" and has a capital letter after that
+		// will be translated to "on{lowercase}" with an @ in front, because blazor
+		// e.g. OnClick -> @onclick
+		// So just make sure that you name everything correctly or else everything will break
+		if (key[..2] == "On" && char.IsUpper(key[2]))
+		{
+			return $"@on{key[2..].ToLower()}";
+		}
+		else
+		{
+			return ConvertCamelToKebab(key);
+		}
+	}
+	
 }
+	
+public class Thing : SVGElement
+{
+	
+}
+	
 
 
 
