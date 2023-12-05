@@ -1,65 +1,64 @@
-using System.Dynamic;
-using System.Text.Json;
-using JsonUtilities;
+using JsonUtilities; // For Fetching Json. Async Functions
+using Microsoft.AspNetCore.Components; // For Injecting.
 
-namespace InventoryItems
+namespace FrameworkItems
 {
-    public class Item
+
+public class Item
+{
+    //* Declare Item Object to use as Type in Json file loading *//
+    public string Name { get; }
+    public string Description { get; }
+    public string Image { get; }
+
+    public Item(string name, string description, string image)
     {
-        public string Name { get; }
-        public string Description { get; }
-        public string Image { get; }
-
-        public Item(string name, string description, string image)
-        {
-            this.Name = name;
-            this.Description = description;
-            this.Image = image;
-        }
+        Name = name;
+        Description = description;
+        Image = image;
     }
+}
 
-    public class Items
-    {   
-        private readonly HttpClient _httpClient;
-        public Items(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
-        public static Dictionary<string, Item> items = new();
+public class Items
+{   
+    protected JsonUtility JsonUtility { get; set; } = null!;
+    
+    public Items(JsonUtility jsonUtility)
+    {
+        JsonUtility = jsonUtility;
+    }
+    public static Dictionary<string, Item> items = new();
 
-        //Load Json into Dictionary<string, Item>
+    
+    public async Task LoadItemsAsync(string path = "items.json")
+    {
+        //* Load Items from items.json *
+        // TODO needs error checking
         
-        public async Task LoadItemsAsync(string path = "items.json")
+        items = await JsonUtility.LoadFromJsonAsync<Dictionary<string, Item>>(path);
+    }
+    public Item GetPropertiesByName(string ItemName) 
+    {
+        //*Returns Item Object With: Name, Desc. and Image Path*// 
+
+        // Make sure items.json has been read
+        if (items.Count == 0)
         {
-            var jsonUtility = new JsonUtility(_httpClient);
-            items = await jsonUtility.LoadFromJsonAsync<Dictionary<string, Item>>(path);
+            throw new Exception("No items read, Call LoadItemsAsync() first.");
         }
-        public Item GetPropertiesByName(string ItemName) //used to be propertyName, don't know why
-        {
-            // Make sure items.json has been read
-            if (items.Count == 0)
-            {
-                throw new Exception("No items read, Call LoadItemsAsync() first.");
-            }
-            
-            Console.WriteLine(items[ItemName].Description);
-            Console.WriteLine(items[ItemName].Image);
-            return items[ItemName];
-
-        }
-
-        public List<Item> GetPropertiesByList(List<string> inventory)
-        {   
-            List<Item> InventoryItemsList = new();
-
-            foreach (string ItemName in inventory)
-            {
-                InventoryItemsList.Add(GetPropertiesByName(ItemName));
-            }
-
-            return InventoryItemsList;
-        }
+        
+        Console.WriteLine(items[ItemName].Description);
+        Console.WriteLine(items[ItemName].Image);
+        return items[ItemName];
 
     }
+
+    public bool DoesItemExist(string ItemName)
+    {
+        Console.WriteLine("Start of DoesItemExist");
+        return items.ContainsKey(ItemName);
+    }
+
+}
 
 }
