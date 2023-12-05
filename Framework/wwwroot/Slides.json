@@ -19,8 +19,9 @@
         "Image": "images/HM305_beamer.jpg",
         "Buttons": {
             "key": {
-                "Points": "760,525 875,525 875,480 760,480",
-                "Actions": [["Route", "HM305"]]
+                "Points": "10,10,100,100",
+                "Actions": [["Route", "HM305"]],
+                "Image": "InventoryImages/key.png"
             },
             "Back": {
                 "Points": "28,909,170,909,170,956,28,956",
