@@ -1,6 +1,9 @@
 using Framework.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
+using System.Reflection;
+
 namespace Framework.Minigames;
 
 /*
@@ -38,15 +41,57 @@ Slides.json things:
 	to when null is fine and when not, more complicated than the compiler can check.
 */
 
-
-
-public abstract class MinigameBase : ComponentBase
+public class MinigameBase : ComponentBase
 {
-	protected List<SVGElement> Elements { get; set; } = new();
-	
-	public abstract string BackgroundImage { get; set; }
-	
+	// [Parameter] 
+	// public MinigameDefBase MinigameDef { get; set; } = null!;
+	// [Parameter]
+	// public string MinigameDefClass { get; set; } = null!;
+	[Parameter]
+	public string MinigameDefClass { get; set; } = null!;
+
+	[Parameter]
+	public EventCallback<bool> OnFinished { get; set; }
+
+	protected async Task Finish(bool success)
+	{
+		await OnFinished.InvokeAsync(success);
+	}
+
+	protected MinigameDefBase MinigameDef { get; set; } = null!;
+
 	protected override void OnInitialized()
+	{
+		// Get the type from the string classname
+		var type = Type.GetType(MinigameDefClass) ??
+		// if the type is not found, thow an exception
+		throw new Exception($"No class \"{MinigameDefClass}\" found");
+
+		try
+		{
+			// create instance of the type
+			var instance = Activator.CreateInstance(type) ??
+			// if the instance is null, throw an exception
+			throw new Exception($"Could not create instance of \"{MinigameDefClass}\"");
+
+			MinigameDef = (MinigameDefBase)instance;
+		}
+		catch (Exception e)
+		{
+			// if there is an exception, throw a new one with the original exception as inner exception
+			throw new Exception($"Error while creating instance of object \"{MinigameDefClass}\"", e);
+		}
+
+	}
+}
+
+public abstract class MinigameDefBase
+{
+	public List<SVGElement> Elements { get; set; } = new();
+
+	public abstract string BackgroundImage { get; set; }
+
+	public MinigameDefBase()
 	{
 		// create a list with all the elements in the Minigame
 		// so that we don't have to use reflection every time
@@ -69,77 +114,173 @@ public abstract class MinigameBase : ComponentBase
 }
 
 
+public abstract class NamedAttribute : Attribute
+{
+	public readonly string? name;
+	public NamedAttribute(string? name = null)
+	{
+		this.name = name;
+	}
+}
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
-public sealed class StyleAttribute : Attribute {}
+public sealed class StyleAttribute : NamedAttribute
+{
+	public StyleAttribute(string? name = null) : base(name) { }
+}
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
-public sealed class HtmlAttribute : Attribute {}
+public sealed class HtmlAttribute : NamedAttribute
+{
+	public HtmlAttribute(string? name = null) : base(name) { }
+}
+
+[AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
+public sealed class CallbackAttribute : NamedAttribute
+{
+	public CallbackAttribute(string? name = null) : base(name) { }
+}
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
-public sealed class ElementAttribute : Attribute {}
+public sealed class ElementAttribute : Attribute { }
 
-[AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-public sealed class CallbackAttribute : Attribute {}
+[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
+public sealed class ElementNameAttribute : NamedAttribute
+{
+	public ElementNameAttribute(string? name = null) : base(name) { }
+}
+
 
 
 public abstract class SVGElement
 {
-	[Html] public string? Style { get => GetStyle(); }
-	
+	[Html] public string? Style { get => GetStyleString(); }
+
 	public int ZIndex { get; set; } = 0;
-	
-	public string? PName { get; set; }
-	
+
+	// TODO: Add a way to set the tag name string of an element (e.g. "rect", "circle", "polygon" etc.)
+	//*Important for this:
+	// TODO: Write this method in general in SVGELement
 	public abstract RenderFragment GetRenderFragment();
-	
-	public abstract string GetMarkupString();
-	
-	
-	
-	public string? GetStyle()
+
+	// [Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
+	// public abstract string GetMarkupString();
+
+	// maybe problems with reactivity, don't know yet
+	public string? GetStyleString()
 	{
 		string style = "";
 		foreach (var property in GetType().GetProperties())
 		{
 			if (Attribute.IsDefined(property, typeof(StyleAttribute)))
 			{
-				style += $"{Translate(property.Name)}: {property.GetValue(this)};";
+				var value = property.GetValue(this);
+				if (value != null)
+				{
+					style += $"{Translate(property.Name)}: {property.GetValue(this)};";
+				}
 			}
 		}
-		return style;
-	
+		return style == "" ? null : style;
 	}
-	
+
+	[Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
 	public string? GetElementAttributeString()
 	{
-		string style = "";
+		string attributes = "";
 		foreach (var property in this.GetType().GetProperties())
 		{
 			if (Attribute.IsDefined(property, typeof(HtmlAttribute)))
 			{
-				style += $"{Translate(property.Name)}=\"{property.GetValue(this)}\" ";
+				var value = property.GetValue(this);
+				if (value != null)
+				{
+					attributes += $"{Translate(property.Name)}=\"{property.GetValue(this)}\" ";
+				}
 			}
 		}
-		return style;
+		return attributes == "" ? null : attributes;
 	}
-	
-	public Dictionary<string, object> GetElementAttributeDictionary()
+
+	[Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
+	public string? GetCallbackString()
+	{
+		string callbacks = "";
+		foreach (var method in this.GetType().GetMethods())
+		{
+			if (Attribute.IsDefined(method, typeof(CallbackAttribute)))
+			{
+				callbacks += $"{Translate(method.Name)}=\"{method.Name}\" ";
+			}
+		}
+		return callbacks == "" ? null : callbacks;
+	}
+
+	public Dictionary<string, object>? GetElementAttributeDictionary()
 	{
 		Dictionary<string, object> attributes = new();
-		foreach (var property in GetType().GetProperties())
+		PropertyInfo[] properties = GetType().GetProperties()
+		.Where(p => Attribute.IsDefined(p, typeof(HtmlAttribute)))
+		.ToArray();
+		foreach (var property in properties)
 		{
-			if (Attribute.IsDefined(property, typeof(HtmlAttribute)))
+			var value = property.GetValue(this);
+			if (value != null)
 			{
-				var value = property.GetValue(this) ?? "";
 				attributes.Add(Translate(property.Name), value);
 			}
 		}
-		return attributes;
+		return attributes.Count == 0 ? null : attributes;
 	}
-	
-	
-	
+
+	public Dictionary<string, object>? GetCallbackDictionary()
+	{
+		Dictionary<string, object> callbacks = new();
+		PropertyInfo[] methods = GetType().GetProperties()
+		.Where(p => Attribute.IsDefined(p, typeof(CallbackAttribute)))
+		.ToArray();
+		foreach (var method in methods)
+		{
+			// callbacks.Add(
+			// 	Translate(method.Name),
+			// 	EventCallback.Factory.Create(this, (Action)Delegate.CreateDelegate(typeof(EventHandler), this, method))
+			// );
+			if (method.GetValue(this) is Action<EventArgs> action)
+			{
+				callbacks.Add(
+					//*Note: I added null suppresion here, because it is impossible that the attribute is null
+					// But still, I could be overlooking somehting, so be wary of this
+					// If this throws an error, we're in trouble, as it means that something greater
+					// beyond my mortal understanding has broken
+					method.GetCustomAttribute<CallbackAttribute>()!.name ?? Translate(method.Name),
+					EventCallback.Factory.Create(this, action)
+				);
+			}
+		}
+		return callbacks.Count == 0 ? null : callbacks;
+	}
+
+
+
+	// public Dictionary<string, object>? GetElementAttributeDictionary()
+	// {
+	// 	Dictionary<string, object> attributes = new();
+	// 	foreach (var property in GetType().GetProperties())
+	// 	{
+	// 		if (Attribute.IsDefined(property, typeof(HtmlAttribute)))
+	// 		{
+	// 			var value = property.GetValue(this);
+	// 			if (value != null)
+	// 			{
+	// 				attributes.Add(Translate(property.Name), value);
+	// 			}
+	// 		}
+	// 	}
+	// 	return attributes.Count == 0 ? null : attributes;
+	// }
+
+
+
 	protected static string ConvertCamelToKebab(string camelCase)
 	{
 		string kebab = $"{char.ToLower(camelCase[0])}";
@@ -156,7 +297,8 @@ public abstract class SVGElement
 		}
 		return kebab;
 	}
-	
+
+	// TODO: fix the usage and implementation of this method
 	public static string Translate(string key)
 	{
 		// for EventHandlers
@@ -164,16 +306,22 @@ public abstract class SVGElement
 		// will be translated to "on{lowercase}" with an @ in front, because blazor
 		// e.g. OnClick -> @onclick
 		// So just make sure that you name everything correctly or else everything will break
-		if (key[..2] == "On" && char.IsUpper(key[2]))
+		// Update: I don't think the callbacks work with strings, but still working on it
+		try
 		{
-			return $"@on{key[2..].ToLower()}";
+			if (key[..2] == "On" && char.IsUpper(key[2]))
+			{
+				return $"on{key[2..].ToLower()}";
+			}
 		}
-		else
+		catch (ArgumentOutOfRangeException)
 		{
+			// if the string is too short, use the default translation
 			return ConvertCamelToKebab(key);
 		}
+		return ConvertCamelToKebab(key);
 	}
-	
+
 }
 
 // Some classes like ImgButton, PolygonButton, RectButton are some Ideas I had
@@ -184,40 +332,49 @@ public abstract class SVGElement
 public class Rectangle : SVGElement
 {
 	[Html] public string? Id { get; set; }
-	
+
 	[Html] public int? X { get; set; }
 	[Html] public int? Y { get; set; }
 	[Html] public int Width { get; set; }
 	[Html] public int Height { get; set; }
-	
+
+	[Html] public string? Fill { get; set; }
+
+	[Callback] public Action<EventArgs>? OnClick { get; set; }
+
 	public override RenderFragment GetRenderFragment()
 	{
-		return builder => 
+		return builder =>
 		{
 			builder.OpenElement(0, "rect");
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
 			builder.AddAttribute(2, "style", Style);
+			builder.AddMultipleAttributes(3, GetCallbackDictionary());
 			builder.CloseElement();
 		};
 	}
-	
-	public override string GetMarkupString()
-	{
-		return $"<rect {GetElementAttributeString() ?? ""} style=\"{Style ?? ""}\"></rect>";
-	}
 }
 
-public class MiniTest : MinigameBase
+public class MiniTest : MinigameDefBase
 {
 	public override string BackgroundImage { get; set; } = "images/HM305_beamer.jpg";
-	
-	[Element] public Rectangle Rect {get; set;} = new()
+
+	public static void Test(EventArgs e)
+	{
+		MouseEventArgs me = (MouseEventArgs)e;
+		Console.WriteLine($"X: {me.ClientX}, Y: {me.ClientY}");
+	}
+
+	[Element]
+	public Rectangle Rect { get; set; } = new()
 	{
 		X = 100,
 		Y = 100,
 		Width = 100,
 		Height = 100,
 		ZIndex = 1,
-		
+		Fill = "red",
+		OnClick = Test
+
 	};
 }

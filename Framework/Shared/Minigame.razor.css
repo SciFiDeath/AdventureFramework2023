@@ -1,0 +1,36 @@
+#main-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#bg-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    left: 0;
+}
+
+svg {
+    position: absolute;
+    aspect-ratio: 16/9;
+    top: 0;
+    height: 100%;
+}
+
+@media (max-aspect-ratio: 16/9) {
+    svg {
+        position: absolute;
+        aspect-ratio: 16/9;
+        left: 0;
+        width: 100%;
+    }
+}
