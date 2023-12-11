@@ -75,12 +75,15 @@ public class MinigameBase : ComponentBase
 			throw new Exception($"Could not create instance of \"{MinigameDefClass}\"");
 
 			MinigameDef = (MinigameDefBase)instance;
+			MinigameDef.Finished += async (sender, e) => await Finish(e.Success);
+
 		}
 		catch (Exception e)
 		{
 			// if there is an exception, throw a new one with the original exception as inner exception
 			throw new Exception($"Error while creating instance of object \"{MinigameDefClass}\"", e);
 		}
+
 
 	}
 }
@@ -91,11 +94,20 @@ public abstract class MinigameDefBase
 
 	public abstract string BackgroundImage { get; set; }
 
-	public MinigameDefBase()
+	public void Init()
 	{
 		// create a list with all the elements in the Minigame
 		// so that we don't have to use reflection every time
 		// the thing renders
+
+		// loop over properties as test
+		foreach (var property in GetType().GetProperties())
+		{
+			// Console.WriteLine(property.Name);
+			// Console.WriteLine(property.GetValue(this));
+		}
+
+
 		foreach (var property in GetType().GetProperties())
 		{
 			if (Attribute.IsDefined(property, typeof(ElementAttribute)))
@@ -110,7 +122,20 @@ public abstract class MinigameDefBase
 		}
 		// sort the list by ZIndex so that higher ZIndex elements appear first
 		Elements.Sort((b, a) => a.ZIndex.CompareTo(b.ZIndex));
+		// Console.WriteLine(Elements.Count);
 	}
+
+	public void Finish(bool success)
+	{
+		Finished?.Invoke(this, new FinishedEventArgs { Success = success });
+	}
+
+	public event EventHandler<FinishedEventArgs>? Finished;
+}
+
+public class FinishedEventArgs : EventArgs
+{
+	public bool Success { get; set; }
 }
 
 
@@ -149,7 +174,6 @@ public sealed class ElementNameAttribute : NamedAttribute
 {
 	public ElementNameAttribute(string? name = null) : base(name) { }
 }
-
 
 
 public abstract class SVGElement
@@ -230,6 +254,7 @@ public abstract class SVGElement
 				attributes.Add(Translate(property.Name), value);
 			}
 		}
+		// Console.WriteLine(attributes.Count);
 		return attributes.Count == 0 ? null : attributes;
 	}
 
@@ -359,22 +384,32 @@ public class MiniTest : MinigameDefBase
 {
 	public override string BackgroundImage { get; set; } = "images/HM305_beamer.jpg";
 
-	public static void Test(EventArgs e)
+	public void Test(EventArgs e)
 	{
 		MouseEventArgs me = (MouseEventArgs)e;
-		Console.WriteLine($"X: {me.ClientX}, Y: {me.ClientY}");
+		// Console.WriteLine($"X: {me.ClientX}, Y: {me.ClientY}");
+		// Console.WriteLine("Test");
+		Finish(true);
+		Rect.Fill = "blue";
 	}
 
 	[Element]
-	public Rectangle Rect { get; set; } = new()
-	{
-		X = 100,
-		Y = 100,
-		Width = 100,
-		Height = 100,
-		ZIndex = 1,
-		Fill = "red",
-		OnClick = Test
+	public Rectangle Rect { get; set; }
 
-	};
+	public MiniTest()
+	{
+		Rect = new()
+		{
+			X = 100,
+			Y = 100,
+			Width = 100,
+			Height = 100,
+			ZIndex = 1,
+			Fill = "red",
+			OnClick = Test
+		};
+		Init();
+	}
+
+
 }
