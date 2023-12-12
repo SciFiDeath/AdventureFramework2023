@@ -12,9 +12,39 @@
                     ["Require", "Item1"],
                     ["Route", "HM305Beamer"]
                 ]
+            },
+            "Back": {
+                "Image": "UI_Images/backImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "BackPolygon": {
+                "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
+                "Actions": [["Route", "HM305DoorClosed"]]
             }
         }
     },
+
+    "HM305DoorClosed": {
+        "Image": "images/HM305_DoorClose.jpg",
+        "Buttons": {
+            "HM305DoorClosed": {
+                "Points": "1206,155 861,160 856,878 1235,876",
+                "Actions": [["Route", "HM305DoorOpen"]]
+            }
+        }
+    },
+
+    "HM305DoorOpen": {
+        "Image": "images/HM305_DoorOpen.jpg",
+        "Buttons": {
+            "HM305DoorClosed": {
+                "Points": "1194,155 849,160 844,878 1223,876 ",
+                "Actions": [["Route", "Floor________"]]
+            }
+        }
+    },
+
     "HM305Beamer": {
         "Image": "images/HM305_beamer.jpg",
         "Buttons": {
@@ -33,6 +63,7 @@
             }
         }
     },
+
     "HM305blackboard": {
         "Image": "images/HM305_blackboard.jpg",
         "Buttons": {
