@@ -24,9 +24,11 @@ public class GameState
         Items = items;
     }
     
-    public async Task LoadGameStateAsync(string path = "gamestate.json")
+    public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
     {
         State = await JsonUtility.LoadFromJsonAsync<Dictionary<string, bool>>(path);
+        await Items.LoadItemsAsync();
+        
     }
 
     public void ChangeVisibility(string name)

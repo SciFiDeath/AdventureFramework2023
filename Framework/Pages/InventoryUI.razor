@@ -1,0 +1,11 @@
+@page "/inventory"
+@namespace GameStateInventory
+@inherits Framework.InventoryUI.InventoryUIBase
+
+<h3>Inventory UI Test</h3>
+
+@foreach (var name in ItemNames)
+{   
+    <p>Display Items</p>
+    <img src="@InventoryItems[name].Image" alt="@InventoryItems[name].Description" />
+}

@@ -59,6 +59,10 @@ public class Items
         return items.ContainsKey(ItemName);
     }
 
+    public Dictionary<string, Item> GetAllItems()
+    {
+        return items;
+    }
 }
 
 }
