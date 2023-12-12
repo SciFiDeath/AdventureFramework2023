@@ -2,6 +2,9 @@
 @namespace Framework.Game
 @inherits Framework.Game.GameBase
 
+@using Framework.Slides
+@using Framework.Minigames
+
 @if (Slides == null) {
     <p>Loading...</p>
 } else {
@@ -9,5 +12,10 @@
     Parameters=@(new Dictionary<string, object>{
         {"SlideData", Slides[SlideId]}, {"OnSlideChange", EventCallback.Factory.Create<string>(this, ChangeSlide)}
         }) /> *@
-    <DynamicComponent Type=@typeof(Framework.Slides.Slide) Parameters="Parameters.GetParameterDictionary()" />
+    if (Parameters.SlideData.Type == "Minigame") {
+        <Minigame MinigameDefClass="@Parameters.SlideData.MinigameDefClassName" OnFinished="FinishMinigame" />
+    }
+    else {
+        <DynamicComponent Type=@typeof(Slide) Parameters="Parameters.GetParameterDictionary()" />
+    }
 }   

@@ -8,7 +8,8 @@
 <div id="main-container">
 	<img id="bg-img" src="@SlideData.Image" alt="ry namako rehetra">
 	<svg id="svg" viewBox="0,0, 1920,1080">
-		@foreach (var buttonKey in SlideData.Buttons.Keys.ToList())
+		@* *Added Null supression *@
+		@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
 		{
 			var ButtonElement = SlideData.Buttons[buttonKey]; 
 			if(ButtonElement.Image == null) { // Button is a Polygon

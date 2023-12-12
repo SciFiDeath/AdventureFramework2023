@@ -25,7 +25,7 @@
             },
             "key_polygon": {
                 "Points": "878,502 871,514 866,517 864,512 856,519 849,512 842,517 837,514 830,514 830,522 825,519 818,529 810,531 801,531 793,531 791,529 788,526 786,524 784,522 784,517 781,512 782,495 793,490 808,486 825,502 827,497 830,502",
-                "Actions": [["Route", "HM305blackboard"]]
+                "Actions": [["Route", "MinigameTest"]]
             },
             "Back": {
                 "Points": "28,909,170,909,170,956,28,956",
@@ -41,5 +41,10 @@
                 "Actions": [["Route", "HM305"]]
             }
         }
+    },
+    "MinigameTest": {
+        "Type": "Minigame",
+        "FallbackSlide": "HM305Beamer",
+        "MinigameDefClassName": "Framework.Minigames.MiniTest"
     }
 }

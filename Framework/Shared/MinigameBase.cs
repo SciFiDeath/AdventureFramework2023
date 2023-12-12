@@ -76,6 +76,7 @@ public class MinigameBase : ComponentBase
 
 			MinigameDef = (MinigameDefBase)instance;
 			MinigameDef.Finished += async (sender, e) => await Finish(e.Success);
+			MinigameDef.UpdateEvent += (sender, e) => StateHasChanged();
 
 		}
 		catch (Exception e)
@@ -131,6 +132,14 @@ public abstract class MinigameDefBase
 	}
 
 	public event EventHandler<FinishedEventArgs>? Finished;
+
+	public void Update()
+	{
+		UpdateEvent?.Invoke(this, EventArgs.Empty);
+
+	}
+
+	public event EventHandler? UpdateEvent;
 }
 
 public class FinishedEventArgs : EventArgs
@@ -382,19 +391,23 @@ public class Rectangle : SVGElement
 
 public class MiniTest : MinigameDefBase
 {
-	public override string BackgroundImage { get; set; } = "images/HM305_beamer.jpg";
+	public override string BackgroundImage { get; set; } = "images/HM305_blackboard.jpg";
 
 	public void Test(EventArgs e)
 	{
 		MouseEventArgs me = (MouseEventArgs)e;
 		// Console.WriteLine($"X: {me.ClientX}, Y: {me.ClientY}");
 		// Console.WriteLine("Test");
-		Finish(true);
-		Rect.X += 10;
+		Rect.X += 20;
+		Console.WriteLine(Rect.X);
+		Update();
+		if (Rect.X > 300)
+		{
+			Finish(true);
+		}
 	}
 
-	[Element]
-	public Rectangle Rect { get; set; }
+	[Element] public Rectangle Rect { get; set; }
 
 	public MiniTest()
 	{
@@ -410,6 +423,6 @@ public class MiniTest : MinigameDefBase
 		};
 		Init();
 	}
-
-
 }
+
+
