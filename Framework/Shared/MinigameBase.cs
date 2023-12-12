@@ -390,7 +390,7 @@ public class MiniTest : MinigameDefBase
 		// Console.WriteLine($"X: {me.ClientX}, Y: {me.ClientY}");
 		// Console.WriteLine("Test");
 		Finish(true);
-		Rect.Fill = "blue";
+		Rect.X += 10;
 	}
 
 	[Element]
