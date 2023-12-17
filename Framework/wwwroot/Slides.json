@@ -31,6 +31,15 @@
             "HM305DoorClosed": {
                 "Points": "1206,155 861,160 856,878 1235,876",
                 "Actions": [["Route", "HM305DoorOpen"]]
+            },
+            "Back": {
+                "Image": "UI_Images/backImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "BackPolygon": {
+                "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
+                "Actions": [["Route", "HM305"]]
             }
         }
     },
@@ -41,6 +50,15 @@
             "HM305DoorClosed": {
                 "Points": "1194,155 849,160 844,878 1223,876 ",
                 "Actions": [["Route", "Floor________"]]
+            },
+            "Back": {
+                "Image": "UI_Images/backImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "BackPolygon": {
+                "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
+                "Actions": [["Route", "HM305"]]
             }
         }
     },
@@ -58,7 +76,12 @@
                 "Actions": [["Route", "MinigameTest"]]
             },
             "Back": {
-                "Points": "28,909,170,909,170,956,28,956",
+                "Image": "UI_Images/backImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "BackPolygon": {
+                "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
                 "Actions": [["Route", "HM305"]]
             }
         }
@@ -68,7 +91,12 @@
         "Image": "images/HM305_blackboard.jpg",
         "Buttons": {
             "Back": {
-                "Points": "28,909,170,909,170,956,28,956",
+                "Image": "UI_Images/backImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "BackPolygon": {
+                "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
                 "Actions": [["Route", "HM305"]]
             }
         }
