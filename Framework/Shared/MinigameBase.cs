@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Reflection;
+using GameStateInventory;
 
 namespace Framework.Minigames;
 
@@ -43,10 +44,10 @@ Slides.json things:
 
 public class MinigameBase : ComponentBase
 {
-	// [Parameter] 
-	// public MinigameDefBase MinigameDef { get; set; } = null!;
-	// [Parameter]
-	// public string MinigameDefClass { get; set; } = null!;
+	// Inject the GameState
+	[Inject]
+	public GameState GameState { get; set; } = null!;
+
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
 
@@ -74,9 +75,15 @@ public class MinigameBase : ComponentBase
 			// if the instance is null, throw an exception
 			throw new Exception($"Could not create instance of \"{MinigameDefClass}\"");
 
+			// cast the instance
 			MinigameDef = (MinigameDefBase)instance;
+			// attach events
 			MinigameDef.Finished += async (sender, e) => await Finish(e.Success);
 			MinigameDef.UpdateEvent += (sender, e) => StateHasChanged();
+			// attach gamestate
+			MinigameDef.GameState = GameState;
+			// Run the AfterInit method
+			MinigameDef.AfterInit();
 
 		}
 		catch (Exception e)
@@ -84,8 +91,6 @@ public class MinigameBase : ComponentBase
 			// if there is an exception, throw a new one with the original exception as inner exception
 			throw new Exception($"Error while creating instance of object \"{MinigameDefClass}\"", e);
 		}
-
-
 	}
 }
 
@@ -95,20 +100,19 @@ public abstract class MinigameDefBase
 
 	public abstract string BackgroundImage { get; set; }
 
+	public GameState GameState { get; set; } = null!;
+
 	public void Init()
 	{
 		// create a list with all the elements in the Minigame
 		// so that we don't have to use reflection every time
 		// the thing renders
-
 		// loop over properties as test
-		foreach (var property in GetType().GetProperties())
-		{
-			// Console.WriteLine(property.Name);
-			// Console.WriteLine(property.GetValue(this));
-		}
-
-
+		// foreach (var property in GetType().GetProperties())
+		// {
+		// 	// Console.WriteLine(property.Name);
+		// 	// Console.WriteLine(property.GetValue(this));
+		// }
 		foreach (var property in GetType().GetProperties())
 		{
 			if (Attribute.IsDefined(property, typeof(ElementAttribute)))
@@ -126,20 +130,27 @@ public abstract class MinigameDefBase
 		// Console.WriteLine(Elements.Count);
 	}
 
+	// Method that is run right after the constructor
+	public virtual void AfterInit() { }
+
+
+	// Event handlers
+	public event EventHandler<FinishedEventArgs>? Finished;
+	public event EventHandler? UpdateEvent;
+
 	public void Finish(bool success)
 	{
 		Finished?.Invoke(this, new FinishedEventArgs { Success = success });
 	}
 
-	public event EventHandler<FinishedEventArgs>? Finished;
-
+	// Btw, I think I found out why it worked before without this:
+	// I think it is because whenever I clicked the box, an event callback was triggered,
+	// thus notifying the game that something happened and it should rerender
 	public void Update()
 	{
 		UpdateEvent?.Invoke(this, EventArgs.Empty);
-
 	}
 
-	public event EventHandler? UpdateEvent;
 }
 
 public class FinishedEventArgs : EventArgs
@@ -191,16 +202,34 @@ public abstract class SVGElement
 
 	public int ZIndex { get; set; } = 0;
 
+	// // Implementation of the TagName property as static
+	// public static string TagName { get; } = "svg";
+
+	// Normal implementation (maybe slightly slower, but I understand it better)
+	public abstract string TagName { get; }
+
 	// TODO: Add a way to set the tag name string of an element (e.g. "rect", "circle", "polygon" etc.)
 	//*Important for this:
 	// TODO: Write this method in general in SVGELement
-	public abstract RenderFragment GetRenderFragment();
+	// public abstract RenderFragment GetRenderFragment();
+
+	public virtual RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(0, TagName);
+			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+			builder.AddAttribute(2, "style", Style);
+			builder.AddMultipleAttributes(3, GetCallbackDictionary());
+			builder.CloseElement();
+		};
+	}
 
 	// [Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
 	// public abstract string GetMarkupString();
 
 	// maybe problems with reactivity, don't know yet
-	public string? GetStyleString()
+	private string? GetStyleStringOld()
 	{
 		string style = "";
 		foreach (var property in GetType().GetProperties())
@@ -212,6 +241,24 @@ public abstract class SVGElement
 				{
 					style += $"{Translate(property.Name)}: {property.GetValue(this)};";
 				}
+			}
+		}
+		return style == "" ? null : style;
+	}
+
+	public string? GetStyleString()
+	{
+		string style = "";
+		PropertyInfo[] properties = GetType().GetProperties()
+		.Where(p => Attribute.IsDefined(p, typeof(StyleAttribute)))
+		.ToArray();
+		foreach (var property in properties)
+		{
+			var value = property.GetValue(this);
+			if (value != null)
+			{
+				//*Note: Added null suppression because safety is ensured, but keep in mind regardless
+				style += $"{property.GetCustomAttribute<StyleAttribute>()!.name ?? Translate(property.Name)}: {property.GetValue(this)};";
 			}
 		}
 		return style == "" ? null : style;
@@ -260,7 +307,11 @@ public abstract class SVGElement
 			var value = property.GetValue(this);
 			if (value != null)
 			{
-				attributes.Add(Translate(property.Name), value);
+				attributes.Add(
+					//*Note: Added null suppression because safety is ensured, but keep in mind regardless
+					property.GetCustomAttribute<HtmlAttribute>()!.name ?? Translate(property.Name),
+					value
+				);
 			}
 		}
 		// Console.WriteLine(attributes.Count);
@@ -365,6 +416,12 @@ public abstract class SVGElement
 
 public class Rectangle : SVGElement
 {
+	// // Implementation of the TagName property as static
+	// public new static string TagName { get; } = "rect";
+
+	// "normal" implementation of TagName
+	public override string TagName { get; } = "rect";
+
 	[Html] public string? Id { get; set; }
 
 	[Html] public int? X { get; set; }
@@ -376,17 +433,17 @@ public class Rectangle : SVGElement
 
 	[Callback] public Delegate? OnClick { get; set; }
 
-	public override RenderFragment GetRenderFragment()
-	{
-		return builder =>
-		{
-			builder.OpenElement(0, "rect");
-			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-			builder.AddAttribute(2, "style", Style);
-			builder.AddMultipleAttributes(3, GetCallbackDictionary());
-			builder.CloseElement();
-		};
-	}
+	// public override RenderFragment GetRenderFragment()
+	// {
+	// 	return builder =>
+	// 	{
+	// 		builder.OpenElement(0, "rect");
+	// 		builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+	// 		builder.AddAttribute(2, "style", Style);
+	// 		builder.AddMultipleAttributes(3, GetCallbackDictionary());
+	// 		builder.CloseElement();
+	// 	};
+	// }
 }
 
 public class MiniTest : MinigameDefBase
@@ -400,7 +457,7 @@ public class MiniTest : MinigameDefBase
 		// Console.WriteLine("Test");
 		Rect.X += 20;
 		Console.WriteLine(Rect.X);
-		await Task.Delay(2000);
+		// await Task.Delay(2000);
 		Update();
 		if (Rect.X > 300)
 		{
