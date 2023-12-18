@@ -374,7 +374,7 @@ public class Rectangle : SVGElement
 
 	[Html] public string? Fill { get; set; }
 
-	[Callback] public Action<EventArgs>? OnClick { get; set; }
+	[Callback] public Delegate? OnClick { get; set; }
 
 	public override RenderFragment GetRenderFragment()
 	{
@@ -393,18 +393,20 @@ public class MiniTest : MinigameDefBase
 {
 	public override string BackgroundImage { get; set; } = "images/HM305_blackboard.jpg";
 
-	public void Test(EventArgs e)
+	public async void Test(EventArgs e)
 	{
 		MouseEventArgs me = (MouseEventArgs)e;
 		// Console.WriteLine($"X: {me.ClientX}, Y: {me.ClientY}");
 		// Console.WriteLine("Test");
 		Rect.X += 20;
 		Console.WriteLine(Rect.X);
+		await Task.Delay(2000);
 		Update();
 		if (Rect.X > 300)
 		{
 			Finish(true);
 		}
+
 	}
 
 	[Element] public Rectangle Rect { get; set; }
