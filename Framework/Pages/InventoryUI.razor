@@ -1,11 +1,10 @@
 @page "/inventory"
 @namespace GameStateInventory
 @inherits Framework.InventoryUI.InventoryUIBase
+@using Blazored.Toast.Services
+
+@inject IToastService _toastService
 
 <h3>Inventory UI Test</h3>
+<button @onclick="AddItem">Add Item</button>
 
-@foreach (var name in ItemNames)
-{   
-    <p>Display Items</p>
-    <img src="@InventoryItems[name].Image" alt="@InventoryItems[name].Description" />
-}

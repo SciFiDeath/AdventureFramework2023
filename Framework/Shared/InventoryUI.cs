@@ -16,8 +16,9 @@ public class InventoryUIBase : ComponentBase
     protected Items? Items { get; set; }
     
     public List<string> ItemNames = new();
-    public Dictionary<string, Item> InventoryItems = new();
-     protected override async Task OnInitializedAsync()
+    
+    public List<string> InventoryItems = new();
+    protected override async Task OnInitializedAsync()
     {
         if (GameState == null)
         {
@@ -27,10 +28,13 @@ public class InventoryUIBase : ComponentBase
         }
         await GameState.LoadGameStateAndItemsAsync();
 
-        Console.WriteLine("Getting Items...");        
-        InventoryItems = Items.GetAllItems();
-        ItemNames = InventoryItems.Keys.ToList();
-        Console.WriteLine(ItemNames.Count());
+        GameState.AddItem("goldkey");     
+        ItemNames = GameState.GetItems();
 
     }
+    public void AddItem()
+    {
+        GameState.AddItem("surfacecharger");
+    }
+
 }

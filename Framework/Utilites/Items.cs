@@ -55,7 +55,6 @@ public class Items
 
     public bool DoesItemExist(string ItemName)
     {
-        Console.WriteLine("Start of DoesItemExist");
         return items.ContainsKey(ItemName);
     }
 

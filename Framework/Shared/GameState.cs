@@ -3,13 +3,15 @@ using Microsoft.AspNetCore.Components;
 using JsonUtilities;
 using FrameworkItems;
 
+//Notifications
+using Blazored.Toast.Services;
 using System.Runtime.CompilerServices;
 
 namespace GameStateInventory;
 
 public class GameState
 {
-
+    private readonly IToastService _toastService;
 	protected JsonUtility JsonUtility { get; set; } = null!;
 
     protected Items Items {get; set;}
@@ -18,10 +20,11 @@ public class GameState
 
     public static Dictionary<string, bool> State = new();
 
-    public GameState(JsonUtility jsonUtility, Items items)
+    public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
     {
         JsonUtility = jsonUtility;
         Items = items;
+        _toastService = toastService;
     }
     
     public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
@@ -49,7 +52,7 @@ public class GameState
         {
             throw new ArgumentException($"Element {id} is not in Inventory");
         }
-
+        Console.WriteLine($"Successfully removed {id} from inventory");
     }
 
     public async void AddItem(string id)
@@ -59,8 +62,8 @@ public class GameState
         {
             throw new Exception("Item doesn't exist in items.json Dictionary");
         }
-        Console.WriteLine("Item Added successfully");
         ItemsInInventory.Add(id);
+        Console.WriteLine($"Successfully added {id} to inventory");
     }
     public bool CheckForItem(string id)
     {
