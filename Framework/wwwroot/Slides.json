@@ -47,9 +47,9 @@
     "HM305DoorOpen": {
         "Image": "images/HM305_DoorOpen.jpg",
         "Buttons": {
-            "HM305DoorClosed": {
+            "HM305DoorOpened": {
                 "Points": "1194,155 849,160 844,878 1223,876 ",
-                "Actions": [["Route", "Floor________"]]
+                "Actions": [["Route", "HM3_hallwayW"]]
             },
             "Back": {
                 "Image": "UI_Images/backImg.png",
@@ -101,9 +101,135 @@
             }
         }
     },
+
     "MinigameTest": {
         "Type": "Minigame",
         "FallbackSlide": "HM305Beamer",
         "MinigameDefClassName": "Framework.Minigames.MiniTest"
+    },
+
+    "HM3_hallwayW": {
+        "Image": "images/HM3_hallwayW.jpg",
+        "Buttons": {
+            "Left": {
+                "Image": "UI_Images/leftImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "Right": {
+                "Image": "UI_Images/rightImg.png",
+                "Points": "10,10,3700,100",
+                "Actions": []
+            },
+            "RightPolygon": {
+                "Points": "1856,12 1875,17 1890,26 1900,41 1907,62 1902,84 1890,97 1873,108 1852,109 1830,101 1815,82 1810,62 1815,41 1830,24",
+                "Actions": [["Route", "HM3_hallwayN"]]
+            },
+            "LeftPolygon": {
+                "Points": "58,14 77,19 92,27 103,43 109,63 104,86 92,99 75,109 55,111 32,103 17,84 12,63 17,43 32,26 ",
+                "Actions": [["Route", "HM3_hallwayS"]]
+            }
+
+        }
+    },
+
+    "HM3_hallwayN": {
+        "Image": "images/HM3_hallwayN.jpg",
+        "Buttons": {
+            "Left": {
+                "Image": "UI_Images/leftImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "Right": {
+                "Image": "UI_Images/rightImg.png",
+                "Points": "10,10,3700,100",
+                "Actions": []
+            },
+            "RightPolygon": {
+                "Points": "1856,12 1875,17 1890,26 1900,41 1907,62 1902,84 1890,97 1873,108 1852,109 1830,101 1815,82 1810,62 1815,41 1830,24",
+                "Actions": [["Route", "HM3_hallwayE"]]
+            },
+            "LeftPolygon": {
+                "Points": "58,14 77,19 92,27 103,43 109,63 104,86 92,99 75,109 55,111 32,103 17,84 12,63 17,43 32,26 ",
+                "Actions": [["Route", "HM3_hallwayW"]]
+            }
+
+        }
+    },
+
+    "HM3_hallwayE": {
+        "Image": "images/HM3_hallwayE.jpg",
+        "Buttons": {
+            "Left": {
+                "Image": "UI_Images/leftImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "Right": {
+                "Image": "UI_Images/rightImg.png",
+                "Points": "10,10,3700,100",
+                "Actions": []
+            },
+            "RightPolygon": {
+                "Points": "1856,12 1875,17 1890,26 1900,41 1907,62 1902,84 1890,97 1873,108 1852,109 1830,101 1815,82 1810,62 1815,41 1830,24",
+                "Actions": [["Route", "HM3_hallwayS"]]
+            },
+            "LeftPolygon": {
+                "Points": "58,14 77,19 92,27 103,43 109,63 104,86 92,99 75,109 55,111 32,103 17,84 12,63 17,43 32,26 ",
+                "Actions": [["Route", "HM3_hallwayN"]]
+            },
+            "HM305": {
+                "Points": "237,441 256,884 479,888 467,436",
+                "Actions": [["Route", "HM305"]]
+            }
+
+        }
+    },
+
+    "HM3_hallwayS": {
+        "Image": "images/HM3_hallwayS.jpg",
+        "Buttons": {
+            "Left": {
+                "Image": "UI_Images/leftImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "Right": {
+                "Image": "UI_Images/rightImg.png",
+                "Points": "10,10,3700,100",
+                "Actions": []
+            },
+            "RightPolygon": {
+                "Points": "1856,12 1875,17 1890,26 1900,41 1907,62 1902,84 1890,97 1873,108 1852,109 1830,101 1815,82 1810,62 1815,41 1830,24",
+                "Actions": [["Route", "HM3_hallwayW"]]
+            },
+            "LeftPolygon": {
+                "Points": "58,14 77,19 92,27 103,43 109,63 104,86 92,99 75,109 55,111 32,103 17,84 12,63 17,43 32,26 ",
+                "Actions": [["Route", "HM3_hallwayE"]]
+            },
+            "Locker": {
+                "Points": "38,558 38,676 135,664 135,558",
+                "Actions": [["Route", "HM3_Locker"]]
+            }
+
+        }
+    },
+
+    "HM3_Locker": {
+        "Image": "images/HM3_lockerOpened.jpg",
+        "Buttons": {
+            "Back": {
+                "Image": "UI_Images/backImg.png",
+                "Points": "10,10,100,100",
+                "Actions": []
+            },
+            "BackPolygon": {
+                "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
+                "Actions": [["Route", "HM3_hallwayS"]]
+            }
+        }
     }
+
+    
 }
