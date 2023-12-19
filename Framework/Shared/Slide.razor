@@ -11,28 +11,31 @@
 		@* *Added Null supression *@
 		@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
 		{
-			var ButtonElement = SlideData.Buttons[buttonKey]; 
-			if(ButtonElement.Image == null) { // Button is a Polygon
-			<polygon 
-				id="@buttonKey"
-				fill="rgba(255, 255, 147, 0.5)"
-				points="@ButtonElement.Points" 
-				
-				@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
-			/>
-			}
-			else { // Button is an Image
-				var PointsList = ButtonElement.Points.Split(',');
-				
-				<image 
-					id=@buttonKey
-					x=@PointsList[0]
-					y=@PointsList[1]
-					width=@PointsList[2]
-					height=@PointsList[3]
-					href=@ButtonElement.Image
-				/>
+			if (GameState.CheckVisibility(buttonKey)) {
 
+				var ButtonElement = SlideData.Buttons[buttonKey]; 
+				if (ButtonElement.Image == null) { // Button is a Polygon
+				<polygon 
+					id="@buttonKey"
+					fill="rgba(255, 255, 147, 0.5)"
+					points="@ButtonElement.Points" 
+					
+					@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
+				/>
+				}
+				else { // Button is an Image
+					var PointsList = ButtonElement.Points.Split(',');
+					
+					<image 
+						id=@buttonKey
+						x=@PointsList[0]
+						y=@PointsList[1]
+						width=@PointsList[2]
+						height=@PointsList[3]
+						href=@ButtonElement.Image
+					/>
+
+				}
 			}
 		}
 	</svg>

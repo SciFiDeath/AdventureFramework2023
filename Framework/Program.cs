@@ -13,11 +13,17 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddScoped<JsonUtility>();
 
-builder.Services.AddScoped<GameState>();
-
 builder.Services.AddScoped<FrameworkItems.Items>();
 
 // Notifications
 builder.Services.AddBlazoredToast();
+
+// builder.Services.AddScoped(sp => {new GameState(sp.GetRequiredService<JsonUtility>(), sp.GetRequiredService<FrameworkItems.Items>())});
+
+builder.Services.AddScoped<GameState>();
+
+// execute the async method to load the gamestate and items
+var ServiceProvider = builder.Services.BuildServiceProvider();
+await ServiceProvider.GetRequiredService<GameState>().LoadGameStateAndItemsAsync();
 
 await builder.Build().RunAsync();

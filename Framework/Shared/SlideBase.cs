@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Framework.Slides.JsonClasses;
 using Framework.Game.Parameters;
+using GameStateInventory;
 
 namespace Framework.Slides;
 
@@ -11,6 +12,10 @@ public class SlideBase : ComponentBase, ISlideComponentParameters
 
 	[Parameter]
 	public EventCallback<string> OnSlideChange { get; set; }
+
+	[Inject]
+	public GameState GameState { get; set; } = null!;
+
 
 
 	protected async Task SlideChange(string slideName)
@@ -35,12 +40,16 @@ public class SlideBase : ComponentBase, ISlideComponentParameters
 				case "Route":
 					await SlideChange(action[1]);
 					break;
-				// case "Require":
-				// 	if (ValidateRequire(action[1], action[2]))
-				// 	{
-				// 		return;
-				// 	}
-				// 	break;
+				case "Require":
+					if (GameState.CheckForItem(action[1]))
+					{
+						GameState.RemoveItem(action[1]);
+					}
+					else
+					{
+						return;
+					}
+					break;
 				default:
 					break;
 			}

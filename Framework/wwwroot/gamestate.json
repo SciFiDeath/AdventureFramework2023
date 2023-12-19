@@ -1,4 +1,6 @@
 {
     "button1": true,
-    "LeButton": false
+    "LeButton": false,
+    "CodeTerminal": true,
+    "Door": true
 }

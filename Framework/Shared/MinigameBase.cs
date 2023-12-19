@@ -572,9 +572,10 @@ public class CodeTerminal : MinigameDefBase
 
 	public async void CollectKey(EventArgs e)
 	{
-		// GameState.AddItem("Key1");
+		GameState.AddItem("goldkey");
 		Console.WriteLine("test");
 		Key.Visibility = "none";
+		GameState.ChangeVisibility("CodeTerminal");
 		Collected = true;
 		Update();
 		await Task.Delay(2000);

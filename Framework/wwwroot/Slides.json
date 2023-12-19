@@ -30,7 +30,10 @@
         "Buttons": {
             "HM305DoorClosed": {
                 "Points": "1206,155 861,160 856,878 1235,876",
-                "Actions": [["Route", "HM305DoorOpen"]]
+                "Actions": [
+                    ["Require", "goldkey"],
+                    ["Route", "HM305DoorOpen"]
+                ]
             },
             "Back": {
                 "Image": "UI_Images/backImg.png",
