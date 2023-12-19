@@ -138,6 +138,7 @@ public abstract class MinigameDefBase
 	public event EventHandler<FinishedEventArgs>? Finished;
 	public event EventHandler? UpdateEvent;
 
+
 	public void Finish(bool success)
 	{
 		Finished?.Invoke(this, new FinishedEventArgs { Success = success });
