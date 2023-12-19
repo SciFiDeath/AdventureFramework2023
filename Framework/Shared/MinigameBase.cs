@@ -208,11 +208,6 @@ public abstract class SVGElement
 	// Normal implementation (maybe slightly slower, but I understand it better)
 	public abstract string TagName { get; }
 
-	// TODO: Add a way to set the tag name string of an element (e.g. "rect", "circle", "polygon" etc.)
-	//*Important for this:
-	// TODO: Write this method in general in SVGELement
-	// public abstract RenderFragment GetRenderFragment();
-
 	public virtual RenderFragment GetRenderFragment()
 	{
 		return builder =>
@@ -446,11 +441,56 @@ public class Rectangle : SVGElement
 	// }
 }
 
+public class Text : SVGElement
+{
+	public override string TagName { get; } = "text";
+
+	public string? InnerText { get; set; }
+
+	[Html] public int? X { get; set; }
+	[Html] public int? Y { get; set; }
+	[Html] public string? Fill { get; set; }
+	[Style("font-size")] public string? FontSize { get; set; }
+	[Style("font-family")] public string? FontFamily { get; set; }
+
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(0, TagName);
+			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+			builder.AddAttribute(2, "style", Style);
+			builder.AddMultipleAttributes(3, GetCallbackDictionary());
+			builder.AddContent(4, InnerText);
+			builder.CloseElement();
+		};
+	}
+}
+
+public class SVGImage : SVGElement
+{
+	public override string TagName { get; } = "image";
+
+	[Html] public int? X { get; set; }
+	[Html] public int? Y { get; set; }
+	[Html] public int? Width { get; set; }
+	[Html] public int? Height { get; set; }
+
+	[Style("display")] public string? Visibility { get; set; }
+
+	[Html("href")] public string? Image { get; set; }
+
+	[Callback] public Delegate? OnClick { get; set; }
+
+}
+
+
 public class MiniTest : MinigameDefBase
 {
 	public override string BackgroundImage { get; set; } = "images/HM305_blackboard.jpg";
 
-	public async void Test(EventArgs e)
+	public void Test(EventArgs e)
 	{
 		MouseEventArgs me = (MouseEventArgs)e;
 		// Console.WriteLine($"X: {me.ClientX}, Y: {me.ClientY}");
@@ -484,3 +524,179 @@ public class MiniTest : MinigameDefBase
 	}
 }
 
+public class CodeTerminal : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/calculator.png";
+
+	public string Code { get; set; } = "0385";
+
+	public string CurrentText { get; set; } = "";
+
+	[Element] public Rectangle Button0 { get; set; }
+	[Element] public Rectangle Button1 { get; set; }
+	[Element] public Rectangle Button2 { get; set; }
+	[Element] public Rectangle Button3 { get; set; }
+	[Element] public Rectangle Button4 { get; set; }
+	[Element] public Rectangle Button5 { get; set; }
+	[Element] public Rectangle Button6 { get; set; }
+	[Element] public Rectangle Button7 { get; set; }
+	[Element] public Rectangle Button8 { get; set; }
+	[Element] public Rectangle Button9 { get; set; }
+
+	[Element] public Text Text { get; set; }
+
+	[Element] public SVGImage Key { get; set; }
+
+	public bool Collected { get; set; } = false;
+
+	public void SetNumber(int num)
+	{
+		if (CurrentText.Length < 4)
+		{
+			CurrentText += num.ToString();
+			Text.InnerText = CurrentText;
+			Update();
+		}
+		if (CurrentText.Length >= 4)
+		{
+			if (CurrentText == Code && Collected == false)
+			{
+				Key.Visibility = "block";
+			}
+			else
+			{
+				CurrentText = "";
+			}
+		}
+	}
+
+	public async void CollectKey(EventArgs e)
+	{
+		// GameState.AddItem("Key1");
+		Console.WriteLine("test");
+		Key.Visibility = "none";
+		Collected = true;
+		Update();
+		await Task.Delay(2000);
+		Finish(true);
+	}
+
+	public CodeTerminal()
+	{
+		int width = 72;
+		int height = 42;
+
+		string fill = "#ffff9380";
+
+		Button7 = new()
+		{
+			X = 732,
+			Y = 830,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(7),
+		};
+		Button8 = new()
+		{
+			X = 828,
+			Y = 832,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(8),
+		};
+		Button9 = new()
+		{
+			X = 923,
+			Y = 832,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(9),
+		};
+		Button4 = new()
+		{
+			X = 733,
+			Y = 888,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(4),
+		};
+		Button5 = new()
+		{
+			X = 828,
+			Y = 887,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(5),
+		};
+		Button6 = new()
+		{
+			X = 921,
+			Y = 887,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(6),
+		};
+		Button1 = new()
+		{
+			X = 736,
+			Y = 941,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(1),
+		};
+		Button2 = new()
+		{
+			X = 831,
+			Y = 940,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(2),
+		};
+		Button3 = new()
+		{
+			X = 926,
+			Y = 942,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(3),
+		};
+		Button0 = new()
+		{
+			X = 735,
+			Y = 993,
+			Width = width,
+			Height = height,
+			Fill = fill,
+			OnClick = (EventArgs args) => SetNumber(0),
+		};
+		Text = new()
+		{
+			InnerText = CurrentText,
+			X = 620,
+			Y = 490,
+			FontSize = "100px",
+			Fill = "white"
+		};
+		Key = new()
+		{
+			X = 1400,
+			Y = 230,
+			Width = 450,
+			OnClick = CollectKey,
+			Image = "InventoryImages/key2.png",
+			Visibility = "none"
+		};
+
+		Init();
+	}
+
+}

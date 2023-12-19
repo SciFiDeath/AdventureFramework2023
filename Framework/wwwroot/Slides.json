@@ -40,8 +40,18 @@
             "BackPolygon": {
                 "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
                 "Actions": [["Route", "HM305"]]
+            },
+            "CodeTerminal": {
+                "Points": "764,458 764,491 775,495 775,465 764,458 792,39",
+                "Actions": [["Route", "HM305CodeTerminal"]]
             }
         }
+    },
+
+    "HM305CodeTerminal": {
+        "Type": "Minigame",
+        "FallbackSlide": "HM305DoorClosed",
+        "MinigameDefClassName": "Framework.Minigames.CodeTerminal"
     },
 
     "HM305DoorOpen": {
@@ -129,7 +139,6 @@
                 "Points": "58,14 77,19 92,27 103,43 109,63 104,86 92,99 75,109 55,111 32,103 17,84 12,63 17,43 32,26 ",
                 "Actions": [["Route", "HM3_hallwayS"]]
             }
-
         }
     },
 
@@ -154,7 +163,6 @@
                 "Points": "58,14 77,19 92,27 103,43 109,63 104,86 92,99 75,109 55,111 32,103 17,84 12,63 17,43 32,26 ",
                 "Actions": [["Route", "HM3_hallwayW"]]
             }
-
         }
     },
 
@@ -183,7 +191,6 @@
                 "Points": "237,441 256,884 479,888 467,436",
                 "Actions": [["Route", "HM305"]]
             }
-
         }
     },
 
@@ -212,7 +219,6 @@
                 "Points": "38,558 38,676 135,664 135,558",
                 "Actions": [["Route", "HM3_Locker"]]
             }
-
         }
     },
 
@@ -230,6 +236,4 @@
             }
         }
     }
-
-    
 }
