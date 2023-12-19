@@ -1,0 +1,10 @@
+@page "/inventory"
+@namespace GameStateInventory
+@inherits Framework.InventoryUI.InventoryUIBase
+@using Blazored.Toast.Services
+
+@inject IToastService _toastService
+
+<h3>Inventory UI Test</h3>
+<button @onclick="AddItem">Add Item</button>
+

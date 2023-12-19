@@ -29,7 +29,7 @@ public class TestGameStateBase : ComponentBase
             Console.WriteLine("GameState is null!");
             return;
         }
-        await GameState.LoadGameStateAsync();
+        await GameState.LoadGameStateAndItemsAsync();
         Console.WriteLine("GameState used once successfully");
 
         await Items.LoadItemsAsync();
