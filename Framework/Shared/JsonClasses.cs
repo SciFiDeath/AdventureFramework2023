@@ -14,6 +14,7 @@ public class JsonSlide
 
 public class JsonButton
 {
+	public string? Type { get; set; }
 	public string Points { get; set; } = null!;
 	public string? Image { get; set; }
 	public List<List<string>>? Actions { get; set; }
