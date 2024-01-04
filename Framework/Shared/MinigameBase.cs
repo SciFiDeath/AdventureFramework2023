@@ -529,7 +529,7 @@ public class CodeTerminal : MinigameDefBase
 {
 	public override string BackgroundImage { get; set; } = "images/calculator.png";
 
-	public string Code { get; set; } = "0385";
+	public string Code { get; set; } = "1234";
 
 	public string CurrentText { get; set; } = "";
 

@@ -1,19 +1,27 @@
-BlazoredToasts {
-    position: relative !important;
-}
-
-#toast-container {
+#container {
     position: absolute;
     aspect-ratio: 16/9;
-    top: 0;
     height: 100%;
+    top: 0;
 }
 
 @media (max-aspect-ratio: 16/9) {
-    #toast-container {
-        position: absolute;
-        aspect-ratio: 16/9;
+    #container {
         left: 0;
         width: 100%;
+        height: auto;
+        top: auto;
     }
+}
+
+main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

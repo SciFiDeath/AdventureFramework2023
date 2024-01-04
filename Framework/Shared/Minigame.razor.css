@@ -1,4 +1,4 @@
-#main-container {
+/* #main-container {
     position: absolute;
     top: 0;
     left: 0;
@@ -33,4 +33,29 @@ svg {
         left: 0;
         width: 100%;
     }
+} */
+
+svg > polygon:hover {
+    cursor: pointer;
+}
+
+#main-container {
+    width: 100%;
+    height: 100%;
+}
+
+#bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
