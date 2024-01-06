@@ -21,6 +21,16 @@
             "BackPolygon": {
                 "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
                 "Actions": [["Route", "HM305DoorClosed"]]
+            },
+            "RectTest": {
+                "Type": "rect",
+                "Points": "100,100,200,200",
+                "Actions": []
+            },
+            "CircleTest": {
+                "Type": "circle",
+                "Points": "100,100,50",
+                "Actions": []
             }
         }
     },

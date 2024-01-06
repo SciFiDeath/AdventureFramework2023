@@ -16,7 +16,8 @@ public class SlideBase : ComponentBase, ISlideComponentParameters
 	[Inject]
 	public GameState GameState { get; set; } = null!;
 
-
+	// Fill color for the polygons
+	protected string fillColor = "rgba(255, 255, 147, 0.5)";
 
 	protected async Task SlideChange(string slideName)
 	{
