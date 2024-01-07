@@ -5,15 +5,15 @@
 @using Framework.Slides
 @using Framework.Minigames
 
-@if (Slides == null) {
+@if (SlideService.Slides == null) {
     <p>Loading...</p>
 } else {
     @* <DynamicComponent Type=@typeof(Framework.Slides.Slide) 
     Parameters=@(new Dictionary<string, object>{
         {"SlideData", Slides[SlideId]}, {"OnSlideChange", EventCallback.Factory.Create<string>(this, ChangeSlide)}
         }) /> *@
-    if (Parameters.SlideData.Type == "Minigame") {
-        <Minigame MinigameDefClass="@Parameters.SlideData.MinigameDefClassName" OnFinished="FinishMinigame" />
+    if (SlideService.GetSlide(SlideId).Type == "Minigame") {
+        <Minigame MinigameDefClass="@SlideService.GetSlide(SlideId).MinigameDefClassName" OnFinished="FinishMinigame" />
     }
     else {
         <DynamicComponent Type=@typeof(Slide) Parameters="Parameters.GetParameterDictionary()" />

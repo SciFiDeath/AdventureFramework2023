@@ -5,10 +5,16 @@ using GameStateInventory;
 
 namespace Framework.Slides;
 
-public class SlideBase : ComponentBase, ISlideComponentParameters
+public class SlideBase : ComponentBase
 {
+
 	[Parameter]
-	public JsonSlide SlideData { get; set; } = null!; // Get the slide data 
+	public string SlideId { get; set; } = null!;
+
+	// [Parameter]
+	// public JsonSlide SlideData { get; set; } = null!; // Get the slide data
+	protected JsonSlide SlideData { get; set; } = null!;
+
 
 	[Parameter]
 	public EventCallback<string> OnSlideChange { get; set; }
@@ -16,8 +22,18 @@ public class SlideBase : ComponentBase, ISlideComponentParameters
 	[Inject]
 	public GameState GameState { get; set; } = null!;
 
+	[Inject]
+	public SlideService SlideService { get; set; } = null!;
+
 	// Fill color for the polygons
+	//? what color will the polygons have (if any)
 	protected string fillColor = "rgba(255, 255, 147, 0.5)";
+
+	protected override void OnParametersSet()
+	{
+		SlideData = SlideService.GetSlide(SlideId);
+		// Console.WriteLine(SlideId);
+	}
 
 	protected async Task SlideChange(string slideName)
 	{

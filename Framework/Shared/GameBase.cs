@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 using Framework.Game.Parameters;
 
-using System.Diagnostics.CodeAnalysis;
 
 namespace Framework.Game;
 
@@ -14,44 +13,49 @@ namespace Framework.Game;
 // I though everything in one file would be a bit messy, so I split it up
 public partial class GameBase : ComponentBase
 {
-    protected Dictionary<string, JsonSlide> Slides { get; set; } = null!;
+	[Inject]
+	protected SlideService SlideService { get; set; } = null!;
 
-    protected string SlideId { get; set; } = null!;
-    protected SlideComponentParameters Parameters { get; set; } = null!;
-    // protected Dictionary<string, object?> ParametersDictionary { get; set; } = null!;
+	protected string SlideId => Parameters.SlideId;
+
+	protected SlideComponentParameters Parameters { get; set; } = null!;
+	// protected Dictionary<string, object?> ParametersDictionary { get; set; } = null!;
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        Slides = await GetSlidesUnsafe("Slides.json");
-        SlideId = Slides.Keys.First();
-        Parameters = new SlideComponentParameters()
-        {
-            SlideData = Slides[SlideId],
-            OnSlideChange = EventCallback.Factory.Create<string>(this, ChangeSlide)
-        };
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		// TODO: Make it so that this runs at initialization of entire thing
+		await SlideService.Init();
+		string slideId = SlideService.GetStartSlideId();
+		Parameters = new SlideComponentParameters()
+		{
+			SlideId = slideId,
+			OnSlideChange = EventCallback.Factory.Create<string>(this, ChangeSlide)
+		};
+	}
 
-    protected static void HandlePolygonClick(string thing)
-    {
-        Console.WriteLine(thing);
-    }
+	protected static void HandlePolygonClick(string thing)
+	{
+		Console.WriteLine(thing);
+	}
 
-    protected void ChangeSlide(string slideId)
-    {
-        Parameters.SlideData = Slides[slideId];
-        StateHasChanged();
-    }
+	protected void ChangeSlide(string slideId)
+	{
+		Parameters.SlideId = slideId;
+		// Console.WriteLine(SlideId);
+		StateHasChanged();
+	}
 
-    protected void FinishMinigame(bool success)
-    {
-        if (success)
-        {
-            ChangeSlide(Parameters.SlideData.FallbackSlide!);
-        }
-        else
-        {
-            ChangeSlide(Parameters.SlideData.FallbackSlide!);
-        }
-    }
+	protected void FinishMinigame(bool success)
+	{
+		if (success)
+		{
+			ChangeSlide(SlideService.GetSlide(Parameters.SlideId).FallbackSlide!);
+		}
+		// TODO: Also, maybe make this function actually do something different based on success
+		else
+		{
+			ChangeSlide(SlideService.GetSlide(Parameters.SlideId).FallbackSlide!);
+		}
+	}
 }
