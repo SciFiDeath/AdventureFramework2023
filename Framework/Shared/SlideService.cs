@@ -11,6 +11,9 @@ public class SlideService
 
 	public Dictionary<JsonSlide, string> InverseSlides { get; private set; } = null!;
 
+	// private readonly TaskCompletionSource<bool> _initCompletionSource = new();
+	// public Task Initialization => _initCompletionSource.Task;
+
 	private async Task<Dictionary<string, JsonSlide>> FetchSlidesAsync(string url)
 	{
 		// assign return value from GetFromJsonAsync to slides if it is not null, otherwise throw an exception
@@ -31,6 +34,8 @@ public class SlideService
 	{
 		Slides = await FetchSlidesAsync("Slides.json");
 		InverseSlides = Slides.ToDictionary(x => x.Value, x => x.Key);
+		Console.WriteLine("slide complete");
+		// _initCompletionSource.SetResult(true);
 	}
 
 	public JsonSlide GetSlide(string slideId)

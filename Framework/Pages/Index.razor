@@ -1,12 +1,29 @@
 ﻿@page "/"
-@* @using Framework.TestC *@
-@using Framework.TestComp
+@using Framework.Slides
+@using GameStateInventory
 
-<h1 id="test">Hello, world!</h1>
+@inject SlideService SlideService
+@inject GameState GameState
 
-<a href="/game">Game</a>
+@if (initTask.IsCompletedSuccessfully) {
+    <h1 id="test">Hello, world!</h1>
+    <a href="/game">Game</a>
+    <a href="/testpage">TestPage</a>
+}
 
-@* <TestComp /> *@
 
-@* <TestComp /> *@
-<a href="/testpage">TestPage</a>
+else {
+    <div style="color: white">Loading...</div>
+}
+
+@code {
+    private TaskCompletionSource<bool> _tcs = new();
+    private Task initTask => _tcs.Task;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SlideService.Init();
+        await GameState.LoadGameStateAndItemsAsync();
+        _tcs.SetResult(true);
+    }
+}

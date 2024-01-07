@@ -20,20 +20,21 @@ builder.Services.AddScoped<FrameworkItems.Items>();
 builder.Services.AddBlazoredToast();
 
 // First register both of those, then execute the initialization for both
+// builder.Services.AddScoped<SlideService>();
 builder.Services.AddScoped<SlideService>();
 builder.Services.AddScoped<GameState>();
 
 
-// TODO: Find better solution to execute functions at startup
-// Apparently this only contains Services registered prior to its initialization, and it doesn't update
-var ServiceProvider = builder.Services.BuildServiceProvider();
+// // TODO: Find better solution to execute functions at startup
+// // Apparently this only contains Services registered prior to its initialization, and it doesn't update
+// var ServiceProvider = builder.Services.BuildServiceProvider();
 
-// Initialize the slides
-//! This does not seem to work as intended, don't know why though
-await ServiceProvider.GetRequiredService<SlideService>().Init();
+// // Initialize the slides
+// //! This does not seem to work as intended, don't know why though
+// // await ServiceProvider.GetRequiredService<SlideService>().Init();
 
-// execute the async method to load the gamestate and items
-await ServiceProvider.GetRequiredService<GameState>().LoadGameStateAndItemsAsync();
-// builder.Services.AddScoped(sp => {new GameState(sp.GetRequiredService<JsonUtility>(), sp.GetRequiredService<FrameworkItems.Items>())});
+// // execute the async method to load the gamestate and items
+// await ServiceProvider.GetRequiredService<GameState>().LoadGameStateAndItemsAsync();
+// // builder.Sexrvices.AddScoped(sp => {new GameState(sp.GetRequiredService<JsonUtility>(), sp.GetRequiredService<FrameworkItems.Items>())});
 
 await builder.Build().RunAsync();

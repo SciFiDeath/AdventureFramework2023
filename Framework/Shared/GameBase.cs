@@ -3,6 +3,7 @@ using Framework.Slides;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 using Framework.Game.Parameters;
+using GameStateInventory;
 
 
 namespace Framework.Game;
@@ -16,16 +17,38 @@ public partial class GameBase : ComponentBase
 	[Inject]
 	protected SlideService SlideService { get; set; } = null!;
 
+	// Stuff for easier debugging
+	[Inject]
+	protected GameState GameState { get; set; } = null!;
+	private readonly bool debugMode = true;
+	private readonly TaskCompletionSource<bool> _tcs = new();
+	private Task InitTask => _tcs.Task;
+	// Basically initialize the stuff here, so that you don't always have to go through the
+	// index to test stuff
+	protected override async Task OnInitializedAsync()
+	{
+		if (debugMode)
+		{
+			await Init();
+		}
+	}
+	private async Task Init()
+	{
+		await SlideService.Init();
+		await GameState.LoadGameStateAndItemsAsync();
+		_tcs.SetResult(true);
+	}
+
 	protected string SlideId => Parameters.SlideId;
 
 	protected SlideComponentParameters Parameters { get; set; } = null!;
 	// protected Dictionary<string, object?> ParametersDictionary { get; set; } = null!;
 
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		// TODO: Make it so that this runs at initialization of entire thing
-		await SlideService.Init();
+		// // TODO: Make it so that this runs at initialization of entire thing
+		// await SlideService.Init();
 		string slideId = SlideService.GetStartSlideId();
 		Parameters = new SlideComponentParameters()
 		{
