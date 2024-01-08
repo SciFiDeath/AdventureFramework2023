@@ -5,9 +5,7 @@
 @using Framework.Slides
 @using Framework.Minigames
 
-@if (SlideService.Slides == null) {
-    <p>Loading...</p>
-} else {
+@if (InitTask.IsCompletedSuccessfully) {
     @* <DynamicComponent Type=@typeof(Framework.Slides.Slide) 
     Parameters=@(new Dictionary<string, object>{
         {"SlideData", Slides[SlideId]}, {"OnSlideChange", EventCallback.Factory.Create<string>(this, ChangeSlide)}
@@ -18,4 +16,6 @@
     else {
         <DynamicComponent Type=@typeof(Slide) Parameters="Parameters.GetParameterDictionary()" />
     }
+} else {
+    <p>Loading...</p>
 }

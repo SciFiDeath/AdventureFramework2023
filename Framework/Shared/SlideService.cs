@@ -34,7 +34,6 @@ public class SlideService
 	{
 		Slides = await FetchSlidesAsync("Slides.json");
 		InverseSlides = Slides.ToDictionary(x => x.Value, x => x.Key);
-		Console.WriteLine("slide complete");
 		// _initCompletionSource.SetResult(true);
 	}
 

@@ -22,21 +22,16 @@ public partial class GameBase : ComponentBase
 	protected GameState GameState { get; set; } = null!;
 	private readonly bool debugMode = true;
 	private readonly TaskCompletionSource<bool> _tcs = new();
-	private Task InitTask => _tcs.Task;
+	protected Task InitTask => _tcs.Task;
 	// Basically initialize the stuff here, so that you don't always have to go through the
 	// index to test stuff
-	protected override async Task OnInitializedAsync()
-	{
-		if (debugMode)
-		{
-			await Init();
-		}
-	}
+	// protected override async Task OnInitializedAsync()
+	// {
+	// }
 	private async Task Init()
 	{
 		await SlideService.Init();
 		await GameState.LoadGameStateAndItemsAsync();
-		_tcs.SetResult(true);
 	}
 
 	protected string SlideId => Parameters.SlideId;
@@ -45,16 +40,21 @@ public partial class GameBase : ComponentBase
 	// protected Dictionary<string, object?> ParametersDictionary { get; set; } = null!;
 
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		// // TODO: Make it so that this runs at initialization of entire thing
 		// await SlideService.Init();
+		if (debugMode)
+		{
+			await Init();
+		}
 		string slideId = SlideService.GetStartSlideId();
 		Parameters = new SlideComponentParameters()
 		{
 			SlideId = slideId,
 			OnSlideChange = EventCallback.Factory.Create<string>(this, ChangeSlide)
 		};
+		_tcs.SetResult(true);
 	}
 
 	protected static void HandlePolygonClick(string thing)
