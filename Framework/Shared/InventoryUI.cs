@@ -27,7 +27,7 @@ public class InventoryUIBase : ComponentBase
             return;
         }
         await GameState.LoadGameStateAndItemsAsync();
-
+        
         GameState.AddItem("goldkey");     
         ItemNames = GameState.GetItems();
 
@@ -35,6 +35,12 @@ public class InventoryUIBase : ComponentBase
     public void AddItem()
     {
         GameState.AddItem("surfacecharger");
+    }
+
+    public void TestEncrypt()
+    {
+        string encrypt = GameState.Save();
+        Console.WriteLine(encrypt);
     }
 
 }

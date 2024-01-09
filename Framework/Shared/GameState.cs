@@ -64,6 +64,7 @@ public class GameState
         }
         ItemsInInventory.Add(id);
         Console.WriteLine($"Successfully added {id} to inventory");
+        
     }
     public bool CheckForItem(string id)
     {
@@ -72,9 +73,32 @@ public class GameState
     public List<string> GetItems()
     {
         return ItemsInInventory;
+
     }
 
+    public string Save(string key = "1234", string path = "gamestate.json")
+{
+    string encrypted = "";
+
+    try
+    {
+        encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
+        Console.WriteLine("Save successful");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error during save: {ex.Message}");
+        // Log the exception or take appropriate actions
+        throw new Exception("Could not encrypt and save", ex);
+    }
+
+    return encrypted;
+}
 
 
+    public void LoadFromString(string encrypted)
+    {
+        
+    }
 }
 
