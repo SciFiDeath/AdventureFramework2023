@@ -1,9 +1,8 @@
 #test {
-    color: red;
-    font-size: x-large;
-}
-
-.more {
-    color: blue;
-    font-size: x-large;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background-color: red;
 }

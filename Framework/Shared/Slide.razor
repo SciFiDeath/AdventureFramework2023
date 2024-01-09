@@ -4,41 +4,39 @@
 
 @namespace Framework.Slides
 
-@* 
-<div id="view_slide"> <!-- Div with entire Game in it-->
-    <img id="backgroundImg" src=@SlideData.Image alt="ry namako rehetra"> <!-- Backgroundimage of slide -->
-    @* <svg id="viewBox" viewBox="0 0 1000 1000"> <!-- SVG containing all the buttons of current slide-->
-        @if (SlideData != null) { 
-            foreach (var item in SlideData.Buttons) { <!-- Create all buttons--> 
-                @* var localCounter = counter; <!-- Local counter for buttons-Id (Numbers)--> 
-                <Button ButtonData=item OnButtonClick="HandleButtonClick"/>
-                @* Console.WriteLine(localCounter); 
-            }
-        }
-    </svg>  
-	<svg>
-		@* <polygon id="Test" points=@SlideData.Buttons[0].Points @onclick="async () => await SlideChange(SlideData.Buttons[0].Actions[0][1])" /> 
-		<polygon id="Test" points=@SlideData.Buttons["beamer"].Points @onclick='() => {OnSlideChange.InvokeAsync("Tefst");}' />
-	</svg>
-
-     
-
-</div>
-
-*@
 
 <div id="main-container">
 	<img id="bg-img" src="@SlideData.Image" alt="ry namako rehetra">
 	<svg id="svg" viewBox="0,0, 1920,1080">
-		@foreach (var buttonKey in SlideData.Buttons.Keys.ToList())
+		@* *Added Null supression *@
+		@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
 		{
-			<polygon 
-			id="@buttonKey"
-			fill="rgba(255, 255, 147, 0.5)"
-			points="@SlideData.Buttons[buttonKey].Points" 
-			
-			@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
-			/>
+			if (GameState.CheckVisibility(buttonKey)) {
+
+				var ButtonElement = SlideData.Buttons[buttonKey]; 
+				if (ButtonElement.Image == null) { // Button is a Polygon
+				<polygon 
+					id="@buttonKey"
+					fill="rgba(255, 255, 147, 0.5)"
+					points="@ButtonElement.Points" 
+					
+					@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
+				/>
+				}
+				else { // Button is an Image
+					var PointsList = ButtonElement.Points.Split(',');
+					
+					<image 
+						id=@buttonKey
+						x=@PointsList[0]
+						y=@PointsList[1]
+						width=@PointsList[2]
+						height=@PointsList[3]
+						href=@ButtonElement.Image
+					/>
+
+				}
+			}
 		}
 	</svg>
 </div>
@@ -49,51 +47,8 @@
 
 
 @code{
-	// https://www.image-map.net/
-
-    @* [Parameter]
-    public JsonSlide SlideData { get; set; } = null!; // Get the slide data 
-
-	private string Test = "Tssdfgnfjdrheswdfiogvnk";
-
-	[Parameter]
-	public EventCallback<string> OnSlideChange { get; set; }
-
-	private void PrintTest()
-	{
-		Console.WriteLine(Test);
-	}
-	
-	protected async Task SlideChange(string slideName)
-	{
-		await OnSlideChange.InvokeAsync(slideName);
-	}
-
-    private void HandleButtonClick(JsonButton button)
-    {
-        EvaluateActions(button.Actions);
-    }
-
-    private async Task EvaluateActions(List<List<string>> actions)
-	{
-		foreach (List<string> action in actions)
-		{
-			switch (action[0])
-			{
-				case "Route":
-					await SlideChange(action[1]);
-					break;
-				// case "Require":
-				// 	if (ValidateRequire(action[1], action[2]))
-				// 	{
-				// 		return;
-				// 	}
-				// 	break;
-				default:
-					break;
-			}
-		}
-	} *@
+	// https://imagemap.org/ 
+    
 }
 
 

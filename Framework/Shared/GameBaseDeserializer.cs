@@ -11,10 +11,10 @@ public partial class GameBase
 {
 	// [Inject]
 	// HttpClient Http {get; set; } = null!;
-	
+
 	[Inject]
-	JsonUtility JsonUtility {get; set; } = null!;
-	
+	JsonUtility JsonUtility { get; set; } = null!;
+
 	private async Task<Dictionary<string, JsonSlide>> FetchSlidesAsync(string url)
 	{
 		// assign return value from GetFromJsonAsync to slides if it is not null, otherwise throw an exception
@@ -22,7 +22,8 @@ public partial class GameBase
 		var slides = await JsonUtility.LoadFromJsonAsync<Dictionary<string, JsonSlide>>(url);
 		return slides;
 	}
-	
+
+	[Obsolete("Outdated, need to update")]
 	private static void VerifySlides(Dictionary<string, JsonSlide> slides)
 	{
 		// idk, check every value to make sure it's not null
@@ -41,8 +42,6 @@ public partial class GameBase
 				throw new Exception($"Slide {key} has a null buttons");
 			}
 			slide.Buttons.Keys.ToList().ForEach(buttonKey =>
-			
-			
 			{
 				var button = slide.Buttons[buttonKey];
 				// outdated, since Id is no longer included in the object
@@ -61,13 +60,13 @@ public partial class GameBase
 			});
 		});
 	}
-	
+
 	public async Task<Dictionary<string, JsonSlide>> GetSlides(string url)
 	{
 		var slides = await FetchSlidesAsync(url);
 		try
 		{
-			VerifySlides(slides);
+			// VerifySlides(slides);
 			return slides;
 		}
 		catch (Exception e)
@@ -76,8 +75,8 @@ public partial class GameBase
 			throw;
 		}
 	}
-	
-	// doesn't verify slides, is faster but could result in unexpected behavior
+
+	// doesn't verify slides, is faster (probably) but could result in unexpected behavior
 	public async Task<Dictionary<string, JsonSlide>> GetSlidesUnsafe(string url)
 	{
 		return await FetchSlidesAsync(url);

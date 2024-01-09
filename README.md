@@ -1,5 +1,7 @@
 # AdventureFramework2023
 
+# EVERYTHING DOWN HERE IS OUTDATED/OBSOLETE/WRONG/ETC.
+
 # TODO for Holidays
 
 ### Slides

@@ -1,5 +1,26 @@
 @namespace Framework.TestComp
 
-@inherits Framework.TestComp.TestCompBase
+@using Framework.Minigames
 
-<p>@thing</p>
+<div id="test">
+
+</div>
+
+
+@* <Minigame MinigameDefClass="Framework.Minigames.MiniTest" OnFinished="((success) => Console.WriteLine(success))" /> *@
+
+
+@* Note to self: MarkupString can't have blazor stuff *@
+@* @((MarkupString)Markup))
+
+@code {
+
+    private int counter = 0;
+    
+    private void Increment() {
+
+        counter++;
+    }
+
+    private string Markup = "<button @onclick=\"Increment\">@counter</button>";
+} *@
