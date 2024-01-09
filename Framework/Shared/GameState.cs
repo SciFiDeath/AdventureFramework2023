@@ -83,24 +83,24 @@ public class GameState
 		return ItemsInInventory;
 	}
 
-	    public string Save(string key = "1234", string path = "gamestate.json")
-{
-    string encrypted = "";
+	public string Save(string key = "1234", string path = "gamestate.json")
+	{
+		string encrypted = "";
 
-    try
-    {
-        encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
-        Console.WriteLine("Save successful");
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error during save: {ex.Message}");
-        // Log the exception or take appropriate actions
-        throw new Exception("Could not encrypt and save", ex);
-    }
+		try
+		{
+			encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
+			Console.WriteLine("Save successful");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error during save: {ex.Message}");
+			// Log the exception or take appropriate actions
+			throw new Exception("Could not encrypt and save", ex);
+		}
 
-    return encrypted;
-}
+		return encrypted;
+	}
 
 
     public void LoadFromString(string encrypted)
