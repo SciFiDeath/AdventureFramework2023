@@ -8,10 +8,6 @@ using GameStateInventory;
 
 namespace Framework.Game;
 
-// could't get the injection of SlidesDeserializer to work, so I just copied the code
-// from SlidesDeserializer into GameBase
-// The deserialization part is in GameBaseDeserializer.cs, containing a partial class of GameBase
-// I though everything in one file would be a bit messy, so I split it up
 public partial class GameBase : ComponentBase
 {
 	[Inject]
@@ -20,19 +16,9 @@ public partial class GameBase : ComponentBase
 	// Stuff for easier debugging
 	[Inject]
 	protected GameState GameState { get; set; } = null!;
-	private readonly bool debugMode = true;
-	private readonly TaskCompletionSource<bool> _tcs = new();
-	protected Task InitTask => _tcs.Task;
-	// Basically initialize the stuff here, so that you don't always have to go through the
-	// index to test stuff
-	// protected override async Task OnInitializedAsync()
-	// {
-	// }
-	private async Task Init()
-	{
-		await SlideService.Init();
-		await GameState.LoadGameStateAndItemsAsync();
-	}
+
+	// // private readonly TaskCompletionSource<bool> _tcs = new();
+	// // protected Task InitTask => _tcs.Task;
 
 	protected string SlideId => Parameters.SlideId;
 
@@ -40,21 +26,15 @@ public partial class GameBase : ComponentBase
 	// protected Dictionary<string, object?> ParametersDictionary { get; set; } = null!;
 
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		// // TODO: Make it so that this runs at initialization of entire thing
-		// await SlideService.Init();
-		if (debugMode)
-		{
-			await Init();
-		}
 		string slideId = SlideService.GetStartSlideId();
 		Parameters = new SlideComponentParameters()
 		{
 			SlideId = slideId,
 			OnSlideChange = EventCallback.Factory.Create<string>(this, ChangeSlide)
 		};
-		_tcs.SetResult(true);
+		// // _tcs.SetResult(true);
 	}
 
 	protected static void HandlePolygonClick(string thing)

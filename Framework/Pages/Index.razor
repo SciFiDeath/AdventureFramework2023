@@ -1,14 +1,20 @@
 ﻿@page "/"
 @using Framework.Slides
 @using GameStateInventory
+@using Framework.Game
 
 @inject SlideService SlideService
 @inject GameState GameState
 
 @if (initTask.IsCompletedSuccessfully) {
-    <h1 id="test">Hello, world!</h1>
-    <a href="/game">Game</a>
-    <a href="/testpage">TestPage</a>
+    if (gameStarted) {
+        <Game />
+    }
+    else {
+        <h1 id="test">Hello, world!</h1>
+        <button style="color: white; background-color: rgb(126, 5, 5)" @onclick="StartGame">Game</button>
+        <a href="/testpage">TestPage</a>
+    }
 }
 
 
@@ -20,10 +26,16 @@ else {
     private TaskCompletionSource<bool> _tcs = new();
     private Task initTask => _tcs.Task;
 
+    private bool gameStarted = false;
+
     protected override async Task OnInitializedAsync()
     {
         await SlideService.Init();
         await GameState.LoadGameStateAndItemsAsync();
         _tcs.SetResult(true);
+    }
+
+    private void StartGame(){
+        gameStarted = true;
     }
 }
