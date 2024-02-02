@@ -167,8 +167,8 @@ public class FinishedEventArgs : EventArgs
 
 public abstract class NamedAttribute : Attribute
 {
-	public readonly string? name;
-	public NamedAttribute(string? name = null)
+	public readonly string name;
+	public NamedAttribute(string name)
 	{
 		this.name = name;
 	}
@@ -177,19 +177,19 @@ public abstract class NamedAttribute : Attribute
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
 public sealed class StyleAttribute : NamedAttribute
 {
-	public StyleAttribute(string? name = null) : base(name) { }
+	public StyleAttribute(string name) : base(name) { }
 }
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
 public sealed class HtmlAttribute : NamedAttribute
 {
-	public HtmlAttribute(string? name = null) : base(name) { }
+	public HtmlAttribute(string name) : base(name) { }
 }
 
 [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
 public sealed class CallbackAttribute : NamedAttribute
 {
-	public CallbackAttribute(string? name = null) : base(name) { }
+	public CallbackAttribute(string name) : base(name) { }
 }
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
@@ -198,13 +198,13 @@ public sealed class ElementAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
 public sealed class ElementNameAttribute : NamedAttribute
 {
-	public ElementNameAttribute(string? name = null) : base(name) { }
+	public ElementNameAttribute(string name) : base(name) { }
 }
 
 
 public abstract class SVGElement
 {
-	[Html] public string? Style { get => GetStyleString(); }
+	[Html("style")] public string? Style { get => GetStyleString(); }
 
 	// // public int ZIndex { get; set; } = 0;
 
@@ -233,6 +233,7 @@ public abstract class SVGElement
 	// // public abstract string GetMarkupString();
 
 	// maybe problems with reactivity, don't know yet
+	[Obsolete("Not used, no reason to ever use, there is another that does the same thing")]
 	private string? GetStyleStringOld()
 	{
 		string style = "";
@@ -262,13 +263,15 @@ public abstract class SVGElement
 			if (value != null)
 			{
 				//*Note: Added null suppression because safety is ensured, but keep in mind regardless
-				style += $"{property.GetCustomAttribute<StyleAttribute>()!.name ?? Translate(property.Name)}: {property.GetValue(this)};";
+				// with translate {...ibute<StyleAttribute>()!.name ?? Translate(property.Name)}
+				style +=
+				$"{property.GetCustomAttribute<StyleAttribute>()!.name}: {property.GetValue(this)};";
 			}
 		}
 		return style == "" ? null : style;
 	}
 
-	[Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
+	[Obsolete("MarkupStrings cannot contain blazor stuff, use RenderFragments instead")]
 	public string? GetElementAttributeString()
 	{
 		string attributes = "";
@@ -286,7 +289,7 @@ public abstract class SVGElement
 		return attributes == "" ? null : attributes;
 	}
 
-	[Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
+	[Obsolete("MarkupStrings cannot contain blazor stuff, use RenderFragments instead")]
 	public string? GetCallbackString()
 	{
 		string callbacks = "";
@@ -313,7 +316,7 @@ public abstract class SVGElement
 			{
 				attributes.Add(
 					//*Note: Added null suppression because safety is ensured, but keep in mind regardless
-					property.GetCustomAttribute<HtmlAttribute>()!.name ?? Translate(property.Name),
+					property.GetCustomAttribute<HtmlAttribute>()!.name,
 					value
 				);
 			}
@@ -341,7 +344,7 @@ public abstract class SVGElement
 					// But still, I could be overlooking somehting, so be wary of this
 					// If this throws an error, we're in trouble, as it means that something greater
 					// beyond my mortal understanding has broken
-					method.GetCustomAttribute<CallbackAttribute>()!.name ?? Translate(method.Name),
+					method.GetCustomAttribute<CallbackAttribute>()!.name,
 					EventCallback.Factory.Create(this, action)
 				);
 			}
@@ -388,6 +391,7 @@ public abstract class SVGElement
 	}
 
 	// TODO: fix the usage and implementation of this method
+	[Obsolete("Html and Style attrs require name, this is just a possible error source")]
 	public static string Translate(string key)
 	{
 		// for EventHandlers
@@ -426,16 +430,16 @@ public class Rectangle : SVGElement
 	// "normal" implementation of TagName
 	public override string TagName { get; } = "rect";
 
-	[Html] public string? Id { get; set; }
+	[Html("id")] public string? Id { get; set; }
 
-	[Html] public int? X { get; set; }
-	[Html] public int? Y { get; set; }
-	[Html] public int Width { get; set; }
-	[Html] public int Height { get; set; }
+	[Html("x")] public int? X { get; set; }
+	[Html("y")] public int? Y { get; set; }
+	[Html("width")] public int Width { get; set; }
+	[Html("height")] public int Height { get; set; }
 
-	[Html] public string? Fill { get; set; }
+	[Html("fill")] public string? Fill { get; set; }
 
-	[Callback] public Delegate? OnClick { get; set; }
+	[Callback("onclick")] public Delegate? OnClick { get; set; }
 
 	// public override RenderFragment GetRenderFragment()
 	// {
@@ -456,9 +460,9 @@ public class Text : SVGElement
 
 	public string? InnerText { get; set; }
 
-	[Html] public int? X { get; set; }
-	[Html] public int? Y { get; set; }
-	[Html] public string? Fill { get; set; }
+	[Html("x")] public int? X { get; set; }
+	[Html("y")] public int? Y { get; set; }
+	[Html("fill")] public string? Fill { get; set; }
 	[Style("font-size")] public string? FontSize { get; set; }
 	[Style("font-family")] public string? FontFamily { get; set; }
 
@@ -481,16 +485,16 @@ public class SVGImage : SVGElement
 {
 	public override string TagName { get; } = "image";
 
-	[Html] public int? X { get; set; }
-	[Html] public int? Y { get; set; }
-	[Html] public int? Width { get; set; }
-	[Html] public int? Height { get; set; }
+	[Html("x")] public int? X { get; set; }
+	[Html("y")] public int? Y { get; set; }
+	[Html("width")] public int? Width { get; set; }
+	[Html("height")] public int? Height { get; set; }
 
 	[Style("display")] public string? Visibility { get; set; }
 
 	[Html("href")] public string? Image { get; set; }
 
-	[Callback] public Delegate? OnClick { get; set; }
+	[Callback("onclick")] public Delegate? OnClick { get; set; }
 
 }
 
