@@ -28,9 +28,9 @@ i.e. the class that they make and all this stuff, sould always stay the same.
 @inherits MinigameBase
 
 <div id="main-container">
-    <img id="bg-img" src="@MinigameDef.BackgroundImage">
+   <img id="bg-img" src="@MinigameDef.BackgroundImage">
 	<svg id="svg" viewBox="0,0,1920,1080">
-        @foreach (var component in MinigameDef.Elements) {
+        @foreach (var component in MinigameDef.Elements.Values) {
             @* @((MarkupString)component.GetMarkupString()) *@
             @component.GetRenderFragment()
         }

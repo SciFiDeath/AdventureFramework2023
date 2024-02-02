@@ -51,6 +51,7 @@ public class MinigameBase : ComponentBase
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
 
+	// TODO: Remake the finish funcionality so that it has a purpose
 	[Parameter]
 	public EventCallback<bool> OnFinished { get; set; }
 
@@ -96,7 +97,8 @@ public class MinigameBase : ComponentBase
 
 public abstract class MinigameDefBase
 {
-	public List<SVGElement> Elements { get; set; } = new();
+	// // public List<SVGElement> Elements { get; set; } = new();
+	public Dictionary<string, SVGElement> Elements { get; set; } = new();
 
 	public abstract string BackgroundImage { get; set; }
 
@@ -121,12 +123,15 @@ public abstract class MinigameDefBase
 				// cast and assign it to element, then add it to the list
 				if (property.GetValue(this) is SVGElement element)
 				{
-					Elements.Add(element);
+					// Elements.Add(element);
+					Elements.Add(property.Name, element);
 				}
 			}
 		}
 		// sort the list by ZIndex so that higher ZIndex elements appear first
-		Elements.Sort((b, a) => a.ZIndex.CompareTo(b.ZIndex));
+		// Does it need to be sorted by z-index? For the few cases where it actually matters
+		// can't we just define it explicitly in the style attr?
+		// Elements.Sort((b, a) => a.ZIndex.CompareTo(b.ZIndex)); 
 		// Console.WriteLine(Elements.Count);
 	}
 
@@ -201,10 +206,12 @@ public abstract class SVGElement
 {
 	[Html] public string? Style { get => GetStyleString(); }
 
-	public int ZIndex { get; set; } = 0;
+	// // public int ZIndex { get; set; } = 0;
 
-	// // Implementation of the TagName property as static
-	// public static string TagName { get; } = "svg";
+	[Style("z-index")] public int? ZIndex { get; set; }
+
+	// // // Implementation of the TagName property as static
+	// // public static string TagName { get; } = "svg";
 
 	// Normal implementation (maybe slightly slower, but I understand it better)
 	public abstract string TagName { get; }
@@ -215,14 +222,15 @@ public abstract class SVGElement
 		{
 			builder.OpenElement(0, TagName);
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-			builder.AddAttribute(2, "style", Style);
-			builder.AddMultipleAttributes(3, GetCallbackDictionary());
+			// // // Style is literally an Html property, so it's added by the line above
+			// // builder.AddAttribute(2, "style", Style); // 
+			builder.AddMultipleAttributes(2, GetCallbackDictionary());
 			builder.CloseElement();
 		};
 	}
 
-	// [Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
-	// public abstract string GetMarkupString();
+	// // [Obsolete("Strings cannot contain blazor stuff, use RenderFragments instead")]
+	// // public abstract string GetMarkupString();
 
 	// maybe problems with reactivity, don't know yet
 	private string? GetStyleStringOld()
