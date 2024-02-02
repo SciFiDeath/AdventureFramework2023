@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Reflection;
 using GameStateInventory;
+using System.Collections.Specialized;
 
 namespace Framework.Minigames;
 
@@ -164,6 +165,37 @@ public class FinishedEventArgs : EventArgs
 	public bool Success { get; set; }
 }
 
+public class SVGElementContainer
+{
+	private Dictionary<string, SVGElement> Elements { get; set; } = new();
+
+	public SVGElement[] Values => Elements.Values.ToArray();
+	public string[] Keys => Elements.Keys.ToArray();
+
+	public SVGElement this[string key]
+	{
+		get => Elements[key];
+		set => Elements[key] = value;
+	}
+
+	public string AddElement(SVGElement element)
+	{
+		var id = element.Id ?? Guid.NewGuid().ToString("N");
+		Elements.Add(id, element);
+		return id;
+	}
+
+	public SVGElement? GetElement(string name)
+	{
+		return Elements[name];
+	}
+
+	public bool RemoveElement(string name)
+	{
+		return Elements.Remove(name);
+	}
+}
+
 
 public abstract class NamedAttribute : Attribute
 {
@@ -205,6 +237,8 @@ public sealed class ElementNameAttribute : NamedAttribute
 public abstract class SVGElement
 {
 	[Html("style")] public string? Style { get => GetStyleString(); }
+
+	[Html("id")] public string? Id { get; set; }
 
 	// // public int ZIndex { get; set; } = 0;
 
@@ -352,8 +386,6 @@ public abstract class SVGElement
 		return callbacks.Count == 0 ? null : callbacks;
 	}
 
-
-
 	// public Dictionary<string, object>? GetElementAttributeDictionary()
 	// {
 	// 	Dictionary<string, object> attributes = new();
@@ -370,8 +402,6 @@ public abstract class SVGElement
 	// 	}
 	// 	return attributes.Count == 0 ? null : attributes;
 	// }
-
-
 
 	protected static string ConvertCamelToKebab(string camelCase)
 	{
@@ -414,8 +444,9 @@ public abstract class SVGElement
 		}
 		return ConvertCamelToKebab(key);
 	}
-
 }
+
+public abstract class GameObject : SVGElement { }
 
 // Some classes like ImgButton, PolygonButton, RectButton are some Ideas I had
 // They are set as properties in a  MinigameBase instance and are then
@@ -429,8 +460,6 @@ public class Rectangle : SVGElement
 
 	// "normal" implementation of TagName
 	public override string TagName { get; } = "rect";
-
-	[Html("id")] public string? Id { get; set; }
 
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
