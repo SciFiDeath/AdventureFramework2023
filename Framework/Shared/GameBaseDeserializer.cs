@@ -1,3 +1,5 @@
+/*
+
 using Framework.Slides.JsonClasses;
 using JsonUtilities;
 using Microsoft.AspNetCore.Components;
@@ -61,19 +63,21 @@ public partial class GameBase
 		});
 	}
 
+	// TODO: Make this actually useful
 	public async Task<Dictionary<string, JsonSlide>> GetSlides(string url)
 	{
-		var slides = await FetchSlidesAsync(url);
-		try
-		{
-			// VerifySlides(slides);
-			return slides;
-		}
-		catch (Exception e)
-		{
-			Console.WriteLine(e);
-			throw;
-		}
+		// var slides = await FetchSlidesAsync(url);
+		// try
+		// {
+		// 	// VerifySlides(slides);
+		// 	return slides;
+		// }
+		// catch (Exception e)
+		// {
+		// 	Console.WriteLine(e);
+		// 	throw;
+		// }
+		return await FetchSlidesAsync(url);
 	}
 
 	// doesn't verify slides, is faster (probably) but could result in unexpected behavior
@@ -82,3 +86,5 @@ public partial class GameBase
 		return await FetchSlidesAsync(url);
 	}
 }
+
+*/

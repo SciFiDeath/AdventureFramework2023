@@ -1,3 +1,9 @@
+/*
+The container contains every component of the page.
+Ideally it is only at once, as this is for what it is designed.
+It always has an aspect ratio of 16:9, 
+is always centered and fills out the maximal possible space 
+*/
 #container {
     position: absolute;
     aspect-ratio: 16/9;
@@ -14,6 +20,7 @@
     }
 }
 
+/* the main element fill the entire screen and is black */
 main {
     position: absolute;
     top: 0;

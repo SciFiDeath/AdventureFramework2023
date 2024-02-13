@@ -5,27 +5,48 @@
 @namespace Framework.Slides
 
 
-<div id="main-container">
-	<img id="bg-img" src="@SlideData.Image" alt="ry namako rehetra">
-	<svg id="svg" viewBox="0,0, 1920,1080">
-		@* *Added Null supression *@
-		@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
-		{
-			if (GameState.CheckVisibility(buttonKey)) {
+<img id="bg-img" src="@SlideData.Image" alt="ry namako rehetra">
+<svg id="svg" viewBox="0,0, 1920,1080">
+	@* *Added Null supression *@
+	@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
+	{
+		if (GameState.CheckVisibility(buttonKey)) {
 
-				var ButtonElement = SlideData.Buttons[buttonKey]; 
-				if (ButtonElement.Image == null) { // Button is a Polygon
-				<polygon 
-					id="@buttonKey"
-					fill="rgba(255, 255, 147, 0.5)"
-					points="@ButtonElement.Points" 
-					
-					@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
-				/>
-				}
-				else { // Button is an Image
-					var PointsList = ButtonElement.Points.Split(',');
-					
+			var ButtonElement = SlideData.Buttons[buttonKey];
+			// Declare here as it's used in several cases
+			var PointsList = ButtonElement.Points.Split(',');
+
+			switch (ButtonElement.Type) {
+				case null:
+					if (ButtonElement.Image == null) { // Button is a Polygon
+						<polygon 
+							id="@buttonKey"
+							fill=@fillColor
+							points="@ButtonElement.Points" 
+							@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
+						/>
+					}
+					else { // Button is an Image
+						<image 
+							id=@buttonKey
+							x=@PointsList[0]
+							y=@PointsList[1]
+							width=@PointsList[2]
+							height=@PointsList[3]
+							href=@ButtonElement.Image
+						/>
+					}
+					break;
+				// If you want to explicitly declare type "image" or "polygon" you can also do that
+				case "polygon" or "Polygon" or "poly" or "Poly":
+					<polygon 
+						id="@buttonKey"
+						fill=@fillColor
+						points="@ButtonElement.Points" 
+						@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
+					/>
+					break;
+				case "image" or "Image" or "img" or "Img":
 					<image 
 						id=@buttonKey
 						x=@PointsList[0]
@@ -34,17 +55,32 @@
 						height=@PointsList[3]
 						href=@ButtonElement.Image
 					/>
-
-				}
+					break;
+				case "rect" or "Rect" or "rectangle" or "Rectangle":
+					<rect
+						id=@buttonKey
+						x=@PointsList[0]
+						y=@PointsList[1]
+						width=@PointsList[2]
+						height=@PointsList[3]
+						fill=@fillColor
+						@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}"
+					/>
+					break;
+				case "circle" or "Circle":
+					<circle
+						id=@buttonKey
+						cx=@PointsList[0]
+						cy=@PointsList[1]
+						r=@PointsList[2]
+						fill=@fillColor
+						@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}"
+					/>
+					break;
 			}
 		}
-	</svg>
-</div>
-
-
-
-
-
+	}
+</svg>
 
 @code{
 	// https://imagemap.org/ 
