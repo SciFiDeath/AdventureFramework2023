@@ -71,6 +71,7 @@ public class GameState
 			throw new Exception("Item doesn't exist in items.json Dictionary");
 		}
 		ItemsInInventory.Add(id);
+
 		ToastService.ShowSuccess($"Added {id} to inventory");
 		Console.WriteLine($"Successfully added {id} to inventory");
 	}
@@ -78,9 +79,20 @@ public class GameState
 	{
 		return ItemsInInventory.Contains(id);
 	}
-	public List<string> GetItems()
+	public Dictionary<string, Item> GetItemObjects()
 	{
-		return ItemsInInventory;
+        Dictionary<string, Item> ItemObjects = new();
+
+		foreach (string id in ItemsInInventory)
+		{	
+			if (Items.items.ContainsKey(id))
+			{
+				ItemObjects.Add(id, Items.items[id]);
+			}
+			
+		}
+
+		return ItemObjects;
 	}
 
 	public string Save(string key = "1234", string path = "gamestate.json")

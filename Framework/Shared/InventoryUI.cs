@@ -15,9 +15,7 @@ public class InventoryUIBase : ComponentBase
     [Inject]
     protected Items? Items { get; set; }
     
-    public List<string> ItemNames = new();
-    
-    public List<string> InventoryItems = new();
+    public Dictionary<string, Item> InvItems = new();
     protected override async Task OnInitializedAsync()
     {
         if (GameState == null)
@@ -26,21 +24,11 @@ public class InventoryUIBase : ComponentBase
             Console.WriteLine("GameState is null!");
             return;
         }
-        await GameState.LoadGameStateAndItemsAsync();
         
         GameState.AddItem("goldkey");     
-        ItemNames = GameState.GetItems();
+        InvItems = GameState.GetItemObjects();
 
-    }
-    public void AddItem()
-    {
-        GameState.AddItem("surfacecharger");
-    }
 
-    public void TestEncrypt()
-    {
-        string encrypt = GameState.Save();
-        Console.WriteLine(encrypt);
     }
 
 }

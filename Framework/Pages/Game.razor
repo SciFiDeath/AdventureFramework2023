@@ -4,6 +4,7 @@
 
 @using Framework.Slides
 @using Framework.Minigames
+@using Framework.InventoryUI
 
 
 @* <DynamicComponent Type=@typeof(Framework.Slides.Slide) 
@@ -16,3 +17,5 @@ Parameters=@(new Dictionary<string, object>{
 else {
     <DynamicComponent Type=@typeof(Slide) Parameters="Parameters.GetParameterDictionary()" />
 }
+
+<GameStateInventory.InventoryUI />

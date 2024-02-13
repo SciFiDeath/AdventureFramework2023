@@ -6,8 +6,11 @@
 @inject IToastService _toastService
 
 <h3>Inventory UI Test</h3>
-<button @onclick="AddItem">Add Item</button>
-<button @onclick="TestEncrypt">GameState</button>
 
-
-<p></p>
+@foreach (string id in InvItems.Keys)
+{
+    Console.WriteLine(id);
+    string s = InvItems[id].Image;
+    Console.WriteLine(s);
+    <img src="@InvItems[id].Image" width="1000">
+}
