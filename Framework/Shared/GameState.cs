@@ -100,8 +100,9 @@ public class GameState
 		string encrypted = "";
 
 		try
-		{
-			encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
+		{	
+			//TODO Encryption implementation needed
+			//encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
 			Console.WriteLine("Save successful");
 		}
 		catch (Exception ex)

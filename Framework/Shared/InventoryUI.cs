@@ -25,7 +25,8 @@ public class InventoryUIBase : ComponentBase
             return;
         }
         
-        GameState.AddItem("goldkey");     
+        GameState.AddItem("goldkey"); 
+        GameState.AddItem("surfacecharger");    
         InvItems = GameState.GetItemObjects();
 
 
