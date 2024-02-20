@@ -54,7 +54,7 @@
         <td>
             Array of strings. Tags can be used to mark a slide. Basically a dodgy solution to implement more functionality without changing the structure of the json too much.
         </td>
-        <td></td>
+        <td>Optional</td>
     </tr>
     <tr>
         <td><code>Image</code></td>
@@ -68,53 +68,65 @@
         <td>
             A dictionary containing the data for all the buttons on the slide.
         </td>
-        <td></td>
+        <td>Required. If a Slide should have no buttons (which should never be the case as you would be trapped there), just set it as an empty object</td>
     </tr>
     <!--  -->
     <tr>
         <td align=center colspan=3 ><strong>Button Level</strong></th>
     </tr>
     <tr>
-        <td><code>*Tag</code></td>
+        <td><code>*Tags</code></td>
         <td>
             List of strings cotaining tags to mark a button. Pretty much the same as the <code>Tag</code> in the slide object.
         </td>
-        <td></td>
+        <td>Optional</td>
     </tr>
     <tr>
         <td><code>Type</code></td>
         <td>
             Specifies what kind of button it is. Can be <code>polygon</code>, <code>rect</code>, <code>circle</code>, <code>image</code>, <code>*ellipse</code>
         </td>
-        <td></td>
+        <td>Required</td>
     </tr>
     <tr>
         <td><code>Points</code></td>
         <td>
-            The data for the shape. What kind of data this is depends on the <code>Type</code> of the button. Explained in detail in the [Points section](#points)
+            The data for the shape. What kind of data this is depends on the <code>Type</code> of the button. Explained in detail in the <a href=#points>Points section</a>.
         </td>
-        <td></td>
+        <td>Required</td>
     </tr>
     <tr>
         <td><code>Image</code></td>
         <td>
-            The path to the image file that will be displayed as the button. Only needed it the <code>Type</code> is <code>image</code>.
+            The path to the image file that will be displayed as the button.
         </td>
-        <td></td>
+        <td>Required if <code>Type</code> is <code>image</code>. Will cause exception if specified when <code>Type</code> is something else.</td>
     </tr>
     <tr>
         <td><code>Actions</code></td>
         <td>
-            A list of lists. Each list contains the data for one action that is executed when the button is clicked. Explained in detail in the [Actions section](#actions).
+            A list of lists. Each list contains the data for one action that is executed when the button is clicked. Explained in detail in the <a href=#actions>Actions section</a>.
         </td>
-        <td></td>
+        <td>Required. If a button should have no actions, set it to an empty array. (maybe make it nullable?)</td>
     </tr>
     <tr>
         <td><code>*Visible</code></td>
         <td>
-            a
+            Controls visibility of the Slide. If it is set, a GameState entry is generated automatically. Every generated entry is set to <code>true</code>.
+            <ul>
+                <li>If set to <code>auto</code>, the GameState key will be automatically generated.</li>
+                <li>If set to <code>&lt;custom key name&gt;</code>, you can specify the GameState key manually. Make sure to follow the <a href=#naming-conventions>naming conventions</a></li>
+                <li>If you want the slide to be hidden at the start, add a <code>!</code> in front of the name.</li>
+            </ul>
+        </td>
+        <td>
+            <code>"Visible": "!auto"</code> will autogenerate a GameState entry, and the slide will be hidden at the start. <br>
+            <code>"Visible": "auto"</code> will autogenerate a GameState entry, and the slide will be visible at the start. <br>
+            <code>"Visible": "custom key name"</code> will generate a GameState entry with the specified key, and the slide will be visible at the start. <br>
+            <code>"Visible": "!custom key name"</code> will generate a GameState entry with the specified key, and the slide will be hidden at the start.
         </td>
     </tr>
+
 </table>
 
 <!-- ### File level
@@ -238,21 +250,28 @@ Actions are quite a convoluted mess.
         <td>
             <code>*PlaySound</code>
         </td>
-        <td></td>
+        <td>Plays a sound</td>
         <td></td>
     </tr>
     <tr>
         <td>
             <code>*AddItem</code>
         </td>
-        <td></td>
+        <td>Add the item with the specified id to the inventory</td>
         <td></td>
     </tr>
     <tr>
         <td>
             <code>*RemoveItem</code>
         </td>
+        <td>Remove the item with the specified id from the inventory</td>
         <td></td>
+    </tr>
+    <tr>
+        <td>
+            <code>*SetGameState</code>
+        </td>
+        <td>Set the value of a GameState entry</td>
         <td></td>
     </tr>
     <tr>
@@ -271,21 +290,14 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*SetGameState</code>
+            <code>*StartBlock</code>
         </td>
         <td></td>
         <td></td>
     </tr>
     <tr>
         <td>
-            <code>*</code>
-        </td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>
-            <code>*InventoryRemove</code>
+            <code>*EndBlock</code>
         </td>
         <td></td>
         <td></td>
