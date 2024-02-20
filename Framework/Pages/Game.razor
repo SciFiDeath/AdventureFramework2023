@@ -13,9 +13,12 @@ Parameters=@(new Dictionary<string, object>{
     }) /> *@
 @if (SlideService.GetSlide(SlideId).Type == "Minigame") {
     <Minigame MinigameDefClass="@SlideService.GetSlide(SlideId).MinigameDefClassName" OnFinished="FinishMinigame" />
-}
-else {
+
+}else {
+
     <DynamicComponent Type=@typeof(Slide) Parameters="Parameters.GetParameterDictionary()" />
 }
 
 <GameStateInventory.InventoryUI />
+
+@* <img src="images/calculator.png" style="z-index:10; position:absolute;"/> *@

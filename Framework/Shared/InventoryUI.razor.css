@@ -1,14 +1,16 @@
-
-/* Style for the horizontal images */
-.horizontal-images {
-    position:relative !important;
-    bottom: 10px; /* Adjust as needed */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Style for individual images */
-.horizontal-images img {
-    margin: 0 100px; /* Adjust as needed */
-}
+img {
+    position: relative; /* Style images with position relative */
+    width: 100px; /* Adjust the width as needed */
+    height: auto;
+    margin: 0 10px; /* Adjust margin between images */
+  }
+  
+  .horizontal-images {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Center the container horizontally */
+    width: 100%;
+    text-align: center; /* Center-align images */
+  }
+  
