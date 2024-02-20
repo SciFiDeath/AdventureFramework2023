@@ -9,7 +9,18 @@
         "name": "Surface Charger",
         "description": "Key to almost everything",
         "image": "InventoryImages/SurfaceCharger.jpeg"
-    }
+    },
     
+    "coffeemug": {
+        "name": "Surface Charger",
+        "description": "Key to almost everything",
+        "image": "InventoryImages/Kaffeetasse.jpg"
+    },
+    
+    "frog": {
+        "name": "Surface Charger",
+        "description": "Key to almost everything",
+        "image": "InventoryImages/Glass_Frog.jpg"
+    }
 
 }
