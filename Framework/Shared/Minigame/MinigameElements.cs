@@ -3,29 +3,36 @@ using Microsoft.AspNetCore.Components;
 
 namespace Framework.Minigames;
 
+
 public interface IGameObject
 {
-	public string? Id { get; set; }
+	public string Id { get; set; }
 
+	// visibilty not over style, but directly when rendering
+	public bool Visible { get; set; }
 	public RenderFragment GetRenderFragment();
 
 	public event EventHandler? OnKill;
 	public void Kill();
 }
 
+
 public interface ISVGElement : IGameObject
 {
-	[Html("style")] string? Style { get; }
-	[Html("z-index")] public int? ZIndex { get; set; }
-
 	string TagName { get; }
+	string? Style { get; }
+	public int? ZIndex { get; set; }
 }
 
-public abstract class GameObject
-{
-	public string? Id { get; set; }
 
-	public SVGElement? Element { get; set; }
+// you can use this as a base class, but you have to make the
+// GetRenderFragment method yourself
+public abstract class GameObject : IGameObject
+{
+	// Make sure that every element always has an Id
+	public string Id { get; set; } = Guid.NewGuid().ToString("N");
+
+	public virtual bool Visible { get; set; } = true;
 
 	public event EventHandler? OnKill;
 
@@ -34,41 +41,59 @@ public abstract class GameObject
 		OnKill?.Invoke(this, EventArgs.Empty);
 	}
 
-
+	public abstract RenderFragment GetRenderFragment();
 }
 
 
-public abstract class SVGElement : ISVGElement
+// This is the main class you should use for your game objects
+// It already includes the rendering logic
+//? Maybe mark as abstract?
+// Basically just a wrapper for an SVGElement
+// Abstracted away here so that you don't have to subclass the SVGElement classes
+// directly, but can use this as a base class if you want to add stuff
+public abstract class SVGElementGameObject : GameObject, ISVGElement
+{
+	// it is mandatory to set the element, otherwise you could just subclass GameObject
+	public SVGElement Element { get; set; } = null!;
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return Element.GetRenderFragment();
+	}
+
+	public string? Style { get => Element.Style; }
+
+	public int? ZIndex
+	{
+		get => Element.ZIndex;
+		set => Element.ZIndex = value;
+	}
+
+	public string TagName { get => Element.TagName; }
+}
+
+public abstract class SVGElement : GameObject, ISVGElement
 {
 	[Html("style")] public string? Style { get => GetStyleString(); }
 
-	[Html("id")] public string? Id { get; set; }
+	//* Also inherited from GameObject
+	// [Html("id")] public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
 	// // public int ZIndex { get; set; } = 0;
 
 	[Style("z-index")] public int? ZIndex { get; set; }
 
-	// // // Implementation of the TagName property as static
-	// // public static string TagName { get; } = "svg";
-
-	public event EventHandler? OnKill;
-
-	public void Kill()
-	{
-		OnKill?.Invoke(this, EventArgs.Empty);
-	}
-
 	// Normal implementation (maybe slightly slower, but I understand it better)
 	public abstract string TagName { get; }
 
-	public virtual RenderFragment GetRenderFragment()
+	public override RenderFragment GetRenderFragment()
 	{
 		return builder =>
 		{
 			builder.OpenElement(0, TagName);
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
 			// // // Style is literally an Html property, so it's added by the line above
-			// // builder.AddAttribute(2, "style", Style); // 
+			// // builder.AddAttribute(2, "style", Style); //
 			builder.AddMultipleAttributes(2, GetCallbackDictionary());
 			builder.CloseElement();
 		};
@@ -214,6 +239,7 @@ public abstract class SVGElement : ISVGElement
 	// 	return attributes.Count == 0 ? null : attributes;
 	// }
 
+	[Obsolete("Not used and also a bodgy solution, use the AttrubteClasses's name-propertyinstead")]
 	protected static string ConvertCamelToKebab(string camelCase)
 	{
 		string kebab = $"{char.ToLower(camelCase[0])}";
@@ -231,7 +257,6 @@ public abstract class SVGElement : ISVGElement
 		return kebab;
 	}
 
-	// TODO: fix the usage and implementation of this method
 	[Obsolete("Html and Style attrs require name, this is just a possible error source")]
 	public static string Translate(string key)
 	{

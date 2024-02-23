@@ -41,6 +41,30 @@ Slides.json things:
 	to when null is fine and when not, more complicated than the compiler can check.
 */
 
+/*
+	Life cycle of a minigame:
+	- Minigame gets the string of the class of the MinigameDef
+	
+	- If MinigameDef is cached in GameState:
+	  - Minigame takes the MinigameDef from GameState
+	- Else:
+	  - Minigame creates an instance of the MinigameDef
+	  - MinigameDef is initialized
+	  - MinigameDef is added to GameState
+	  
+	- Minigame subscribes to Finished and Update events of the MinigameDef
+	- Minigame supplies the GameState to the MinigameDef
+	- *Minigame supplies Mouse and Keyboard services to the MinigameDef
+	- Minigame calls the AfterInit method of the MinigameDef
+	
+	- If specified, the MinigameDef can subscribe to events of the Mouse and Keyboard services
+	
+	- Minigame renders the MinigameDef
+	
+	- Minigame listens for the Finished event of the MinigameDef
+	- If finished event is triggered, Minig...
+*/
+
 
 public class MinigameBase : ComponentBase
 {
@@ -78,9 +102,11 @@ public class MinigameBase : ComponentBase
 
 			// cast the instance
 			MinigameDef = (MinigameDefBase)instance;
+
 			// attach events
 			MinigameDef.Finished += async (sender, e) => await Finish(e.Success);
 			MinigameDef.UpdateEvent += (sender, e) => StateHasChanged();
+
 			// attach gamestate
 			MinigameDef.GameState = GameState;
 			// Run the AfterInit method
@@ -99,7 +125,7 @@ public abstract class MinigameDefBase
 {
 	// // public List<SVGElement> Elements { get; set; } = new();
 	// // public Dictionary<string, SVGElement> Elements { get; set; } = new();
-	public SVGElementContainer Elements { get; set; } = new();
+	public GameObjectContainer<GameObject> Elements { get; set; } = new();
 
 	public abstract string BackgroundImage { get; set; }
 
@@ -129,11 +155,11 @@ public abstract class MinigameDefBase
 				}
 			}
 		}
-		// sort the list by ZIndex so that higher ZIndex elements appear first
-		// Does it need to be sorted by z-index? For the few cases where it actually matters
-		// can't we just define it explicitly in the style attr?
-		// Elements.Sort((b, a) => a.ZIndex.CompareTo(b.ZIndex)); 
-		// Console.WriteLine(Elements.Count);
+		// // sort the list by ZIndex so that higher ZIndex elements appear first
+		// // Does it need to be sorted by z-index? For the few cases where it actually matters
+		// // can't we just define it explicitly in the style attr?
+		// // Elements.Sort((b, a) => a.ZIndex.CompareTo(b.ZIndex)); 
+		// // Console.WriteLine(Elements.Count);
 	}
 
 	// Method that is run right after the constructor
