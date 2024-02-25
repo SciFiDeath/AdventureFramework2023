@@ -2,25 +2,45 @@
 
 @using Framework.Minigames
 
+@using Framework.Keyboard
+
+@inject KeyboardService KeyboardService
+
 @* <div id="test">
 
 </div> *@
 
 
-<Minigame MinigameDefClass="Framework.Minigames.MiniTest" OnFinished="((success) => Console.WriteLine(success))" />
+@* <Minigame MinigameDefClass="Framework.Minigames.MiniTest" OnFinished="((success) => Console.WriteLine(success))" /> *@
 
+<button @onclick=isDown>@isDownRes</button>
 
 @* Note to self: MarkupString can't have blazor stuff *@
-@* @((MarkupString)Markup))
+@* @((MarkupString)Markup)) *@
 
 @code {
 
-    private int counter = 0;
+    @* private int counter = 0;
     
     private void Increment() {
 
         counter++;
     }
 
-    private string Markup = "<button @onclick=\"Increment\">@counter</button>";
-} *@
+    private string Markup = "<button @onclick=\"Increment\">@counter</button>"; *@
+
+    private bool isDownRes = false;
+
+    private void isDown() {
+        isDownRes = KeyboardService.GetKeyState("KeyA");
+    }
+
+    protected override void OnInitialized() {
+    KeyboardService.OnKeyDown += (sender, e) => {
+        Console.WriteLine("Key down");
+    };
+    KeyboardService.OnKeyUp += (sender, e) => {
+        Console.WriteLine("Key up");
+    };
+    }
+} 
