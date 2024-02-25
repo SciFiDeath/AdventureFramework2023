@@ -10,6 +10,8 @@ public interface IKeyboardService
 	bool GetKeyState(string key);
 	Dictionary<string, bool> GetKeyboardState();
 	Dictionary<string, bool> GetStaticKeyboardState();
+	event EventHandler<KeyEventArgs> OnKeyDown;
+	event EventHandler<KeyEventArgs> OnKeyUp;
 }
 
 public class KeyboardService : IKeyboardService
@@ -137,21 +139,21 @@ public class KeyboardService : IKeyboardService
 		{ "Quote", false }
 	};
 
-	public event EventHandler<KeyboardEventArgs>? OnKeyDown;
-	public event EventHandler<KeyboardEventArgs>? OnKeyUp;
+	public event EventHandler<KeyEventArgs>? OnKeyDown;
+	public event EventHandler<KeyEventArgs>? OnKeyUp;
 
 	[JSInvokable]
 	public void KeyDown(string key)
 	{
 		keyboardState[key] = true;
-		OnKeyDown?.Invoke(this, new KeyboardEventArgs { Key = key, State = true });
+		OnKeyDown?.Invoke(this, new KeyEventArgs { Key = key, Down = true });
 	}
 
 	[JSInvokable]
 	public void KeyUp(string key)
 	{
 		keyboardState[key] = false;
-		OnKeyUp?.Invoke(this, new KeyboardEventArgs { Key = key, State = false });
+		OnKeyUp?.Invoke(this, new KeyEventArgs { Key = key, Down = false });
 	}
 
 	public bool GetKeyState(string key)
@@ -172,8 +174,8 @@ public class KeyboardService : IKeyboardService
 	}
 }
 
-public class KeyboardEventArgs : EventArgs
+public class KeyEventArgs : EventArgs
 {
 	public string Key { get; set; } = null!;
-	public bool State { get; set; }
+	public bool Down { get; set; }
 }

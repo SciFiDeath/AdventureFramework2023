@@ -16,13 +16,14 @@ public interface IGameObject
 	public void Kill();
 }
 
-
-public interface ISVGElement : IGameObject
-{
-	string TagName { get; }
-	string? Style { get; }
-	public int? ZIndex { get; set; }
-}
+// implementing this interface causes `Style` to break cause there is somehow
+// an ambiguity between the property defined in the class and the on in the interface
+// public interface ISVGElement : IGameObject
+// {
+// 	string TagName { get; }
+// 	string? Style { get; }
+// 	public int? ZIndex { get; set; }
+// }
 
 
 // you can use this as a base class, but you have to make the
@@ -51,7 +52,7 @@ public abstract class GameObject : IGameObject
 // Basically just a wrapper for an SVGElement
 // Abstracted away here so that you don't have to subclass the SVGElement classes
 // directly, but can use this as a base class if you want to add stuff
-public abstract class SVGElementGameObject : GameObject, ISVGElement
+public abstract class SVGElementGameObject : GameObject
 {
 	// it is mandatory to set the element, otherwise you could just subclass GameObject
 	public SVGElement Element { get; set; } = null!;
@@ -72,7 +73,8 @@ public abstract class SVGElementGameObject : GameObject, ISVGElement
 	public string TagName { get => Element.TagName; }
 }
 
-public abstract class SVGElement : GameObject, ISVGElement
+
+public abstract class SVGElement : GameObject
 {
 	[Html("style")] public string? Style { get => GetStyleString(); }
 
@@ -92,8 +94,6 @@ public abstract class SVGElement : GameObject, ISVGElement
 		{
 			builder.OpenElement(0, TagName);
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-			// // // Style is literally an Html property, so it's added by the line above
-			// // builder.AddAttribute(2, "style", Style); //
 			builder.AddMultipleAttributes(2, GetCallbackDictionary());
 			builder.CloseElement();
 		};
@@ -182,6 +182,7 @@ public abstract class SVGElement : GameObject, ISVGElement
 		foreach (var property in properties)
 		{
 			var value = property.GetValue(this);
+
 			if (value != null)
 			{
 				attributes.Add(
@@ -191,7 +192,6 @@ public abstract class SVGElement : GameObject, ISVGElement
 				);
 			}
 		}
-		// Console.WriteLine(attributes.Count);
 		return attributes.Count == 0 ? null : attributes;
 	}
 
@@ -239,7 +239,7 @@ public abstract class SVGElement : GameObject, ISVGElement
 	// 	return attributes.Count == 0 ? null : attributes;
 	// }
 
-	[Obsolete("Not used and also a bodgy solution, use the AttrubteClasses's name-propertyinstead")]
+	[Obsolete("Not used and also a bodgy solution, use the AttrubteClasses's `name` property instead")]
 	protected static string ConvertCamelToKebab(string camelCase)
 	{
 		string kebab = $"{char.ToLower(camelCase[0])}";
@@ -257,7 +257,7 @@ public abstract class SVGElement : GameObject, ISVGElement
 		return kebab;
 	}
 
-	[Obsolete("Html and Style attrs require name, this is just a possible error source")]
+	[Obsolete("Html and Style attrs now require `name`, this is just a possible error source")]
 	public static string Translate(string key)
 	{
 		// for EventHandlers
@@ -304,18 +304,6 @@ public class Rectangle : SVGElement
 	[Html("fill")] public string? Fill { get; set; }
 
 	[Callback("onclick")] public Delegate? OnClick { get; set; }
-
-	// public override RenderFragment GetRenderFragment()
-	// {
-	// 	return builder =>
-	// 	{
-	// 		builder.OpenElement(0, "rect");
-	// 		builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-	// 		builder.AddAttribute(2, "style", Style);
-	// 		builder.AddMultipleAttributes(3, GetCallbackDictionary());
-	// 		builder.CloseElement();
-	// 	};
-	// }
 }
 
 public class Text : SVGElement

@@ -64,6 +64,16 @@ public class GameObjectContainer<T> where T : IGameObject
 			Remove(element.Id);
 		}
 	}
+
+	// performs an action on each element
+	// e.g. element => element.Visible = false; // hide all elements
+	public void Transform(Action<T> action)
+	{
+		foreach (var element in Elements.Values)
+		{
+			action(element);
+		}
+	}
 }
 
 

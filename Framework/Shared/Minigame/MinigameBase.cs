@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Reflection;
 using GameStateInventory;
-
+using Framework.Keyboard;
+using Framework.Mouse;
 
 namespace Framework.Minigames;
 
@@ -72,6 +73,13 @@ public class MinigameBase : ComponentBase
 	[Inject]
 	public GameState GameState { get; set; } = null!;
 
+	// Inject the Keyboard and Mouse services
+	// use the interface so that they cannot break anything
+	[Inject]
+	public KeyboardService KeyboardService { get; set; } = null!;
+	[Inject]
+	public MouseService MouseService { get; set; } = null!;
+
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
 
@@ -109,6 +117,14 @@ public class MinigameBase : ComponentBase
 
 			// attach gamestate
 			MinigameDef.GameState = GameState;
+
+			// attach I/O services
+			MinigameDef.KeyboardService = KeyboardService;
+			MinigameDef.MouseService = MouseService;
+
+			// Run the Init method
+			MinigameDef.Init();
+
 			// Run the AfterInit method
 			MinigameDef.AfterInit();
 
@@ -130,18 +146,14 @@ public abstract class MinigameDefBase
 	public abstract string BackgroundImage { get; set; }
 
 	public GameState GameState { get; set; } = null!;
+	public IKeyboardService KeyboardService { get; set; } = null!;
+	public IMouseService MouseService { get; set; } = null!;
 
 	public void Init()
 	{
 		// create a list with all the elements in the Minigame
 		// so that we don't have to use reflection every time
 		// the thing renders
-		// loop over properties as test
-		// foreach (var property in GetType().GetProperties())
-		// {
-		// 	// Console.WriteLine(property.Name);
-		// 	// Console.WriteLine(property.GetValue(this));
-		// }
 		foreach (var property in GetType().GetProperties())
 		{
 			if (Attribute.IsDefined(property, typeof(ElementAttribute)))
@@ -160,11 +172,35 @@ public abstract class MinigameDefBase
 		// // can't we just define it explicitly in the style attr?
 		// // Elements.Sort((b, a) => a.ZIndex.CompareTo(b.ZIndex)); 
 		// // Console.WriteLine(Elements.Count);
+		// add the event listeners
+		KeyboardService.OnKeyDown += OnKeyDown;
+		KeyboardService.OnKeyUp += OnKeyUp;
+		MouseService.OnMouseDown += OnMouseDown;
+		MouseService.OnMouseUp += OnMouseUp;
+
 	}
 
 	// Method that is run right after the constructor
 	public virtual void AfterInit() { }
 
+	// Functions that will subscribe to the events of the Keyboard and Mouse services
+	// will be added automatically and removed in the Exit() method
+	// can be overridden if needed
+	public virtual void OnKeyDown(object? sender, KeyEventArgs e) { }
+	public virtual void OnKeyUp(object? sender, KeyEventArgs e) { }
+	public virtual void OnMouseDown(object? sender, ClickEventArgs e) { }
+	public virtual void OnMouseUp(object? sender, ClickEventArgs e) { }
+
+	// unsubscribe from the events
+	// really important, because the minigame is still in memory, it would still
+	// be listening and potentially executing code
+	public void Exit()
+	{
+		KeyboardService.OnKeyDown -= OnKeyDown;
+		KeyboardService.OnKeyUp -= OnKeyUp;
+		MouseService.OnMouseDown -= OnMouseDown;
+		MouseService.OnMouseUp -= OnMouseUp;
+	}
 
 	// Event handlers
 	public event EventHandler<FinishedEventArgs>? Finished;
@@ -184,7 +220,24 @@ public abstract class MinigameDefBase
 		UpdateEvent?.Invoke(this, EventArgs.Empty);
 	}
 
+	// register an element to be rendered
+	// ONLY IF AN ELEMENT IS IN THE ELEMENTS CONTAINER, IT WILL BE RENDERED
+	// other containers can be used, but just to organize the code
+	// cause it's all reference based, you can do stuff on elements while 
+	// they are in a different container and it will update everywhere
+	public void AddElement(GameObject element)
+	{
+		Elements.Add(element);
+	}
+
 }
+
+/* 
+finishing will work like this
+- In finished event args, there will be a List<Action>
+- When the minigame is finished, the actions will be executed
+*/
+// need to work on that
 
 public class FinishedEventArgs : EventArgs
 {

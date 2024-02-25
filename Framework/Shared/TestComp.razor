@@ -11,9 +11,9 @@
 </div> *@
 
 
-@* <Minigame MinigameDefClass="Framework.Minigames.MiniTest" OnFinished="((success) => Console.WriteLine(success))" /> *@
+<Minigame MinigameDefClass="Framework.Minigames.MiniTest" OnFinished="((success) => Console.WriteLine(success))" />
 
-<button @onclick=isDown>@isDownRes</button>
+@* <button @onclick=isDown>@isDownRes</button> *@
 
 @* Note to self: MarkupString can't have blazor stuff *@
 @* @((MarkupString)Markup)) *@
@@ -29,7 +29,7 @@
 
     private string Markup = "<button @onclick=\"Increment\">@counter</button>"; *@
 
-    private bool isDownRes = false;
+    @* private bool isDownRes = false;
 
     private void isDown() {
         isDownRes = KeyboardService.GetKeyState("KeyA");
@@ -42,5 +42,5 @@
     KeyboardService.OnKeyUp += (sender, e) => {
         Console.WriteLine("Key up");
     };
-    }
+    } *@
 } 

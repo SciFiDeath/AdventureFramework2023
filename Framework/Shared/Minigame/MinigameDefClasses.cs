@@ -37,7 +37,6 @@ public class MiniTest : MinigameDefBase
 			Fill = "red",
 			OnClick = Test
 		};
-		Init();
 	}
 }
 
@@ -212,8 +211,6 @@ public class CodeTerminal : MinigameDefBase
 			Image = "InventoryImages/key2.png",
 			Visibility = "none"
 		};
-
-		Init();
 	}
 
 }
