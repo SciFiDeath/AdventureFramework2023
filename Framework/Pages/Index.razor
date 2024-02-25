@@ -2,11 +2,13 @@
 @using Framework.Slides
 @using GameStateInventory
 @using Framework.Game
-@using Framework.Keyboard;
+@using Framework.Keyboard
+@using Framework.Mouse
 
 @inject SlideService SlideService
 @inject GameState GameState
 @inject KeyboardService KeyboardService
+@inject MouseService MouseService
 
 @if (initTask.IsCompletedSuccessfully) {
     if (gameStarted) {
@@ -35,6 +37,7 @@ else {
         await SlideService.Init();
         await GameState.LoadGameStateAndItemsAsync();
         await KeyboardService.Init();
+        await MouseService.Init();
         _tcs.SetResult(true);
     }
 
