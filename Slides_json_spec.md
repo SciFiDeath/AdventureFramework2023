@@ -5,7 +5,7 @@
 ```json
 {
     "SlideId": {
-        "Tag": ["tag name", "another tag"],
+        "Tags": ["tag name", "another tag"],
         "Image": "path/to/image",
         "Buttons": {
             "Button1Id": {
@@ -61,7 +61,7 @@
         <td>
             The path to the image file that will be displayed as the background of the slide.
         </td>
-        <td></td>
+        <td>Required</td>
     </tr>
     <tr>
         <td><code>Buttons</code></td>
@@ -125,6 +125,13 @@
             <code>"Visible": "custom key name"</code> will generate a GameState entry with the specified key, and the slide will be visible at the start. <br>
             <code>"Visible": "!custom key name"</code> will generate a GameState entry with the specified key, and the slide will be hidden at the start.
         </td>
+    </tr>
+    <tr>
+        <td><code>*ZIndex</code></td>
+        <td>
+            The z-index of the button. The higher the number, the more on top it is. If not specified, the order of the buttons in the json file is used (or whatever order it is when you iterate over it in a foreach-loop).
+        </td>
+        <td>Optional</td>
     </tr>
 
 </table>
@@ -245,12 +252,14 @@ Actions are quite a convoluted mess.
             Changes the slide to the one specified in the parameters.
         </td>
         <td></td>
+        <td></td>
     </tr>
     <tr>
         <td>
             <code>*PlaySound</code>
         </td>
         <td>Plays a sound</td>
+        <td></td>
         <td></td>
     </tr>
     <tr>
@@ -259,12 +268,14 @@ Actions are quite a convoluted mess.
         </td>
         <td>Add the item with the specified id to the inventory</td>
         <td></td>
+        <td></td>
     </tr>
     <tr>
         <td>
             <code>*RemoveItem</code>
         </td>
         <td>Remove the item with the specified id from the inventory</td>
+        <td></td>
         <td></td>
     </tr>
     <tr>
@@ -273,11 +284,13 @@ Actions are quite a convoluted mess.
         </td>
         <td>Set the value of a GameState entry</td>
         <td></td>
+        <td></td>
     </tr>
     <tr>
         <td>
             <code>*RequireItem</code>
         </td>
+        <td>Checks if item with specified id is present in the inventory. To check if an item is not present, add a <code>!</code> in front of the id. If true, it proceeds with executing the rest of the actions. If false, it exits.</td>
         <td></td>
         <td></td>
     </tr>
@@ -285,6 +298,7 @@ Actions are quite a convoluted mess.
         <td>
             <code>*RequireGameState</code>
         </td>
+        <td>Checks if the specified GameState is true. To check if  a GameState entry is false, add a <code>!</code> in front of the key. If true, it proceeds with executing the rest of the actions, if false, it exits.</td>
         <td></td>
         <td></td>
     </tr>
@@ -292,6 +306,7 @@ Actions are quite a convoluted mess.
         <td>
             <code>*StartBlock</code>
         </td>
+        <td>If this action is followed by a <code>Require</code> action, it checks if said Require evals to true, it executes the following code block. If it is false, it jumps to the corresponding <code>EndBlock</code> action.</td>
         <td></td>
         <td></td>
     </tr>
@@ -299,10 +314,10 @@ Actions are quite a convoluted mess.
         <td>
             <code>*EndBlock</code>
         </td>
+        <td>Denotes the end of a block started with <code>StartBlock</code>. Every <code>StartBlock</code> must have a corresponding <code>EndBlock</code> action. Else it will raise an error</td>
         <td></td>
         <td></td>
     </tr>
-
 </table>
 
 ### Naming Conventions
