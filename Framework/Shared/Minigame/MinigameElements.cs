@@ -303,7 +303,7 @@ public class Rectangle : SVGElement
 
 	[Html("fill")] public string? Fill { get; set; }
 
-	[Callback("onclick")] public Action<EventArgs> OnClick { get; set; }
+	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
 }
 
 public class Text : SVGElement
