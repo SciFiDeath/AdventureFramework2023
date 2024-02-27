@@ -65,6 +65,11 @@ public class GameObjectContainer<T> where T : IGameObject
 		}
 	}
 
+	public void KillId(string id)
+	{
+		Elements[id].Kill();
+	}
+
 	// performs an action on each element
 	// e.g. element => element.Visible = false; // hide all elements
 	public void Transform(Action<T> action)

@@ -214,3 +214,87 @@ public class CodeTerminal : MinigameDefBase
 	}
 
 }
+
+public class KillTest : MinigameDefBase
+{
+	[Element]
+	public Rectangle Generate { get; set; }
+
+	[Element]
+	public Rectangle Cancel { get; set; }
+
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayE.jpg";
+
+	public GameObjectContainer<Rectangle> Rects { get; } = new();
+
+	public override async Task GameLoop(CancellationToken token)
+	{
+		while (true)
+		{
+			if (token.IsCancellationRequested)
+			{
+				return;
+			}
+			Rects.Transform((rect) => rect.Y += 5);
+			Update();
+			await Task.Delay(10, token);
+		}
+
+	}
+
+
+	public Rectangle GenerateRect()
+	{
+		var rnd = new Random();
+		int x = rnd.Next(100, 1900);
+		int y = rnd.Next(100, 1000);
+
+		string id = Guid.NewGuid().ToString("N");
+
+		Rectangle r = new()
+		{
+			Id = id,
+			X = x,
+			Y = y,
+			Width = 100,
+			Height = 100,
+			Fill = "red",
+			OnClick = (args) => { Rects.KillId(id); Update(); }
+		};
+
+		return r;
+	}
+
+	public KillTest()
+	{
+		Generate = new()
+		{
+			X = 0,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "blue",
+			OnClick = (args) =>
+			{
+				var r = GenerateRect();
+				Rects.Add(r);
+				AddElement(r);
+				Update();
+			}
+		};
+		Cancel = new()
+		{
+			X = 0,
+			Y = 100,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = (args) => { Cts.Cancel(); Console.WriteLine("Cancelled"); }
+		};
+	}
+
+	public static void KillThing(SVGElement element)
+	{
+		element.Kill();
+	}
+}

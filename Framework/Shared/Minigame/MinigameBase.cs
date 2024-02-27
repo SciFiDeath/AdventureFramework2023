@@ -128,6 +128,9 @@ public class MinigameBase : ComponentBase
 			// Run the AfterInit method
 			MinigameDef.AfterInit();
 
+			// Start the GameLoop
+			MinigameDef.StartGameLoop();
+
 		}
 		catch (Exception e)
 		{
@@ -180,6 +183,19 @@ public abstract class MinigameDefBase
 
 	}
 
+	public CancellationTokenSource Cts = new();
+
+	//! I suppress a compiler warning here, because this method is supposed to be overridden
+	//! and nothing will happen with an empty body
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+	public virtual async Task GameLoop(CancellationToken ct) { }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
+	public void StartGameLoop()
+	{
+		Task.Run(() => GameLoop(Cts.Token));
+	}
+
 	// Method that is run right after the constructor
 	public virtual void AfterInit() { }
 
@@ -200,6 +216,9 @@ public abstract class MinigameDefBase
 		KeyboardService.OnKeyUp -= OnKeyUp;
 		MouseService.OnMouseDown -= OnMouseDown;
 		MouseService.OnMouseUp -= OnMouseUp;
+
+		// Stop the GameLoop
+		Cts.Cancel();
 	}
 
 	// Event handlers

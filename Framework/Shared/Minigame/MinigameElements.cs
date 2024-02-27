@@ -303,7 +303,7 @@ public class Rectangle : SVGElement
 
 	[Html("fill")] public string? Fill { get; set; }
 
-	[Callback("onclick")] public Delegate? OnClick { get; set; }
+	[Callback("onclick")] public Action<EventArgs> OnClick { get; set; }
 }
 
 public class Text : SVGElement
@@ -346,6 +346,6 @@ public class SVGImage : SVGElement
 
 	[Html("href")] public string? Image { get; set; }
 
-	[Callback("onclick")] public Delegate? OnClick { get; set; }
+	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
 
 }
