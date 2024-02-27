@@ -1,4 +1,3 @@
-@page "/inventory"
 @namespace GameStateInventory
 @inherits Framework.InventoryUI.InventoryUIBase
 @using Blazored.Toast.Services
@@ -11,7 +10,12 @@
         Console.WriteLine(id);
         string s = InvItems[id].Image;
         Console.WriteLine(s);
-        <img src="@InvItems[id].Image" width="1000">
-    }
+        <div class="image-container">
+            <div class="image-text">@InvItems[id].Description</div>
+            <img src="@InvItems[id].Image">
+       </div>
     
+    }
 </div>
+
+

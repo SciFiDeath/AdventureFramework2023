@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 using JsonUtilities;
 using FrameworkItems;
+using static InventoryEvent;
 
 //Notifications
 using Blazored.Toast.Services;
@@ -74,6 +75,9 @@ public class GameState
 
 		ToastService.ShowSuccess($"Added {id} to inventory");
 		Console.WriteLine($"Successfully added {id} to inventory");
+
+		//Event handler for updateing inventory images
+		InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
 	}
 	public bool CheckForItem(string id)
 	{
