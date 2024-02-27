@@ -1,5 +1,7 @@
 # AdventureFramework2023
 
+# Hi Mom
+
 # EVERYTHING DOWN HERE IS OUTDATED/OBSOLETE/WRONG/ETC.
 
 # TODO for Holidays
