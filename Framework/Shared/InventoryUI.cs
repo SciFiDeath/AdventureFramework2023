@@ -46,6 +46,9 @@ public class InventoryUIBase : ComponentBase
         {
             // Handle the item added event here
             // For example, update the UI, perform some action, etc.
+            Console.WriteLine("Added item");
+            InvItems = GameState.GetItemObjects();
+
             StateHasChanged(); // Update the UI if needed
         }
     
