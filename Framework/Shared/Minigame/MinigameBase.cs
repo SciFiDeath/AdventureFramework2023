@@ -219,6 +219,7 @@ public abstract class MinigameDefBase
 
 		// Stop the GameLoop
 		Cts.Cancel();
+		Cts.Dispose();
 	}
 
 	// Event handlers
