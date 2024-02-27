@@ -331,20 +331,18 @@ Actions are quite a convoluted mess.
     <tr>
         <td><code>SlideId</code></td>
         <td>
-            The <code>SlideId</code> must be unique across all slides. It should first contain the name of the group (e.g. the room) and then a name for the slide. The two parts are seperated by a dot. The name of the group should be the same as the name of the folder the images for the slides are in. Ids and rooms should be in snake_case/PascalCase (need to decide on that).
+            The <code>SlideId</code> must be unique across all slides. It should first contain the name of the group (e.g. the room) and then a name for the slide. The two parts are seperated by a dot. The name of the group should be the same as the name of the folder the images for the slides are in. Ids and rooms should be in snake_case.
         </td>
         <td>
-            <code>HM305.BlackboardCloseup</code>
             <code>hm305.blackboard_closeup</code>
         </td>
     </tr>
     <tr>
         <td><code>ButtonId</code></td>
         <td>
-            The <code>ButtonId</code> must be unique across all buttons on a slide. It doesn't have to contain the name of the slide. Naming in either snake_case/PascalCase (need to decide on that).
+            The <code>ButtonId</code> must be unique across all buttons on a slide. It doesn't have to contain the name of the slide. Naming in either snake_case.
         </td>
         <td>
-            <code>ExitDoor</code>
             <code>exit_door</code>
         </td>
     </tr>
@@ -354,7 +352,6 @@ Actions are quite a convoluted mess.
             The <code>GameState</code> key must be unique. For buttons, you concatenate the <code>SlideId</code> and the <code>ButtonId</code> with a dot. For Minigames, you take the name of the minigame.
         </td>
         <td>
-            <code>HM305.BlackboardCloseup.ExitDoor</code>
             <code>hm305.blackboard_closeup.exit_door</code>
         </td>
     </tr>
@@ -362,7 +359,6 @@ Actions are quite a convoluted mess.
         <td>Minigames</td>
         <td>Minigames should be named like the following:<br><code>&lt;SlideId&gt;.&lt;Minigame name&gt;.minigame</code></td>
         <td>
-            <code>HM305.BlackboardCloseup.CodeTerminal.Minigame</code>
             <code>hm305.blackboard_closeup.code_terminal.minigame</code>
         </td>
     </tr>
