@@ -52,6 +52,12 @@ public class GameState
 		}
 	}
 
+	public void AddVisibility(string name, bool value)
+	{
+		State.Add(name, value);
+		Console.WriteLine($"Added: {name}");
+	}
+
 	public void RemoveItem(string id)
 	{
 		bool removed = ItemsInInventory.Remove(id);
@@ -103,10 +109,10 @@ public class GameState
 	}
 
 
-    public void LoadFromString(string encrypted)
-    {
-        
-    }
+	public void LoadFromString(string encrypted)
+	{
+
+	}
 
 
 

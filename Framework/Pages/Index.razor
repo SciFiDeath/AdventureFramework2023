@@ -34,8 +34,8 @@ else {
 
     protected override async Task OnInitializedAsync()
     {
-        await SlideService.Init();
         await GameState.LoadGameStateAndItemsAsync();
+        await SlideService.Init();
         await KeyboardService.Init();
         await MouseService.Init();
         _tcs.SetResult(true);

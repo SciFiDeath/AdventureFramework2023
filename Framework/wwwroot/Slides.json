@@ -30,7 +30,8 @@
             "CircleTest": {
                 "Type": "circle",
                 "Points": "100,100,50",
-                "Actions": []
+                "Actions": [],
+                "Visible": "!auto"
             }
         }
     },

@@ -1,11 +1,18 @@
 using JsonUtilities;
 using Framework.Slides.JsonClasses;
+using GameStateInventory;
 
 namespace Framework.Slides;
+
+public class PositionPresets
+{
+
+}
 
 public class SlideService
 {
 	private readonly JsonUtility jsonUtility;
+	private readonly GameState gameState;
 
 	public Dictionary<string, JsonSlide> Slides { get; private set; } = null!;
 
@@ -23,9 +30,10 @@ public class SlideService
 		return slides;
 	}
 
-	public SlideService(JsonUtility jsonUtility)
+	public SlideService(JsonUtility jsonUtility, GameState gameState)
 	{
 		this.jsonUtility = jsonUtility;
+		this.gameState = gameState;
 		// Slides = FetchSlidesAsync("Slides.json").Result;
 		// InverseSlides = Slides.ToDictionary(x => x.Value, x => x.Key);
 	}
@@ -35,6 +43,7 @@ public class SlideService
 		Slides = await FetchSlidesAsync("Slides.json");
 		InverseSlides = Slides.ToDictionary(x => x.Value, x => x.Key);
 		// _initCompletionSource.SetResult(true);
+		CreateGameStateEntries();
 	}
 
 	public JsonSlide GetSlide(string slideId)
@@ -75,4 +84,48 @@ public class SlideService
 	}
 
 	// TODO: Add verify slides function
+
+	public void CreateGameStateEntries()
+	{
+		// iterate over slides
+		foreach (var slide in Slides)
+		{
+			// if slide is a minigame, skip it
+			if (slide.Value.Type is string type)
+			{
+				if (type == "Minigame") { continue; }
+			}
+			foreach (var button in slide.Value.Buttons!)
+			{
+				if (button.Value.Visible is string visible)
+				{
+					switch (visible)
+					{
+						case "auto":
+							{
+								gameState.AddVisibility($"{slide.Key}.{button.Key}", true);
+								break;
+							}
+						case "!auto":
+							{
+								gameState.AddVisibility($"{slide.Key}.{button.Key}", false);
+								break;
+							}
+						default:
+							{
+								if (visible.StartsWith("!"))
+								{
+									gameState.AddVisibility(visible, false);
+								}
+								else
+								{
+									gameState.AddVisibility(visible, true);
+								}
+								break;
+							}
+					}
+				}
+			}
+		}
+	}
 }
