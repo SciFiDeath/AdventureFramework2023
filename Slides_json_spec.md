@@ -112,18 +112,15 @@
     <tr>
         <td><code>*Visible</code></td>
         <td>
-            Controls visibility of the Slide. If it is set, a GameState entry is generated automatically. Every generated entry is set to <code>true</code>.
+            Controls visibility of the Slide. If it is set, a GameState entry is generated automatically.
             <ul>
-                <li>If set to <code>auto</code>, the GameState key will be automatically generated.</li>
-                <li>If set to <code>&lt;custom key name&gt;</code>, you can specify the GameState key manually. Make sure to follow the <a href=#naming-conventions>naming conventions</a></li>
-                <li>If you want the slide to be hidden at the start, add a <code>!</code> in front of the name.</li>
+                <li>If set to <code>true</code>, the GameState key will be automatically generated and set to <code>true</code></li>
+                <li>If set to <code>true</code>, the GameState key will be automatically generated and set to <code>true</code></li>
+                <li>The GameState entries will be generated according to this schema: <code>&lt;SlideId&gt;.&lt;ButtonId&gt;</code></li>
             </ul>
         </td>
         <td>
-            <code>"Visible": "!auto"</code> will autogenerate a GameState entry, and the slide will be hidden at the start. <br>
-            <code>"Visible": "auto"</code> will autogenerate a GameState entry, and the slide will be visible at the start. <br>
-            <code>"Visible": "custom key name"</code> will generate a GameState entry with the specified key, and the slide will be visible at the start. <br>
-            <code>"Visible": "!custom key name"</code> will generate a GameState entry with the specified key, and the slide will be hidden at the start.
+            <code>"Visible": false</code> on a Button with Id <code>Button1</code> on a Slide with Id <code>Slide1</code> this GameState entry: <code>Slide1.Button1: false</code>
         </td>
     </tr>
     <tr>
