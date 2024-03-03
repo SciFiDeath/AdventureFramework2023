@@ -97,32 +97,15 @@ public class SlideService
 			}
 			foreach (var button in slide.Value.Buttons!)
 			{
-				if (button.Value.Visible is string visible)
+				if (button.Value.Visible is bool visible)
 				{
-					switch (visible)
+					if (visible)
 					{
-						case "auto":
-							{
-								gameState.AddVisibility($"{slide.Key}.{button.Key}", true);
-								break;
-							}
-						case "!auto":
-							{
-								gameState.AddVisibility($"{slide.Key}.{button.Key}", false);
-								break;
-							}
-						default:
-							{
-								if (visible.StartsWith("!"))
-								{
-									gameState.AddVisibility(visible, false);
-								}
-								else
-								{
-									gameState.AddVisibility(visible, true);
-								}
-								break;
-							}
+						gameState.AddVisibility($"{slide.Key}.{button.Key}", true);
+					}
+					else
+					{
+						gameState.AddVisibility($"{slide.Key}.{button.Key}", false);
 					}
 				}
 			}

@@ -31,7 +31,7 @@
                 "Type": "circle",
                 "Points": "100,100,50",
                 "Actions": [],
-                "Visible": "!auto"
+                "Visible": false
             }
         }
     },
