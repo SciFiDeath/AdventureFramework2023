@@ -1,7 +1,5 @@
-using Framework.Slides.JsonClasses;
 using Framework.Slides;
 using Microsoft.AspNetCore.Components;
-using System.Net.Http.Json;
 using Framework.Game.Parameters;
 using GameStateInventory;
 
@@ -13,7 +11,6 @@ public partial class GameBase : ComponentBase
 	[Inject]
 	protected SlideService SlideService { get; set; } = null!;
 
-	// Stuff for easier debugging
 	[Inject]
 	protected GameState GameState { get; set; } = null!;
 
@@ -32,7 +29,7 @@ public partial class GameBase : ComponentBase
 		Parameters = new SlideComponentParameters()
 		{
 			SlideId = slideId,
-			OnSlideChange = EventCallback.Factory.Create<string>(this, ChangeSlide)
+			OnButtonClick = EventCallback.Factory.Create<List<List<string>>>(this, EvaluateActions)
 		};
 		// // _tcs.SetResult(true);
 	}
@@ -59,6 +56,31 @@ public partial class GameBase : ComponentBase
 		else
 		{
 			ChangeSlide(SlideService.GetSlide(Parameters.SlideId).FallbackSlide!);
+		}
+	}
+
+	protected async Task EvaluateActions(List<List<string>> actions)
+	{
+		foreach (List<string> action in actions)
+		{
+			switch (action[0])
+			{
+				case "Route":
+					ChangeSlide(action[1]);
+					break;
+				case "Require":
+					if (GameState.CheckForItem(action[1]))
+					{
+						GameState.RemoveItem(action[1]);
+					}
+					else
+					{
+						return;
+					}
+					break;
+				default:
+					break;
+			}
 		}
 	}
 }
