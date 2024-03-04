@@ -25,12 +25,20 @@
             "RectTest": {
                 "Type": "rect",
                 "Points": "100,100,200,200",
-                "Actions": []
+                "Actions": [
+                    ["StartBlock", "T"],
+                    ["RequireGameState", "!HM305.CircleTest"],
+                    ["SetGameState", "HM305.CircleTest", "true"],
+                    ["Exit", ""],
+                    ["EndBlock", "T"],
+                    ["SetGameState", "HM305.CircleTest", "false"]
+                ],
+                "Visible": "auto"
             },
             "CircleTest": {
                 "Type": "circle",
                 "Points": "100,100,50",
-                "Actions": [],
+                "Actions": [["SetGameState", "HM305.RectTest", "toggle"]],
                 "Visible": "!auto"
             }
         }
@@ -42,7 +50,7 @@
             "HM305DoorClosed": {
                 "Points": "1206,155 861,160 856,878 1235,876",
                 "Actions": [
-                    ["Require", "goldkey"],
+                    ["RequireItem", "goldkey"],
                     ["Route", "HM305DoorOpen"]
                 ]
             },
