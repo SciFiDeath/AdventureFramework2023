@@ -261,7 +261,7 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*AddItem</code>
+            <code>AddItem</code>
         </td>
         <td>Add the item with the specified id to the inventory</td>
         <td></td>
@@ -269,7 +269,7 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*RemoveItem</code>
+            <code>RemoveItem</code>
         </td>
         <td>Remove the item with the specified id from the inventory</td>
         <td></td>
@@ -277,7 +277,7 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*SetGameState</code>
+            <code>SetGameState</code>
         </td>
         <td>Set the value of a GameState entry</td>
         <td></td>
@@ -285,7 +285,7 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*RequireItem</code>
+            <code>RequireItem</code>
         </td>
         <td>Checks if item with specified id is present in the inventory. To check if an item is not present, add a <code>!</code> in front of the id. If true, it proceeds with executing the rest of the actions. If false, it exits.</td>
         <td></td>
@@ -293,7 +293,7 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*RequireGameState</code>
+            <code>RequireGameState</code>
         </td>
         <td>Checks if the specified GameState is true. To check if  a GameState entry is false, add a <code>!</code> in front of the key. If true, it proceeds with executing the rest of the actions, if false, it exits.</td>
         <td></td>
@@ -301,7 +301,7 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*StartBlock</code>
+            <code>StartBlock</code>
         </td>
         <td>If this action is followed by a <code>Require</code> action, it checks if said Require evals to true, it executes the following code block. If it is false, it jumps to the corresponding <code>EndBlock</code> action.</td>
         <td></td>
@@ -309,9 +309,15 @@ Actions are quite a convoluted mess.
     </tr>
     <tr>
         <td>
-            <code>*EndBlock</code>
+            <code>EndBlock</code>
         </td>
         <td>Denotes the end of a block started with <code>StartBlock</code>. Every <code>StartBlock</code> must have a corresponding <code>EndBlock</code> action. Else it will raise an error</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><code>Exit</code>
+        <td>Stop execution of further actions</td>
         <td></td>
         <td></td>
     </tr>
