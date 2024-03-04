@@ -22,7 +22,6 @@
 	@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
 	{
 		if (GameState.CheckVisibility($"{SlideId}.{buttonKey}")) {
-			Console.WriteLine($"Checked: {SlideId}.{buttonKey}");
 
 			var ButtonElement = SlideData.Buttons[buttonKey];
 			// Declare here as it's used in several cases
