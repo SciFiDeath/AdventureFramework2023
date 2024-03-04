@@ -79,6 +79,11 @@ public class GameObjectContainer<T> where T : IGameObject
 			action(element);
 		}
 	}
+
+	public void KillAll()
+	{
+		Transform((e) => { e.Kill(); });
+	}
 }
 
 
