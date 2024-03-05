@@ -38,10 +38,16 @@
             "CircleTest": {
                 "Type": "circle",
                 "Points": "100,100,50",
-                "Actions": [],
-                "Visible": false
+                "Actions": [["Route", "MinigameTest3"]],
+                "Visible": true
             }
         }
+    },
+
+    "MinigameTest3": {
+        "Type": "Minigame",
+        "MinigameDefClassName": "Framework.Minigames.MinigameDefClasses.MyMinigame",
+        "FallbackSlide": "HM305Beamer"
     },
 
     "HM305DoorClosed": {
