@@ -33,6 +33,8 @@ i.e. the class that they make and all this stuff, sould always stay the same.
 <svg id="svg" viewBox="0,0,1920,1080">
       @foreach (var component in MinigameDef.Elements.Values) {
          @* @((MarkupString)component.GetMarkupString()) *@
-         @component.GetRenderFragment()
+         if (component.Visible) {
+            @component.GetRenderFragment();
+         }
       }
 </svg>

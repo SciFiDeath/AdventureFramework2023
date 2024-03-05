@@ -33,7 +33,7 @@
                     ["EndBlock", "T"],
                     ["SetGameState", "HM305.CircleTest", "false"]
                 ],
-                "Visible": "auto"
+                "Visible": true
             },
             "CircleTest": {
                 "Type": "circle",

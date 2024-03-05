@@ -229,6 +229,8 @@ public abstract class MinigameDefBase
 
 	public void Finish(bool success)
 	{
+		// really important
+		Exit();
 		Finished?.Invoke(this, new FinishedEventArgs { Success = success });
 	}
 

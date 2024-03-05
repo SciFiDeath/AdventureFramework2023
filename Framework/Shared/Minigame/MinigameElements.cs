@@ -46,9 +46,8 @@ public abstract class GameObject : IGameObject
 }
 
 
-// This is the main class you should use for your game objects
+// This is the main class you should use for your custom game objects
 // It already includes the rendering logic
-//? Maybe mark as abstract?
 // Basically just a wrapper for an SVGElement
 // Abstracted away here so that you don't have to subclass the SVGElement classes
 // directly, but can use this as a base class if you want to add stuff
@@ -287,6 +286,16 @@ public abstract class SVGElement : GameObject
 // They are set as properties in a  MinigameBase instance and are then
 // "generated" in the markup of the Minigame
 // Should have functions like check for click, disable/enable, Set/GetPos, show/hide et.
+
+// public class Polygon : SVGElement
+// {
+// 	public override string TagName { get; } = "polygon";
+
+// 	public List<int> Points { get; set; } = null!;
+
+// 	[Html("points")]
+// 	private string _points => string.Join(",", Points);
+// }
 
 public class Rectangle : SVGElement
 {
