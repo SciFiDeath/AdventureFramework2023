@@ -1,6 +1,6 @@
 namespace Framework.Minigames.MinigameDefClasses;
 
-public class AmosGiannicegame : MinigameDefBase
+public class MyMinigame6 : MinigameDefBase
 {
-    public override string BackgroundImage {get; set;} = "images/HM3_hallwayN.jpg";
+    public override string BackgroundImage {get; set;} = "/images/HM3_hallwayN.jpg";
 }
