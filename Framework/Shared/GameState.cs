@@ -1,18 +1,25 @@
 using Microsoft.AspNetCore.Components;
 
+using Encryption;
 using JsonUtilities;
 using FrameworkItems;
 using static InventoryEvent;
+using Microsoft.JSInterop;
+
 
 //Notifications
 using Blazored.Toast.Services;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace GameStateInventory;
 
 public class GameState
 {
 	private readonly IToastService ToastService;
+
+	private readonly EncryptionService Encryption;
+
 	protected JsonUtility JsonUtility { get; set; } = null!;
 
 	protected Items Items { get; set; }
@@ -21,11 +28,13 @@ public class GameState
 
 	public static Dictionary<string, bool> State = new();
 
-	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
+	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService, EncryptionService encryption)
 	{
 		JsonUtility = jsonUtility;
 		Items = items;
 		ToastService = toastService;
+
+		Encryption = encryption;
 	}
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
@@ -53,6 +62,7 @@ public class GameState
 		}
 	}
 
+	// INVENTORY PART
 	public void RemoveItem(string id)
 	{
 		bool removed = ItemsInInventory.Remove(id);
@@ -64,25 +74,26 @@ public class GameState
 		Console.WriteLine($"Successfully removed {id} from inventory");
 	}
 
-	public async void AddItem(string id)
-	{
+    public void AddItem(string id)
+    {
 
-		if (Items.DoesItemExist(id) == false)
-		{
-			throw new Exception("Item doesn't exist in items.json Dictionary");
-		}
-		ItemsInInventory.Add(id);
+        if (Items.DoesItemExist(id) == false)
+        {
+            throw new Exception("Item doesn't exist in items.json Dictionary");
+        }
+        ItemsInInventory.Add(id);
 
-		ToastService.ShowSuccess($"Added {id} to inventory");
-		Console.WriteLine($"Successfully added {id} to inventory");
+        ToastService.ShowSuccess($"Added {id} to inventory");
 
-		//Event handler for updateing inventory images
-		InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
-	}
-	public bool CheckForItem(string id)
+        //Event handler for updateing inventory images
+        InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
+    }
+
+    public bool CheckForItem(string id)
 	{
 		return ItemsInInventory.Contains(id);
 	}
+	
 	public Dictionary<string, Item> GetItemObjects()
 	{
         Dictionary<string, Item> ItemObjects = new();
@@ -99,31 +110,12 @@ public class GameState
 		return ItemObjects;
 	}
 
-	public string Save(string key = "1234", string path = "gamestate.json")
+    public async Task<string> CreateSaveString()
 	{
-		string encrypted = "";
+		string serializedJson = JsonSerializer.Serialize(State);
+		return await Encryption.EncryptString(serializedJson, "1234");
 
-		try
-		{	
-			//TODO Encryption implementation needed
-			//encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
-			Console.WriteLine("Save successful");
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Error during save: {ex.Message}");
-			// Log the exception or take appropriate actions
-			throw new Exception("Could not encrypt and save", ex);
-		}
-
-		return encrypted;
 	}
-
-
-    public void LoadFromString(string encrypted)
-    {
-        
-    }
 
 
 

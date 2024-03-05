@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components;
 using GameStateInventory;
 using FrameworkItems;
 using JsonUtilities;
+using Microsoft.JSInterop;
+
 using static InventoryEvent;
 namespace Framework.InventoryUI;
 
@@ -16,6 +18,7 @@ public class InventoryUIBase : ComponentBase
 
     [Inject]
     protected Items? Items { get; set; }
+
     
     public Dictionary<string, Item> InvItems = new();
     protected override async Task OnInitializedAsync()
@@ -38,6 +41,7 @@ public class InventoryUIBase : ComponentBase
         GameState.AddItem("frog");     
         GameState.AddItem("coffeemug");     
         InvItems = GameState.GetItemObjects();
+        Console.WriteLine(await GameState.CreateSaveString());
 
 
     }
@@ -46,7 +50,6 @@ public class InventoryUIBase : ComponentBase
         {
             // Handle the item added event here
             // For example, update the UI, perform some action, etc.
-            Console.WriteLine("Added item");
             InvItems = GameState.GetItemObjects();
 
             StateHasChanged(); // Update the UI if needed

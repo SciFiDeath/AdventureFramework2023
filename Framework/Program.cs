@@ -5,6 +5,7 @@ using JsonUtilities;
 using GameStateInventory;
 using Blazored.Toast;
 using Framework.Slides;
+using Encryption;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -23,6 +24,7 @@ builder.Services.AddBlazoredToast();
 // builder.Services.AddScoped<SlideService>();
 builder.Services.AddScoped<SlideService>();
 builder.Services.AddScoped<GameState>();
+builder.Services.AddScoped<EncryptionService>();
 
 
 // // TODO: Find better solution to execute functions at startup
