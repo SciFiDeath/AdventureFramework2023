@@ -220,6 +220,7 @@ public abstract class MinigameDefBase
 	// be listening and potentially executing code
 	public void Exit()
 	{
+		//* Extremely important
 		KeyboardService.OnKeyDown -= OnKeyDown;
 		KeyboardService.OnKeyUp -= OnKeyUp;
 		MouseService.OnMouseDown -= OnMouseDown;

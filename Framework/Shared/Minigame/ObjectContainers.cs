@@ -58,7 +58,7 @@ public class GameObjectContainer<T> where T : IGameObject
 		}
 	}
 
-	public void Kill(object? sender, EventArgs e)
+	protected void Kill(object? sender, EventArgs e)
 	{
 		if (sender is T element)
 		{
