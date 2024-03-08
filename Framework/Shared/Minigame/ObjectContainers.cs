@@ -3,11 +3,15 @@ namespace Framework.Minigames;
 
 public class GameObjectContainer<T> where T : IGameObject
 {
-	private Dictionary<string, T> Elements { get; set; } = new();
+	private Dictionary<string, T> Elements { get; set; } = [];
 
 	// Expose the most important methods of the dictionary
-	public string[] Keys => Elements.Keys.ToArray();
-	public T[] Values => Elements.Values.ToArray();
+	public string[] Keys => [.. Elements.Keys];
+	public T[] Values => [.. Elements.Values];
+	// Kind of over the top
+	// public Dictionary<string, T>.KeyCollection Keys => Elements.Keys;
+	// public Dictionary<string, T>.ValueCollection Values => Elements.Values;
+
 	public int Count => Elements.Count;
 	public void Clear() => Elements.Clear();
 
@@ -84,6 +88,30 @@ public class GameObjectContainer<T> where T : IGameObject
 	public void KillAll()
 	{
 		Transform((e) => { e.Kill(); });
+	}
+
+
+	// return array of elements in order to be rendered
+	// [..[negative],..[null],..[0 && positive]]
+	public T[] GetRenderOrder()
+	{
+		var autoOrder = Elements.Values.Where((e) => e.ZIndex == null);
+		var ordered = Elements.Values.Where((e) => e.ZIndex != null);
+		if (ordered is null)
+		{
+			return [.. Values];
+		}
+		else
+		{
+			// Guaranteed to have non nullZindex
+			var orderedPositive = ordered.Where((e) => e.ZIndex >= 0).ToArray();
+			var orderedNegative = ordered.Where((e) => e.ZIndex < 0).ToArray();
+
+			Array.Sort(orderedPositive, (a, b) => a.ZIndex!.Value.CompareTo(b.ZIndex!.Value));
+			Array.Sort(orderedNegative, (a, b) => a.ZIndex!.Value.CompareTo(b.ZIndex!.Value));
+
+			return [.. orderedNegative, .. autoOrder, .. orderedPositive];
+		}
 	}
 }
 
