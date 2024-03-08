@@ -24,12 +24,13 @@ public class GameObjectContainer<T> where T : IGameObject
 		try
 		{
 			Elements.Add(element.Id, element);
+			// this[element.Id] = element;
 			element.OnKill += Kill;
 		}
-		catch (ArgumentException e)
+		catch (Exception e)
 		{
-			throw new ArgumentException(
-				$"Error adding element with id {element.Id} and type {element.GetType()}",
+			throw new Exception(
+				$"Error adding element with id \"{element.Id}\" and type \"{element.GetType()}\"",
 				e
 			);
 		}

@@ -1,4 +1,8 @@
 @page "/testpage"
-@using Framework.TestComp
+@* @using Framework.TestComp *@
+@using Framework.Minigames
 
-<TestComp />
+@* <Minigame MinigameDefClass="Framework.Minigames.MinigameDefClasses.MyMinigame6" OnFinished="((success) => Console.WriteLine(success))" /> *@
+<Minigame MinigameDefClass="Framework.Minigames.KillTest" OnFinished="((success) => Console.WriteLine(success))" />
+
+@* <TestComp /> *@
