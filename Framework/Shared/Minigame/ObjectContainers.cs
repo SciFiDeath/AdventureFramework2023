@@ -151,6 +151,11 @@ public class GameObjectContainer<T> where T : IGameObject
 			Report this to Framework Devs");
 		return [.. Values];
 	}
+
+	public Dictionary<string, T>.Enumerator GetEnumerator()
+	{
+		return Elements.GetEnumerator();
+	}
 }
 
 
