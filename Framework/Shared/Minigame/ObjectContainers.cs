@@ -95,6 +95,7 @@ public class GameObjectContainer<T> where T : IGameObject
 	// [..[negative],..[null],..[0 && positive]]
 	public T[] GetRenderOrder()
 	{
+		/*
 		var autoOrder = Elements.Values.Where((e) => e.ZIndex == null);
 		var ordered = Elements.Values.Where((e) => e.ZIndex != null);
 		if (ordered is null)
@@ -112,6 +113,43 @@ public class GameObjectContainer<T> where T : IGameObject
 
 			return [.. orderedNegative, .. autoOrder, .. orderedPositive];
 		}
+		*/
+		var autoOrder = Elements.Values.Where((e) => e.ZIndex == null);
+		var ordered = Elements.Values.Where((e) => e.ZIndex != null).ToList();
+
+		// if no element with explicit ZIndex, just return all
+		if (ordered.Count == 0)
+		{
+			return [.. Values];
+		}
+
+		ordered.Sort((a, b) => a.ZIndex!.Value.CompareTo(b.ZIndex!.Value));
+
+		if (ordered.Last().ZIndex!.Value < 0)
+		{
+			return [.. ordered, .. autoOrder];
+		}
+
+		for (int i = 0; i < ordered.Count; i++)
+		{
+			if (ordered[i].ZIndex!.Value >= 0)
+			{
+				ordered.InsertRange(i, autoOrder);
+				return [.. ordered];
+			}
+		}
+		// This is technically unreachable
+		// throw new Exception(
+		// 	@"Impossible Exception in ObjectContainer.GetRenderOrder.
+		// 	Call Framework Dev for help"
+		// );
+
+		// maybe instead of throwing an exception for an impossible(?) edge case
+		// is not the best idea, so just return all the Values instead
+		Console.WriteLine(
+			@"Impossible edge case in GameObjectContainer.GetRenderOrder().
+			Report this to Framework Devs");
+		return [.. Values];
 	}
 }
 
