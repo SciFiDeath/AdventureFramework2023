@@ -5,7 +5,7 @@ using FrameworkItems;
 using static InventoryEvent;
 using Microsoft.JSInterop;
 using ObjectEncoding;
-
+using Framework.Minigames;
 //Notifications
 using Blazored.Toast.Services;
 using System.Runtime.CompilerServices;
@@ -141,8 +141,10 @@ public class GameState
 	}
 
 	public string GetSaveString()
-	{
-		return ObjectEncoding.EncodeObject(GameStateData);
+	{	
+		GameStateData data = new GameStateData();
+
+		return ObjectEncoding.ObjectEncoder.EncodeObject(data);
 	}
 	
 	public class GameStateData
@@ -151,6 +153,14 @@ public class GameState
 		public Dictionary<string, bool> gameState => State;
 
 		//public Dictionary<string, object> Minigames => Minigames;
+	}
+
+	public void SetFromSaveString (string hex) 
+	{
+		GameStateData data = ObjectEncoding.ObjectEncoder.DecodeObject<GameStateData>(hex);
+
+		State = data.gameState;
+		ItemsInInventory = data.Items;
 	}
 }
 

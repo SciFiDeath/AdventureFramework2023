@@ -36,12 +36,14 @@ public class InventoryUIBase : ComponentBase
         }
 
         //GameState.AddItem("goldkey"); 
-        GameState.AddItem("surfacecharger");
+        //GameState.AddItem("surfacecharger");
         GameState.AddItem("frog");
         GameState.AddItem("coffeemug");
         InvItems = GameState.GetItemObjects();
-        Console.WriteLine(await GameState.CreateSaveString());
+        
+        Console.WriteLine(GameState.GetSaveString());
 
+        return;
 
     }
 
