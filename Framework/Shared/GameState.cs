@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Components;
 
-using Encryption;
 using JsonUtilities;
 using FrameworkItems;
 using static InventoryEvent;
 using Microsoft.JSInterop;
-
+using ObjectEncoding;
 
 //Notifications
 using Blazored.Toast.Services;
@@ -14,11 +13,34 @@ using System.Text.Json;
 
 namespace GameStateInventory;
 
+public interface IGameState
+{
+    // if value exists, set it, else create new entry
+    void SetVisibility(string name, bool value);
+    bool CheckVisibility(string name);
+
+    void AddItem(string id);
+    void RemoveItem(string id);
+    bool CheckForItem(string id);
+
+    // minigames probably should be seperated from other stuff
+    // if value exists, set it, else create new entry
+
+	//TODO Implement This:
+    void SetMinigame(string name, MinigameDefBase minigame);
+    void GetMinigame(string name);
+
+    string CurrentSlide { get; set; }
+
+    // need to think about the name
+	//TODO Implement this:
+    void SetFromSaveString(string saveString);
+    string GetSaveString();
+}
+
 public class GameState
 {
 	private readonly IToastService ToastService;
-
-	private readonly EncryptionService Encryption;
 
 	protected JsonUtility JsonUtility { get; set; } = null!;
 
@@ -26,15 +48,14 @@ public class GameState
 	//Initialize Inventory
 	private static List<string> ItemsInInventory = new();
 
-	public static Dictionary<string, bool> State = new();
+	private static Dictionary<string, bool> State = new();
 
-	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService, EncryptionService encryption)
+	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
 	{
 		JsonUtility = jsonUtility;
 		Items = items;
 		ToastService = toastService;
 
-		Encryption = encryption;
 	}
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
@@ -119,33 +140,18 @@ public class GameState
 		return ItemObjects;
 	}
 
-    public async Task<string> CreateSaveString()
+	public string GetSaveString()
 	{
-		string encrypted = "";
-
-		try
-		{	
-			//TODO Encryption implementation needed
-			//encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
-			Console.WriteLine("Save successful");
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Error during save: {ex.Message}");
-			// Log the exception or take appropriate actions
-			throw new Exception("Could not encrypt and save", ex);
-		}
-
-		return encrypted;
+		return ObjectEncoding.EncodeObject(GameStateData);
 	}
-
-
-	public void LoadFromString(string encrypted)
+	
+	public class GameStateData
 	{
+		public List<string> Items => ItemsInInventory;
+		public Dictionary<string, bool> gameState => State;
 
+		//public Dictionary<string, object> Minigames => Minigames;
 	}
-
-
-
 }
+
 
