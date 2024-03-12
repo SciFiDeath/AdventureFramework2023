@@ -44,6 +44,11 @@ public class GameState
 
 	}
 
+	public void SetVisibility(string name, bool value)
+	{
+		State[name] = value;
+	}
+
 	public void ChangeVisibility(string name)
 	{
 		State[name] = !State[name];
@@ -62,7 +67,11 @@ public class GameState
 		}
 	}
 
-	// INVENTORY PART
+	public void AddVisibility(string name, bool value)
+	{
+		State.Add(name, value);
+	}
+
 	public void RemoveItem(string id)
 	{
 		bool removed = ItemsInInventory.Remove(id);
@@ -112,8 +121,27 @@ public class GameState
 
     public async Task<string> CreateSaveString()
 	{
-		string serializedJson = JsonSerializer.Serialize(State);
-		return await Encryption.EncryptString(serializedJson, "1234");
+		string encrypted = "";
+
+		try
+		{	
+			//TODO Encryption implementation needed
+			//encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
+			Console.WriteLine("Save successful");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error during save: {ex.Message}");
+			// Log the exception or take appropriate actions
+			throw new Exception("Could not encrypt and save", ex);
+		}
+
+		return encrypted;
+	}
+
+
+	public void LoadFromString(string encrypted)
+	{
 
 	}
 

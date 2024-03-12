@@ -2,9 +2,13 @@
 @using Framework.Slides
 @using GameStateInventory
 @using Framework.Game
+@using Framework.Keyboard
+@using Framework.Mouse
 
 @inject SlideService SlideService
 @inject GameState GameState
+@inject KeyboardService KeyboardService
+@inject MouseService MouseService
 
 @if (initTask.IsCompletedSuccessfully) {
     if (gameStarted) {
@@ -12,7 +16,7 @@
     }
     else {
         <h1 id="test">Hello, world!</h1>
-        <button style="color: white; background-color: rgb(126, 5, 5)" @onclick="StartGame">Game</button>
+        <button style="color: white; background-color: rgb(255, 0, 0)" @onclick="StartGame">Game</button>
         <a href="/testpage">TestPage</a>
     }
 }
@@ -30,8 +34,10 @@ else {
 
     protected override async Task OnInitializedAsync()
     {
-        await SlideService.Init();
         await GameState.LoadGameStateAndItemsAsync();
+        await SlideService.Init();
+        await KeyboardService.Init();
+        await MouseService.Init();
         _tcs.SetResult(true);
     }
 

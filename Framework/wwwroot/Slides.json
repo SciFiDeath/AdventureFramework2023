@@ -4,7 +4,7 @@
         "Buttons": {
             "Blackboard": {
                 "Points": "1085,285 1085,440 1282,441 1288,254",
-                "Actions": [["Route", "HM305blackboard"]]
+                "Actions": [["Route", "HM305blackboard"], ["PlaySound", "/audio/ambient-piano-loop-85bpm.wav"]]
             },
             "Beamer": {
                 "Points": "915,197,956,217,956,248,918,256,868,244,869,217",
@@ -25,14 +25,35 @@
             "RectTest": {
                 "Type": "rect",
                 "Points": "100,100,200,200",
-                "Actions": []
+                "Actions": [
+                    ["StartBlock", "T"],
+                    ["RequireGameState", "!HM305.CircleTest"],
+                    ["SetGameState", "HM305.CircleTest", "true"],
+                    ["Exit", ""],
+                    ["EndBlock", "T"],
+                    ["SetGameState", "HM305.CircleTest", "false"]
+                ],
+                "Visible": true
             },
             "CircleTest": {
                 "Type": "circle",
                 "Points": "100,100,50",
-                "Actions": []
+                "Actions": [["Route", "MinigameTest3"]],
+                "Visible": true
             }
         }
+    },
+
+    "MinigameTest3": {
+        "Type": "Minigame",
+        "MinigameDefClassName": "Framework.Minigames.MinigameDefClasses.MyMinigame",
+        "FallbackSlide": "HM305Beamer"
+    },
+
+    "TestMinigame": {
+        "Type": "Minigame",
+        "MinigameDefClassName": "Framework.Minigames.MinigameDefClasses.MyMinigame",
+        "FallbackSlide": "HM305Beamer"
     },
 
     "HM305DoorClosed": {
@@ -41,7 +62,7 @@
             "HM305DoorClosed": {
                 "Points": "1206,155 861,160 856,878 1235,876",
                 "Actions": [
-                    ["Require", "goldkey"],
+                    ["RequireItem", "goldkey"],
                     ["Route", "HM305DoorOpen"]
                 ]
             },
