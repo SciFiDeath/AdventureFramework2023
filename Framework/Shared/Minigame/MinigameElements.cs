@@ -346,7 +346,7 @@ public class Text : SVGElement
 	}
 }
 
-public class SVGImage : SVGElement
+public class Image : SVGElement
 {
 	public override string TagName { get; } = "image";
 
@@ -355,9 +355,9 @@ public class SVGImage : SVGElement
 	[Html("width")] public int? Width { get; set; }
 	[Html("height")] public int? Height { get; set; }
 
-	[Style("display")] public string? Visibility { get; set; }
+	// [Style("display")] public string? Visibility { get; set; }
 
-	[Html("href")] public string? Image { get; set; }
+	[Html("href")] public string? ImagePath { get; set; }
 
 	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
 
