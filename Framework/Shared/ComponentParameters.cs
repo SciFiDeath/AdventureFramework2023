@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Framework.Slides.JsonClasses;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Framework.Game.Parameters;
 
@@ -40,5 +39,5 @@ public class OldSlideComponentParameters : ComponentParameters, IOldSlideCompone
 public class SlideComponentParameters : ComponentParameters
 {
 	public string SlideId { get; set; } = null!;
-	public EventCallback<string> OnSlideChange { get; set; }
+	public EventCallback<List<List<string>>> OnButtonClick { get; set; }
 }

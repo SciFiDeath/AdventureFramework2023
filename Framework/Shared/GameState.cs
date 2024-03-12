@@ -35,6 +35,11 @@ public class GameState
 
 	}
 
+	public void SetVisibility(string name, bool value)
+	{
+		State[name] = value;
+	}
+
 	public void ChangeVisibility(string name)
 	{
 		State[name] = !State[name];
@@ -51,6 +56,11 @@ public class GameState
 			// Everything is visible by default
 			return true;
 		}
+	}
+
+	public void AddVisibility(string name, bool value)
+	{
+		State.Add(name, value);
 	}
 
 	public void RemoveItem(string id)
@@ -120,10 +130,10 @@ public class GameState
 	}
 
 
-    public void LoadFromString(string encrypted)
-    {
-        
-    }
+	public void LoadFromString(string encrypted)
+	{
+
+	}
 
 
 

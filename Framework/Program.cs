@@ -5,6 +5,8 @@ using JsonUtilities;
 using GameStateInventory;
 using Blazored.Toast;
 using Framework.Slides;
+using Framework.Keyboard;
+using Framework.Mouse;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -36,5 +38,8 @@ builder.Services.AddScoped<GameState>();
 // // execute the async method to load the gamestate and items
 // await ServiceProvider.GetRequiredService<GameState>().LoadGameStateAndItemsAsync();
 // // builder.Sexrvices.AddScoped(sp => {new GameState(sp.GetRequiredService<JsonUtility>(), sp.GetRequiredService<FrameworkItems.Items>())});
+
+builder.Services.AddScoped<KeyboardService>();
+builder.Services.AddScoped<MouseService>();
 
 await builder.Build().RunAsync();
