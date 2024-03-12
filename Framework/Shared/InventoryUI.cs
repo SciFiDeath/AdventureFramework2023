@@ -10,7 +10,7 @@ namespace Framework.InventoryUI;
 
 public class InventoryUIBase : ComponentBase
 {
-    [Inject] 
+    [Inject]
     protected GameState? GameState { get; set; }
 
     [Inject]
@@ -19,15 +19,14 @@ public class InventoryUIBase : ComponentBase
     [Inject]
     protected Items? Items { get; set; }
 
-    
     public Dictionary<string, Item> InvItems = new();
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        // base.OnInitialized();
         // Subscribe to the ItemAdded event
         InventoryEvent.ItemAdded += HandleItemAdded;
-        
-        
+
+
 
         if (GameState == null)
         {
@@ -35,11 +34,11 @@ public class InventoryUIBase : ComponentBase
             Console.WriteLine("GameState is null!");
             return;
         }
-        
+
         //GameState.AddItem("goldkey"); 
-        GameState.AddItem("surfacecharger");    
-        GameState.AddItem("frog");     
-        GameState.AddItem("coffeemug");     
+        GameState.AddItem("surfacecharger");
+        GameState.AddItem("frog");
+        GameState.AddItem("coffeemug");
         InvItems = GameState.GetItemObjects();
         Console.WriteLine(await GameState.CreateSaveString());
 
@@ -47,12 +46,13 @@ public class InventoryUIBase : ComponentBase
     }
 
     private void HandleItemAdded(object sender, InventoryEvent.ItemAddedEventArgs e)
-        {
-            // Handle the item added event here
-            // For example, update the UI, perform some action, etc.
-            InvItems = GameState.GetItemObjects();
+    {
+        // Handle the item added event here
+        // For example, update the UI, perform some action, etc.
+        Console.WriteLine("Added item");
+        InvItems = GameState.GetItemObjects();
 
-            StateHasChanged(); // Update the UI if needed
-        }
-    
+        StateHasChanged(); // Update the UI if needed
+    }
+
 }
