@@ -33,6 +33,6 @@ public class JsonButton
 	public string? Points { get; set; }
 	public string? Image { get; set; }
 	public List<List<string>>? Actions { get; set; }
-	public string? Visible { get; set; }
+	public bool? Visible { get; set; }
 	public int? ZIndex { get; set; }
 }

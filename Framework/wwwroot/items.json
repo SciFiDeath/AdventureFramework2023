@@ -9,6 +9,7 @@
         "name": "Surface Charger",
         "description": "fills the cup with a hole in it",
         "image": "InventoryImages/SurfaceCharger.jpeg"
+    }
     },
     
     "coffeemug": {

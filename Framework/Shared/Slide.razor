@@ -22,20 +22,20 @@
 	@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
 	{
 		if (GameState.CheckVisibility($"{SlideId}.{buttonKey}")) {
-			Console.WriteLine($"Checked: {SlideId}.{buttonKey}");
 
 			var ButtonElement = SlideData.Buttons[buttonKey];
 			// Declare here as it's used in several cases
 			var PointsList = ButtonElement.Points.Split(',');
 
 			switch (ButtonElement.Type) {
+				@* !Only for backwards compatibilty, but should be removed soon *@
 				case null:
 					if (ButtonElement.Image == null) { // Button is a Polygon
 						<polygon 
 							id="@buttonKey"
 							fill=@fillColor
 							points="@ButtonElement.Points" 
-							@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
+							@onclick="async () => { await HandleButtonClick(ButtonElement);}" 
 						/>
 					}
 					else { // Button is an Image
@@ -50,12 +50,13 @@
 					}
 					break;
 				// If you want to explicitly declare type "image" or "polygon" you can also do that
+				@* !Remove alternative spellings *@
 				case "polygon" or "Polygon" or "poly" or "Poly":
 					<polygon 
 						id="@buttonKey"
 						fill=@fillColor
 						points="@ButtonElement.Points" 
-						@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}" 
+						@onclick="async () => { await HandleButtonClick(ButtonElement);}" 
 					/>
 					break;
 				case "image" or "Image" or "img" or "Img":
@@ -76,7 +77,7 @@
 						width=@PointsList[2]
 						height=@PointsList[3]
 						fill=@fillColor
-						@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}"
+						@onclick="async () => { await HandleButtonClick(ButtonElement);}"
 					/>
 					break;
 				case "circle" or "Circle":
@@ -86,7 +87,7 @@
 						cy=@PointsList[1]
 						r=@PointsList[2]
 						fill=@fillColor
-						@onclick="async () => { await HandleButtonClick(SlideData.Buttons[buttonKey]);}"
+						@onclick="async () => { await HandleButtonClick(ButtonElement);}"
 					/>
 					break;
 			}

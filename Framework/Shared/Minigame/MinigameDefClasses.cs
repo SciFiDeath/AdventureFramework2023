@@ -231,10 +231,11 @@ public class KillTest : MinigameDefBase
 	{
 		while (true)
 		{
-			if (token.IsCancellationRequested)
-			{
-				return;
-			}
+			// if (token.IsCancellationRequested)
+			// {
+			// 	return;
+			// }
+			token.ThrowIfCancellationRequested();
 			Rects.Transform((rect) => rect.Y += 5);
 			Update();
 			await Task.Delay(10, token);
@@ -296,5 +297,47 @@ public class KillTest : MinigameDefBase
 	public static void KillThing(SVGElement element)
 	{
 		element.Kill();
+	}
+}
+
+public class ZIndexTest : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayE.jpg";
+
+	public Rectangle Rect1 { get; set; } = new()
+	{
+		X = 100,
+		Y = 100,
+		Width = 200,
+		Height = 200,
+		Fill = "red",
+		// ZIndex = 4
+	};
+	public Rectangle Rect2 { get; set; } = new()
+	{
+		X = 140,
+		Y = 140,
+		Width = 200,
+		Height = 200,
+		Fill = "green",
+		// ZIndex = 1,
+		Visible = true,
+	};
+	public Rectangle Rect3 { get; set; } = new()
+	{
+		X = 180,
+		Y = 180,
+		Width = 200,
+		Height = 200,
+		Fill = "blue",
+		// ZIndex = 0
+	};
+
+
+	public ZIndexTest()
+	{
+		AddElement(Rect3);
+		AddElement(Rect1);
+		AddElement(Rect2);
 	}
 }

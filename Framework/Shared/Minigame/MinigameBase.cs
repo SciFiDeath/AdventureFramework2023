@@ -191,9 +191,17 @@ public abstract class MinigameDefBase
 	public virtual async Task GameLoop(CancellationToken ct) { }
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
-	public void StartGameLoop()
+	public async void StartGameLoop()
 	{
-		Task.Run(() => GameLoop(Cts.Token));
+		try
+		{
+			// await GameLoop(Cts.Token); // not equivalent, but dont' know which to use
+			await Task.Run(() => GameLoop(Cts.Token));
+		}
+		catch (TaskCanceledException)
+		{
+			// This exception was thrown intentionally, so don't show it
+		}
 	}
 
 	// Method that is run right after the constructor
@@ -212,6 +220,7 @@ public abstract class MinigameDefBase
 	// be listening and potentially executing code
 	public void Exit()
 	{
+		//* Extremely important
 		KeyboardService.OnKeyDown -= OnKeyDown;
 		KeyboardService.OnKeyUp -= OnKeyUp;
 		MouseService.OnMouseDown -= OnMouseDown;
@@ -229,6 +238,8 @@ public abstract class MinigameDefBase
 
 	public void Finish(bool success)
 	{
+		// really important
+		Exit();
 		Finished?.Invoke(this, new FinishedEventArgs { Success = success });
 	}
 

@@ -3,11 +3,15 @@ namespace Framework.Minigames;
 
 public class GameObjectContainer<T> where T : IGameObject
 {
-	private Dictionary<string, T> Elements { get; set; } = new();
+	private Dictionary<string, T> Elements { get; set; } = [];
 
 	// Expose the most important methods of the dictionary
-	public string[] Keys => Elements.Keys.ToArray();
-	public T[] Values => Elements.Values.ToArray();
+	public string[] Keys => [.. Elements.Keys];
+	public T[] Values => [.. Elements.Values];
+	// Kind of over the top
+	// public Dictionary<string, T>.KeyCollection Keys => Elements.Keys;
+	// public Dictionary<string, T>.ValueCollection Values => Elements.Values;
+
 	public int Count => Elements.Count;
 	public void Clear() => Elements.Clear();
 
@@ -24,12 +28,13 @@ public class GameObjectContainer<T> where T : IGameObject
 		try
 		{
 			Elements.Add(element.Id, element);
+			// this[element.Id] = element;
 			element.OnKill += Kill;
 		}
-		catch (ArgumentException e)
+		catch (Exception e)
 		{
-			throw new ArgumentException(
-				$"Error adding element with id {element.Id} and type {element.GetType()}",
+			throw new Exception(
+				$"Error adding element with id \"{element.Id}\" and type \"{element.GetType()}\"",
 				e
 			);
 		}
@@ -57,7 +62,7 @@ public class GameObjectContainer<T> where T : IGameObject
 		}
 	}
 
-	public void Kill(object? sender, EventArgs e)
+	protected void Kill(object? sender, EventArgs e)
 	{
 		if (sender is T element)
 		{
@@ -78,6 +83,78 @@ public class GameObjectContainer<T> where T : IGameObject
 		{
 			action(element);
 		}
+	}
+
+	public void KillAll()
+	{
+		Transform((e) => { e.Kill(); });
+	}
+
+
+	// return array of elements in order to be rendered
+	// [..[negative],..[null],..[0 && positive]]
+	public T[] GetRenderOrder()
+	{
+		/*
+		var autoOrder = Elements.Values.Where((e) => e.ZIndex == null);
+		var ordered = Elements.Values.Where((e) => e.ZIndex != null);
+		if (ordered is null)
+		{
+			return [.. Values];
+		}
+		else
+		{
+			// Guaranteed to have non nullZindex
+			var orderedPositive = ordered.Where((e) => e.ZIndex >= 0).ToArray();
+			var orderedNegative = ordered.Where((e) => e.ZIndex < 0).ToArray();
+
+			Array.Sort(orderedPositive, (a, b) => a.ZIndex!.Value.CompareTo(b.ZIndex!.Value));
+			Array.Sort(orderedNegative, (a, b) => a.ZIndex!.Value.CompareTo(b.ZIndex!.Value));
+
+			return [.. orderedNegative, .. autoOrder, .. orderedPositive];
+		}
+		*/
+		var autoOrder = Elements.Values.Where((e) => e.ZIndex == null);
+		var ordered = Elements.Values.Where((e) => e.ZIndex != null).ToList();
+
+		// if no element with explicit ZIndex, just return all
+		if (ordered.Count == 0)
+		{
+			return [.. Values];
+		}
+
+		ordered.Sort((a, b) => a.ZIndex!.Value.CompareTo(b.ZIndex!.Value));
+
+		if (ordered.Last().ZIndex!.Value < 0)
+		{
+			return [.. ordered, .. autoOrder];
+		}
+
+		for (int i = 0; i < ordered.Count; i++)
+		{
+			if (ordered[i].ZIndex!.Value >= 0)
+			{
+				ordered.InsertRange(i, autoOrder);
+				return [.. ordered];
+			}
+		}
+		// This is technically unreachable
+		// throw new Exception(
+		// 	@"Impossible Exception in ObjectContainer.GetRenderOrder.
+		// 	Call Framework Dev for help"
+		// );
+
+		// maybe instead of throwing an exception for an impossible(?) edge case
+		// is not the best idea, so just return all the Values instead
+		Console.WriteLine(
+			@"Impossible edge case in GameObjectContainer.GetRenderOrder().
+			Report this to Framework Devs");
+		return [.. Values];
+	}
+
+	public Dictionary<string, T>.Enumerator GetEnumerator()
+	{
+		return Elements.GetEnumerator();
 	}
 }
 

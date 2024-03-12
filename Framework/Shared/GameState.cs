@@ -35,6 +35,11 @@ public class GameState
 
 	}
 
+	public void SetVisibility(string name, bool value)
+	{
+		State[name] = value;
+	}
+
 	public void ChangeVisibility(string name)
 	{
 		State[name] = !State[name];
@@ -56,7 +61,6 @@ public class GameState
 	public void AddVisibility(string name, bool value)
 	{
 		State.Add(name, value);
-		Console.WriteLine($"Added: {name}");
 	}
 
 	public void RemoveItem(string id)
