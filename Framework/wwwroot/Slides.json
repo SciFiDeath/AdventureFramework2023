@@ -50,6 +50,12 @@
         "FallbackSlide": "HM305Beamer"
     },
 
+    "TestMinigame": {
+        "Type": "Minigame",
+        "MinigameDefClassName": "Framework.Minigames.MinigameDefClasses.MyMinigame",
+        "FallbackSlide": "HM305Beamer"
+    },
+
     "HM305DoorClosed": {
         "Image": "images/HM305_DoorClose.jpg",
         "Buttons": {

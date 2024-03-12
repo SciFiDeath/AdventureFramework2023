@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 using JsonUtilities;
 using FrameworkItems;
+using static InventoryEvent;
 
 //Notifications
 using Blazored.Toast.Services;
@@ -81,16 +82,31 @@ public class GameState
 			throw new Exception("Item doesn't exist in items.json Dictionary");
 		}
 		ItemsInInventory.Add(id);
+
 		ToastService.ShowSuccess($"Added {id} to inventory");
 		Console.WriteLine($"Successfully added {id} to inventory");
+
+		//Event handler for updateing inventory images
+		InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
 	}
 	public bool CheckForItem(string id)
 	{
 		return ItemsInInventory.Contains(id);
 	}
-	public List<string> GetItems()
+	public Dictionary<string, Item> GetItemObjects()
 	{
-		return ItemsInInventory;
+        Dictionary<string, Item> ItemObjects = new();
+
+		foreach (string id in ItemsInInventory)
+		{	
+			if (Items.items.ContainsKey(id))
+			{
+				ItemObjects.Add(id, Items.items[id]);
+			}
+			
+		}
+
+		return ItemObjects;
 	}
 
 	public string Save(string key = "1234", string path = "gamestate.json")
@@ -98,8 +114,9 @@ public class GameState
 		string encrypted = "";
 
 		try
-		{
-			encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
+		{	
+			//TODO Encryption implementation needed
+			//encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
 			Console.WriteLine("Save successful");
 		}
 		catch (Exception ex)

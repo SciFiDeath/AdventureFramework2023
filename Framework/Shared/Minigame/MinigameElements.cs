@@ -8,6 +8,9 @@ public interface IGameObject
 {
 	public string Id { get; set; }
 
+	// for render order
+	public int? ZIndex { get; set; }
+
 	// visibilty not over style, but directly when rendering
 	public bool Visible { get; set; }
 	public RenderFragment GetRenderFragment();
@@ -32,6 +35,8 @@ public abstract class GameObject : IGameObject
 {
 	// Make sure that every element always has an Id
 	public string Id { get; set; } = Guid.NewGuid().ToString("N");
+
+	public virtual int? ZIndex { get; set; }
 
 	public virtual bool Visible { get; set; } = true;
 
@@ -63,7 +68,7 @@ public abstract class SVGElementGameObject : GameObject
 
 	public string? Style { get => Element.Style; }
 
-	public int? ZIndex
+	public override int? ZIndex
 	{
 		get => Element.ZIndex;
 		set => Element.ZIndex = value;
@@ -82,7 +87,6 @@ public abstract class SVGElement : GameObject
 
 	// // public int ZIndex { get; set; } = 0;
 
-	[Style("z-index")] public int? ZIndex { get; set; }
 
 	// Normal implementation (maybe slightly slower, but I understand it better)
 	public abstract string TagName { get; }

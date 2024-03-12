@@ -233,10 +233,11 @@ public class KillTest : MinigameDefBase
 	{
 		while (true)
 		{
-			if (token.IsCancellationRequested)
-			{
-				return;
-			}
+			// if (token.IsCancellationRequested)
+			// {
+			// 	return;
+			// }
+			token.ThrowIfCancellationRequested();
 			Rects.Transform((rect) => rect.Y += 5);
 			Update();
 			await Task.Delay(10, token);
