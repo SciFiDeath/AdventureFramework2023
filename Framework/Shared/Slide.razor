@@ -25,7 +25,7 @@
 
 			var ButtonElement = SlideData.Buttons[buttonKey];
 			// Declare here as it's used in several cases
-			var PointsList = ButtonElement.Points.Split(',');
+			var PointsList = ButtonElement.Points?.Split(',');
 
 			switch (ButtonElement.Type) {
 				@* !Only for backwards compatibilty, but should be removed soon *@

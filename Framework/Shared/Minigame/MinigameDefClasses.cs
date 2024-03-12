@@ -1,3 +1,5 @@
+using System.Numerics;
+using Framework.Minigames.MinigameDefClasses;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Framework.Minigames;
@@ -225,7 +227,7 @@ public class KillTest : MinigameDefBase
 
 	public override string BackgroundImage { get; set; } = "images/HM3_hallwayE.jpg";
 
-	public GameObjectContainer<Rectangle> Rects { get; } = new();
+	public GameObjectContainer<Rectangle> Rects { get; } = new(); 
 
 	public override async Task GameLoop(CancellationToken token)
 	{
@@ -297,4 +299,73 @@ public class KillTest : MinigameDefBase
 	{
 		element.Kill();
 	}
+}
+
+
+public class LaurinsRain : MinigameDefBase{
+	// [Element] 
+	// public Rectangle Rect {get; set;} = new(){ // With this method it is not possible to enable the OnClick event
+	// 	X = 100,
+	// 	Y = 100,
+	// 	Width = 100,
+	// 	Height = 100,
+	// 	Fill = "red",	
+	// 	};
+
+	
+	// [Element]
+	// public Rectangle RectOnclick {get; set;}
+	// public LaurinsRain(){ // With this, onclick is enabled => First make initialise all elements, then add properties in the constructor
+	// 	RectOnclick = new(){
+	// 		X = 200,
+	// 		Y = 100,
+	// 		Width = 100,
+	// 		Height = 100,
+	// 		Fill = "blue",
+	// 		OnClick = (args) => {RectOnclick.Fill = "green"; Update();}
+	// 	};
+	// }
+
+    public override string BackgroundImage {get; set;} = "images/HM3_hallwayN.jpg"; // Background Image
+	public GameObjectContainer<Rectangle> Rects { get; } = new(); // Gameobject container that contains rectangles that are to be moved
+
+	[Element]
+	public Rectangle? Down {get; set; }
+	
+	[Element]
+	public Rectangle? Quit {get; set; }
+
+	public LaurinsRain(){
+		Down = new(){ // Initialise button for spawning new rects
+			X = 0,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = (args) => Rects.Transform((r) => {r.Y += 30; Update();}) // When clicked, every rectangle in the container moves down by 30 pixels
+		};
+		Quit = new(){ // Initialise button for quitting the game
+			X = 0,
+			Y = 100,
+			Width = 100,
+			Height = 100,
+			Fill = "red",
+			OnClick = (args) => Finish(true)
+		};
+
+		for (var i = 100; i <=1920; i += 100){ // Initialise row of elements at once
+			var Rect = new Rectangle(){
+				X = i+20,
+				Y = 0,
+				Width = 50,
+				Height = 50,
+				Fill = "blue",
+			};
+			Rects.Add(Rect);
+			AddElement(Rect);
+		}
+	}
+	
+
+
 }
