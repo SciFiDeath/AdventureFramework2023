@@ -83,12 +83,6 @@ public abstract class SVGElement : GameObject
 {
 	[Html("style")] public string? Style { get => GetStyleString(); }
 
-	//* Also inherited from GameObject
-	// [Html("id")] public string Id { get; set; } = Guid.NewGuid().ToString("N");
-
-	// // public int ZIndex { get; set; } = 0;
-
-
 	// Normal implementation (maybe slightly slower, but I understand it better)
 	public abstract string TagName { get; }
 	// maybe virtual for more custom elements?
@@ -96,6 +90,15 @@ public abstract class SVGElement : GameObject
 
 
 	public virtual string? CustomStyle { get; set; }
+
+	// add event handlers, as they are the same over all elements
+
+	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+	[Callback("ondblclick")] public Action<EventArgs>? OnDoubleClick { get; set; }
+	[Callback("onmouseenter")] public Action<EventArgs>? OnMouseEnter { get; set; }
+	[Callback("onmouseleave")] public Action<EventArgs>? OnMouseLeave { get; set; }
+
+
 
 	public override RenderFragment GetRenderFragment()
 	{
@@ -141,7 +144,6 @@ public abstract class SVGElement : GameObject
 		)
 		.Where(p => Attribute.IsDefined(p, typeof(StyleAttribute)))
 		.ToArray();
-		Console.WriteLine(properties.Length);
 		foreach (var property in properties)
 		{
 			var value = property.GetValue(this);
@@ -340,7 +342,8 @@ public class Rectangle : SVGElement
 
 	[Html("fill")] public string? Fill { get; set; }
 
-	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+	// now inherited
+	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
 }
 
 public class Text : SVGElement
@@ -352,25 +355,23 @@ public class Text : SVGElement
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
 	[Html("fill")] public string? Fill { get; set; }
+	[Html("dx")] public int? DX { get; set; }
+	[Html("dy")] public int? DY { get; set; }
+	[Html("rotate")] public int? Rotate { get; set; }
+	[Html("textLength")] public int? TextLength { get; set; }
 
-	// why the hell does C# have to be so unneccessarily verbose and stupid 
-	[Style("font-size")] private string? FontSizeString { get; set; }
-	private int? FontSizeBacking { get; set; }
-	public int? FontSize
-	{
-		get
-		{
-			return FontSizeBacking;
-		}
-		set
-		{
-			FontSizeBacking = value;
-			FontSizeString = $"{value}px";
-		}
-	}
+	[Html("lengthAdjust")]
+	private string? LengthAdjust => StretchLetters is true ? "spacingAndGlyphs" : null;
+	public bool StretchLetters { get; set; }
+
+	[Style("font-size")]
+	private string? FontSizeString => FontSize != null ? $"{FontSize}px" : null;
+	public int? FontSize { get; set; }
 
 	[Style("font-family")] public string? FontFamily { get; set; }
 
+	[Style("user-select")] private string? UserSelect => Selectable != true ? "none" : null;
+	public bool? Selectable { get; set; }
 
 	public override RenderFragment GetRenderFragment()
 	{
@@ -399,6 +400,7 @@ public class Image : SVGElement
 
 	[Html("href")] public string? ImagePath { get; set; }
 
-	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+	// now inherited
+	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
 
 }

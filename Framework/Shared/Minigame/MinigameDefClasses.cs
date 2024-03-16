@@ -113,7 +113,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(7),
+			OnClick = (args) => SetNumber(7),
 		};
 		Button8 = new()
 		{
@@ -122,7 +122,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(8),
+			OnClick = (args) => SetNumber(8),
 		};
 		Button9 = new()
 		{
@@ -131,7 +131,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(9),
+			OnClick = (args) => SetNumber(9),
 		};
 		Button4 = new()
 		{
@@ -140,7 +140,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(4),
+			OnClick = (args) => SetNumber(4),
 		};
 		Button5 = new()
 		{
@@ -149,7 +149,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(5),
+			OnClick = (args) => SetNumber(5),
 		};
 		Button6 = new()
 		{
@@ -158,7 +158,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(6),
+			OnClick = (args) => SetNumber(6),
 		};
 		Button1 = new()
 		{
@@ -167,7 +167,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(1),
+			OnClick = (args) => SetNumber(1),
 		};
 		Button2 = new()
 		{
@@ -176,7 +176,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(2),
+			OnClick = (args) => SetNumber(2),
 		};
 		Button3 = new()
 		{
@@ -185,7 +185,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(3),
+			OnClick = (args) => SetNumber(3),
 		};
 		Button0 = new()
 		{
@@ -194,7 +194,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(0),
+			OnClick = (args) => SetNumber(0),
 		};
 		Text = new()
 		{
@@ -389,7 +389,11 @@ public class ElementStyleTest : MinigameDefBase
 		Width = 200,
 		Height = 100,
 		Fill = "red",
-		CustomStyle = "fill: blue"
+		CustomStyle = "fill: blue",
+		OnClick = (args) => Console.WriteLine("click"),
+		OnDoubleClick = (args) => Console.WriteLine("doubleclick"),
+		OnMouseEnter = (args) => Console.WriteLine("enter"),
+		OnMouseLeave = (args) => Console.WriteLine("leave"),
 	};
 
 	[Element]
@@ -409,6 +413,9 @@ public class ElementStyleTest : MinigameDefBase
 		X = 500,
 		Y = 500,
 		FontSize = 100,
-		FontFamily = "Comic Sans MS"
+		FontFamily = "Comic Sans MS",
+		TextLength = 1000,
+		// StretchLetters = true,
+		// Selectable = true,
 	};
 }
