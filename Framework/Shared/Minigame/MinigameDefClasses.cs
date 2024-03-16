@@ -403,7 +403,8 @@ public class ElementStyleTest : MinigameDefBase
 		X = 100,
 		Y = 400,
 		Width = 300,
-		Height = 100,
+		// Height = 100,
+		Opacity = 0.9,
 	};
 
 	[Element]
@@ -417,5 +418,60 @@ public class ElementStyleTest : MinigameDefBase
 		TextLength = 1000,
 		// StretchLetters = true,
 		// Selectable = true,
+	};
+
+	[Element]
+	public Polygon Polygon { get; set; } = new()
+	{
+		Points = [[500, 500], [1000, 500], [800, 700], [650, 600]],
+		Fill = "white",
+		Opacity = 0.5,
+	};
+
+	[Element]
+	public Polyline Polyline { get; set; } = new()
+	{
+		Points = [[1000, 500], [1500, 500], [1300, 700], [1150, 600]],
+		Stroke = "blue",
+		StrokeWidth = 20,
+		Opacity = 0.5,
+		Fill = "none"
+	};
+
+	[Element]
+	public Line Line { get; set; } = new()
+	{
+		X1 = 1500,
+		X2 = 1700,
+		Y1 = 0,
+		Y2 = 1000,
+		Stroke = "aquamarine",
+		StrokeWidth = 400,
+		StrokeOpacity = 0.2,
+	};
+
+	[Element]
+	public Circle Circle { get; set; } = new()
+	{
+		CX = 2000,
+		CY = 0,
+		R = 750,
+		Fill = "darkviolet",
+		FillOpacity = 0.3,
+		Stroke = "black",
+		StrokeWidth = 20,
+
+	};
+
+	[Element]
+	public Ellipse Ellipse { get; set; } = new()
+	{
+		CX = 1000,
+		CY = 750,
+		RX = 400,
+		RY = 100,
+		Fill = "goldenrod",
+		FillOpacity = 0.7,
+		Cursor = "pointer"
 	};
 }

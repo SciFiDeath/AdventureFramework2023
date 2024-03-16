@@ -91,12 +91,17 @@ public abstract class SVGElement : GameObject
 
 	public virtual string? CustomStyle { get; set; }
 
-	// add event handlers, as they are the same over all elements
-
+	// some properties that are the same across all elements
+	//  event handlers, as they are the same over all elements
 	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
 	[Callback("ondblclick")] public Action<EventArgs>? OnDoubleClick { get; set; }
 	[Callback("onmouseenter")] public Action<EventArgs>? OnMouseEnter { get; set; }
 	[Callback("onmouseleave")] public Action<EventArgs>? OnMouseLeave { get; set; }
+
+	// set the cursor (probably most often to "pointer")
+	[Style("cursor")] public string? Cursor { get; set; }
+	[Style("opacity")] public double? Opacity { get; set; }
+
 
 
 
@@ -311,23 +316,45 @@ public abstract class SVGElement : GameObject
 	}
 }
 
+public abstract class ShapeElement : SVGElement
+{
+	[Style("fill")] public string? Fill { get; set; }
+	[Style("fill-opacity")] public double? FillOpacity { get; set; }
+	// stroke stuff
+	[Style("stroke")] public string? Stroke { get; set; }
+	[Style("stroke-width")] public int? StrokeWidth { get; set; }
+	[Style("stroke-opacity")] public double? StrokeOpacity { get; set; }
+}
+
 
 // Some classes like ImgButton, PolygonButton, RectButton are some Ideas I had
 // They are set as properties in a  MinigameBase instance and are then
 // "generated" in the markup of the Minigame
 // Should have functions like check for click, disable/enable, Set/GetPos, show/hide et.
 
-// public class Polygon : SVGElement
-// {
-// 	public override string TagName { get; } = "polygon";
+public class Polygon : ShapeElement
+{
+	public override string TagName { get; } = "polygon";
 
-// 	public List<int> Points { get; set; } = null!;
+	public List<int[]> Points { get; set; } = [];
 
-// 	[Html("points")]
-// 	private string _points => string.Join(",", Points);
-// }
+	[Html("points")]
+	private string PointString => string.Join(",", Points.SelectMany(i => i));
 
-public class Rectangle : SVGElement
+	// [Style("fill")] public string? Fill { get; set; }
+}
+
+public class Polyline : ShapeElement
+{
+	public override string TagName { get; } = "polyline";
+
+	public List<int[]> Points { get; set; } = [];
+
+	[Html("points")]
+	private string PointString => string.Join(",", Points.SelectMany(i => i));
+}
+
+public class Rectangle : ShapeElement
 {
 	// // Implementation of the TagName property as static
 	// public new static string TagName { get; } = "rect";
@@ -340,10 +367,40 @@ public class Rectangle : SVGElement
 	[Html("width")] public int Width { get; set; }
 	[Html("height")] public int Height { get; set; }
 
-	[Html("fill")] public string? Fill { get; set; }
+	// [Style("fill")] public string? Fill { get; set; }
 
 	// now inherited
 	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+}
+
+public class Circle : ShapeElement
+{
+	public override string TagName { get; } = "circle";
+	[Html("cx")] public int? CX { get; set; }
+	[Html("cy")] public int? CY { get; set; }
+	[Html("r")] public int? R { get; set; }
+	[Html("pathLength")] public int? PathLength { get; set; }
+}
+
+public class Ellipse : ShapeElement
+{
+	public override string TagName { get; } = "ellipse";
+	[Html("cx")] public int? CX { get; set; }
+	[Html("cy")] public int? CY { get; set; }
+	[Html("rx")] public int? RX { get; set; }
+	[Html("ry")] public int? RY { get; set; }
+	[Html("pathLength")] public int? PathLength { get; set; }
+}
+
+public class Line : ShapeElement
+{
+	public override string TagName { get; } = "line";
+	[Html("x1")] public int? X1 { get; set; }
+	[Html("x2")] public int? X2 { get; set; }
+	[Html("y1")] public int? Y1 { get; set; }
+	[Html("y2")] public int? Y2 { get; set; }
+	[Html("pathLength")] public int? PathLength { get; set; }
+	// I know that fill isn't technically valid for line, but css will just ignore it
 }
 
 public class Text : SVGElement
@@ -354,11 +411,12 @@ public class Text : SVGElement
 
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
-	[Html("fill")] public string? Fill { get; set; }
 	[Html("dx")] public int? DX { get; set; }
 	[Html("dy")] public int? DY { get; set; }
 	[Html("rotate")] public int? Rotate { get; set; }
 	[Html("textLength")] public int? TextLength { get; set; }
+
+	[Style("fill")] public string? Fill { get; set; }
 
 	[Html("lengthAdjust")]
 	private string? LengthAdjust => StretchLetters is true ? "spacingAndGlyphs" : null;
