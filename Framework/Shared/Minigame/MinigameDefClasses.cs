@@ -201,7 +201,7 @@ public class CodeTerminal : MinigameDefBase
 			InnerText = CurrentText,
 			X = 620,
 			Y = 490,
-			FontSize = "100px",
+			FontSize = 100,
 			Fill = "white"
 		};
 		Key = new()
@@ -375,4 +375,40 @@ public class LaurinsRain : MinigameDefBase
 
 
 
+}
+
+public class ElementStyleTest : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayW.jpg";
+
+	[Element]
+	public Rectangle Rectangle { get; set; } = new()
+	{
+		X = 100,
+		Y = 100,
+		Width = 200,
+		Height = 100,
+		Fill = "red",
+		CustomStyle = "fill: blue"
+	};
+
+	[Element]
+	public Image Image { get; set; } = new()
+	{
+		ImagePath = "InventoryImages/SurfaceCharger.jpeg",
+		X = 100,
+		Y = 400,
+		Width = 300,
+		Height = 100,
+	};
+
+	[Element]
+	public Text Text { get; set; } = new()
+	{
+		InnerText = "Hello World",
+		X = 500,
+		Y = 500,
+		FontSize = 100,
+		FontFamily = "Comic Sans MS"
+	};
 }

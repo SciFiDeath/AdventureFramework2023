@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Components;
 
 namespace Framework.Minigames;
@@ -90,6 +91,11 @@ public abstract class SVGElement : GameObject
 
 	// Normal implementation (maybe slightly slower, but I understand it better)
 	public abstract string TagName { get; }
+	// maybe virtual for more custom elements?
+	// public virtual string TagName { get; } = "div";
+
+
+	public virtual string? CustomStyle { get; set; }
 
 	public override RenderFragment GetRenderFragment()
 	{
@@ -127,9 +133,15 @@ public abstract class SVGElement : GameObject
 	public string? GetStyleString()
 	{
 		string style = "";
-		PropertyInfo[] properties = GetType().GetProperties()
+		PropertyInfo[] properties = GetType()
+		.GetProperties(
+		BindingFlags.Instance |
+		BindingFlags.Public |
+		BindingFlags.NonPublic
+		)
 		.Where(p => Attribute.IsDefined(p, typeof(StyleAttribute)))
 		.ToArray();
+		Console.WriteLine(properties.Length);
 		foreach (var property in properties)
 		{
 			var value = property.GetValue(this);
@@ -138,9 +150,11 @@ public abstract class SVGElement : GameObject
 				//*Note: Added null suppression because safety is ensured, but keep in mind regardless
 				// with translate {...ibute<StyleAttribute>()!.name ?? Translate(property.Name)}
 				style +=
-				$"{property.GetCustomAttribute<StyleAttribute>()!.name}: {property.GetValue(this)};";
+				$"{property.GetCustomAttribute<StyleAttribute>()!.name}: {value};";
 			}
 		}
+		// add custom style
+		style += CustomStyle;
 		return style == "" ? null : style;
 	}
 
@@ -179,7 +193,12 @@ public abstract class SVGElement : GameObject
 	public Dictionary<string, object>? GetElementAttributeDictionary()
 	{
 		Dictionary<string, object> attributes = new();
-		PropertyInfo[] properties = GetType().GetProperties()
+		PropertyInfo[] properties = GetType()
+		.GetProperties(
+			BindingFlags.Instance |
+			BindingFlags.Public |
+			BindingFlags.NonPublic
+		)
 		.Where(p => Attribute.IsDefined(p, typeof(HtmlAttribute)))
 		.ToArray();
 		foreach (var property in properties)
@@ -200,8 +219,13 @@ public abstract class SVGElement : GameObject
 
 	public Dictionary<string, object>? GetCallbackDictionary()
 	{
-		Dictionary<string, object> callbacks = new();
-		PropertyInfo[] methods = GetType().GetProperties()
+		Dictionary<string, object> callbacks = [];
+		PropertyInfo[] methods = GetType()
+		.GetProperties(
+			BindingFlags.Instance |
+			BindingFlags.Public |
+			BindingFlags.NonPublic
+		)
 		.Where(p => Attribute.IsDefined(p, typeof(CallbackAttribute)))
 		.ToArray();
 		foreach (var method in methods)
@@ -328,7 +352,23 @@ public class Text : SVGElement
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
 	[Html("fill")] public string? Fill { get; set; }
-	[Style("font-size")] public string? FontSize { get; set; }
+
+	// why the hell does C# have to be so unneccessarily verbose and stupid 
+	[Style("font-size")] private string? FontSizeString { get; set; }
+	private int? FontSizeBacking { get; set; }
+	public int? FontSize
+	{
+		get
+		{
+			return FontSizeBacking;
+		}
+		set
+		{
+			FontSizeBacking = value;
+			FontSizeString = $"{value}px";
+		}
+	}
+
 	[Style("font-family")] public string? FontFamily { get; set; }
 
 
