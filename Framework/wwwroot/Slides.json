@@ -4,7 +4,10 @@
         "Buttons": {
             "Blackboard": {
                 "Points": "1085,285 1085,440 1282,441 1288,254",
-                "Actions": [["Route", "HM305blackboard"], ["PlaySound", "/audio/ambient-piano-loop-85bpm.wav"]]
+                "Actions": [
+                    ["Route", "HM305blackboard"],
+                    ["PlaySound", "/audio/ambient-piano-loop-85bpm.wav"]
+                ]
             },
             "Beamer": {
                 "Points": "915,197,956,217,956,248,918,256,868,244,869,217",
@@ -79,7 +82,8 @@
                 "Points": "764,458 764,491 775,495 775,465 764,458 792,39",
                 "Actions": [["Route", "HM305CodeTerminal"]]
             }
-        }
+        },
+        "OnEnter": [["AddItem", "goldkey"]]
     },
 
     "HM305CodeTerminal": {

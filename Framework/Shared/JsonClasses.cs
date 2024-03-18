@@ -15,6 +15,7 @@ public class JsonSlide
 	public List<string>? Tags { get; set; }
 	public string? Image { get; set; }
 	public Dictionary<string, JsonButton>? Buttons { get; set; }
+	public List<List<string>>? OnEnter { get; set; }
 
 	// Temporary for Minigame Compatibility
 	public string? MinigameDefClassName { get; set; }
