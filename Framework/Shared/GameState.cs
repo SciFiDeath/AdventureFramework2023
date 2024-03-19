@@ -57,6 +57,8 @@ public class GameState
 			return true;
 		}
 	}
+	public bool CheckForVisibility(string name) => State.ContainsKey(name);
+
 
 	public void AddVisibility(string name, bool value)
 	{
@@ -95,15 +97,15 @@ public class GameState
 	}
 	public Dictionary<string, Item> GetItemObjects()
 	{
-        Dictionary<string, Item> ItemObjects = new();
+		Dictionary<string, Item> ItemObjects = new();
 
 		foreach (string id in ItemsInInventory)
-		{	
+		{
 			if (Items.items.ContainsKey(id))
 			{
 				ItemObjects.Add(id, Items.items[id]);
 			}
-			
+
 		}
 
 		return ItemObjects;
@@ -114,7 +116,7 @@ public class GameState
 		string encrypted = "";
 
 		try
-		{	
+		{
 			//TODO Encryption implementation needed
 			//encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
 			Console.WriteLine("Save successful");
