@@ -7,13 +7,14 @@ namespace Framework.Minigames.MinigameDefClasses;
 public class MyMinigame1 : MinigameDefBase{
     public override string BackgroundImage {get; set;} = "/images/calculator.png";
 
-/*
+
 [Element]
 public Rectangle Rect {get; set;}
 public Rectangle Rect1 {get; set;}
-public GameObjectContainer<Rectangle> movingrects {get; set;} = new();
+public GameObjectContainer<Rectangle> buttons {get; set;} = new();
 public GameObjectContainer<Rectangle> rects {get; set;} = new();
 
+/*
 public MyMinigame1(){
     Rect1 = new(){
         Id = "rectbutton",
