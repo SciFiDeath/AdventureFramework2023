@@ -12,6 +12,7 @@ public class MyMinigame6 : MinigameDefBase
 
     [Element]
     public Rectangle Rect { get; set; }
+    public GameObjectContainer<Rectangle> RectRot {get; set;} = new();
 
 
     public GameObjectContainer<Rectangle> Rects {get; set;} = new();
@@ -19,7 +20,7 @@ public class MyMinigame6 : MinigameDefBase
     {
         Rect = new()
         {
-            Id = "rect",
+            Id = "rectg",
             X = 100,
             Y = 100,
             Width = 100,
@@ -46,22 +47,21 @@ public class MyMinigame6 : MinigameDefBase
         
             var rect = new Rectangle()
             {
+                Id = "rectr",
                 X = randomx,
                 Y = randomy,
                 Width = 50,
                 Height= 50,
                 Fill = "red",
-                OnClick = tot,
+                OnClick = (args) => RectRot.KillId("rectr"),
+                
             };
             AddElement(rect);
-            Rects.Add(rect);
+            RectRot.Add(rect);
         
         Update();
     }
-   public void tot(EventArgs args)
-   {
-    Rect.Kill();
-   }
+   
 }
 
 
