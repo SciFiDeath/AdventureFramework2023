@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Components;
@@ -460,5 +461,92 @@ public class Image : SVGElement
 
 	// now inherited
 	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+
+}
+
+public class CustomObject : SVGElement
+{
+	public override string TagName { get; } = "g";
+	//* this must be set or it will cause unexpected behaviour
+	public string CustomTagName { get; set; } = null!;
+
+	public Dictionary<string, object> Attributes { get; set; } = [];
+	public Dictionary<string, object> Styles { get; set; } = [];
+	public Dictionary<string, Action<EventArgs>> Callbacks { get; set; } = [];
+
+	public new string CustomStyle => GetStyle();
+
+	private string GetStyle()
+	{
+		string str = "";
+		foreach (var kvp in Styles)
+		{
+			str += $"{kvp.Key}: {kvp.Value}; ";
+		}
+		return str;
+	}
+
+	public Dictionary<string, object> GetCallbacks()
+	{
+		Dictionary<string, object> dict = [];
+		foreach (var kvp in Callbacks)
+		{
+			dict.Add(
+				//*Note: I added null suppresion here, because it is impossible that the attribute is null
+				// But still, I could be overlooking somehting, so be wary of this
+				// If this throws an error, we're in trouble, as it means that something greater
+				// beyond my mortal understanding has broken
+				kvp.Key,
+				EventCallback.Factory.Create(this, kvp.Value)
+			);
+		}
+		return dict;
+	}
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(0, CustomTagName);
+			builder.AddMultipleAttributes(1, Attributes);
+			builder.AddAttribute(2, "style", CustomStyle);
+			builder.AddMultipleAttributes(3, GetCallbacks());
+			builder.CloseElement();
+
+		};
+	}
+}
+
+public class ForeignObject : SVGElement
+{
+	public override string TagName { get; } = "foreignObject";
+
+	[Html("x")] public int? X { get; set; }
+	[Html("y")] public int? Y { get; set; }
+	[Html("width")] public int? Width { get; set; }
+	[Html("height")] public int? Height { get; set; }
+
+	public CustomObject CustomObject { get; set; } = null!;
+
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(1, TagName);
+			builder.AddAttribute(2, "x", X);
+			builder.AddAttribute(3, "y", Y);
+			builder.AddAttribute(4, "width", Width);
+			builder.AddAttribute(5, "height", Height);
+
+			builder.OpenElement(6, CustomObject.CustomTagName);
+			builder.AddMultipleAttributes(7, CustomObject.Attributes);
+			builder.AddAttribute(8, "style", CustomObject.Style);
+			builder.AddMultipleAttributes(9, CustomObject.GetCallbacks());
+			builder.CloseElement();
+
+			builder.CloseElement();
+		};
+	}
 
 }
