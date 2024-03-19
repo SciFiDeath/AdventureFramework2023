@@ -9,8 +9,8 @@ public class MyMinigame1 : MinigameDefBase{
 
 
 [Element]
-public Rectangle Rect {get; set;}
-public Rectangle Rect1 {get; set;}
+public Rectangle? Rect {get; set;}
+public Rectangle? Rect1 {get; set;}
 public GameObjectContainer<Rectangle> buttons {get; set;} = new();
 public GameObjectContainer<Rectangle> rects {get; set;} = new();
 
