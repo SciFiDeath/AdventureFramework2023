@@ -182,14 +182,27 @@ public class SlidesJsonException : Exception
 	public SlidesJsonException(string message, Exception inner) : base(message, inner) { }
 }
 
-public class SlidesVerifier(SlideService slideService, GameState gameState, Items items)
+public class SlidesVerifier(GameState gameState, Items items)
 {
-	private readonly SlideService slideService = slideService;
 	private readonly GameState gameState = gameState;
 	private readonly Items items = items;
 
+	private Dictionary<string, JsonSlide>? CurrentState { get; set; }
+
+	private static readonly string[] SetGameStateOptions = ["true", "false", "toggle"];
+	private static readonly string[] ButtonTypeOptions = ["rect", "polygon", "image", "circle"];
+
+
+
+	public void Init(Dictionary<string, JsonSlide> slides)
+	{
+		CurrentState = slides;
+	}
+
+
 	public void VerifySlides(Dictionary<string, JsonSlide> slides)
 	{
+		CurrentState = slides;
 		foreach (var kvp in slides)
 		{
 			try
@@ -268,6 +281,10 @@ public class SlidesVerifier(SlideService slideService, GameState gameState, Item
 		{
 			throw new SlidesJsonException($"At Button \"{id}\": \"Type\" undefined");
 		}
+		if (!ButtonTypeOptions.Contains(button.Type))
+		{
+			throw new SlidesJsonException($"At Button \"{id}\": \"{button.Type}\" is not a valid type option");
+		}
 		if (button.Points is null)
 		{
 			throw new SlidesJsonException($"At Button \"{id}\": \"Points\" undefined");
@@ -295,6 +312,11 @@ public class SlidesVerifier(SlideService slideService, GameState gameState, Item
 
 	public void VerifyActions(List<List<string>> actions)
 	{
+		// to make sure that current state is always set
+		if (CurrentState is null)
+		{
+			throw new Exception("State must be set before calling VerifyActions. Consider calling Init before");
+		}
 		List<string> blockStarts = [];
 		List<string> blockEnds = [];
 		for (int i = 0; i < actions.Count; i++)
@@ -312,7 +334,7 @@ public class SlidesVerifier(SlideService slideService, GameState gameState, Item
 				if (action[0] == "Route")
 				{
 					// if Slide to route to doesn't exist
-					if (!slideService.CheckForSlide(action[1]))
+					if (!CurrentState.ContainsKey(action[1]))
 					{
 						throw new SlidesJsonException($"At action {i}: Route: No Slide with id \"{action[1]}\" found");
 					}
@@ -378,6 +400,10 @@ public class SlidesVerifier(SlideService slideService, GameState gameState, Item
 					if (!gameState.CheckForVisibility(x))
 					{
 						throw new SlidesJsonException($"At action {i}: SetGameState: No GameState with key \"{x}\" found");
+					}
+					if (!SetGameStateOptions.Contains(action[2]))
+					{
+						throw new SlidesJsonException($"At action {i}: SetGameState: \"{action[2]}\" is not a possible param");
 					}
 					continue;
 				}
