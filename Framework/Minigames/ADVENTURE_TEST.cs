@@ -5,31 +5,61 @@ using System.Threading.Tasks.Dataflow;
 namespace Framework.Minigames.MinigameDefClasses;
 
 public class MyMinigame1 : MinigameDefBase{
-    public override string BackgroundImage {get; set;} = "/images/calculator.png";
+    public override string BackgroundImage {get; set;} = "/images/FIGHTER.png";
 
 
-[Element]
+
 public Rectangle? Rect {get; set;}
 public Rectangle? Rect1 {get; set;}
-public GameObjectContainer<Rectangle> buttons {get; set;} = new();
-public GameObjectContainer<Rectangle> rects {get; set;} = new();
+public GameObjectContainer<Rectangle> buttons {get; set;} = new(); //pokemon UI 
+public GameObjectContainer<Rectangle> moving_rects {get; set;} = new(); //bilder 
+public GameObjectContainer<Rectangle> decoration {get; set;} = new();
 
-/*
+
 public MyMinigame1(){
-    Rect1 = new(){
-        Id = "rectbutton",
+    Rect = new(){
+        Id = "2ADSFG",
         X= 400,
-        Y= 50,
-        Width= 200,
-        Height= 50,
+        Y= 800,
+        Width= 300,
+        Height= 100,
         Fill="blue",
-        OnClick = SPAWNER,
+        // OnClick = (args) => moving_rects.Transform(async (R) => {
+        //     R.Y += 5; 
+        //     Update(); 
+        //     await Task.Delay(50); 
+        //     R.Y -= 5;
+        //     Update(); })
+        OnClick = async (args) => {
+            Rect.Y += 5;
+            Update();
+            await Task.Delay(50); 
+            Rect.Y -= 5;
+            Update();
+        }
+
        
     };
+    moving_rects.Add(Rect);
+    AddElement(Rect);
+
+
+
+   Rect1 = new(){
+        Id = "rectbutton55",
+        X= 800,
+        Y= 800,
+        Width= 300,
+        Height= 100,
+        Fill="blue",
+        OnClick = (args) => moving_rects.Transform((R) => {R.Y += 10; Update();})
+       
+    };
+    moving_rects.Add(Rect1);
     AddElement(Rect1);
-    rects.Add(Rect1);
     
 }
+/*
 public void SPAWNER(EventArgs args){
     var rand = new Random();
     Rect = new(){
