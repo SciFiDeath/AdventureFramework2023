@@ -396,10 +396,10 @@ public class SlidesVerifier(GameState gameState, Items items)
 				if (action[0] == "SetGameState")
 				{
 					// check if gamestate exists
-					var x = action[1].StartsWith('!') ? action[1][1..] : action[1];
-					if (!gameState.CheckForVisibility(x))
+					// var x = action[1].StartsWith('!') ? action[1][1..] : action[1];
+					if (!gameState.CheckForVisibility(action[1]))
 					{
-						throw new SlidesJsonException($"At action {i}: SetGameState: No GameState with key \"{x}\" found");
+						throw new SlidesJsonException($"At action {i}: SetGameState: No GameState with key \"{action[1]}\" found");
 					}
 					if (!SetGameStateOptions.Contains(action[2]))
 					{
