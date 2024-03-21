@@ -110,31 +110,6 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 		}
 	}
 
-	public bool CheckForSlide(string slideId)
-	{
-		try
-		{
-			GetSlide(slideId);
-		}
-		catch (KeyNotFoundException)
-		{
-			return false;
-		}
-		return true;
-	}
-	public bool CheckForSlideId(JsonSlide slide)
-	{
-		try
-		{
-			GetSlideId(slide);
-		}
-		catch (KeyNotFoundException)
-		{
-			return false;
-		}
-		return true;
-	}
-
 	// As of now, this is quite a useless function, but maybe we can add a flag 
 	// to the Slides.json that makes a slide the first one no matter the order
 	public string GetStartSlideId()
