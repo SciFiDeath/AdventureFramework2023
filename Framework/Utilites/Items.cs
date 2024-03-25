@@ -33,7 +33,7 @@ namespace FrameworkItems
         public async Task LoadItemsAsync(string path = "items.json")
         {
             //* Load Items from items.json *
-            // TODO needs error checking
+
             try
             {
                 items = await JsonUtility.LoadFromJsonAsync<Dictionary<string, Item>>(path);
@@ -43,7 +43,8 @@ namespace FrameworkItems
                 Console.WriteLine($"Error in Items.LoadItemsAsync: {ex.Message}");
             }
         }
-
+        
+        //Seems kinda useless
         public Item GetPropertiesByName(string ItemName)
         {
             //*Returns Item Object With: Name, Desc. and Image Path*// 

@@ -124,6 +124,9 @@ public class GameState
 		return ItemsInInventory.Contains(id);
 	}
 	
+	public List<string> GetItemStrings(){
+		return ItemsInInventory;
+	}
 	public Dictionary<string, Item> GetItemObjects()
 	{
         Dictionary<string, Item> ItemObjects = new();
@@ -142,26 +145,40 @@ public class GameState
 
 	public string GetSaveString()
 	{	
-		GameStateData data = new GameStateData();
-
+		Console.WriteLine("GetSaveString called");
+		GameStateData data = new GameStateData(ItemsInInventory, State);
+		foreach (var item in data.Items){
+            Console.WriteLine(item);
+        }
 		return ObjectEncoding.ObjectEncoder.EncodeObject(data);
 	}
 	
-	public class GameStateData
-	{
-		public List<string> Items => ItemsInInventory;
-		public Dictionary<string, bool> gameState => State;
-
-		//public Dictionary<string, object> Minigames => Minigames;
-	}
-
 	public void SetFromSaveString (string hex) 
-	{
+	{	
+		Console.WriteLine("SetFromSaveString called");
 		GameStateData data = ObjectEncoding.ObjectEncoder.DecodeObject<GameStateData>(hex);
 
-		State = data.gameState;
-		ItemsInInventory = data.Items;
+		GameState.State = data.gameState;
+		
+		foreach (var item in data.Items){
+            Console.WriteLine(item);
+        }
+
+		GameState.ItemsInInventory = data.Items;
 	}
+	public class GameStateData
+	{	
+
+		public List<string> Items {get;}
+		public Dictionary<string, bool> gameState {get;}
+		//public Dictionary<string, object> Minigames => Minigames;
+		public GameStateData (List<string> items, Dictionary<string, bool> gamestate){
+			
+			Items = items;
+			gameState = gamestate;
+		}
+	}
+
 }
 
 
