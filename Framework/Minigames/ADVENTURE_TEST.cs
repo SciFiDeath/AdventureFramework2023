@@ -9,55 +9,94 @@ public class MyMinigame1 : MinigameDefBase{
 
 
 
-public Rectangle? Rect {get; set;}
-public Rectangle? Rect1 {get; set;}
+public Rectangle? AttackButton1 {get; set;}
+public Rectangle? AttackButton2 {get; set;}
+public Rectangle? StatusButton {get; set;}
+public Rectangle? HealButton {get; set;}
 public GameObjectContainer<Rectangle> buttons {get; set;} = new(); //pokemon UI 
 public GameObjectContainer<Rectangle> moving_rects {get; set;} = new(); //bilder 
 public GameObjectContainer<Rectangle> decoration {get; set;} = new();
 
 
 public MyMinigame1(){
-    Rect = new(){
+    AttackButton1 = new(){
         Id = "2ADSFG",
         X= 400,
         Y= 800,
         Width= 300,
         Height= 100,
         Fill="blue",
-        // OnClick = (args) => moving_rects.Transform(async (R) => {
-        //     R.Y += 5; 
-        //     Update(); 
-        //     await Task.Delay(50); 
-        //     R.Y -= 5;
-        //     Update(); })
         OnClick = async (args) => {
-            Rect.Y += 5;
+            AttackButton1.Y += 5;
             Update();
             await Task.Delay(50); 
-            Rect.Y -= 5;
+            AttackButton1.Y -= 5;
             Update();
         }
 
        
     };
-    moving_rects.Add(Rect);
-    AddElement(Rect);
+    moving_rects.Add(AttackButton1);
+    AddElement(AttackButton1);
 
 
 
-   Rect1 = new(){
+   AttackButton2 = new(){
         Id = "rectbutton55",
         X= 800,
         Y= 800,
         Width= 300,
         Height= 100,
         Fill="blue",
-        OnClick = (args) => moving_rects.Transform((R) => {R.Y += 10; Update();})
-       
+        OnClick = async (args) => {
+            AttackButton2.Y += 5;
+            Update();
+            await Task.Delay(50); 
+            AttackButton2.Y -= 5;
+            Update();
+        }
     };
-    moving_rects.Add(Rect1);
-    AddElement(Rect1);
-    
+       
+    moving_rects.Add(AttackButton2);
+    AddElement(AttackButton2);
+
+   StatusButton = new(){
+        Id = "statusrect2345151",
+        X= 400,
+        Y= 950,
+        Width= 300,
+        Height= 100,
+        Fill="blue",
+        OnClick = async (args) => {
+            StatusButton.Y += 5;
+            Update();
+            await Task.Delay(50); 
+            StatusButton.Y -= 5;
+            Update();
+        }
+    };
+       
+    moving_rects.Add(StatusButton);
+    AddElement(StatusButton); 
+
+    HealButton = new(){
+        Id = "healrect777151",
+        X= 800,
+        Y= 950,
+        Width= 300,
+        Height= 100,
+        Fill="blue",
+        OnClick = async (args) => {
+            HealButton.Y += 5;
+            Update();
+            await Task.Delay(50); 
+            HealButton.Y -= 5;
+            Update();
+        }
+    };
+       
+    moving_rects.Add(HealButton);
+    AddElement(HealButton); 
 }
 /*
 public void SPAWNER(EventArgs args){
