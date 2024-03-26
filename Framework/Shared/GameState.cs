@@ -154,14 +154,13 @@ public class GameState
 		{
 			Console.WriteLine(item);
 		}
-		return ObjectEncoding.ObjectEncoder.EncodeObject(data);
+		return ObjectEncoder.EncodeObject(data);
 	}
 
 	public void SetFromSaveString(string hex)
 	{
 		Console.WriteLine("SetFromSaveString called");
-		GameStateData data = ObjectEncoding.ObjectEncoder.DecodeObject<GameStateData>(hex);
-
+		GameStateData? data = ObjectEncoder.DecodeObject<GameStateData>(hex) ?? throw new Exception("GameStateData is null");
 		GameState.State = data.gameState;
 
 		foreach (var item in data.Items)
