@@ -50,6 +50,22 @@ public static class PositionPresets
 
 public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVerifier slidesVerifier)
 {
+	// TODO: make good presets
+	public readonly Dictionary<string, Dictionary<string, string>> PrositionPresets = new()
+	{
+		{
+			"left", new()
+			{
+				{"x", "0"},
+				{"y", "400"},
+				{"width", "250"},
+				{"height", "400"},
+				// {"srcl"}
+			}
+		}
+	};
+
+
 	private readonly JsonUtility jsonUtility = jsonUtility;
 	private readonly GameState gameState = gameState;
 	private readonly SlidesVerifier slidesVerifier = slidesVerifier;
