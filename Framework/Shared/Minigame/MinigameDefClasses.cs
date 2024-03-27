@@ -1,6 +1,11 @@
 using System.Numerics;
 using Framework.Minigames.MinigameDefClasses;
+using Inject = Microsoft.AspNetCore.Components.InjectAttribute;
+using Microsoft.JSInterop;
+
 using Microsoft.AspNetCore.Components.Web;
+using Framework.Sound;
+using System.Runtime.CompilerServices;
 
 namespace Framework.Minigames;
 
@@ -304,29 +309,6 @@ public class KillTest : MinigameDefBase
 
 
 public class LaurinsRain : MinigameDefBase{
-	// [Element] 
-	// public Rectangle Rect {get; set;} = new(){ // With this method it is not possible to enable the OnClick event
-	// 	X = 100,
-	// 	Y = 100,
-	// 	Width = 100,
-	// 	Height = 100,
-	// 	Fill = "red",	
-	// 	};
-
-	
-	// [Element]
-	// public Rectangle RectOnclick {get; set;}
-	// public LaurinsRain(){ // With this, onclick is enabled => First make initialise all elements, then add properties in the constructor
-	// 	RectOnclick = new(){
-	// 		X = 200,
-	// 		Y = 100,
-	// 		Width = 100,
-	// 		Height = 100,
-	// 		Fill = "blue",
-	// 		OnClick = (args) => {RectOnclick.Fill = "green"; Update();}
-	// 	};
-	// }
-
     public override string BackgroundImage {get; set;} = "images/HM3_hallwayN.jpg"; // Background Image
 	public GameObjectContainer<Rectangle> Rects { get; } = new(); // Gameobject container that contains rectangles that are to be moved
 
@@ -368,5 +350,49 @@ public class LaurinsRain : MinigameDefBase{
 	}
 	
 
+}
 
+public class AudioTest : MinigameDefBase{
+
+
+	[Element]
+	public Rectangle Dingrect {get; set;}
+	[Element]
+	public Rectangle Track {get; set;}
+
+	public override string BackgroundImage {get; set;} = "images/HM305_fromEntrance.jpg"; // Background Image
+
+	public async Task PlayAudio()
+	{
+		await SoundService.PlaySound("/audio/ding.wav"); // Play sound 
+	}
+
+	public async Task PlayMusic(string path){
+		await SoundService.PlayMusic(path); // Play music 
+	}
+	public async Task StopMusic(){
+		await SoundService.StopMusic(); // Stop music 
+	}
+	
+
+	public AudioTest(){
+		Dingrect = new(){ // Initialise button for playing sound
+			X = 0,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = (args) => _ = PlayMusic("/audio/ambient-piano-loop-85bpm.wav") // When clicked, sound is played
+		};  
+		Track = new(){
+			X = 0,
+			Y = 200,
+			Width = 100,
+			Height = 100,
+			Fill = "blue",
+			OnClick = (args) => _ = PlayMusic("/audio/doom-soundtrack.wav") // When clicked, the Backgroundtrack is played 
+			// OnClick = (args) => _ = StopMusic()
+		};
+		}
+	
 }

@@ -7,6 +7,7 @@ using Blazored.Toast;
 using Framework.Slides;
 using Framework.Keyboard;
 using Framework.Mouse;
+using Framework.Sound;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -41,5 +42,7 @@ builder.Services.AddScoped<GameState>();
 
 builder.Services.AddScoped<KeyboardService>();
 builder.Services.AddScoped<MouseService>();
+
+builder.Services.AddScoped<SoundService>();
 
 await builder.Build().RunAsync();
