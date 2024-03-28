@@ -43,7 +43,7 @@ namespace FrameworkItems
                 Console.WriteLine($"Error in Items.LoadItemsAsync: {ex.Message}");
             }
         }
-        
+
         //Seems kinda useless
         public Item GetPropertiesByName(string ItemName)
         {
@@ -56,8 +56,8 @@ namespace FrameworkItems
                     throw new Exception("No items read, Call LoadItemsAsync() first.");
                 }
 
-                Console.WriteLine(items[ItemName].Description);
-                Console.WriteLine(items[ItemName].Image);
+                // Console.WriteLine(items[ItemName].Description);
+                // Console.WriteLine(items[ItemName].Image);
                 return items[ItemName];
             }
             catch (Exception ex)
@@ -68,16 +68,16 @@ namespace FrameworkItems
         }
 
         public bool DoesItemExist(string ItemName)
-        {   
+        {
             string p = "";
 
             foreach (KeyValuePair<string, Item> kvp in items)
-                {
-                    //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-                    p += string.Format("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-                }           
-            
-            Console.WriteLine(p);
+            {
+                //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+                p += string.Format("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+            }
+
+            // Console.WriteLine(p);
 
             return items.ContainsKey(ItemName);
         }

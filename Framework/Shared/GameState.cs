@@ -103,7 +103,7 @@ public class GameState
 		{
 			throw new ArgumentException($"Element {id} is not in Inventory");
 		}
-		Console.WriteLine($"Successfully removed {id} from inventory");
+		// Console.WriteLine($"Successfully removed {id} from inventory");
 	}
 
 	public void AddItem(string id)
@@ -148,25 +148,25 @@ public class GameState
 
 	public string GetSaveString()
 	{
-		Console.WriteLine("GetSaveString called");
+		// Console.WriteLine("GetSaveString called");
 		GameStateData data = new GameStateData(ItemsInInventory, State);
-		foreach (var item in data.Items)
-		{
-			Console.WriteLine(item);
-		}
+		// foreach (var item in data.Items)
+		// {
+		// 	Console.WriteLine(item);
+		// }
 		return ObjectEncoder.EncodeObject(data);
 	}
 
 	public void SetFromSaveString(string hex)
 	{
-		Console.WriteLine("SetFromSaveString called");
+		// Console.WriteLine("SetFromSaveString called");
 		GameStateData? data = ObjectEncoder.DecodeObject<GameStateData>(hex) ?? throw new Exception("GameStateData is null");
 		GameState.State = data.gameState;
 
-		foreach (var item in data.Items)
-		{
-			Console.WriteLine(item);
-		}
+		// foreach (var item in data.Items)
+		// {
+		// 	Console.WriteLine(item);
+		// }
 
 		GameState.ItemsInInventory = data.Items;
 	}
