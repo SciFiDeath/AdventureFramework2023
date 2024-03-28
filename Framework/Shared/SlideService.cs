@@ -50,6 +50,51 @@ public static class PositionPresets
 
 public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVerifier slidesVerifier)
 {
+	public readonly Dictionary<string, Dictionary<string, string>> PositionPresets = new()
+	{
+
+		{
+			"left", new()
+			{
+				{"id", "pos-preset-left"},
+				{"x", "0"},
+				{"y", "340"},
+				{"width", "250"},
+				{"height", "400"},
+			}
+		},
+		{
+			"right", new()
+			{
+				{"id", "pos-preset-right"},
+				{"x", "1670"},
+				{"y", "340"},
+				{"width", "250"},
+				{"height", "400"},
+			}
+		},
+		{
+			"top", new()
+			{
+				{"id", "pos-preset-top"},
+				{"x", "760"},
+				{"y", "0"},
+				{"width", "400"},
+				{"height", "250"},
+			}
+		},
+		{
+			"bottom", new()
+			{
+				{"id", "pos-preset-bottom"},
+				{"x", "760"},
+				{"y", "830"},
+				{"width", "400"},
+				{"height", "250"},
+			}
+		}
+	};
+
 	private readonly JsonUtility jsonUtility = jsonUtility;
 	private readonly GameState gameState = gameState;
 	private readonly SlidesVerifier slidesVerifier = slidesVerifier;
