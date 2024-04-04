@@ -59,7 +59,7 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 				{"id", "pos-preset-left"},
 				{"x", "0"},
 				{"y", "340"},
-				{"width", "250"},
+				{"width", "150"},
 				{"height", "400"},
 			}
 		},
@@ -67,9 +67,9 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 			"right", new()
 			{
 				{"id", "pos-preset-right"},
-				{"x", "1670"},
+				{"x", "1770"},
 				{"y", "340"},
-				{"width", "250"},
+				{"width", "150"},
 				{"height", "400"},
 			}
 		},
@@ -80,7 +80,7 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 				{"x", "760"},
 				{"y", "0"},
 				{"width", "400"},
-				{"height", "250"},
+				{"height", "150"},
 			}
 		},
 		{
@@ -88,9 +88,9 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 			{
 				{"id", "pos-preset-bottom"},
 				{"x", "760"},
-				{"y", "830"},
+				{"y", "930"},
 				{"width", "400"},
-				{"height", "250"},
+				{"height", "150"},
 			}
 		}
 	};
