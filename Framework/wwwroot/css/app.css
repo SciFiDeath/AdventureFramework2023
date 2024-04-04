@@ -73,3 +73,29 @@ image {
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+
+/* #pos-preset-left {
+    cursor: url("../UI_Images/arrows/left64.png"), auto;
+}
+
+#pos-preset-right {
+    cursor: url("../UI_Images/arrows/right64.png"), auto;
+}
+#pos-preset-top {
+    cursor: url("../UI_Images/arrows/up64.png"), auto;
+}
+#pos-preset-bottom {
+    cursor: url("../UI_Images/arrows/down64.png"), auto;
+} */
+
+.pos-preset {
+    cursor: none;
+}
+
+.arrow-img {
+    position: absolute;
+    display: none;
+    width: 2.5%;
+    pointer-events: none;
+    z-index: 100; /* make sure that it's always on top */
+}

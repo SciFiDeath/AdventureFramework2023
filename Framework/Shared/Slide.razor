@@ -29,6 +29,7 @@
 
 			switch (ButtonElement.Type) {
 				@* !Only for backwards compatibilty, but should be removed soon *@
+				@*
 				case null:
 					if (ButtonElement.Image == null) { // Button is a Polygon
 						<polygon 
@@ -49,9 +50,10 @@
 						/>
 					}
 					break;
+				*@
 				// If you want to explicitly declare type "image" or "polygon" you can also do that
 				@* !Remove alternative spellings *@
-				case "polygon" or "Polygon" or "poly" or "Poly":
+				case "polygon":
 					<polygon 
 						id="@buttonKey"
 						fill=@fillColor
@@ -59,7 +61,7 @@
 						@onclick="async () => { await HandleButtonClick(ButtonElement);}" 
 					/>
 					break;
-				case "image" or "Image" or "img" or "Img":
+				case "image":
 					<image 
 						id=@buttonKey
 						x=@PointsList[0]
@@ -69,7 +71,7 @@
 						href=@ButtonElement.Image
 					/>
 					break;
-				case "rect" or "Rect" or "rectangle" or "Rectangle":
+				case "rect":
 					<rect
 						id=@buttonKey
 						x=@PointsList[0]
@@ -80,7 +82,7 @@
 						@onclick="async () => { await HandleButtonClick(ButtonElement);}"
 					/>
 					break;
-				case "circle" or "Circle":
+				case "circle":
 					<circle
 						id=@buttonKey
 						cx=@PointsList[0]
@@ -90,6 +92,34 @@
 						@onclick="async () => { await HandleButtonClick(ButtonElement);}"
 					/>
 					break;
+				case "preset":
+					Dictionary<string, string> preset = [];
+					switch (ButtonElement.Image) {
+						case "left":
+							preset = SlideService.PositionPresets["left"];
+							break;
+						case "right":
+							preset = SlideService.PositionPresets["right"];
+							break;
+						case "top":
+							preset = SlideService.PositionPresets["top"];
+							break;
+						case "bottom":
+							preset = SlideService.PositionPresets["bottom"];
+							break;
+					}
+					
+					<rect
+						id=@preset["id"]
+						class="pos-preset"
+						x=@preset["x"]
+						y=@preset["y"]
+						width=@preset["width"]
+						height=@preset["height"]
+						fill=@fillColor
+					/>
+					break;
+
 			}
 		}
 	}

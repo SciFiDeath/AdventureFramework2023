@@ -36,28 +36,28 @@ public class InventoryUIBase : ComponentBase
             Console.WriteLine("GameState is null!");
             return;
         }
-        Console.WriteLine("frog and key in Inventory");
+        // Console.WriteLine("frog and key in Inventory");
         GameState.AddItem("frog");
         GameState.AddItem("goldkey");
 
-        Console.WriteLine(GameState.GetSaveString());
+        // Console.WriteLine(GameState.GetSaveString());
         GameState.RemoveItem("frog");
         GameState.RemoveItem("goldkey");
-        Console.WriteLine("remove all items");
-        
-        Console.WriteLine(GameState.GetSaveString());
+        // Console.WriteLine("remove all items");
+
+        // Console.WriteLine(GameState.GetSaveString());
 
 
         InvItems = GameState.GetItemObjects();
-        
+
         StateHasChanged();
-        
+
         GameState.SetFromSaveString("7B224974656D73223A5B2266726F67222C22676F6C646B6579225D2C2267616D655374617465223A7B22627574746F6E31223A747275652C224C65427574746F6E223A66616C73652C22436F64655465726D696E616C223A747275652C22446F6F72223A747275657D7D");
 
         InvItems = GameState.GetItemObjects();
 
         StateHasChanged();
-        
+
         return;
 
     }
@@ -68,7 +68,7 @@ public class InventoryUIBase : ComponentBase
         // For example, update the UI, perform some action, etc.
 
         InvItems = GameState.GetItemObjects();
-        
+
         StateHasChanged(); // Update the UI if needed
     }
 
