@@ -210,7 +210,8 @@ public class SlidesVerifier(GameState gameState, Items items)
 	private Dictionary<string, JsonSlide>? CurrentState { get; set; }
 
 	private static readonly string[] SetGameStateOptions = ["true", "false", "toggle"];
-	private static readonly string[] ButtonTypeOptions = ["rect", "polygon", "image", "circle"];
+	private static readonly string[] ButtonTypeOptions = ["rect", "polygon", "image", "circle", "preset"];
+	private static readonly string[] PresetOptions = ["left", "right", "top", "bottom"];
 
 
 
@@ -305,17 +306,34 @@ public class SlidesVerifier(GameState gameState, Items items)
 		{
 			throw new SlidesJsonException($"At Button \"{id}\": \"{button.Type}\" is not a valid type option");
 		}
-		if (button.Points is null)
-		{
-			throw new SlidesJsonException($"At Button \"{id}\": \"Points\" undefined");
-		}
-		if (button.Type == "image")
+
+		if (button.Type == "preset")
 		{
 			if (button.Image is null)
 			{
-				throw new SlidesJsonException($"At Button \"{id}\": \"Type\" is \"image\" and \"Image\" undefined");
+				throw new SlidesJsonException($"At Button \"{id}\": \"Type\" is \"preset\" and \"Image\" undefined");
+			}
+			if (!PresetOptions.Contains(button.Image))
+			{
+				throw new SlidesJsonException($"At Button \"{id}\": \"{button.Image}\" is not a valid preset option");
 			}
 		}
+		// presets are a bit special, so check other stuff only if not preset
+		else
+		{
+			if (button.Points is null)
+			{
+				throw new SlidesJsonException($"At Button \"{id}\": \"Points\" undefined");
+			}
+			if (button.Type == "image")
+			{
+				if (button.Image is null)
+				{
+					throw new SlidesJsonException($"At Button \"{id}\": \"Type\" is \"image\" and \"Image\" undefined");
+				}
+			}
+		}
+		//? check with Andrii if no actions is very frequent, if yes, make them nullable
 		if (button.Actions is null)
 		{
 			throw new SlidesJsonException($"At Button \"{id}\": \"Actions\" undefined");

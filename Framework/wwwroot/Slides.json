@@ -47,7 +47,8 @@
             },
             "PresetTest": {
                 "Type": "preset",
-                "Image": "right"
+                "Image": "right",
+                "Actions": []
             }
         }
     },
@@ -149,19 +150,23 @@
             },
             "right": {
                 "Type": "preset",
-                "Image": "right"
+                "Image": "right",
+                "Actions": []
             },
             "left": {
                 "Type": "preset",
-                "Image": "left"
+                "Image": "left",
+                "Actions": []
             },
             "top": {
                 "Type": "preset",
-                "Image": "top"
+                "Image": "top",
+                "Actions": []
             },
             "bottom": {
                 "Type": "preset",
-                "Image": "bottom"
+                "Image": "bottom",
+                "Actions": []
             }
         }
     },
