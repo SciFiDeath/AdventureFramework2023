@@ -25,34 +25,11 @@
 
 			var ButtonElement = SlideData.Buttons[buttonKey];
 			// Declare here as it's used in several cases
+			// points is null if button-type is preset so if it's a preset, 
+			// make it empty list so that it hasn't to be nullable => no null warnings
 			var PointsList = ButtonElement.Type != "preset" ? ButtonElement.Points.Split(',') : [];
 
 			switch (ButtonElement.Type) {
-				@* !Only for backwards compatibilty, but should be removed soon *@
-				@*
-				case null:
-					if (ButtonElement.Image == null) { // Button is a Polygon
-						<polygon 
-							id="@buttonKey"
-							fill=@fillColor
-							points="@ButtonElement.Points" 
-							@onclick="async () => { await HandleButtonClick(ButtonElement);}" 
-						/>
-					}
-					else { // Button is an Image
-						<image 
-							id=@buttonKey
-							x=@PointsList[0]
-							y=@PointsList[1]
-							width=@PointsList[2]
-							height=@PointsList[3]
-							href=@ButtonElement.Image
-						/>
-					}
-					break;
-				*@
-				// If you want to explicitly declare type "image" or "polygon" you can also do that
-				@* !Remove alternative spellings *@
 				case "polygon":
 					<polygon 
 						id="@buttonKey"
