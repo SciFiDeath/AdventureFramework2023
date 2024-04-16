@@ -12,10 +12,11 @@ Parameters=@(new Dictionary<string, object>{
     {"SlideData", Slides[SlideId]}, {"OnSlideChange", EventCallback.Factory.Create<string>(this, ChangeSlide)}
     }) /> *@
 @if (SlideService.GetSlide(SlideId).Type == "Minigame") {
-    <Minigame MinigameDefClass="@SlideService.GetSlide(SlideId).MinigameDefClassName" OnFinished="FinishMinigame" />
-
-}else {
-
+    <Minigame 
+        MinigameDefClass="@SlideService.GetSlide(SlideId).MinigameDefClassName" 
+        OnFinished="async (actions) => await FinishMinigame(actions)" 
+    />
+} else {
     <DynamicComponent Type=@typeof(Slide) Parameters="Parameters.GetParameterDictionary()" />
 }
 

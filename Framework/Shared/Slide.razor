@@ -33,6 +33,7 @@
 				case "polygon":
 					<polygon 
 						id="@buttonKey"
+						class="selectable-svg-element"
 						fill=@fillColor
 						points="@ButtonElement.Points" 
 						@onclick="async () => { await HandleButtonClick(ButtonElement);}" 
@@ -51,6 +52,7 @@
 				case "rect":
 					<rect
 						id=@buttonKey
+						class="selectable-svg-element"
 						x=@PointsList[0]
 						y=@PointsList[1]
 						width=@PointsList[2]
@@ -62,6 +64,7 @@
 				case "circle":
 					<circle
 						id=@buttonKey
+						class="selectable-svg-element"
 						cx=@PointsList[0]
 						cy=@PointsList[1]
 						r=@PointsList[2]
@@ -94,6 +97,7 @@
 						width=@preset["width"]
 						height=@preset["height"]
 						fill=@fillColor
+						@onclick="async () => { await HandleButtonClick(ButtonElement);}"
 					/>
 					break;
 
@@ -103,7 +107,9 @@
 </svg>
 
 
-@* JS Code *@x
+@* JS Code *@
+
+@*
 <script> 
 	// EXTERNAL Code!!!!
 	(function() { // From https://github.com/veltman/loopify?tab=readme-ov-file
@@ -197,7 +203,7 @@
 		});
 
 </script>
-
+*@
 
 
 

@@ -83,13 +83,12 @@ public class MinigameBase : ComponentBase
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
 
-	// TODO: Remake the finish funcionality so that it has a purpose
 	[Parameter]
-	public EventCallback<bool> OnFinished { get; set; }
+	public EventCallback<List<List<string>>> OnFinished { get; set; }
 
-	protected async Task Finish(bool success)
+	protected async Task Finish(List<List<string>> actions)
 	{
-		await OnFinished.InvokeAsync(success);
+		await OnFinished.InvokeAsync(actions);
 	}
 
 	protected MinigameDefBase MinigameDef { get; set; } = null!;
@@ -112,7 +111,7 @@ public class MinigameBase : ComponentBase
 			MinigameDef = (MinigameDefBase)instance;
 
 			// attach events
-			MinigameDef.Finished += async (sender, e) => await Finish(e.Success);
+			MinigameDef.Finished += async (sender, e) => await Finish(e.Actions);
 			MinigameDef.UpdateEvent += (sender, e) => StateHasChanged();
 
 			// attach gamestate
@@ -236,11 +235,25 @@ public abstract class MinigameDefBase
 	public event EventHandler? UpdateEvent;
 
 
-	public void Finish(bool success)
+	public void Finish(List<List<string>>? actions, string? route = null)
 	{
 		// really important
 		Exit();
-		Finished?.Invoke(this, new FinishedEventArgs { Success = success });
+
+
+		if (route != null)
+		{
+			Finished?.Invoke(this, new FinishedEventArgs { Actions = [["Route", route]] });
+			return;
+		}
+		else if (actions != null)
+		{
+			Finished?.Invoke(this, new() { Actions = actions });
+			return;
+		}
+
+		// if both actions and route are null, just do nothing
+		Finished?.Invoke(this, new() { Actions = [] });
 	}
 
 	// Btw, I think I found out why it worked before without this:
@@ -272,7 +285,7 @@ finishing will work like this
 
 public class FinishedEventArgs : EventArgs
 {
-	public bool Success { get; set; }
+	public List<List<string>> Actions = [];
 }
 
 

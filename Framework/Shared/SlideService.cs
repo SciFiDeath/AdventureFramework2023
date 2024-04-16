@@ -246,10 +246,10 @@ public class SlidesVerifier(GameState gameState, Items items)
 			{
 				throw new SlidesJsonException($"At Slide \"{id}\": \"MinigameDefClassName\" undefined");
 			}
-			if (slide.FallbackSlide is null)
-			{
-				throw new SlidesJsonException($"At Slide \"{id}\": \"FallbackSlide\" undefined");
-			}
+			// // if (slide.FallbackSlide is null)
+			// // {
+			// // 	throw new SlidesJsonException($"At Slide \"{id}\": \"FallbackSlide\" undefined");
+			// // }
 		}
 		else
 		{
