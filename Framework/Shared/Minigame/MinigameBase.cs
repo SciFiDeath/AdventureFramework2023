@@ -163,7 +163,7 @@ public abstract class MinigameDefBase
 			{
 				// check if the property is a SVGElement if it is, 
 				// cast and assign it to element, then add it to the list
-				if (property.GetValue(this) is SVGElement element)
+				if (property.GetValue(this) is GameObject element)
 				{
 					// Elements.Add(element);
 					Elements.Add(element);
