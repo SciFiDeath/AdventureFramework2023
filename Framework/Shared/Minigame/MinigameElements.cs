@@ -480,77 +480,11 @@ public class Text : SVGElement
 			};
 		}
 	}
-
-	// public override RenderFragment GetRenderFragment()
-	// {
-	// 	if (TspanMode == false)
-	// 	{
-	// 		return builder =>
-	// 		{
-	// 			builder.OpenElement(0, TagName);
-	// 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-	// 			builder.AddAttribute(2, "style", Style);
-	// 			builder.AddMultipleAttributes(3, GetCallbackDictionary());
-	// 			builder.AddContent(4, InnerText);
-	// 			builder.CloseElement();
-	// 		};
-	// 	}
-	// 	// here comes some crazy shit
-	// 	else
-	// 	{
-	// 		return builder =>
-	// 		{
-	// 			builder.OpenElement(0, TagName);
-	// 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-	// 			builder.AddAttribute(2, "style", Style);
-	// 			builder.AddMultipleAttributes(3, GetCallbackDictionary());
-	// 			//! This is insanity
-	// 			int i = 4;
-	// 			foreach (Tspan span in Tspans)
-	// 			{
-	// 				builder.OpenRegion(i);
-	// 				span.BuildRenderTree(builder);
-	// 				i++;
-	// 				builder.CloseRegion();
-	// 			}
-	// 			builder.CloseElement();
-	// 		};
-	// 	}
-	// }
 }
 
 public class Tspan : Text
 {
 	public override string TagName { get; } = "tspan";
-	// public void BuildRenderTree(RenderTreeBuilder builder)
-	// {
-	// 	if (TspanMode == false)
-	// 	{
-	// 		builder.OpenElement(0, TagName);
-	// 		builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-	// 		builder.AddAttribute(2, "style", Style);
-	// 		builder.AddMultipleAttributes(3, GetCallbackDictionary());
-	// 		builder.AddContent(4, InnerText);
-	// 		builder.CloseElement();
-	// 	}
-	// 	// here comes some crazy shit
-	// 	else
-	// 	{
-	// 		builder.OpenElement(0, TagName);
-	// 		builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-	// 		builder.AddAttribute(2, "style", Style);
-	// 		builder.AddMultipleAttributes(3, GetCallbackDictionary());
-	// 		//! This almost even more insance than before
-	// 		int i = 4;
-	// 		foreach (Tspan span in Tspans)
-	// 		{
-	// 			builder.OpenRegion(i);
-	// 			span.BuildRenderTree(builder);
-	// 			i++;
-	// 			builder.CloseRegion();
-	// 		}
-	// 	}
-	// }
 }
 
 // probably useful for text and stuff
