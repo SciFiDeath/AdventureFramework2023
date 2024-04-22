@@ -22,7 +22,7 @@ public class MiniTest : MinigameDefBase
 		Update();
 		if (Rect.X > 300)
 		{
-			Finish(true);
+			Finish(null, "HM305Beamer");
 		}
 
 	}
@@ -94,11 +94,11 @@ public class CodeTerminal : MinigameDefBase
 	{
 		GameState.AddItem("goldkey");
 		Key.Visible = false;
-		GameState.ChangeVisibility("CodeTerminal");
+		GameState.ChangeVisibility("HM305DoorClosed.CodeTerminal");
 		Collected = true;
 		Update();
 		await Task.Delay(2000);
-		Finish(true);
+		Finish([["Route", "HM305DoorClosed"], ["Sleep", "1000"], ["Route", "HM305"]]);
 	}
 
 	public CodeTerminal()
@@ -357,7 +357,7 @@ public class LaurinsRain : MinigameDefBase
 			Width = 100,
 			Height = 100,
 			Fill = "red",
-			OnClick = (args) => Finish(true)
+			OnClick = (args) => Finish(null, "test")
 		};
 
 		for (var i = 100; i <= 1920; i += 100)
