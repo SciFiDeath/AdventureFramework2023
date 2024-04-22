@@ -502,6 +502,10 @@ public class ElementTest : MinigameDefBase
 	[Element]
 	public Text Text { get; set; }
 
+	[Element]
+	public CustomObject Gradient { get; set; }
+
+
 	public ElementTest()
 	{
 		Text = new()
@@ -541,6 +545,47 @@ public class ElementTest : MinigameDefBase
 			Height = 500,
 			CustomObject = CustomTest
 		};
+		Gradient = new()
+		{
+			Attributes = new()
+			{
+				{"id", "grad"},
+				{"x1", "0%"},
+				{"x2", "100%"},
+				{"y1", "0%"},
+				{"y2", "0%"},
+			},
+			Content = [
+				new CustomObject()
+				{
+					CustomTagName = "stop",
+					Attributes = new()
+					{
+						{"offset", "0%"},
+						{"stop-color", "red"}
+					}
+				},
+				new CustomObject()
+				{
+					CustomTagName = "stop",
+					Attributes = new()
+					{
+						{"offset", "100%"},
+						{"stop-color", "yellow"}
+					}
+				}
+			],
+			CustomTagName = "linearGradient"
+		};
+		AddElement(
+			new Ellipse()
+			{
+				CX = 300,
+				CY = 70,
+				RX = 85,
+				RY = 55,
+				Fill = "url(#grad)"
+			}
+		);
 	}
-
 }

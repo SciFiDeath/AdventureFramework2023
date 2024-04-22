@@ -105,6 +105,7 @@ public abstract class SVGElement : GameObject
 	[Style("opacity")] public double? Opacity { get; set; }
 
 
+	public List<object> Content { get; set; } = [];
 
 
 	public override RenderFragment GetRenderFragment()
@@ -114,6 +115,17 @@ public abstract class SVGElement : GameObject
 			builder.OpenElement(0, TagName);
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
 			builder.AddMultipleAttributes(2, GetCallbackDictionary());
+			builder.OpenRegion(3);
+			int i = 0;
+			foreach (var item in Content)
+			{
+				if (item is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
+				else if (item is string s) { builder.AddContent(i, s); }
+				else if (item is MarkupString m) { builder.AddContent(i, m); }
+				else if (item is RenderFragment r) { builder.AddContent(i, r); }
+				i++;
+			}
+			builder.CloseRegion();
 			builder.CloseElement();
 		};
 	}
@@ -416,7 +428,8 @@ public class Text : SVGElement
 	// you can put strings, MarkupStrings, RenderFragments and Tspan objects in here
 	// strings will be cast to MarkupStrings during render tree construction
 	// the GetRenderFragment() method of Tspan objects is called automatically during rendering
-	public List<object> Content { get; set; } = [];
+	//* Is inherited now
+	// public List<object> Content { get; set; } = [];
 
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
@@ -530,7 +543,8 @@ public class CustomObject : SVGElement
 	public Dictionary<string, object> Styles { get; set; } = [];
 	public Dictionary<string, Action<EventArgs>> Callbacks { get; set; } = [];
 
-	public List<object> Content { get; set; } = [];
+	//* is inherited now
+	// public List<object> Content { get; set; } = [];
 
 	public new string CustomStyle => GetStyle();
 
@@ -569,7 +583,7 @@ public class CustomObject : SVGElement
 			int i = 0;
 			foreach (var c in Content)
 			{
-				if (c is CustomObject o) { builder.AddContent(i, o.GetRenderFragment()); }
+				if (c is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
 				else if (c is string s) { builder.AddContent(i, s); }
 				else if (c is MarkupString m) { builder.AddContent(i, m); }
 				else if (c is RenderFragment r) { builder.AddContent(i, r); }
