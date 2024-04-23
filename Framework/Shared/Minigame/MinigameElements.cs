@@ -1,6 +1,8 @@
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Framework.Minigames;
 
@@ -103,6 +105,7 @@ public abstract class SVGElement : GameObject
 	[Style("opacity")] public double? Opacity { get; set; }
 
 
+	public List<object> Content { get; set; } = [];
 
 
 	public override RenderFragment GetRenderFragment()
@@ -112,6 +115,17 @@ public abstract class SVGElement : GameObject
 			builder.OpenElement(0, TagName);
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
 			builder.AddMultipleAttributes(2, GetCallbackDictionary());
+			builder.OpenRegion(3);
+			int i = 0;
+			foreach (var item in Content)
+			{
+				if (item is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
+				else if (item is string s) { builder.AddContent(i, s); }
+				else if (item is MarkupString m) { builder.AddContent(i, m); }
+				else if (item is RenderFragment r) { builder.AddContent(i, r); }
+				i++;
+			}
+			builder.CloseRegion();
 			builder.CloseElement();
 		};
 	}
@@ -409,6 +423,14 @@ public class Text : SVGElement
 
 	public string? InnerText { get; set; }
 
+	// if true, only the stuff in Content will be rendered
+	public bool ContentMode { get; set; } = false;
+	// you can put strings, MarkupStrings, RenderFragments and Tspan objects in here
+	// strings will be cast to MarkupStrings during render tree construction
+	// the GetRenderFragment() method of Tspan objects is called automatically during rendering
+	//* Is inherited now
+	// public List<object> Content { get; set; } = [];
+
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
 	[Html("dx")] public int? DX { get; set; }
@@ -433,14 +455,62 @@ public class Text : SVGElement
 
 	public override RenderFragment GetRenderFragment()
 	{
+		// render text as a string
+		if (!ContentMode)
+		{
+			return builder =>
+			{
+				builder.OpenElement(0, TagName);
+				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+				builder.AddAttribute(2, "style", Style);
+				builder.AddMultipleAttributes(3, GetCallbackDictionary());
+				builder.AddContent(4, InnerText);
+				builder.CloseElement();
+			};
+		}
+		else
+		{
+			return builder =>
+			{
+				builder.OpenElement(0, TagName);
+				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+				builder.AddAttribute(2, "style", Style);
+				builder.AddMultipleAttributes(3, GetCallbackDictionary());
+				// to not worry about numbers
+				builder.OpenRegion(4);
+				int i = 0;
+				foreach (var c in Content)
+				{
+					// cover all the possible conversions, ignore other stuff
+					if (c is string s) { builder.AddContent(i, s); }
+					else if (c is MarkupString m) { builder.AddContent(i, m); }
+					else if (c is RenderFragment r) { builder.AddContent(i, r); }
+					else if (c is Text t) { builder.AddContent(i, t.GetRenderFragment()); }
+					i++;
+				}
+				builder.CloseRegion();
+				builder.CloseElement();
+			};
+		}
+	}
+}
+
+public class Tspan : Text
+{
+	public override string TagName { get; } = "tspan";
+}
+
+// probably useful for text and stuff
+public class RawMarkup : GameObject
+{
+	public string Markup { get; set; } = "";
+
+	public override RenderFragment GetRenderFragment()
+	{
+		Console.WriteLine("hel");
 		return builder =>
 		{
-			builder.OpenElement(0, TagName);
-			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-			builder.AddAttribute(2, "style", Style);
-			builder.AddMultipleAttributes(3, GetCallbackDictionary());
-			builder.AddContent(4, InnerText);
-			builder.CloseElement();
+			builder.AddContent(0, (MarkupString)Markup);
 		};
 	}
 }
@@ -460,5 +530,97 @@ public class Image : SVGElement
 
 	// now inherited
 	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+
+}
+
+public class CustomObject : SVGElement
+{
+	public override string TagName { get; } = "div";
+	//* this must be set or it will cause unexpected behaviour
+	public string CustomTagName { get; set; } = null!;
+
+	public Dictionary<string, object> Attributes { get; set; } = [];
+	public Dictionary<string, object> Styles { get; set; } = [];
+	public Dictionary<string, Action<EventArgs>> Callbacks { get; set; } = [];
+
+	//* is inherited now
+	// public List<object> Content { get; set; } = [];
+
+	public new string CustomStyle => GetStyle();
+
+	private string GetStyle()
+	{
+		string str = "";
+		foreach (var kvp in Styles)
+		{
+			str += $"{kvp.Key}: {kvp.Value}; ";
+		}
+		return str;
+	}
+
+	public Dictionary<string, object> GetCallbacks()
+	{
+		Dictionary<string, object> dict = [];
+		foreach (var kvp in Callbacks)
+		{
+			dict.Add(
+				kvp.Key,
+				EventCallback.Factory.Create(this, kvp.Value)
+			);
+		}
+		return dict;
+	}
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(0, CustomTagName);
+			builder.AddMultipleAttributes(1, Attributes);
+			builder.AddAttribute(2, "style", CustomStyle);
+			builder.AddMultipleAttributes(3, GetCallbacks());
+			builder.OpenRegion(4);
+			int i = 0;
+			foreach (var c in Content)
+			{
+				if (c is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
+				else if (c is string s) { builder.AddContent(i, s); }
+				else if (c is MarkupString m) { builder.AddContent(i, m); }
+				else if (c is RenderFragment r) { builder.AddContent(i, r); }
+				i++;
+			}
+
+			builder.CloseRegion();
+			builder.CloseElement();
+
+		};
+	}
+}
+
+public class ForeignObject : SVGElement
+{
+	public override string TagName { get; } = "foreignObject";
+
+	[Html("x")] public int? X { get; set; }
+	[Html("y")] public int? Y { get; set; }
+	[Html("width")] public int? Width { get; set; }
+	[Html("height")] public int? Height { get; set; }
+
+	public CustomObject CustomObject { get; set; } = null!;
+
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(1, TagName);
+			builder.AddAttribute(2, "x", X);
+			builder.AddAttribute(3, "y", Y);
+			builder.AddAttribute(4, "width", Width);
+			builder.AddAttribute(5, "height", Height);
+			builder.AddContent(6, CustomObject.GetRenderFragment());
+			builder.CloseElement();
+		};
+	}
 
 }

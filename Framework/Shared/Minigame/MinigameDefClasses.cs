@@ -1,5 +1,7 @@
 using System.Numerics;
+using Framework.Minigames;
 using Framework.Minigames.MinigameDefClasses;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Framework.Minigames;
@@ -20,7 +22,7 @@ public class MiniTest : MinigameDefBase
 		Update();
 		if (Rect.X > 300)
 		{
-			Finish(true);
+			Finish(null, "HM305Beamer");
 		}
 
 	}
@@ -92,11 +94,11 @@ public class CodeTerminal : MinigameDefBase
 	{
 		GameState.AddItem("goldkey");
 		Key.Visible = false;
-		GameState.ChangeVisibility("CodeTerminal");
+		GameState.ChangeVisibility("HM305DoorClosed.CodeTerminal");
 		Collected = true;
 		Update();
 		await Task.Delay(2000);
-		Finish(true);
+		Finish([["Route", "HM305DoorClosed"], ["Sleep", "1000"], ["Route", "HM305"]]);
 	}
 
 	public CodeTerminal()
@@ -355,7 +357,7 @@ public class LaurinsRain : MinigameDefBase
 			Width = 100,
 			Height = 100,
 			Fill = "red",
-			OnClick = (args) => Finish(true)
+			OnClick = (args) => Finish(null, "test")
 		};
 
 		for (var i = 100; i <= 1920; i += 100)
@@ -474,4 +476,116 @@ public class ElementStyleTest : MinigameDefBase
 		FillOpacity = 0.7,
 		Cursor = "pointer"
 	};
+}
+
+public class ElementTest : MinigameDefBase
+{
+
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
+
+	[Element]
+	public RawMarkup Markup { get; set; }
+
+	[Element]
+	public ForeignObject ForeignTest { get; set; }
+
+	public CustomObject CustomTest { get; set; } = new()
+	{
+		CustomTagName = "div",
+		Content = ["Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, sunt at aperiam dolore voluptatem quidem itaque sed id tenetur praesentium, minus error rerum? Nobis excepturi nostrum explicabo? Fugit, neque voluptatibus!", new CustomObject() { CustomTagName = "h1", Content = ["hihihi"] }],
+		Callbacks = new()
+		{
+			{"onclick", (e) => Console.WriteLine("hellooooojoij")}
+		},
+	};
+
+	[Element]
+	public Text Text { get; set; }
+
+	[Element]
+	public CustomObject Gradient { get; set; }
+
+
+	public ElementTest()
+	{
+		Text = new()
+		{
+			FontFamily = "Comic Sans MS",
+			ContentMode = true,
+			X = 10,
+			Y = 50,
+			Content =
+			[
+				new Tspan() {InnerText = "muha", Fill = "red", OnClick = (e) => Console.WriteLine("hello") },
+				"\n\noh noes"
+			]
+		};
+
+		Markup = new()
+		{
+			Markup = @"
+			<foreignObject x=""20"" y=""20"" width=""160"" height=""160"">
+				<div xmlns=""http://www.w3.org/1999/xhtml"">
+				Lorem ipsum dolor sit amet,
+				consectetur adipiscing elit.
+				Sed mollis mollis mi ut ultricies.Nullam magna ipsum,
+				porta vel dui convallis,
+				rutrum imperdiet eros.
+				Aliquam erat volutpat.
+				</div>
+			</foreignObject>
+			"
+		};
+
+		ForeignTest = new()
+		{
+			X = 500,
+			Y = 50,
+			Width = 500,
+			Height = 500,
+			CustomObject = CustomTest
+		};
+		Gradient = new()
+		{
+			Attributes = new()
+			{
+				{"id", "grad"},
+				{"x1", "0%"},
+				{"x2", "100%"},
+				{"y1", "0%"},
+				{"y2", "0%"},
+			},
+			Content = [
+				new CustomObject()
+				{
+					CustomTagName = "stop",
+					Attributes = new()
+					{
+						{"offset", "0%"},
+						{"stop-color", "red"}
+					}
+				},
+				new CustomObject()
+				{
+					CustomTagName = "stop",
+					Attributes = new()
+					{
+						{"offset", "100%"},
+						{"stop-color", "yellow"}
+					}
+				}
+			],
+			CustomTagName = "linearGradient"
+		};
+		AddElement(
+			new Ellipse()
+			{
+				CX = 300,
+				CY = 70,
+				RX = 85,
+				RY = 55,
+				Fill = "url(#grad)"
+			}
+		);
+	}
 }

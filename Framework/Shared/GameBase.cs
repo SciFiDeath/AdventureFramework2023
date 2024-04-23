@@ -46,17 +46,9 @@ public partial class GameBase : ComponentBase
 		StateHasChanged();
 	}
 
-	protected void FinishMinigame(bool success)
+	protected async Task FinishMinigame(List<List<string>> actions)
 	{
-		if (success)
-		{
-			ChangeSlide(SlideService.GetSlide(Parameters.SlideId).FallbackSlide!);
-		}
-		// TODO: Also, maybe make this function actually do something different based on success
-		else
-		{
-			ChangeSlide(SlideService.GetSlide(Parameters.SlideId).FallbackSlide!);
-		}
+		await EvaluateActions(actions);
 	}
 
 	protected struct Block
