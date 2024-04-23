@@ -42,13 +42,16 @@
             "CircleTest": {
                 "Type": "circle",
                 "Points": "100,100,50",
-                "Actions": [["Route", "MinigameTest3"]],
+                "Actions": [
+                    ["Route", "MinigameTest3"],
+                    ["StopMusic", ""]
+                ],
                 "Visible": true
             },
             "PresetTest": {
                 "Type": "preset",
                 "Image": "right",
-                "Actions": []
+                "Actions": [["PlayMusic", "audio/doom-soundtrack.wav"]]
             }
         }
     },

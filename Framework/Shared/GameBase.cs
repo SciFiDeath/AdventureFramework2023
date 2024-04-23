@@ -2,6 +2,7 @@ using Framework.Slides;
 using Microsoft.AspNetCore.Components;
 using Framework.Game.Parameters;
 using GameStateInventory;
+using Framework.Sound;
 
 
 namespace Framework.Game;
@@ -13,6 +14,9 @@ public partial class GameBase : ComponentBase
 
 	[Inject]
 	protected GameState GameState { get; set; } = null!;
+
+	[Inject]
+	protected SoundService SoundService { get; set; } = null!;
 
 	// // private readonly TaskCompletionSource<bool> _tcs = new();
 	// // protected Task InitTask => _tcs.Task;
@@ -187,6 +191,18 @@ public partial class GameBase : ComponentBase
 						// Console.WriteLine("return");
 						return;
 					}
+
+				case "PlaySound":
+					await SoundService.PlaySound(action[1]);
+					break;
+
+				case "PlayMusic":
+					await SoundService.PlayMusic(action[1]);
+					break;
+
+				case "StopMusic":
+					await SoundService.StopMusic();
+					break;
 
 				case "StartBlock":
 					block.Stack.Add(action[1]);

@@ -430,6 +430,18 @@ public class SlidesVerifier(GameState gameState, Items items)
 					}
 
 				}
+				else if (action[0] == "PlaySound")
+				{
+					// can't really do anything, as it's a file path
+				}
+				else if (action[0] == "PlayMusic")
+				{
+					// can't really do anything, as it's a file path
+				}
+				else if (action[0] == "StopMusic")
+				{
+					// do nothing here, as the params don't actually matter
+				}
 				else
 				{
 					// if not found yet, it has to be invalid action
