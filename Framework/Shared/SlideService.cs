@@ -422,6 +422,14 @@ public class SlidesVerifier(GameState gameState, Items items)
 				{
 					// do nothing here, as the params don't actually matter
 				}
+				else if (action[0] == "Sleep")
+				{
+					if (!int.TryParse(action[1], out _))
+					{
+						throw new SlidesJsonException($"At action {i}: Sleep: \"{action[1]}\" is not a valid number");
+					}
+
+				}
 				else
 				{
 					// if not found yet, it has to be invalid action
