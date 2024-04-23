@@ -37,7 +37,7 @@ else {
     protected override async Task OnInitializedAsync()
     {
         await GameState.LoadGameStateAndItemsAsync();
-        await SlideService.Init();
+        await SlideService.Init(true);
         await KeyboardService.Init();
         await MouseService.Init();
         await SoundService.Init();

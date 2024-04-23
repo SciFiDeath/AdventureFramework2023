@@ -46,17 +46,9 @@ public partial class GameBase : ComponentBase
 		StateHasChanged();
 	}
 
-	protected void FinishMinigame(bool success)
+	protected async Task FinishMinigame(List<List<string>> actions)
 	{
-		if (success)
-		{
-			ChangeSlide(SlideService.GetSlide(Parameters.SlideId).FallbackSlide!);
-		}
-		// TODO: Also, maybe make this function actually do something different based on success
-		else
-		{
-			ChangeSlide(SlideService.GetSlide(Parameters.SlideId).FallbackSlide!);
-		}
+		await EvaluateActions(actions);
 	}
 
 	protected struct Block
@@ -120,7 +112,7 @@ public partial class GameBase : ComponentBase
 
 				case "RequireItem":
 					// if the check is negated
-					if (action[1].StartsWith("!"))
+					if (action[1].StartsWith('!'))
 					{
 						// remove leading "!"
 						if (!GameState.CheckForItem(action[1][1..]))
@@ -208,6 +200,10 @@ public partial class GameBase : ComponentBase
 				case "Exit":
 					// Console.WriteLine("return");
 					return;
+
+				case "Sleep":
+					await Task.Delay(int.Parse(action[1]));
+					break;
 
 				default:
 					break;
