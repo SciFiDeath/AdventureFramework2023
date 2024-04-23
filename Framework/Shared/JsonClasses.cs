@@ -5,8 +5,10 @@ public class JsonSlide
 	public string? Type { get; set; }
 	public List<string>? Tags { get; set; }
 	// can still be null, but safety will be ensured by verifier
+	// removes annoying null warnings
 	public string Image { get; set; } = null!;
 	// nullable, safety by verifier
+	// removes annoying null warnings
 	public Dictionary<string, JsonButton> Buttons { get; set; } = null!;
 	// Buttons are required, but you could specify some stuff in OnEnter
 	// will cause exception if both OnEnter and Buttons are empty

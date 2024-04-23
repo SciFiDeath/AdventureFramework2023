@@ -11,7 +11,7 @@
                 "Type": "polygon",
                 "Points": "915,197,956,217,956,248,918,256,868,244,869,217",
                 "Actions": [
-                    ["RequireItem", "coffeemug"],
+                    ["RequireItem", "frog"],
                     ["Route", "HM305Beamer"]
                 ]
             },
@@ -44,6 +44,11 @@
                 "Points": "100,100,50",
                 "Actions": [["Route", "MinigameTest3"]],
                 "Visible": true
+            },
+            "PresetTest": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": []
             }
         }
     },
@@ -87,8 +92,7 @@
                 "Points": "764,458 764,491 775,495 775,465 764,458 792,39",
                 "Actions": [["Route", "HM305CodeTerminal"]]
             }
-        },
-        "OnEnter": [["AddItem", "goldkey"]]
+        }
     },
 
     "HM305CodeTerminal": {
@@ -143,6 +147,26 @@
                 "Type": "polygon",
                 "Points": "27,15 95,17 102,29 102,95 90,104 27,104 17,95 15,27",
                 "Actions": [["Route", "HM305"]]
+            },
+            "right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": []
+            },
+            "left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": []
+            },
+            "top": {
+                "Type": "preset",
+                "Image": "top",
+                "Actions": []
+            },
+            "bottom": {
+                "Type": "preset",
+                "Image": "bottom",
+                "Actions": []
             }
         }
     },

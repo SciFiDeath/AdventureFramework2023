@@ -50,6 +50,51 @@ public static class PositionPresets
 
 public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVerifier slidesVerifier)
 {
+	public readonly Dictionary<string, Dictionary<string, string>> PositionPresets = new()
+	{
+
+		{
+			"left", new()
+			{
+				{"id", "pos-preset-left"},
+				{"x", "0"},
+				{"y", "340"},
+				{"width", "150"},
+				{"height", "400"},
+			}
+		},
+		{
+			"right", new()
+			{
+				{"id", "pos-preset-right"},
+				{"x", "1770"},
+				{"y", "340"},
+				{"width", "150"},
+				{"height", "400"},
+			}
+		},
+		{
+			"top", new()
+			{
+				{"id", "pos-preset-top"},
+				{"x", "760"},
+				{"y", "0"},
+				{"width", "400"},
+				{"height", "150"},
+			}
+		},
+		{
+			"bottom", new()
+			{
+				{"id", "pos-preset-bottom"},
+				{"x", "760"},
+				{"y", "930"},
+				{"width", "400"},
+				{"height", "150"},
+			}
+		}
+	};
+
 	private readonly JsonUtility jsonUtility = jsonUtility;
 	private readonly GameState gameState = gameState;
 	private readonly SlidesVerifier slidesVerifier = slidesVerifier;
@@ -165,7 +210,8 @@ public class SlidesVerifier(GameState gameState, Items items)
 	private Dictionary<string, JsonSlide>? CurrentState { get; set; }
 
 	private static readonly string[] SetGameStateOptions = ["true", "false", "toggle"];
-	private static readonly string[] ButtonTypeOptions = ["rect", "polygon", "image", "circle"];
+	private static readonly string[] ButtonTypeOptions = ["rect", "polygon", "image", "circle", "preset"];
+	private static readonly string[] PresetOptions = ["left", "right", "top", "bottom"];
 
 
 
@@ -260,17 +306,34 @@ public class SlidesVerifier(GameState gameState, Items items)
 		{
 			throw new SlidesJsonException($"At Button \"{id}\": \"{button.Type}\" is not a valid type option");
 		}
-		if (button.Points is null)
-		{
-			throw new SlidesJsonException($"At Button \"{id}\": \"Points\" undefined");
-		}
-		if (button.Type == "image")
+
+		if (button.Type == "preset")
 		{
 			if (button.Image is null)
 			{
-				throw new SlidesJsonException($"At Button \"{id}\": \"Type\" is \"image\" and \"Image\" undefined");
+				throw new SlidesJsonException($"At Button \"{id}\": \"Type\" is \"preset\" and \"Image\" undefined");
+			}
+			if (!PresetOptions.Contains(button.Image))
+			{
+				throw new SlidesJsonException($"At Button \"{id}\": \"{button.Image}\" is not a valid preset option");
 			}
 		}
+		// presets are a bit special, so check other stuff only if not preset
+		else
+		{
+			if (button.Points is null)
+			{
+				throw new SlidesJsonException($"At Button \"{id}\": \"Points\" undefined");
+			}
+			if (button.Type == "image")
+			{
+				if (button.Image is null)
+				{
+					throw new SlidesJsonException($"At Button \"{id}\": \"Type\" is \"image\" and \"Image\" undefined");
+				}
+			}
+		}
+		//? check with Andrii if no actions is very frequent, if yes, make them nullable
 		if (button.Actions is null)
 		{
 			throw new SlidesJsonException($"At Button \"{id}\": \"Actions\" undefined");
