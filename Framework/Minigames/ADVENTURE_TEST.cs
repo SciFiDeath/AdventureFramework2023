@@ -92,6 +92,11 @@ public MyMinigame1(){
             await Task.Delay(50); 
             HealButton.Y -= 5;
             Update();
+            BackgroundImage = "/images/calculator.png";
+            Update();
+            await Task.Delay(2000);
+            BackgroundImage = "/images/FIGHTER.png";
+            Update();
         }
     };
        
