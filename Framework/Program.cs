@@ -7,6 +7,7 @@ using Blazored.Toast;
 using Framework.Slides;
 using Framework.Keyboard;
 using Framework.Mouse;
+using Framework.Sound;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -57,5 +58,7 @@ System.Globalization.CultureInfo customCulture = (System.Globalization.CultureIn
 customCulture.NumberFormat.NumberDecimalSeparator = ".";
 
 Thread.CurrentThread.CurrentCulture = customCulture;
+
+builder.Services.AddScoped<SoundService>();
 
 await builder.Build().RunAsync();

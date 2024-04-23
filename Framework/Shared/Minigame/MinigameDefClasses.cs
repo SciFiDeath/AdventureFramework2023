@@ -2,7 +2,12 @@ using System.Numerics;
 using Framework.Minigames;
 using Framework.Minigames.MinigameDefClasses;
 using Microsoft.AspNetCore.Components;
+using Inject = Microsoft.AspNetCore.Components.InjectAttribute;
+using Microsoft.JSInterop;
+
 using Microsoft.AspNetCore.Components.Web;
+using Framework.Sound;
+using System.Runtime.CompilerServices;
 
 namespace Framework.Minigames;
 
@@ -374,9 +379,74 @@ public class LaurinsRain : MinigameDefBase
 			AddElement(Rect);
 		}
 	}
+	
+
+}
+
+public class AudioTest : MinigameDefBase{
 
 
+	[Element]
+	public Rectangle Dingrect {get; set;}
+	[Element]
+	public Rectangle Track {get; set;}
+	[Element]
+	public Rectangle Sfx {get; set;}
+	[Element]
+	public Rectangle StopRect {get; set;}
 
+	public override string BackgroundImage {get; set;} = "images/HM305_fromEntrance.jpg"; // Background Image
+
+	public async Task PlayAudio(string path)
+	{
+		await SoundService.PlaySound(path); // Play sound 
+	}
+
+	public async Task PlayMusic(string path){
+		await SoundService.PlayMusic(path); // Play music 
+	}
+	public async Task StopMusic(){
+		await SoundService.StopMusic(); // Stop music 
+	}
+	
+
+	public AudioTest(){
+		Dingrect = new(){ // button for playing first track
+			X = 0,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = (args) => _ = PlayMusic("/audio/ambient-piano-loop-85bpm.wav") // When clicked, piano music is played
+		};  
+		Track = new(){ // Button for playing second track
+			X = 0,
+			Y = 200,
+			Width = 100,
+			Height = 100,
+			Fill = "blue",
+			OnClick = (args) => _ = PlayMusic("/audio/doom-soundtrack.wav") // When clicked, the Backgroundtrack is played 
+			// OnClick = (args) => _ = StopMusic()
+		};
+		Sfx = new(){ // Button for playing sound effect 
+			X = 0,
+			Y = 400,
+			Width = 100,
+			Height = 100,
+			Fill = "yellow",
+			OnClick = (args) => _ = PlayAudio("/audio/ding.wav") // When clicked, a 'ding' sound is played
+		};
+		StopRect = new(){ // Button to stop the currenty playing track
+			X = 0,
+			Y = 600,
+			Width = 100,
+			Height = 100,
+			Fill = "red",
+			OnClick = (args) => _ = StopMusic() // When clicked, the music is stopped
+		};
+		}
+	
+	
 }
 
 public class ElementStyleTest : MinigameDefBase

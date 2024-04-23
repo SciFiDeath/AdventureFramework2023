@@ -7,15 +7,6 @@
 @namespace Framework.Slides
 
 
-
-@* Audio player for the background_track of the slide
-	source maybe like this:
-	<source src=/audio/ambient-piano-loop-85bpm_cut.mp3>*@
-<audio id="backgroundmusic_player">
-    <source id="bTrackSRC" src="/audio/ambient-piano-loop-85bpm.wav" />
-	Du kannst das Audio-Element nicht verwenden, weil dein Browser das nicht unterstützt.
-</audio>
-
 <img id="bg-img" src="@SlideData.Image" alt="ry namako rehetra">
 <svg id="svg" viewBox="0,0, 1920,1080">
 	@* *Added Null supression *@
@@ -108,8 +99,6 @@
 
 
 @* JS Code *@
-
-@*
 <script> 
 	// EXTERNAL Code!!!!
 	(function() { // From https://github.com/veltman/loopify?tab=readme-ov-file
@@ -203,7 +192,6 @@
 		});
 
 </script>
-*@
 
 
 
