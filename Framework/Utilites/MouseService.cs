@@ -5,11 +5,12 @@ namespace Framework.Mouse;
 public interface IMouseService
 {
 	bool GetButtonState(int button);
-	MouseState GetMouseState();
-	MouseState GetStaticMouseState();
+	MouseState MouseState { get; }
+	// MouseState GetStaticMouseState();
 	event EventHandler<ClickEventArgs> OnMouseDown;
 	event EventHandler<ClickEventArgs> OnMouseUp;
 	Task SetDelay(int delay);
+	Task<MouseState> GetMouseStateAsync();
 }
 
 public class ClickEventArgs : EventArgs
@@ -27,15 +28,9 @@ public struct MouseState
 	public bool Middle;
 }
 
-public class MouseService : IMouseService
+public class MouseService(IJSRuntime jsRuntime) : IMouseService
 {
-	private readonly IJSRuntime jsRuntime;
-
-	public MouseService(IJSRuntime jsRuntime)
-	{
-		this.jsRuntime = jsRuntime;
-	}
-
+	private readonly IJSRuntime jsRuntime = jsRuntime;
 	private DotNetObjectReference<MouseService> objRef = null!;
 
 	public async Task Init(bool disableContextMenu = true)
@@ -44,7 +39,7 @@ public class MouseService : IMouseService
 		await jsRuntime.InvokeVoidAsync("mouse.init", objRef, disableContextMenu);
 	}
 
-	public MouseState MouseState = new()
+	private MouseState mouseState = new()
 	{
 		X = 0,
 		Y = 0,
@@ -60,26 +55,26 @@ public class MouseService : IMouseService
 	[JSInvokable]
 	public void MouseUp(int button)
 	{
-		MouseState.Left = !(button == 0);
-		MouseState.Right = !(button == 2);
-		MouseState.Middle = !(button == 1);
+		mouseState.Left = !(button == 0);
+		mouseState.Right = !(button == 2);
+		mouseState.Middle = !(button == 1);
 		OnMouseUp?.Invoke(this, new ClickEventArgs { Button = button, Down = false });
 	}
 
 	[JSInvokable]
 	public void MouseDown(int button)
 	{
-		MouseState.Left = button == 0;
-		MouseState.Right = button == 2;
-		MouseState.Middle = button == 1;
+		mouseState.Left = button == 0;
+		mouseState.Right = button == 2;
+		mouseState.Middle = button == 1;
 		OnMouseDown?.Invoke(this, new ClickEventArgs { Button = button, Down = true });
 	}
 
 	[JSInvokable]
 	public void MouseMove(int x, int y)
 	{
-		MouseState.X = x;
-		MouseState.Y = y;
+		mouseState.X = x;
+		mouseState.Y = y;
 	}
 
 	public async Task SetDelay(int delay)
@@ -91,29 +86,42 @@ public class MouseService : IMouseService
 	{
 		return button switch
 		{
-			0 => MouseState.Left,
-			1 => MouseState.Middle,
-			2 => MouseState.Right,
+			0 => mouseState.Left,
+			1 => mouseState.Middle,
+			2 => mouseState.Right,
 			_ => false,
 		};
 	}
 
-	public MouseState GetMouseState()
-	{
-		return MouseState;
-	}
+	// get the actual mouse state
+	public MouseState MouseState => mouseState;
 
-	public MouseState GetStaticMouseState()
+	// get a copy of the mouse state
+	// public MouseState GetStaticMouseState()
+	// {
+	// 	return new MouseState
+	// 	{
+	// 		X = MouseState.X,
+	// 		Y = MouseState.Y,
+	// 		Left = MouseState.Left,
+	// 		Right = MouseState.Right,
+	// 		Middle = MouseState.Middle
+	// 	};
+	// }
+
+	// get the most up to date mouse state no matter what
+	public async Task<MouseState> GetMouseStateAsync()
 	{
+		Dictionary<string, int> state = new(await jsRuntime.InvokeAsync<Dictionary<string, int>>("mouse.getSvgMousePos"));
 		return new MouseState
 		{
-			X = MouseState.X,
-			Y = MouseState.Y,
-			Left = MouseState.Left,
-			Right = MouseState.Right,
-			Middle = MouseState.Middle
+			X = state["x"],
+			Y = state["y"],
+			Left = mouseState.Left,
+			Right = mouseState.Right,
+			Middle = mouseState.Middle
 		};
 	}
-
-
 }
+
+
