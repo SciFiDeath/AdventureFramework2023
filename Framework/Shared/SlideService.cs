@@ -67,7 +67,7 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 			"right", new()
 			{
 				{"id", "pos-preset-right"},
-				{"x", "1770"},
+				{"x", "1470"},
 				{"y", "340"},
 				{"width", "150"},
 				{"height", "400"},
@@ -77,7 +77,7 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 			"top", new()
 			{
 				{"id", "pos-preset-top"},
-				{"x", "760"},
+				{"x", "610"},
 				{"y", "0"},
 				{"width", "400"},
 				{"height", "150"},
@@ -87,7 +87,7 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 			"bottom", new()
 			{
 				{"id", "pos-preset-bottom"},
-				{"x", "760"},
+				{"x", "610"},
 				{"y", "930"},
 				{"width", "400"},
 				{"height", "150"},
