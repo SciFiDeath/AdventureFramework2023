@@ -8,32 +8,70 @@ public class MyMinigame6 : MinigameDefBase
 {
 
 
-    public override string BackgroundImage { get; set; } = "/images/HM3_hallwayN.jpg";
+    public override string BackgroundImage { get; set; } = "/images/Armdrücken test.jpg";
 
     [Element]
-    public Rectangle Rect { get; set; }
+    public Rectangle Recttop { get; set; }
+    [Element]
+    public Rectangle Rectleft { get; set;}
+    [Element]
+    public Rectangle Rectbottom { get; set;}
+    [Element]
+    public Rectangle Rectright { get; set;}
+
     public GameObjectContainer<Rectangle> RectRot {get; set;} = new();
 
 
     public GameObjectContainer<Rectangle> Rects {get; set;} = new();
     public MyMinigame6()
     {
-        Rect = new()
+        Rectleft = new()
         {
-            Id = "rectg",
-            X = 100,
-            Y = 100,
-            Width = 100,
-            Height = 100,
-            Fill = "green",
-            OnClick = spawnRect,
+            Id = "leftrectb",
+            X = 150,
+            Y = 150,
+            Width = 20,
+            Height = 700,
+            Fill = "black",
+            // OnClick = spawnRect,
 
         
         };
-            Rects.Add(Rect);
+   
+        Recttop = new()
+        {
+            Id = "toprectb",
+            X = 150,
+            Y = 150,
+            Width = 100,
+            Height = 20,
+            Fill = "black",
+        };
 
+        Rectright = new()
+        {
+            Id = "rightrectb",
+            X = 249,
+            Y = 150,
+            Width = 20,
+            Height = 700,
+            Fill = "black",
+        };
 
- Update();
+        Rectbottom= new()
+        {
+            Id = "bottomrectb",
+            X = 150,
+            Y = 830,
+            Width = 100,
+            Height = 20,
+            Fill = "black",
+        };
+        Rects.Add(Rectbottom);
+        Rects.Add(Rectright);
+        Rects.Add(Recttop);
+        Rects.Add(Rectleft);
+        Update();
     }
 
 
@@ -53,7 +91,9 @@ public class MyMinigame6 : MinigameDefBase
                 Width = 50,
                 Height= 50,
                 Fill = "red",
-                OnClick = (args) => RectRot.KillId("rectr"),
+                OnClick = (args) => {RectRot.KillId("rectr"); Update();},
+                
+                
                 
             };
             AddElement(rect);
