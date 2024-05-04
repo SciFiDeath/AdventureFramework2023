@@ -27,18 +27,17 @@ public interface IGameState
 	// if value exists, set it, else create new entry
 
 	//TODO Implement This:
-	void SetMinigame(string name, MinigameDefBase minigame);
-	void GetMinigame(string name);
+	// void SetMinigame(string name, MinigameDefBase minigame);
+	// void GetMinigame(string name);
 
 	string CurrentSlide { get; set; }
 
 	// need to think about the name
-	//TODO Implement this:
 	void SetFromSaveString(string saveString);
 	string GetSaveString();
 }
 
-public class GameState
+public class GameState : IGameState
 {
 	private readonly IToastService ToastService;
 
@@ -49,6 +48,8 @@ public class GameState
 	private static List<string> ItemsInInventory = new();
 
 	private static Dictionary<string, bool> State = new();
+
+	public string CurrentSlide { get; set; } = null!;
 
 	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
 	{
