@@ -29,10 +29,11 @@ public partial class GameBase : ComponentBase
 
 	protected override void OnInitialized()
 	{
-		string slideId = SlideService.GetStartSlideId();
+		// string slideId = SlideService.GetStartSlideId();
+		// string slideId = GameState.CurrentSlide;
 		Parameters = new SlideComponentParameters()
 		{
-			SlideId = slideId,
+			SlideId = GameState.CurrentSlide,
 			OnButtonClick = EventCallback.Factory.Create<List<List<string>>>(this, EvaluateActions)
 		};
 		// // _tcs.SetResult(true);
@@ -46,6 +47,8 @@ public partial class GameBase : ComponentBase
 	protected void ChangeSlide(string slideId)
 	{
 		Parameters.SlideId = slideId;
+		// still a bit hacky, but I guess
+		GameState.CurrentSlide = slideId;
 		// Console.WriteLine(SlideId);
 		StateHasChanged();
 	}
