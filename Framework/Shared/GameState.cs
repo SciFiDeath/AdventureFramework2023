@@ -18,21 +18,19 @@ public interface IGameState
 	// if value exists, set it, else create new entry
 	void SetState(string name, bool value);
 	bool GetState(string name);
+	bool CheckForState(string name);
+	bool TryGetState(string name, out bool value);
+	void ToggleState(string name);
+	bool TryToggleState(string name);
 
 	void AddItem(string id);
 	void RemoveItem(string id);
 	bool CheckForItem(string id);
 
-	// minigames probably should be seperated from other stuff
-	// if value exists, set it, else create new entry
-
-	//TODO Implement This:
-	// void SetMinigame(string name, MinigameDefBase minigame);
-	// void GetMinigame(string name);
+	//* Scrapped idea for minigame saving in GameState
 
 	string CurrentSlide { get; set; }
 
-	// need to think about the name
 	void SetFromSaveString(string saveString);
 	string GetSaveString();
 }
@@ -87,12 +85,17 @@ public class GameState(JsonUtility jsonUtility, Items items, IToastService toast
 		}
 	}
 	public bool CheckForState(string name) => State.ContainsKey(name);
-
-
-	// public void AddVisibility(string name, bool value)
-	// {
-	// 	State.Add(name, value);
-	// }
+	// kinda pointless, but I had the urge to overengineer
+	public bool TryGetState(string name, out bool value) => State.TryGetValue(name, out value);
+	public bool TryToggleState(string name)
+	{
+		if (State.TryGetValue(name, out bool value))
+		{
+			State[name] = !value;
+			return true;
+		}
+		return false;
+	}
 
 	public void RemoveItem(string id)
 	{
@@ -139,9 +142,7 @@ public class GameState(JsonUtility jsonUtility, Items items, IToastService toast
 			{
 				ItemObjects.Add(id, value);
 			}
-
 		}
-
 		return ItemObjects;
 	}
 
@@ -162,7 +163,6 @@ public class GameStateData
 {
 	public List<string> Items { get; set; } = [];
 	public Dictionary<string, bool> GameState { get; set; } = [];
-	public Dictionary<string, MinigameDefBase> Minigames { get; set; } = [];
 	public string CurrentSlide { get; set; } = "";
 }
 
