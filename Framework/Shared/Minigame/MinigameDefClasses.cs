@@ -99,7 +99,7 @@ public class CodeTerminal : MinigameDefBase
 	{
 		GameState.AddItem("goldkey");
 		Key.Visible = false;
-		GameState.ChangeVisibility("HM305DoorClosed.CodeTerminal");
+		GameState.ToggleState("HM305DoorClosed.CodeTerminal");
 		Collected = true;
 		Update();
 		await Task.Delay(2000);

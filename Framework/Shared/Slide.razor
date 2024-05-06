@@ -12,7 +12,7 @@
 	@* *Added Null supression *@
 	@foreach (var buttonKey in SlideData.Buttons!.Keys.ToList())
 	{
-		if (GameState.CheckVisibility($"{SlideId}.{buttonKey}")) {
+		if (GameState.GetState($"{SlideId}.{buttonKey}")) {
 
 			var ButtonElement = SlideData.Buttons[buttonKey];
 			// Declare here as it's used in several cases

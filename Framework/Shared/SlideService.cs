@@ -176,11 +176,11 @@ public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVe
 				{
 					if (visible)
 					{
-						gameState.AddVisibility($"{slide.Key}.{button.Key}", true);
+						gameState.SetState($"{slide.Key}.{button.Key}", true);
 					}
 					else
 					{
-						gameState.AddVisibility($"{slide.Key}.{button.Key}", false);
+						gameState.SetState($"{slide.Key}.{button.Key}", false);
 					}
 				}
 			}

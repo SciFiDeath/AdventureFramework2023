@@ -238,7 +238,7 @@ public class SlidesVerifier(GameState gameState, Items items)
 				else if (action[0] == "RequireGameState")
 				{
 					var x = action[1].StartsWith('!') ? action[1][1..] : action[1];
-					if (!gameState.CheckForVisibility(x))
+					if (!gameState.CheckForState(x))
 					{
 						throw new SlidesJsonException($"At action {i}: RequireGameState: No GameState with key \"{x}\" found");
 					}
@@ -291,7 +291,7 @@ public class SlidesVerifier(GameState gameState, Items items)
 				{
 					// check if gamestate exists
 					// var x = action[1].StartsWith('!') ? action[1][1..] : action[1];
-					if (!gameState.CheckForVisibility(action[1]))
+					if (!gameState.CheckForState(action[1]))
 					{
 						throw new SlidesJsonException($"At action {i}: SetGameState: No GameState with key \"{action[1]}\" found");
 					}

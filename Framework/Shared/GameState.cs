@@ -16,8 +16,8 @@ namespace GameStateInventory;
 public interface IGameState
 {
 	// if value exists, set it, else create new entry
-	void SetVisibility(string name, bool value);
-	bool CheckVisibility(string name);
+	void SetState(string name, bool value);
+	bool GetState(string name);
 
 	void AddItem(string id);
 	void RemoveItem(string id);
@@ -37,46 +37,44 @@ public interface IGameState
 	string GetSaveString();
 }
 
-public class GameState : IGameState
+public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState
 {
-	private readonly IToastService ToastService;
+	// dependencies
+	private readonly IToastService ToastService = toastService;
+	private readonly JsonUtility JsonUtility = jsonUtility;
+	private readonly Items Items = items;
 
-	protected JsonUtility JsonUtility { get; set; } = null!;
 
-	protected Items Items { get; set; }
-	//Initialize Inventory
-	private static List<string> ItemsInInventory = new();
+	// initialize with empty data
+	private GameStateData Data = new();
 
-	private static Dictionary<string, bool> State = new();
+	// they just point to the data, so you can swap it out by just changing the data, not the properties
+	private List<string> ItemsInInventory { get { return Data.Items; } set { Data.Items = value; } }
+	private Dictionary<string, bool> State { get { return Data.GameState; } set { Data.GameState = value; } }
+	// should be set by the slide service
+	public string CurrentSlide { get { return Data.CurrentSlide; } set { Data.CurrentSlide = value; } }
 
-	public string CurrentSlide { get; set; } = null!;
-
-	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
-	{
-		JsonUtility = jsonUtility;
-		Items = items;
-		ToastService = toastService;
-
-	}
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
 	{
 		State = await JsonUtility.LoadFromJsonAsync<Dictionary<string, bool>>(path);
 		await Items.LoadItemsAsync();
-
 	}
 
-	public void SetVisibility(string name, bool value)
+	public void SetState(string name, bool value)
 	{
-		State[name] = value;
+		if (!State.TryAdd(name, value))
+		{
+			State[name] = value;
+		}
 	}
 
-	public void ChangeVisibility(string name)
+	public void ToggleState(string name)
 	{
 		State[name] = !State[name];
 	}
 
-	public bool CheckVisibility(string name)
+	public bool GetState(string name)
 	{
 		try
 		{
@@ -88,13 +86,13 @@ public class GameState : IGameState
 			return true;
 		}
 	}
-	public bool CheckForVisibility(string name) => State.ContainsKey(name);
+	public bool CheckForState(string name) => State.ContainsKey(name);
 
 
-	public void AddVisibility(string name, bool value)
-	{
-		State.Add(name, value);
-	}
+	// public void AddVisibility(string name, bool value)
+	// {
+	// 	State.Add(name, value);
+	// }
 
 	public void RemoveItem(string id)
 	{
@@ -137,9 +135,9 @@ public class GameState : IGameState
 
 		foreach (string id in ItemsInInventory)
 		{
-			if (Items.items.ContainsKey(id))
+			if (Items.items.TryGetValue(id, out Item? value))
 			{
-				ItemObjects.Add(id, Items.items[id]);
+				ItemObjects.Add(id, value);
 			}
 
 		}
@@ -149,42 +147,23 @@ public class GameState : IGameState
 
 	public string GetSaveString()
 	{
-		// Console.WriteLine("GetSaveString called");
-		GameStateData data = new GameStateData(ItemsInInventory, State);
-		// foreach (var item in data.Items)
-		// {
-		// 	Console.WriteLine(item);
-		// }
-		return ObjectEncoder.EncodeObject(data);
+		return ObjectEncoder.EncodeObject(Data);
 	}
 
 	public void SetFromSaveString(string hex)
 	{
-		// Console.WriteLine("SetFromSaveString called");
-		GameStateData? data = ObjectEncoder.DecodeObject<GameStateData>(hex) ?? throw new Exception("GameStateData is null");
-		GameState.State = data.gameState;
-
-		// foreach (var item in data.Items)
-		// {
-		// 	Console.WriteLine(item);
-		// }
-
-		GameState.ItemsInInventory = data.Items;
+		GameStateData data = ObjectEncoder.DecodeObject<GameStateData>(hex) ??
+		throw new Exception("GameStateData is null");
+		Data = data;
 	}
-	public class GameStateData
-	{
+}
 
-		public List<string> Items { get; }
-		public Dictionary<string, bool> gameState { get; }
-		//public Dictionary<string, object> Minigames => Minigames;
-		public GameStateData(List<string> items, Dictionary<string, bool> gamestate)
-		{
-
-			Items = items;
-			gameState = gamestate;
-		}
-	}
-
+public class GameStateData
+{
+	public List<string> Items { get; set; } = [];
+	public Dictionary<string, bool> GameState { get; set; } = [];
+	public Dictionary<string, MinigameDefBase> Minigames { get; set; } = [];
+	public string CurrentSlide { get; set; } = "";
 }
 
 
