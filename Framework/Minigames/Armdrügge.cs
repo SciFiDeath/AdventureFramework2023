@@ -18,6 +18,8 @@ public class MyMinigame6 : MinigameDefBase
     public Rectangle Rectbottom { get; set;}
     [Element]
     public Rectangle Rectright { get; set;}
+    [Element]
+    public Rectangle Rectfill { get; set;}
 
     public GameObjectContainer<Rectangle> RectRot {get; set;} = new();
 
@@ -34,6 +36,7 @@ public class MyMinigame6 : MinigameDefBase
             Height = 700,
             Fill = "black",
             // OnClick = spawnRect,
+            
 
         
         };
