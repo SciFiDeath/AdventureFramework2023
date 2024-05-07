@@ -336,7 +336,7 @@ public abstract class ShapeElement : SVGElement
 	[Style("fill-opacity")] public double? FillOpacity { get; set; }
 	// stroke stuff
 	[Style("stroke")] public string? Stroke { get; set; }
-	[Style("stroke-width")] public int? StrokeWidth { get; set; }
+	[Style("stroke-width")] public double? StrokeWidth { get; set; }
 	[Style("stroke-opacity")] public double? StrokeOpacity { get; set; }
 }
 
