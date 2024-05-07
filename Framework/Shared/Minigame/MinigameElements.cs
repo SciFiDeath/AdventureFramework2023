@@ -1,5 +1,8 @@
+using System.Globalization;
 using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Framework.Minigames;
 
@@ -82,14 +85,28 @@ public abstract class SVGElement : GameObject
 {
 	[Html("style")] public string? Style { get => GetStyleString(); }
 
-	//* Also inherited from GameObject
-	// [Html("id")] public string Id { get; set; } = Guid.NewGuid().ToString("N");
-
-	// // public int ZIndex { get; set; } = 0;
-
-
 	// Normal implementation (maybe slightly slower, but I understand it better)
 	public abstract string TagName { get; }
+	// maybe virtual for more custom elements?
+	// public virtual string TagName { get; } = "div";
+
+
+	public virtual string? CustomStyle { get; set; }
+
+	// some properties that are the same across all elements
+	//  event handlers, as they are the same over all elements
+	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+	[Callback("ondblclick")] public Action<EventArgs>? OnDoubleClick { get; set; }
+	[Callback("onmouseenter")] public Action<EventArgs>? OnMouseEnter { get; set; }
+	[Callback("onmouseleave")] public Action<EventArgs>? OnMouseLeave { get; set; }
+
+	// set the cursor (probably most often to "pointer")
+	[Style("cursor")] public string? Cursor { get; set; }
+	[Style("opacity")] public double? Opacity { get; set; }
+
+
+	public List<object> Content { get; set; } = [];
+
 
 	public override RenderFragment GetRenderFragment()
 	{
@@ -98,6 +115,17 @@ public abstract class SVGElement : GameObject
 			builder.OpenElement(0, TagName);
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
 			builder.AddMultipleAttributes(2, GetCallbackDictionary());
+			builder.OpenRegion(3);
+			int i = 0;
+			foreach (var item in Content)
+			{
+				if (item is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
+				else if (item is string s) { builder.AddContent(i, s); }
+				else if (item is MarkupString m) { builder.AddContent(i, m); }
+				else if (item is RenderFragment r) { builder.AddContent(i, r); }
+				i++;
+			}
+			builder.CloseRegion();
 			builder.CloseElement();
 		};
 	}
@@ -127,7 +155,12 @@ public abstract class SVGElement : GameObject
 	public string? GetStyleString()
 	{
 		string style = "";
-		PropertyInfo[] properties = GetType().GetProperties()
+		PropertyInfo[] properties = GetType()
+		.GetProperties(
+		BindingFlags.Instance |
+		BindingFlags.Public |
+		BindingFlags.NonPublic
+		)
 		.Where(p => Attribute.IsDefined(p, typeof(StyleAttribute)))
 		.ToArray();
 		foreach (var property in properties)
@@ -138,9 +171,11 @@ public abstract class SVGElement : GameObject
 				//*Note: Added null suppression because safety is ensured, but keep in mind regardless
 				// with translate {...ibute<StyleAttribute>()!.name ?? Translate(property.Name)}
 				style +=
-				$"{property.GetCustomAttribute<StyleAttribute>()!.name}: {property.GetValue(this)};";
+				$"{property.GetCustomAttribute<StyleAttribute>()!.name}: {value};";
 			}
 		}
+		// add custom style
+		style += CustomStyle;
 		return style == "" ? null : style;
 	}
 
@@ -179,7 +214,12 @@ public abstract class SVGElement : GameObject
 	public Dictionary<string, object>? GetElementAttributeDictionary()
 	{
 		Dictionary<string, object> attributes = new();
-		PropertyInfo[] properties = GetType().GetProperties()
+		PropertyInfo[] properties = GetType()
+		.GetProperties(
+			BindingFlags.Instance |
+			BindingFlags.Public |
+			BindingFlags.NonPublic
+		)
 		.Where(p => Attribute.IsDefined(p, typeof(HtmlAttribute)))
 		.ToArray();
 		foreach (var property in properties)
@@ -200,8 +240,13 @@ public abstract class SVGElement : GameObject
 
 	public Dictionary<string, object>? GetCallbackDictionary()
 	{
-		Dictionary<string, object> callbacks = new();
-		PropertyInfo[] methods = GetType().GetProperties()
+		Dictionary<string, object> callbacks = [];
+		PropertyInfo[] methods = GetType()
+		.GetProperties(
+			BindingFlags.Instance |
+			BindingFlags.Public |
+			BindingFlags.NonPublic
+		)
 		.Where(p => Attribute.IsDefined(p, typeof(CallbackAttribute)))
 		.ToArray();
 		foreach (var method in methods)
@@ -285,23 +330,45 @@ public abstract class SVGElement : GameObject
 	}
 }
 
+public abstract class ShapeElement : SVGElement
+{
+	[Style("fill")] public string? Fill { get; set; }
+	[Style("fill-opacity")] public double? FillOpacity { get; set; }
+	// stroke stuff
+	[Style("stroke")] public string? Stroke { get; set; }
+	[Style("stroke-width")] public double? StrokeWidth { get; set; }
+	[Style("stroke-opacity")] public double? StrokeOpacity { get; set; }
+}
+
 
 // Some classes like ImgButton, PolygonButton, RectButton are some Ideas I had
 // They are set as properties in a  MinigameBase instance and are then
 // "generated" in the markup of the Minigame
 // Should have functions like check for click, disable/enable, Set/GetPos, show/hide et.
 
-// public class Polygon : SVGElement
-// {
-// 	public override string TagName { get; } = "polygon";
+public class Polygon : ShapeElement
+{
+	public override string TagName { get; } = "polygon";
 
-// 	public List<int> Points { get; set; } = null!;
+	public List<int[]> Points { get; set; } = [];
 
-// 	[Html("points")]
-// 	private string _points => string.Join(",", Points);
-// }
+	[Html("points")]
+	private string PointString => string.Join(",", Points.SelectMany(i => i));
 
-public class Rectangle : SVGElement
+	// [Style("fill")] public string? Fill { get; set; }
+}
+
+public class Polyline : ShapeElement
+{
+	public override string TagName { get; } = "polyline";
+
+	public List<int[]> Points { get; set; } = [];
+
+	[Html("points")]
+	private string PointString => string.Join(",", Points.SelectMany(i => i));
+}
+
+public class Rectangle : ShapeElement
 {
 	// // Implementation of the TagName property as static
 	// public new static string TagName { get; } = "rect";
@@ -314,9 +381,40 @@ public class Rectangle : SVGElement
 	[Html("width")] public int Width { get; set; }
 	[Html("height")] public int Height { get; set; }
 
-	[Html("fill")] public string? Fill { get; set; }
+	// [Style("fill")] public string? Fill { get; set; }
 
-	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+	// now inherited
+	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+}
+
+public class Circle : ShapeElement
+{
+	public override string TagName { get; } = "circle";
+	[Html("cx")] public int? CX { get; set; }
+	[Html("cy")] public int? CY { get; set; }
+	[Html("r")] public int? R { get; set; }
+	[Html("pathLength")] public int? PathLength { get; set; }
+}
+
+public class Ellipse : ShapeElement
+{
+	public override string TagName { get; } = "ellipse";
+	[Html("cx")] public int? CX { get; set; }
+	[Html("cy")] public int? CY { get; set; }
+	[Html("rx")] public int? RX { get; set; }
+	[Html("ry")] public int? RY { get; set; }
+	[Html("pathLength")] public int? PathLength { get; set; }
+}
+
+public class Line : ShapeElement
+{
+	public override string TagName { get; } = "line";
+	[Html("x1")] public int? X1 { get; set; }
+	[Html("x2")] public int? X2 { get; set; }
+	[Html("y1")] public int? Y1 { get; set; }
+	[Html("y2")] public int? Y2 { get; set; }
+	[Html("pathLength")] public int? PathLength { get; set; }
+	// I know that fill isn't technically valid for line, but css will just ignore it
 }
 
 public class Text : SVGElement
@@ -325,28 +423,99 @@ public class Text : SVGElement
 
 	public string? InnerText { get; set; }
 
+	// if true, only the stuff in Content will be rendered
+	public bool ContentMode { get; set; } = false;
+	// you can put strings, MarkupStrings, RenderFragments and Tspan objects in here
+	// strings will be cast to MarkupStrings during render tree construction
+	// the GetRenderFragment() method of Tspan objects is called automatically during rendering
+	//* Is inherited now
+	// public List<object> Content { get; set; } = [];
+
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
-	[Html("fill")] public string? Fill { get; set; }
-	[Style("font-size")] public string? FontSize { get; set; }
+	[Html("dx")] public int? DX { get; set; }
+	[Html("dy")] public int? DY { get; set; }
+	[Html("rotate")] public int? Rotate { get; set; }
+	[Html("textLength")] public int? TextLength { get; set; }
+
+	[Style("fill")] public string? Fill { get; set; }
+
+	[Html("lengthAdjust")]
+	private string? LengthAdjust => StretchLetters is true ? "spacingAndGlyphs" : null;
+	public bool StretchLetters { get; set; }
+
+	[Style("font-size")]
+	private string? FontSizeString => FontSize != null ? $"{FontSize}px" : null;
+	public int? FontSize { get; set; }
+
 	[Style("font-family")] public string? FontFamily { get; set; }
 
+	[Style("user-select")] private string? UserSelect => Selectable != true ? "none" : null;
+	public bool? Selectable { get; set; }
 
 	public override RenderFragment GetRenderFragment()
 	{
+		// render text as a string
+		if (!ContentMode)
+		{
+			return builder =>
+			{
+				builder.OpenElement(0, TagName);
+				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+				builder.AddAttribute(2, "style", Style);
+				builder.AddMultipleAttributes(3, GetCallbackDictionary());
+				builder.AddContent(4, InnerText);
+				builder.CloseElement();
+			};
+		}
+		else
+		{
+			return builder =>
+			{
+				builder.OpenElement(0, TagName);
+				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+				builder.AddAttribute(2, "style", Style);
+				builder.AddMultipleAttributes(3, GetCallbackDictionary());
+				// to not worry about numbers
+				builder.OpenRegion(4);
+				int i = 0;
+				foreach (var c in Content)
+				{
+					// cover all the possible conversions, ignore other stuff
+					if (c is string s) { builder.AddContent(i, s); }
+					else if (c is MarkupString m) { builder.AddContent(i, m); }
+					else if (c is RenderFragment r) { builder.AddContent(i, r); }
+					else if (c is Text t) { builder.AddContent(i, t.GetRenderFragment()); }
+					i++;
+				}
+				builder.CloseRegion();
+				builder.CloseElement();
+			};
+		}
+	}
+}
+
+public class Tspan : Text
+{
+	public override string TagName { get; } = "tspan";
+}
+
+// probably useful for text and stuff
+public class RawMarkup : GameObject
+{
+	public string Markup { get; set; } = "";
+
+	public override RenderFragment GetRenderFragment()
+	{
+		Console.WriteLine("hel");
 		return builder =>
 		{
-			builder.OpenElement(0, TagName);
-			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-			builder.AddAttribute(2, "style", Style);
-			builder.AddMultipleAttributes(3, GetCallbackDictionary());
-			builder.AddContent(4, InnerText);
-			builder.CloseElement();
+			builder.AddContent(0, (MarkupString)Markup);
 		};
 	}
 }
 
-public class SVGImage : SVGElement
+public class Image : SVGElement
 {
 	public override string TagName { get; } = "image";
 
@@ -355,10 +524,103 @@ public class SVGImage : SVGElement
 	[Html("width")] public int? Width { get; set; }
 	[Html("height")] public int? Height { get; set; }
 
-	[Style("display")] public string? Visibility { get; set; }
+	// [Style("display")] public string? Visibility { get; set; }
 
-	[Html("href")] public string? Image { get; set; }
+	[Html("href")] public string? ImagePath { get; set; }
 
-	[Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+	// now inherited
+	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+
+}
+
+public class CustomObject : SVGElement
+{
+	public override string TagName { get; } = "div";
+	//* this must be set or it will cause unexpected behaviour
+	public string CustomTagName { get; set; } = null!;
+
+	public Dictionary<string, object> Attributes { get; set; } = [];
+	public Dictionary<string, object> Styles { get; set; } = [];
+	public Dictionary<string, Action<EventArgs>> Callbacks { get; set; } = [];
+
+	//* is inherited now
+	// public List<object> Content { get; set; } = [];
+
+	public new string CustomStyle => GetStyle();
+
+	private string GetStyle()
+	{
+		string str = "";
+		foreach (var kvp in Styles)
+		{
+			str += $"{kvp.Key}: {kvp.Value}; ";
+		}
+		return str;
+	}
+
+	public Dictionary<string, object> GetCallbacks()
+	{
+		Dictionary<string, object> dict = [];
+		foreach (var kvp in Callbacks)
+		{
+			dict.Add(
+				kvp.Key,
+				EventCallback.Factory.Create(this, kvp.Value)
+			);
+		}
+		return dict;
+	}
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(0, CustomTagName);
+			builder.AddMultipleAttributes(1, Attributes);
+			builder.AddAttribute(2, "style", CustomStyle);
+			builder.AddMultipleAttributes(3, GetCallbacks());
+			builder.OpenRegion(4);
+			int i = 0;
+			foreach (var c in Content)
+			{
+				if (c is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
+				else if (c is string s) { builder.AddContent(i, s); }
+				else if (c is MarkupString m) { builder.AddContent(i, m); }
+				else if (c is RenderFragment r) { builder.AddContent(i, r); }
+				i++;
+			}
+
+			builder.CloseRegion();
+			builder.CloseElement();
+
+		};
+	}
+}
+
+public class ForeignObject : SVGElement
+{
+	public override string TagName { get; } = "foreignObject";
+
+	[Html("x")] public int? X { get; set; }
+	[Html("y")] public int? Y { get; set; }
+	[Html("width")] public int? Width { get; set; }
+	[Html("height")] public int? Height { get; set; }
+
+	public CustomObject CustomObject { get; set; } = null!;
+
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(1, TagName);
+			builder.AddAttribute(2, "x", X);
+			builder.AddAttribute(3, "y", Y);
+			builder.AddAttribute(4, "width", Width);
+			builder.AddAttribute(5, "height", Height);
+			builder.AddContent(6, CustomObject.GetRenderFragment());
+			builder.CloseElement();
+		};
+	}
 
 }

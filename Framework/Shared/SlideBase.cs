@@ -27,9 +27,13 @@ public class SlideBase : ComponentBase
 	//? what color will the polygons have (if any)
 	protected string fillColor = "rgba(255, 255, 147, 0.5)";
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
 		SlideData = SlideService.GetSlide(SlideId);
+		if (SlideData.OnEnter != null)
+		{
+			await ButtonClick(SlideData.OnEnter);
+		}
 		// Console.WriteLine(SlideId);
 	}
 

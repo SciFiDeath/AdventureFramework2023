@@ -15,69 +15,64 @@ namespace GameStateInventory;
 
 public interface IGameState
 {
-    // if value exists, set it, else create new entry
-    void SetVisibility(string name, bool value);
-    bool CheckVisibility(string name);
+	// if value exists, set it, else create new entry
+	void SetState(string name, bool value);
+	bool GetState(string name);
+	bool CheckForState(string name);
+	bool TryGetState(string name, out bool value);
+	void ToggleState(string name);
+	bool TryToggleState(string name);
 
-    void AddItem(string id);
-    void RemoveItem(string id);
-    bool CheckForItem(string id);
+	void AddItem(string id);
+	void RemoveItem(string id);
+	bool CheckForItem(string id);
 
-    // minigames probably should be seperated from other stuff
-    // if value exists, set it, else create new entry
+	//* Scrapped idea for minigame saving in GameState
 
-	//TODO Implement This:
-    void SetMinigame(string name, MinigameDefBase minigame);
-    void GetMinigame(string name);
+	string CurrentSlide { get; set; }
 
-    string CurrentSlide { get; set; }
-
-    // need to think about the name
-	//TODO Implement this:
-    void SetFromSaveString(string saveString);
-    string GetSaveString();
+	void SetFromSaveString(string saveString);
+	string GetSaveString();
 }
 
-public class GameState
+public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState
 {
-	private readonly IToastService ToastService;
+	// dependencies
+	private readonly IToastService ToastService = toastService;
+	private readonly JsonUtility JsonUtility = jsonUtility;
+	private readonly Items Items = items;
 
-	//List<ToastMessage> messages = new List<ToastMessage>();
 
-	protected JsonUtility JsonUtility { get; set; } = null!;
+	// initialize with empty data
+	private GameStateData Data = new();
 
-	protected Items Items { get; set; }
-	//Initialize Inventory
-	private static List<string> ItemsInInventory = new();
+	// they just point to the data, so you can swap it out by just changing the data, not the properties
+	private List<string> ItemsInInventory { get { return Data.Items; } set { Data.Items = value; } }
+	private Dictionary<string, bool> State { get { return Data.GameState; } set { Data.GameState = value; } }
+	// should be set by the slide service
+	public string CurrentSlide { get { return Data.CurrentSlide; } set { Data.CurrentSlide = value; } }
 
-	private static Dictionary<string, bool> State = new();
-
-	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
-	{
-		JsonUtility = jsonUtility;
-		Items = items;
-		ToastService = toastService;
-
-	}
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
 	{
 		State = await JsonUtility.LoadFromJsonAsync<Dictionary<string, bool>>(path);
 		await Items.LoadItemsAsync();
-
 	}
 
-	public void SetVisibility(string name, bool value)
+	public void SetState(string name, bool value)
 	{
-		State[name] = value;
+		if (!State.TryAdd(name, value))
+		{
+			State[name] = value;
+		}
 	}
 
-	public void ChangeVisibility(string name)
+	public void ToggleState(string name)
 	{
 		State[name] = !State[name];
 	}
 
-	public bool CheckVisibility(string name)
+	public bool GetState(string name)
 	{
 		try
 		{
@@ -89,10 +84,17 @@ public class GameState
 			return true;
 		}
 	}
-
-	public void AddVisibility(string name, bool value)
+	public bool CheckForState(string name) => State.ContainsKey(name);
+	// kinda pointless, but I had the urge to overengineer
+	public bool TryGetState(string name, out bool value) => State.TryGetValue(name, out value);
+	public bool TryToggleState(string name)
 	{
-		State.Add(name, value);
+		if (State.TryGetValue(name, out bool value))
+		{
+			State[name] = !value;
+			return true;
+		}
+		return false;
 	}
 
 	public void RemoveItem(string id)
@@ -103,100 +105,65 @@ public class GameState
 		{
 			throw new ArgumentException($"Element {id} is not in Inventory");
 		}
-		Console.WriteLine($"Successfully removed {id} from inventory");
+		// Console.WriteLine($"Successfully removed {id} from inventory");
 	}
 
-    public void AddItem(string id)
-    {
+	public void AddItem(string id)
+	{
 
-        if (Items.DoesItemExist(id) == false)
-        {
-            throw new Exception("Item doesn't exist in items.json Dictionary");
-        }
-        ItemsInInventory.Add(id);
+		if (Items.DoesItemExist(id) == false)
+		{
+			throw new Exception("Item doesn't exist in items.json Dictionary");
+		}
+		ItemsInInventory.Add(id);
 
-        ToastService.ShowSuccess($"Added {id} to inventory");
+		ToastService.ShowSuccess($"Added {id} to inventory");
 
-        //Event handler for updateing inventory images
-        InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
+		//Event handler for updateing inventory images
+		InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
+	}
 
-        // public void ShowMessage(ToastType toastType)
-        // {
-        //     messages.Add(CreateToastMessage(toastType));
-        // }
-
-        // private ToastMessage CreateToastMessage(ToastType toastType)
-		// => new ToastMessage
-		// 	{
-		// 		Type = toastType,
-		// 		Message = $"Hello, world! This is a simple toast message. DateTime: {DateTime.Now}",
-		// 	};
-    }
-
-    public bool CheckForItem(string id)
+	public bool CheckForItem(string id)
 	{
 		return ItemsInInventory.Contains(id);
 	}
-	
-	public List<string> GetItemStrings(){
+
+	public List<string> GetItemStrings()
+	{
 		return ItemsInInventory;
 	}
 	public Dictionary<string, Item> GetItemObjects()
 	{
-        Dictionary<string, Item> ItemObjects = new();
+		Dictionary<string, Item> ItemObjects = new();
 
 		foreach (string id in ItemsInInventory)
-		{	
-			if (Items.items.ContainsKey(id))
+		{
+			if (Items.items.TryGetValue(id, out Item? value))
 			{
-				ItemObjects.Add(id, Items.items[id]);
+				ItemObjects.Add(id, value);
 			}
-			
 		}
-
 		return ItemObjects;
 	}
 
 	public string GetSaveString()
-	{	
-		Console.WriteLine("GetSaveString called");
-		GameStateData data = new GameStateData(ItemsInInventory, State);
-		foreach (var item in data.Items){
-            Console.WriteLine(item);
-        }
-		return ObjectEncoding.ObjectEncoder.EncodeObject(data);
-	}
-	
-	public void SetFromSaveString (string hex) 
-	{	
-		Console.WriteLine("SetFromSaveString called");
-		GameStateData data = ObjectEncoding.ObjectEncoder.DecodeObject<GameStateData>(hex);
-
-		GameState.State = data.gameState;
-		
-		foreach (var item in data.Items){
-            Console.WriteLine(item);
-        }
-
-		GameState.ItemsInInventory = data.Items;
-	}
-	public class GameStateData
-	{	
-
-		public List<string> Items {get;}
-		public Dictionary<string, bool> gameState {get;}
-		//public Dictionary<string, object> Minigames => Minigames;
-		public GameStateData (List<string> items, Dictionary<string, bool> gamestate){
-			
-			Items = items;
-			gameState = gamestate;
-		}
-
-
+	{
+		return ObjectEncoder.EncodeObject(Data);
 	}
 
-	
+	public void SetFromSaveString(string hex)
+	{
+		GameStateData data = ObjectEncoder.DecodeObject<GameStateData>(hex) ??
+		throw new Exception("GameStateData is null");
+		Data = data;
+	}
+}
 
+public class GameStateData
+{
+	public List<string> Items { get; set; } = [];
+	public Dictionary<string, bool> GameState { get; set; } = [];
+	public string CurrentSlide { get; set; } = "";
 }
 
 

@@ -7,6 +7,7 @@ using Blazored.Toast;
 using Framework.Slides;
 using Framework.Keyboard;
 using Framework.Mouse;
+using Framework.Sound;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -27,6 +28,9 @@ builder.Services.AddScoped<SlideService>();
 
 builder.Services.AddScoped<GameState>();
 
+builder.Services.AddScoped<SlidesVerifier>();
+
+
 // // TODO: Find better solution to execute functions at startup
 // // Apparently this only contains Services registered prior to its initialization, and it doesn't update
 // var ServiceProvider = builder.Services.BuildServiceProvider();
@@ -41,5 +45,21 @@ builder.Services.AddScoped<GameState>();
 
 builder.Services.AddScoped<KeyboardService>();
 builder.Services.AddScoped<MouseService>();
+
+// Make C# use non-retarded decimal format
+/*
+Like honestly Microsoft, why in the world did you think that it would be a good idea to localize
+number formatting? You basically just created the possibility of the exact same code not working on
+a machine that is in another place. I can only puzzle about the reasons why you chose to implement 
+such a "feature", when there is absolutely no fucking reason to do such a completely stupid thing.
+So Microsoft, thank you for just helping me chose the framework for my next project, I now know
+that it's not going to be the one that uses C#.
+*/
+System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+customCulture.NumberFormat.NumberDecimalSeparator = ".";
+
+Thread.CurrentThread.CurrentCulture = customCulture;
+
+builder.Services.AddScoped<SoundService>();
 
 await builder.Build().RunAsync();

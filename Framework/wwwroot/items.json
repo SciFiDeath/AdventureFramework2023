@@ -10,17 +10,16 @@
         "description": "fills the cup with a hole in it",
         "image": "InventoryImages/SurfaceCharger.jpeg"
     },
-    
+
     "coffeemug": {
         "name": "Mug",
         "description": "Mugman",
         "image": "InventoryImages/Kaffeetasse.jpg"
     },
-    
+
     "frog": {
         "name": "frog",
         "description": "One lick away...",
         "image": "InventoryImages/Glass_Frog.jpg"
     }
-
 }

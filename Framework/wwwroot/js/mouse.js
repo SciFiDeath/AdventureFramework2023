@@ -7,6 +7,8 @@ window.mouse = {
 
     timeout: false,
 
+    track: false,
+
     init: function (objRef, disableContextMenu) {
         window.mouse.objRef = objRef;
         window.addEventListener("mousedown", (event) => {
@@ -22,27 +24,50 @@ window.mouse = {
         }
         window.addEventListener("mousemove", (event) => {
             window.mouse.absMousePos = { x: event.clientX, y: event.clientY };
-            if (!window.mouse.timeout) {
-                window.mouse.timeout = true;
-                setTimeout(() => {
-                    window.mouse.svgMousePos = convertToSvgCoords2(
-                        window.mouse.absMousePos.x,
-                        window.mouse.absMousePos.y
+            if (this.track) {
+                if (this.updateDelay === 0) {
+                    this.svgMousePos = convertToSvgCoords2(
+                        this.absMousePos.x,
+                        this.absMousePos.y
                     );
-                    // console.log(window.mouse.svgMousePos.x, window.mouse.svgMousePos.y);
                     objRef.invokeMethodAsync(
                         "MouseMove",
-                        window.mouse.svgMousePos.x,
-                        window.mouse.svgMousePos.y
+                        this.svgMousePos.x,
+                        this.svgMousePos.y
                     );
-                    window.mouse.timeout = false;
-                }, window.mouse.updateDelay);
+                } else {
+                    if (!window.mouse.timeout) {
+                        window.mouse.timeout = true;
+                        setTimeout(() => {
+                            window.mouse.svgMousePos = convertToSvgCoords2(
+                                window.mouse.absMousePos.x,
+                                window.mouse.absMousePos.y
+                            );
+                            // console.log(window.mouse.svgMousePos.x, window.mouse.svgMousePos.y);
+                            objRef.invokeMethodAsync(
+                                "MouseMove",
+                                window.mouse.svgMousePos.x,
+                                window.mouse.svgMousePos.y
+                            );
+                            window.mouse.timeout = false;
+                        }, window.mouse.updateDelay);
+                    }
+                }
             }
         });
     },
 
     setDelay: function (delay) {
-        window.mouse.updateDelay = delay;
+        if (delay < 0) {
+            this.track = false;
+        } else {
+            this.track = true;
+            window.mouse.updateDelay = delay;
+        }
+    },
+
+    getSvgMousePos: function () {
+        return convertToSvgCoords2(this.absMousePos.x, this.absMousePos.y);
     },
 };
 
