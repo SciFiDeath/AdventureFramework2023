@@ -2,49 +2,77 @@ using Microsoft.AspNetCore.Components;
 
 using JsonUtilities;
 using FrameworkItems;
-
+using static InventoryEvent;
+using Microsoft.JSInterop;
+using ObjectEncoding;
+using Framework.Minigames;
 //Notifications
 using Blazored.Toast.Services;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace GameStateInventory;
 
-public class GameState
+public interface IGameState
 {
-	private readonly IToastService ToastService;
-	protected JsonUtility JsonUtility { get; set; } = null!;
+	// if value exists, set it, else create new entry
+	void SetState(string name, bool value);
+	bool GetState(string name);
+	bool CheckForState(string name);
+	bool TryGetState(string name, out bool value);
+	void ToggleState(string name);
+	bool TryToggleState(string name);
 
-	protected Items Items { get; set; }
-	//Initialize Inventory
-	private static List<string> ItemsInInventory = new();
+	void AddItem(string id);
+	void RemoveItem(string id);
+	bool CheckForItem(string id);
 
-	public static Dictionary<string, bool> State = new();
+	//* Scrapped idea for minigame saving in GameState
 
-	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
-	{
-		JsonUtility = jsonUtility;
-		Items = items;
-		ToastService = toastService;
-	}
+	string CurrentSlide { get; set; }
+
+	void SetFromSaveString(string saveString);
+	string GetSaveString();
+}
+
+public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState
+{
+	// dependencies
+	private readonly IToastService ToastService = toastService;
+	private readonly JsonUtility JsonUtility = jsonUtility;
+	private readonly Items Items = items;
+
+
+	// initialize with empty data
+	private GameStateData Data = new();
+
+	// they just point to the data, so you can swap it out by just changing the data, not the properties
+	private List<string> ItemsInInventory { get { return Data.Items; } set { Data.Items = value; } }
+	private Dictionary<string, bool> State { get { return Data.GameState; } set { Data.GameState = value; } }
+	// should be set by the slide service
+	public string CurrentSlide { get { return Data.CurrentSlide; } set { Data.CurrentSlide = value; } }
+
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
 	{
 		State = await JsonUtility.LoadFromJsonAsync<Dictionary<string, bool>>(path);
 		await Items.LoadItemsAsync();
-
 	}
 
-	public void SetVisibility(string name, bool value)
+	public void SetState(string name, bool value)
 	{
-		State[name] = value;
+		if (!State.TryAdd(name, value))
+		{
+			State[name] = value;
+		}
 	}
 
-	public void ChangeVisibility(string name)
+	public void ToggleState(string name)
 	{
 		State[name] = !State[name];
 	}
 
-	public bool CheckVisibility(string name)
+	public bool GetState(string name)
 	{
 		try
 		{
@@ -56,10 +84,17 @@ public class GameState
 			return true;
 		}
 	}
-
-	public void AddVisibility(string name, bool value)
+	public bool CheckForState(string name) => State.ContainsKey(name);
+	// kinda pointless, but I had the urge to overengineer
+	public bool TryGetState(string name, out bool value) => State.TryGetValue(name, out value);
+	public bool TryToggleState(string name)
 	{
-		State.Add(name, value);
+		if (State.TryGetValue(name, out bool value))
+		{
+			State[name] = !value;
+			return true;
+		}
+		return false;
 	}
 
 	public void RemoveItem(string id)
@@ -70,10 +105,10 @@ public class GameState
 		{
 			throw new ArgumentException($"Element {id} is not in Inventory");
 		}
-		Console.WriteLine($"Successfully removed {id} from inventory");
+		// Console.WriteLine($"Successfully removed {id} from inventory");
 	}
 
-	public async void AddItem(string id)
+	public void AddItem(string id)
 	{
 
 		if (Items.DoesItemExist(id) == false)
@@ -81,44 +116,54 @@ public class GameState
 			throw new Exception("Item doesn't exist in items.json Dictionary");
 		}
 		ItemsInInventory.Add(id);
+
 		ToastService.ShowSuccess($"Added {id} to inventory");
-		Console.WriteLine($"Successfully added {id} to inventory");
+
+		//Event handler for updateing inventory images
+		InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
 	}
+
 	public bool CheckForItem(string id)
 	{
 		return ItemsInInventory.Contains(id);
 	}
-	public List<string> GetItems()
+
+	public List<string> GetItemStrings()
 	{
 		return ItemsInInventory;
 	}
-
-	public string Save(string key = "1234", string path = "gamestate.json")
+	public Dictionary<string, Item> GetItemObjects()
 	{
-		string encrypted = "";
+		Dictionary<string, Item> ItemObjects = new();
 
-		try
+		foreach (string id in ItemsInInventory)
 		{
-			encrypted = JsonUtility.EncryptGameStateInventory(State, ItemsInInventory, key);
-			Console.WriteLine("Save successful");
+			if (Items.items.TryGetValue(id, out Item? value))
+			{
+				ItemObjects.Add(id, value);
+			}
 		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Error during save: {ex.Message}");
-			// Log the exception or take appropriate actions
-			throw new Exception("Could not encrypt and save", ex);
-		}
-
-		return encrypted;
+		return ItemObjects;
 	}
 
-
-	public void LoadFromString(string encrypted)
+	public string GetSaveString()
 	{
-
+		return ObjectEncoder.EncodeObject(Data);
 	}
 
-
-
+	public void SetFromSaveString(string hex)
+	{
+		GameStateData data = ObjectEncoder.DecodeObject<GameStateData>(hex) ??
+		throw new Exception("GameStateData is null");
+		Data = data;
+	}
 }
+
+public class GameStateData
+{
+	public List<string> Items { get; set; } = [];
+	public Dictionary<string, bool> GameState { get; set; } = [];
+	public string CurrentSlide { get; set; } = "";
+}
+
 
