@@ -24,6 +24,7 @@ builder.Services.AddBlazoredToast();
 // First register both of those, then execute the initialization for both
 // builder.Services.AddScoped<SlideService>();
 builder.Services.AddScoped<SlideService>();
+
 builder.Services.AddScoped<GameState>();
 
 // // TODO: Find better solution to execute functions at startup

@@ -42,7 +42,7 @@ public class GameState
 {
 	private readonly IToastService ToastService;
 
-	List<ToastMessage> messages = new List<ToastMessage>();
+	//List<ToastMessage> messages = new List<ToastMessage>();
 
 	protected JsonUtility JsonUtility { get; set; } = null!;
 
@@ -120,14 +120,17 @@ public class GameState
         //Event handler for updateing inventory images
         InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
 
-		private void ShowMessage(ToastType toastType) => messages.Add(CreateToastMessage(toastType));
+        // public void ShowMessage(ToastType toastType)
+        // {
+        //     messages.Add(CreateToastMessage(toastType));
+        // }
 
-		private ToastMessage CreateToastMessage(ToastType toastType)
-		=> new ToastMessage
-			{
-				Type = toastType,
-				Message = $"Hello, world! This is a simple toast message. DateTime: {DateTime.Now}",
-			};
+        // private ToastMessage CreateToastMessage(ToastType toastType)
+		// => new ToastMessage
+		// 	{
+		// 		Type = toastType,
+		// 		Message = $"Hello, world! This is a simple toast message. DateTime: {DateTime.Now}",
+		// 	};
     }
 
     public bool CheckForItem(string id)
@@ -188,6 +191,8 @@ public class GameState
 			Items = items;
 			gameState = gamestate;
 		}
+
+
 	}
 
 	

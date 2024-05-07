@@ -21,7 +21,6 @@ public class InventoryUIBase : ComponentBase
 
     public Dictionary<string, Item> InvItems = new();
 
-    BlazoredVideo video1;
     protected override async Task OnInitializedAsync()
     {
         // base.OnInitialized();
@@ -64,17 +63,6 @@ public class InventoryUIBase : ComponentBase
 
     }
 
-    public async Task PlayOrPause(BlazoredVideo video)
-	{
-		if (await video.GetPausedAsync())
-		{
-			await video.StartPlayback();
-		}
-		else
-		{
-			await video.PausePlayback();
-		}
-	}
     private void HandleItemAdded(object sender, InventoryEvent.ItemAddedEventArgs e)
     {
         // Handle the item added event here

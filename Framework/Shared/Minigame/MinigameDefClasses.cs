@@ -302,6 +302,91 @@ public class KillTest : MinigameDefBase
 	}
 }
 
+//TODO Dialog Base Class
+
+public class Dialogue : MinigameDefBase {
+    public override string BackgroundImage {get; set;} = "images/HM3_hallwayN.jpg"; // Background Image
+
+	List<List<string>> messages = new();
+	
+	[Element]
+	public Rectangle ForwardDialogue { get; set;} 
+	
+	public Rectangle TextContainer { get; set; }
+	
+	public Text SpeakerText { get; set; }
+	
+	public Text SpeakerName { get; set; }
+
+    int TopCenterX = 100;
+	int TopCenterY = 100;
+
+	public bool Next = false;
+
+	public Dialogue(List<List<string>> Messages){
+
+		messages = Messages;
+
+		ForwardDialogue = new(){
+			X = 1000,
+			Y = 1000,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = (args) => {Next = true; Update();}
+		};
+
+		IterateSpeech();
+	}
+
+	public void IterateSpeech(){
+		foreach(List<string> text in messages){
+			//TODO make white Rectangle with text inside, above Speaker name
+			
+			TextContainer = new(){
+				X = TopCenterX,
+				Y = TopCenterY,
+				Width = 200,
+				Height = 80,
+				Fill = "white"
+			};
+
+			SpeakerText = new(){
+				InnerText = text[0],
+				X = TopCenterX,
+				Y = TopCenterY + 20,
+				FontSize = "20px",
+				Fill = "white",
+
+			};
+
+			SpeakerName = new(){
+				InnerText = text[1],
+				X = TopCenterX,
+				Y = TopCenterY - 20,
+				FontSize = "20px",
+				Fill = "white",
+
+			};
+
+			Elements.Add(TextContainer);
+			Elements.Add(SpeakerText);
+			Elements.Add(SpeakerName);
+
+			while (Next == false){ //! USE LAURINS GAME LOOP THINGY (or not?)
+				
+			}
+
+
+			TextContainer.Kill();
+			SpeakerText.Kill();
+			SpeakerName.Kill();
+			Next = false;
+
+		}
+	}
+}
+
 
 public class LaurinsRain : MinigameDefBase{
 	// [Element] 
