@@ -721,6 +721,20 @@ public class MouseServiceTest : MinigameDefBase
 			Fill = "yellow",
 			OnClick = async (e) => { var x = await MouseService.GetMouseStateAsync(); Console.WriteLine($"AsyncX: {x.X}, AsyncY: {x.Y}"); },
 		});
+		AddElement(new Rectangle()
+		{
+			X = 100,
+			Y = 600,
+			Height = 100,
+			Width = 100,
+			Fill = "purple",
+			OnClick = async (e) =>
+			{
+				var b = (MouseEventArgs)e;
+				var (x, y) = await MouseService.ConvertToSvgCoords(b.ClientX, b.ClientY);
+				Console.WriteLine($"ConvertedX: {x}, ConvertedY: {y}");
+			},
+		});
 	}
 
 }
