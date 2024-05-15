@@ -1,4 +1,5 @@
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Framework.Minigames.MinigameDefClasses;
@@ -13,98 +14,93 @@ public class MyMinigame6 : MinigameDefBase
     [Element]
     public Rectangle Recttop { get; set; }
     [Element]
-    public Rectangle Rectleft { get; set;}
+    public Rectangle Rectleft { get; set; }
     [Element]
-    public Rectangle Rectbottom { get; set;}
+    public Rectangle Rectbottom { get; set; }
     [Element]
-    public Rectangle Rectright { get; set;}
+    public Rectangle Rectright { get; set; }
     [Element]
-    public Rectangle Rectfill { get; set;}
+    public Rectangle Rectfill { get; set; }
 
-    public GameObjectContainer<Rectangle> RectRot {get; set;} = new();
+    public Rectangle Progressbar { get; set; }
+
+    public GameObjectContainer<Rectangle> RectRot { get; set; } = new();
 
 
-    public GameObjectContainer<Rectangle> Rects {get; set;} = new();
+    public GameObjectContainer<Rectangle> Rects { get; set; } = new();
+
+
     public MyMinigame6()
     {
-        Rectleft = new()
-        {
-            Id = "leftrectb",
-            X = 150,
-            Y = 150,
-            Width = 20,
-            Height = 700,
-            Fill = "black",
-            // OnClick = spawnRect,
-            
 
-        
-        };
-   
-        Recttop = new()
-        {
-            Id = "toprectb",
-            X = 150,
-            Y = 150,
-            Width = 100,
-            Height = 20,
-            Fill = "black",
-        };
+        int counter = 1;
+        AddElement(
+                  new Rectangle()
+                  {
+                      // Progressbar links
+                      X = 80,
+                      Y = 150,
+                      Width = 150,
+                      Height = 700,
+                      Fill = "transparent",
+                      Stroke = "black",
+                      StrokeWidth = 40,
+                  }
+              );
 
-        Rectright = new()
-        {
-            Id = "rightrectb",
-            X = 249,
-            Y = 150,
-            Width = 20,
-            Height = 700,
-            Fill = "black",
-        };
+        AddElement(
+                  new Rectangle()
+                  {
+                      //Progressbar rechts
+                      X = 1375,
+                      Y = 150,
+                      Width = 150,
+                      Height = 700,
+                      Fill = "transparent",
+                      Stroke = "black",
+                      StrokeWidth = 40,
+                  }
+              );
 
-        Rectbottom= new()
-        {
-            Id = "bottomrectb",
-            X = 150,
-            Y = 830,
-            Width = 100,
-            Height = 20,
-            Fill = "black",
-        };
-        Rects.Add(Rectbottom);
-        Rects.Add(Rectright);
-        Rects.Add(Recttop);
-        Rects.Add(Rectleft);
+        AddElement(
+                  new Circle()
+                  {
+                      //Hand zum klicken
+                      R = 100,
+                      CX = 550,
+                      CY = 500,
+                      Fill = "orange",
+                      Stroke = "red",
+                      StrokeWidth = 40,
+                      OnClick = progressClick,
+                  }
+
+              );
+
         Update();
     }
 
 
- public void spawnRect(EventArgs args)
+    public void progressClick(EventArgs args)
     {
 
-    Random rnd = new Random();
 
-    int randomx = rnd.Next(1,1900);
-    int randomy = rnd.Next(1,1080);
-        
-            var rect = new Rectangle()
-            {
-                Id = "rectr",
-                X = randomx,
-                Y = randomy,
-                Width = 50,
-                Height= 50,
-                Fill = "red",
-                OnClick = (args) => {RectRot.KillId("rectr"); Update();},
-                
-                
-                
-            };
-            AddElement(rect);
-            RectRot.Add(rect);
-        
+        AddElement(
+                   new Rectangle()
+                   {
+                       X = 150,
+                       Y = 720,
+                       Width = 10,
+                       Height = 60,
+                       Fill = "transparent",
+                       Stroke = "orange",
+                       StrokeWidth = 100
+                   }
+               );
+
         Update();
     }
-   
+
 }
 
 
