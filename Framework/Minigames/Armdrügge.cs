@@ -32,9 +32,10 @@ public class MyMinigame6 : MinigameDefBase
 
     public MyMinigame6()
     {
-
+        int enemycounter = 0;
         int clickcount = 0;
         int Ycord = 758;
+
 
         AddElement(
                   new Rectangle()
@@ -78,10 +79,36 @@ public class MyMinigame6 : MinigameDefBase
                   }
 
               );
+        while (enemycounter < 6)
+        {
+
+            enemyclick(Ycord, enemycounter);
+            enemycounter++;
+            Update();
+
+        }
 
         Update();
     }
 
+    public void enemyclick(int Ycord, int enemycounter)
+    {
+        List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
+
+        AddElement(
+               new Rectangle()
+               {
+                   X = 1445,
+                   Y = Ycord,
+                   Width = 10,
+                   Height = 21,
+                   Fill = "transparent",
+                   Stroke = colors[enemycounter],
+                   StrokeWidth = 100
+               }
+           );
+        Update();
+    }
 
     public void progressClick(int Ycord, int counter)
     {
