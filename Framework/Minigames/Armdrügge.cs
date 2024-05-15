@@ -33,14 +33,14 @@ public class MyMinigame6 : MinigameDefBase
     public MyMinigame6()
     {
         int enemycounter = 0;
-        int clickcount = 0;
-        int Ycord = 758;
+        int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
+        int Ycord = 758; //Unterster Startpunkt
 
 
         AddElement(
                   new Rectangle()
                   {
-                      // Progressbar links
+                      // Progressbar links (Spieler)
                       X = 80,
                       Y = 150,
                       Width = 150,
@@ -54,7 +54,7 @@ public class MyMinigame6 : MinigameDefBase
         AddElement(
                   new Rectangle()
                   {
-                      //Progressbar rechts
+                      //Progressbar rechts (Gegner)
                       X = 1375,
                       Y = 150,
                       Width = 150,
@@ -75,26 +75,24 @@ public class MyMinigame6 : MinigameDefBase
                       Fill = "orange",
                       Stroke = "red",
                       StrokeWidth = 40,
-                      OnClick = (args) => { progressClick(Ycord, clickcount); Ycord = Ycord - 107; clickcount++; },
+                      OnClick = (args) => { progressClick(Ycord, clickcount); Ycord = Ycord - 107; clickcount++; }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
                   }
 
               );
         while (enemycounter < 6)
         {
-
+            // Solange enemyounter unter 6 ist (6, weil wir 6 Farben haben von Weiss bis und mit Rot)
             enemyclick(Ycord, enemycounter);
             enemycounter++;
             Update();
 
         }
-
         Update();
     }
 
-    public void enemyclick(int Ycord, int enemycounter)
+    public void enemyclick(int Ycord, int enemycounter) //Funktion, die für das Auffüllen der Gegnerischen Progressbar zuständig ist
     {
         List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
-
         AddElement(
                new Rectangle()
                {
@@ -113,9 +111,7 @@ public class MyMinigame6 : MinigameDefBase
     public void progressClick(int Ycord, int counter)
     {
         List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
-
-
-
+        //Stroke also Füllfarbe wird mit der Liste berechnet, für jeden Klick erhöht sich counter und somit verändert sich die Farbe
         AddElement(
                    new Rectangle()
                    {
