@@ -1,5 +1,4 @@
 # AdventureFramework2023
-# All my Fellas
 # EVERYTHING DOWN HERE IS OUTDATED/OBSOLETE/WRONG/ETC.
 
 # TODO for Holidays
