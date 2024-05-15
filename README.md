@@ -6,4 +6,7 @@
 - Wenn Frosch abgeleckt wurde = Spiel einfacher machen (Zusammenhängend mit Punkt 1)
 - Evtl anderes Hintergrund Bild wenn gewonnen/verloren? -> Noch neue Bilder machen
 
-- 	
+# Probleme
+
+- Wenn man zu oft auf den Kreis Klick gibt es einen Fehler, da es nicht genug Farben hat
+
