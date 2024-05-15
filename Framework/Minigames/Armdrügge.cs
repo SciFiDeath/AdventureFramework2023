@@ -33,7 +33,9 @@ public class MyMinigame6 : MinigameDefBase
     public MyMinigame6()
     {
 
-        int counter = 1;
+        int clickcount = 0;
+        int Ycord = 725;
+
         AddElement(
                   new Rectangle()
                   {
@@ -72,7 +74,7 @@ public class MyMinigame6 : MinigameDefBase
                       Fill = "orange",
                       Stroke = "red",
                       StrokeWidth = 40,
-                      OnClick = progressClick,
+                      OnClick = (args) => { progressClick(Ycord, clickcount); Ycord = Ycord - 120; clickcount++; },
                   }
 
               );
@@ -81,19 +83,21 @@ public class MyMinigame6 : MinigameDefBase
     }
 
 
-    public void progressClick(EventArgs args)
+    public void progressClick(int Ycord, int counter)
     {
+        List<string> colors = new List<string> { "yellow", "orange", "red" };
+
 
 
         AddElement(
                    new Rectangle()
                    {
                        X = 150,
-                       Y = 720,
+                       Y = Ycord,
                        Width = 10,
                        Height = 60,
                        Fill = "transparent",
-                       Stroke = "orange",
+                       Stroke = colors[counter],
                        StrokeWidth = 100
                    }
                );
