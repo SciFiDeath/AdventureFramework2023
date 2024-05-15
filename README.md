@@ -1,4 +1,4 @@
-# ToDO Amos und Gian
+# ToDo Amos und Gian
 
 - Weg herausfinden wie man die Progressbar des "Gegners" auffülen lässt, damit es sehr schwer ist, aber möglich
 - Wenn Progressbar voll ist (Counter = 5) Hintergrundbild ändern (Wenn Spiler gewonnen hat oder wenn Gegner gewonnen hat) -> Noch neue Bilder machen
