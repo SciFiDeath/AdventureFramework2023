@@ -35,6 +35,7 @@ public class MyMinigame6 : MinigameDefBase
         int enemycounter = 0;
         int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
         int Ycord = 758; //Unterster Startpunkt
+        int enemyYcord = 758;
 
 
         AddElement(
@@ -77,13 +78,13 @@ public class MyMinigame6 : MinigameDefBase
                       StrokeWidth = 40,
                       OnClick = (args) => { progressClick(Ycord, clickcount); Ycord = Ycord - 107; clickcount++; }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
                   }
-
               );
         while (enemycounter < 6)
         {
             // Solange enemyounter unter 6 ist (6, weil wir 6 Farben haben von Weiss bis und mit Rot)
-            enemyclick(Ycord, enemycounter);
+            enemyclick(enemyYcord, enemycounter);
             enemycounter++;
+            enemyYcord = enemyYcord - 107;
             Update();
 
         }
@@ -112,7 +113,9 @@ public class MyMinigame6 : MinigameDefBase
     {
         List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
         //Stroke also Füllfarbe wird mit der Liste berechnet, für jeden Klick erhöht sich counter und somit verändert sich die Farbe
-        AddElement(
+        if (counter < colors.Count)
+        {
+            AddElement(
                    new Rectangle()
                    {
                        X = 150,
@@ -124,7 +127,7 @@ public class MyMinigame6 : MinigameDefBase
                        StrokeWidth = 100
                    }
                );
-
+        }
         Update();
     }
 
