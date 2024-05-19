@@ -1,4 +1,5 @@
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -11,24 +12,6 @@ public class MyMinigame6 : MinigameDefBase
 
     public override string BackgroundImage { get; set; } = "/images/Armdrücken test.jpg";
 
-    [Element]
-    public Rectangle Recttop { get; set; }
-    [Element]
-    public Rectangle Rectleft { get; set; }
-    [Element]
-    public Rectangle Rectbottom { get; set; }
-    [Element]
-    public Rectangle Rectright { get; set; }
-    [Element]
-    public Rectangle Rectfill { get; set; }
-
-    public Rectangle Progressbar { get; set; }
-
-    public GameObjectContainer<Rectangle> RectRot { get; set; } = new();
-
-
-    public GameObjectContainer<Rectangle> Rects { get; set; } = new();
-
 
     public MyMinigame6()
     {
@@ -36,6 +19,7 @@ public class MyMinigame6 : MinigameDefBase
         int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
         int Ycord = 758; //Unterster Startpunkt
         int enemyYcord = 758;
+
 
 
         AddElement(
@@ -76,9 +60,11 @@ public class MyMinigame6 : MinigameDefBase
                       Fill = "orange",
                       Stroke = "red",
                       StrokeWidth = 40,
-                      OnClick = (args) => { progressClick(Ycord, clickcount); Ycord = Ycord - 107; clickcount++; }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
+                      OnClick = (args) => { progressClick(Ycord, clickcount); Ycord = Ycord - 107; clickcount++; imageswap(ref clickcount, ref enemycounter, ref Ycord, ref enemyYcord); }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
                   }
               );
+        Update();
+
         while (enemycounter < 6)
         {
             // Solange enemyounter unter 6 ist (6, weil wir 6 Farben haben von Weiss bis und mit Rot)
@@ -86,7 +72,41 @@ public class MyMinigame6 : MinigameDefBase
             enemycounter++;
             enemyYcord = enemyYcord - 107;
             Update();
+        }
+        Update();
 
+    }
+
+    public void imageswap(ref int yourscore, ref int enemyscore, ref int Ycord, ref int enemyYcord)
+    {
+        int score = 0;
+
+        if (yourscore == 6)
+        {
+            score++;
+            yourscore = 0;
+            Ycord = 758;
+        }
+        else if (enemyscore == 6)
+        {
+            score--;
+            enemyscore = 0;
+            enemyYcord = 758;
+        }
+        if (score == 0)
+        {
+            BackgroundImage = "/images/Armdrücken test.jpg";
+            Update();
+        }
+        else if (score == 1)
+        {
+            BackgroundImage = "/images/calculator.png";
+            Update();
+        }
+        else if (score == -1)
+        {
+            BackgroundImage = "/images/HM3_hallwayN.jpg";
+            Update();
         }
         Update();
     }
