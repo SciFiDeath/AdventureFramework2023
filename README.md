@@ -5,5 +5,5 @@
 - Possibly different background image when won/lost? -> Create new images
 - When progress bar is full the squares in the progress bar must be changed/deleted.
 
-#Problems
+# Problems
 - When enemy progress bar is full, the image does not change. -> Problems with EnemyState
