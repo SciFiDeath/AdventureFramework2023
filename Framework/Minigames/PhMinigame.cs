@@ -1,4 +1,6 @@
-﻿namespace Framework.Minigames.MinigameDefClasses;
+﻿using Framework.Mouse;
+
+namespace Framework.Minigames.MinigameDefClasses;
 
 public class PhMinigame : MinigameDefBase
 {
@@ -71,7 +73,9 @@ public class PhMinigame : MinigameDefBase
             OnClick = MoveMaterial
         };
         AddElement(WhiteBoard);
-       */
+        */
+       
+        
         
        for (int i = 0; i < (140* 6); i += 140)
         {
@@ -80,10 +84,10 @@ public class PhMinigame : MinigameDefBase
                 WhiteBoard = new Rectangle ()
                 {
                     X = i + 450,
-                    Y = j + 50,
+                    Y = j + 55,
                     Width = 140,
                     Height = 135,
-                    Fill = "transparent",
+                    Fill = "rgba(0,0,0,.3)",
                     ZIndex = -2,
                     OnClick = ClickWhiteBoard
                 };
@@ -92,6 +96,7 @@ public class PhMinigame : MinigameDefBase
             }
 
         }
+      
 
     }
 
@@ -125,14 +130,21 @@ public class PhMinigame : MinigameDefBase
         Update();
     } 
     */
-    public void ClickWhiteBoard()
+    public void ClickWhiteBoard(EventArgs args)
     {
         Console.WriteLine("white board clicked");
-        ClickedWhiteBoards.Add(SelectedWhiteBoard);
+
+        
+
+
+
+
+
+        //ClickedWhiteBoards.Add(SelectedWhiteBoard);
         //ClickedWhiteBoards.Last().X = SelectedWhiteBoard.X;
         //ClickedWhiteBoards.Last().Y = SelectedWhiteBoard.Y;
-        SelectedElement.X = SelectedWhiteBoard.X;
-        SelectedElement.Y = SelectedWhiteBoard.Y;
+        //SelectedElement.X = SelectedWhiteBoard.X;
+        //SelectedElement.Y = SelectedWhiteBoard.Y;
         Update();
     }  
   
