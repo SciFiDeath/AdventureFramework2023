@@ -101,7 +101,7 @@ public class CodeTerminal : MinigameDefBase
 	{
 		GameState.AddItem("goldkey");
 		Key.Visible = false;
-		GameState.ChangeVisibility("HM305DoorClosed.CodeTerminal");
+		GameState.ToggleState("HM305DoorClosed.CodeTerminal");
 		Collected = true;
 		Update();
 		await Task.Delay(2000);
@@ -795,6 +795,20 @@ public class MouseServiceTest : MinigameDefBase
 			Width = 100,
 			Fill = "yellow",
 			OnClick = async (e) => { var x = await MouseService.GetMouseStateAsync(); Console.WriteLine($"AsyncX: {x.X}, AsyncY: {x.Y}"); },
+		});
+		AddElement(new Rectangle()
+		{
+			X = 100,
+			Y = 600,
+			Height = 100,
+			Width = 100,
+			Fill = "purple",
+			OnClick = async (e) =>
+			{
+				var b = (MouseEventArgs)e;
+				var (x, y) = await MouseService.ConvertToSvgCoords(b.ClientX, b.ClientY);
+				Console.WriteLine($"ConvertedX: {x}, ConvertedY: {y}");
+			},
 		});
 	}
 

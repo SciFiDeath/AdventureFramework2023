@@ -12,10 +12,18 @@ window.mouse = {
     init: function (objRef, disableContextMenu) {
         window.mouse.objRef = objRef;
         window.addEventListener("mousedown", (event) => {
-            objRef.invokeMethodAsync("MouseDown", event.button);
+            objRef.invokeMethodAsync(
+                "MouseDown",
+                event.button,
+                this.getSvgMousePos(event.clientX, event.clientY)
+            );
         });
         window.addEventListener("mouseup", (event) => {
-            objRef.invokeMethodAsync("MouseUp", event.button);
+            objRef.invokeMethodAsync(
+                "MouseUp",
+                event.button,
+                this.getSvgMousePos(event.clientX, event.clientY)
+            );
         });
         if (disableContextMenu) {
             window.addEventListener("contextmenu", (event) => {
@@ -68,6 +76,12 @@ window.mouse = {
 
     getSvgMousePos: function () {
         return convertToSvgCoords2(this.absMousePos.x, this.absMousePos.y);
+    },
+
+    // kinda stupid, but I don't want to move convertToSvgCoords2 to this object
+    // could break some things, cause weird behaviour of JSInterop or something
+    convertCoords: function (x, y) {
+        return convertToSvgCoords2(x, y);
     },
 };
 

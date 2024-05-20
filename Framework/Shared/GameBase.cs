@@ -29,10 +29,11 @@ public partial class GameBase : ComponentBase
 
 	protected override void OnInitialized()
 	{
-		string slideId = SlideService.GetStartSlideId();
+		// string slideId = SlideService.GetStartSlideId();
+		// string slideId = GameState.CurrentSlide;
 		Parameters = new SlideComponentParameters()
 		{
-			SlideId = slideId,
+			SlideId = GameState.CurrentSlide,
 			OnButtonClick = EventCallback.Factory.Create<List<List<string>>>(this, EvaluateActions)
 		};
 		// // _tcs.SetResult(true);
@@ -46,6 +47,8 @@ public partial class GameBase : ComponentBase
 	protected void ChangeSlide(string slideId)
 	{
 		Parameters.SlideId = slideId;
+		// still a bit hacky, but I guess
+		GameState.CurrentSlide = slideId;
 		// Console.WriteLine(SlideId);
 		StateHasChanged();
 	}
@@ -101,13 +104,13 @@ public partial class GameBase : ComponentBase
 					switch (action[2])
 					{
 						case "true":
-							GameState.SetVisibility(action[1], true);
+							GameState.SetState(action[1], true);
 							break;
 						case "false":
-							GameState.SetVisibility(action[1], false);
+							GameState.SetState(action[1], false);
 							break;
 						case "toggle":
-							GameState.ChangeVisibility(action[1]);
+							GameState.ToggleState(action[1]);
 							break;
 						default:
 							break;
@@ -157,7 +160,7 @@ public partial class GameBase : ComponentBase
 					if (action[1].StartsWith("!"))
 					{
 						// remove leading "!"
-						if (!GameState.CheckVisibility(action[1][1..]))
+						if (!GameState.GetState(action[1][1..]))
 						{
 							// if it is true, continue with executing
 							// Console.WriteLine($"Required GameState: {action[1]}");
@@ -167,7 +170,7 @@ public partial class GameBase : ComponentBase
 					// if the check if not negated
 					else
 					{
-						if (GameState.CheckVisibility(action[1]))
+						if (GameState.GetState(action[1]))
 						{
 							// if it is true, continue with executing
 							// Console.WriteLine($"Required GameState: {action[1]}");
