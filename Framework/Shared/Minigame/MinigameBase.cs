@@ -5,6 +5,7 @@ using GameStateInventory;
 using Framework.Keyboard;
 using Framework.Mouse;
 using Framework.Sound;
+using Framework.Video;
 
 namespace Framework.Minigames;
 
@@ -84,6 +85,9 @@ public class MinigameBase : ComponentBase
 	[Inject]
 	public SoundService SoundService { get; set; } = null!;
 
+	[Inject]
+	public VideoService VideoService { get; set; } = null!;
+
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
 
@@ -125,6 +129,7 @@ public class MinigameBase : ComponentBase
 			MinigameDef.KeyboardService = KeyboardService;
 			MinigameDef.MouseService = MouseService;
 			MinigameDef.SoundService = SoundService;
+			MinigameDef.VideoService = VideoService;
 
 			// Run the Init method
 			MinigameDef.Init();
@@ -157,6 +162,7 @@ public abstract class MinigameDefBase
 	public IMouseService MouseService { get; set; } = null!;
 
 	public SoundService SoundService { get; set; } = null!;
+	public VideoService VideoService { get; set; } = null!;
 
 	public void Init()
 	{

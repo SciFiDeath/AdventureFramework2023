@@ -7,7 +7,9 @@ using Microsoft.JSInterop;
 
 using Microsoft.AspNetCore.Components.Web;
 using Framework.Sound;
+using Framework.Video;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Framework.Minigames;
 
@@ -432,7 +434,7 @@ public class AudioTest : MinigameDefBase
 			Height = 100,
 			Fill = "blue",
 			OnClick = (args) => _ = PlayMusic("/audio/doom-soundtrack.wav") // When clicked, the Backgroundtrack is played 
-																			// OnClick = (args) => _ = StopMusic()
+			// OnClick = (args) => _ = StopMusic()
 		};
 		Sfx = new()
 		{ // Button for playing sound effect 
@@ -455,6 +457,79 @@ public class AudioTest : MinigameDefBase
 	}
 
 
+}
+
+public class VideoTest : MinigameDefBase{
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
+	
+	[Element]
+	public Rectangle Place { get; set;}
+	[Element]
+	public Rectangle Play { get; set;}
+	[Element]
+	public Rectangle Pause { get; set;}
+	[Element]
+	public Rectangle Letfinish { get; set;}
+
+	public async Task PlaceVideo(string x, string y, string height, string width, string src)
+	{
+		await VideoService.PlaceVideo(x, y, height, width, src); // Function to set up the video
+	}
+
+	public async Task PlayVideo()
+	{
+		await VideoService.PlayVideo(); // Function to play the video
+	}
+
+	public async Task PauseVideo()
+	{
+		await VideoService.PauseVideo(); // Function to pause the video
+	}
+
+	public async Task LetFinish()
+	{
+		await VideoService.LetFinish(); // Wait until the video finishes,
+		Console.WriteLine("Finished"); // then do something
+	}
+
+
+
+	public VideoTest(){
+		Place = new(){
+            X = 0,
+            Y = 0,
+            Width = 100,
+            Height = 100,
+            Fill = "red",
+            OnClick = (args) => _ = PlaceVideo("200", "200", "500", "500", "/videos/axel f.mp4")
+        };
+		Play = new(){
+            X = 0,
+            Y = 100,
+            Width = 100,
+            Height = 100,
+            Fill = "yellow",
+            OnClick = (args) => _ = PlayVideo()
+        };
+		Pause = new(){
+            X = 0,
+            Y = 200,
+            Width = 100,
+            Height = 100,
+            Fill = "green",
+            OnClick = (args) => _ = PauseVideo()
+        };
+		Letfinish = new(){
+            X = 0,
+            Y = 400,
+            Width = 100,
+            Height = 100,
+            Fill = "violet",
+            OnClick = (args) => _ = LetFinish()
+        };
+		
+		
+	}
 }
 
 public class ElementStyleTest : MinigameDefBase
@@ -724,3 +799,6 @@ public class MouseServiceTest : MinigameDefBase
 	}
 
 }
+
+
+

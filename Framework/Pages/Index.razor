@@ -5,12 +5,14 @@
 @using Framework.Keyboard
 @using Framework.Mouse
 @using Framework.Sound
+@using Framework.Video
 
 @inject SlideService SlideService
 @inject GameState GameState
 @inject KeyboardService KeyboardService
 @inject MouseService MouseService
 @inject SoundService SoundService
+@inject VideoService VideoService
 
 @if (initTask.IsCompletedSuccessfully) {
     if (gameStarted) {
@@ -41,6 +43,7 @@ else {
         await KeyboardService.Init();
         await MouseService.Init();
         await SoundService.Init();
+        await VideoService.Init();
         _tcs.SetResult(true);
     }
 
