@@ -111,7 +111,7 @@ function convertToSvgCoords2(x, y) {
     // first, convert to px coords relative to container
     // then, scale that in the same way the svg is scaled
     return {
-        x: Math.round((x - containerRect.x) * (1920 / containerRect.width)),
+        x: Math.round((x - containerRect.x) * (1620 / containerRect.width)),
         y: Math.round((y - containerRect.y) * (1080 / containerRect.height)),
     };
 }

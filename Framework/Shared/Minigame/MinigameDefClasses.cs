@@ -10,6 +10,8 @@ using Framework.Sound;
 using Framework.Video;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using Framework.Mouse;
+using Framework.Keyboard;
 
 namespace Framework.Minigames;
 
@@ -434,7 +436,7 @@ public class AudioTest : MinigameDefBase
 			Height = 100,
 			Fill = "blue",
 			OnClick = (args) => _ = PlayMusic("/audio/doom-soundtrack.wav") // When clicked, the Backgroundtrack is played 
-			// OnClick = (args) => _ = StopMusic()
+																			// OnClick = (args) => _ = StopMusic()
 		};
 		Sfx = new()
 		{ // Button for playing sound effect 
@@ -459,17 +461,18 @@ public class AudioTest : MinigameDefBase
 
 }
 
-public class VideoTest : MinigameDefBase{
+public class VideoTest : MinigameDefBase
+{
 	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
-	
+
 	[Element]
-	public Rectangle Place { get; set;}
+	public Rectangle Place { get; set; }
 	[Element]
-	public Rectangle Play { get; set;}
+	public Rectangle Play { get; set; }
 	[Element]
-	public Rectangle Pause { get; set;}
+	public Rectangle Pause { get; set; }
 	[Element]
-	public Rectangle Letfinish { get; set;}
+	public Rectangle Letfinish { get; set; }
 
 	public async Task PlaceVideo(string x, string y, string height, string width, string src)
 	{
@@ -494,41 +497,46 @@ public class VideoTest : MinigameDefBase{
 
 
 
-	public VideoTest(){
-		Place = new(){
-            X = 0,
-            Y = 0,
-            Width = 100,
-            Height = 100,
-            Fill = "red",
-            OnClick = (args) => _ = PlaceVideo("200", "200", "500", "500", "/videos/axel f.mp4")
-        };
-		Play = new(){
-            X = 0,
-            Y = 100,
-            Width = 100,
-            Height = 100,
-            Fill = "yellow",
-            OnClick = (args) => _ = PlayVideo()
-        };
-		Pause = new(){
-            X = 0,
-            Y = 200,
-            Width = 100,
-            Height = 100,
-            Fill = "green",
-            OnClick = (args) => _ = PauseVideo()
-        };
-		Letfinish = new(){
-            X = 0,
-            Y = 400,
-            Width = 100,
-            Height = 100,
-            Fill = "violet",
-            OnClick = (args) => _ = LetFinish()
-        };
-		
-		
+	public VideoTest()
+	{
+		Place = new()
+		{
+			X = 0,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "red",
+			OnClick = (args) => _ = PlaceVideo("200", "200", "500", "500", "/videos/axel f.mp4")
+		};
+		Play = new()
+		{
+			X = 0,
+			Y = 100,
+			Width = 100,
+			Height = 100,
+			Fill = "yellow",
+			OnClick = (args) => _ = PlayVideo()
+		};
+		Pause = new()
+		{
+			X = 0,
+			Y = 200,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = (args) => _ = PauseVideo()
+		};
+		Letfinish = new()
+		{
+			X = 0,
+			Y = 400,
+			Width = 100,
+			Height = 100,
+			Fill = "violet",
+			OnClick = (args) => _ = LetFinish()
+		};
+
+
 	}
 }
 
@@ -814,5 +822,27 @@ public class MouseServiceTest : MinigameDefBase
 
 }
 
+public class IOServicesTest : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
 
+	public override void OnKeyDown(object? sender, KeyEventArgs e)
+	{
+		Console.WriteLine($"Key: {e.Key}, Down: {e.Down}");
+	}
 
+	public override void OnKeyUp(object? sender, KeyEventArgs e)
+	{
+		Console.WriteLine($"Key: {e.Key}, Down: {e.Down}");
+	}
+
+	public override void OnMouseDown(object? sender, ClickEventArgs e)
+	{
+		Console.WriteLine($"Button: {e.Button}, Down: {e.Down}, X: {e.X}, Y: {e.Y}");
+	}
+
+	public override void OnMouseUp(object? sender, ClickEventArgs e)
+	{
+		Console.WriteLine($"Button: {e.Button}, Down: {e.Down}, X: {e.X}, Y: {e.Y}");
+	}
+}
