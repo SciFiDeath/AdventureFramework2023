@@ -238,6 +238,9 @@ public abstract class MinigameDefBase
 		MouseService.OnMouseDown -= OnMouseDown;
 		MouseService.OnMouseUp -= OnMouseUp;
 
+		// stop the mouse tracking
+		MouseService.SetDelay(-1);
+
 		// Stop the GameLoop
 		Cts.Cancel();
 		Cts.Dispose();
