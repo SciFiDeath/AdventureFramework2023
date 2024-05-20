@@ -14,7 +14,7 @@
 
 @if (initTask.IsCompletedSuccessfully) {
     if (gameStarted) {
-        <Game />
+        <Game Debug=@debugMode />
     }
     else {
         <h1 id="test">Hello, world!</h1>
@@ -34,10 +34,12 @@ else {
 
     private bool gameStarted = false;
 
+    private bool debugMode = true;
+
     protected override async Task OnInitializedAsync()
     {
         await GameState.LoadGameStateAndItemsAsync();
-        await SlideService.Init(true);
+        await SlideService.Init(debugMode);
         await KeyboardService.Init();
         await MouseService.Init();
         await SoundService.Init();
