@@ -463,7 +463,9 @@ public class VideoTest : MinigameDefBase{
 	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
 	
 	[Element]
-	public Rectangle Place { get; set;}
+	public Rectangle PlaceLeft { get; set;}
+	[Element]
+	public Rectangle PlaceRight { get; set;}
 	[Element]
 	public Rectangle Play { get; set;}
 	[Element]
@@ -495,7 +497,7 @@ public class VideoTest : MinigameDefBase{
 
 
 	public VideoTest(){
-		Place = new(){
+		PlaceLeft = new(){
             X = 0,
             Y = 0,
             Width = 100,
@@ -503,6 +505,14 @@ public class VideoTest : MinigameDefBase{
             Fill = "red",
             OnClick = (args) => _ = PlaceVideo("200", "200", "500", "500", "/videos/axel f.mp4")
         };
+		PlaceRight = new(){
+			X = 200,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "blue",
+			OnClick = (args) => _ = PlaceVideo("500", "200", "500", "500", "/videos/axel f.mp4")
+		};
 		Play = new(){
             X = 0,
             Y = 100,
@@ -519,6 +529,7 @@ public class VideoTest : MinigameDefBase{
             Fill = "green",
             OnClick = (args) => _ = PauseVideo()
         };
+		
 		Letfinish = new(){
             X = 0,
             Y = 400,
