@@ -35,6 +35,21 @@ public interface IGameState
 	string GetSaveString();
 }
 
+// interface for the minigames so that they don't accidentally overwrite everything
+// they can still brick everything tho, but they have to try harder
+public interface IMinigameGameState
+{
+	void SetState(string name, bool value);
+	bool GetState(string name);
+	bool CheckForState(string name);
+	bool TryGetState(string name, out bool value);
+	void ToggleState(string name);
+	bool TryToggleState(string name);
+	void AddItem(string id);
+	void RemoveItem(string id);
+	bool CheckForItem(string id);
+}
+
 public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState
 {
 	// dependencies

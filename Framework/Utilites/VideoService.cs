@@ -2,7 +2,13 @@ using Microsoft.JSInterop;
 
 namespace Framework.Video;
 
-
+public interface IVideoService
+{
+    Task PlaceVideo(string x, string y, string height, string width, string src);
+    Task PlayVideo();
+    Task PauseVideo();
+    Task LetFinish();
+}
 
 
 public class VideoService(IJSRuntime jsRuntime)
@@ -22,14 +28,14 @@ public class VideoService(IJSRuntime jsRuntime)
     {
         objRef = DotNetObjectReference.Create(this);
         await jsRuntime.InvokeVoidAsync("video.init", objRef);
-        Console.WriteLine("videoservice initialized ");
+        // Console.WriteLine("videoservice initialized ");
     }
 
     // Here goes all the video methods: 
     public async Task PlaceVideo(string x, string y, string height, string width, string src)
     {
         await jsRuntime.InvokeVoidAsync("video.placeVideo", x, y, height, width, src);
-        
+
     }
     public async Task PlayVideo()
     {
@@ -42,7 +48,7 @@ public class VideoService(IJSRuntime jsRuntime)
     public async Task LetFinish()
     {
         await jsRuntime.InvokeAsync<object>("video.letFinish");
-        Console.WriteLine("LetFinish cs finished");
+        // Console.WriteLine("LetFinish cs finished");
     }
 
 }

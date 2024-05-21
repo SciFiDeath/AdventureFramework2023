@@ -73,7 +73,7 @@ public class MinigameBase : ComponentBase
 {
 	// Inject the GameState
 	[Inject]
-	public GameState GameState { get; set; } = null!;
+	public IMinigameGameState GameState { get; set; } = null!;
 
 	// Inject the Keyboard and Mouse services
 	// use the interface so that they cannot break anything
@@ -83,10 +83,10 @@ public class MinigameBase : ComponentBase
 	public MouseService MouseService { get; set; } = null!;
 
 	[Inject]
-	public SoundService SoundService { get; set; } = null!;
+	public ISoundService SoundService { get; set; } = null!;
 
 	[Inject]
-	public VideoService VideoService { get; set; } = null!;
+	public IVideoService VideoService { get; set; } = null!;
 
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
@@ -157,12 +157,12 @@ public abstract class MinigameDefBase
 
 	public abstract string BackgroundImage { get; set; }
 
-	public GameState GameState { get; set; } = null!;
+	public IMinigameGameState GameState { get; set; } = null!;
 	public IKeyboardService KeyboardService { get; set; } = null!;
 	public IMouseService MouseService { get; set; } = null!;
 
-	public SoundService SoundService { get; set; } = null!;
-	public VideoService VideoService { get; set; } = null!;
+	public ISoundService SoundService { get; set; } = null!;
+	public IVideoService VideoService { get; set; } = null!;
 
 	public void Init()
 	{
