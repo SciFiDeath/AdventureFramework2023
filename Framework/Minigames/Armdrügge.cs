@@ -7,7 +7,7 @@ namespace Framework.Minigames.MinigameDefClasses;
 
 public class MyMinigame6 : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "/images/Armdrücken test.jpg";
+    public override string BackgroundImage { get; set; } = "/images/Arm_1.png";
 
     int enemycounter = 0;
     int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
@@ -103,17 +103,17 @@ public class MyMinigame6 : MinigameDefBase
         }
         if (score == 0)
         {
-            BackgroundImage = "/images/Armdrücken test.jpg";
+            BackgroundImage = "/images/Arm_1.png";
             Update();
         }
         else if (score == 1)
         {
-            BackgroundImage = "/images/calculator.png";
+            BackgroundImage = "/images/Arm_4.png";
             Update();
         }
         else if (score == -1)
         {
-            BackgroundImage = "/images/HM3_hallwayN.jpg";
+            BackgroundImage = "/images/Arm_2_.png";
             Update();
         }
         Update();
