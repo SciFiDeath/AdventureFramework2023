@@ -1,15 +1,17 @@
 using System.Numerics;
+using Framework.Minigames;
 using Framework.Minigames.MinigameDefClasses;
+using Microsoft.AspNetCore.Components;
+using Inject = Microsoft.AspNetCore.Components.InjectAttribute;
+using Microsoft.JSInterop;
+
 using Microsoft.AspNetCore.Components.Web;
-<<<<<<< HEAD
-=======
 using Framework.Sound;
 using Framework.Video;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using Framework.Mouse;
 using Framework.Keyboard;
->>>>>>> main
 
 namespace Framework.Minigames;
 
@@ -29,7 +31,7 @@ public class MiniTest : MinigameDefBase
 		Update();
 		if (Rect.X > 300)
 		{
-			Finish([]);
+			Finish(null, "HM305Beamer");
 		}
 
 	}
@@ -101,11 +103,11 @@ public class CodeTerminal : MinigameDefBase
 	{
 		GameState.AddItem("goldkey");
 		Key.Visible = false;
-		GameState.ToggleState("CodeTerminal");
+		GameState.ToggleState("HM305DoorClosed.CodeTerminal");
 		Collected = true;
 		Update();
 		await Task.Delay(2000);
-		Finish([["AddItem", "goldkey"], ["Sleep", "1000"], ["Route", "HM305"]]);
+		Finish([["Route", "HM305DoorClosed"], ["Sleep", "1000"], ["Route", "HM305"]]);
 	}
 
 	public CodeTerminal()
@@ -122,7 +124,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(7),
+			OnClick = (args) => SetNumber(7),
 		};
 		Button8 = new()
 		{
@@ -131,7 +133,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(8),
+			OnClick = (args) => SetNumber(8),
 		};
 		Button9 = new()
 		{
@@ -140,7 +142,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(9),
+			OnClick = (args) => SetNumber(9),
 		};
 		Button4 = new()
 		{
@@ -149,7 +151,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(4),
+			OnClick = (args) => SetNumber(4),
 		};
 		Button5 = new()
 		{
@@ -158,7 +160,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(5),
+			OnClick = (args) => SetNumber(5),
 		};
 		Button6 = new()
 		{
@@ -167,7 +169,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(6),
+			OnClick = (args) => SetNumber(6),
 		};
 		Button1 = new()
 		{
@@ -176,7 +178,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(1),
+			OnClick = (args) => SetNumber(1),
 		};
 		Button2 = new()
 		{
@@ -185,7 +187,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(2),
+			OnClick = (args) => SetNumber(2),
 		};
 		Button3 = new()
 		{
@@ -194,7 +196,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(3),
+			OnClick = (args) => SetNumber(3),
 		};
 		Button0 = new()
 		{
@@ -203,7 +205,7 @@ public class CodeTerminal : MinigameDefBase
 			Width = width,
 			Height = height,
 			Fill = fill,
-			OnClick = (EventArgs args) => SetNumber(0),
+			OnClick = (args) => SetNumber(0),
 		};
 		Text = new()
 		{
@@ -236,7 +238,7 @@ public class KillTest : MinigameDefBase
 
 	public override string BackgroundImage { get; set; } = "images/HM3_hallwayE.jpg";
 
-	public GameObjectContainer<Rectangle> Rects { get; } = new(); 
+	public GameObjectContainer<Rectangle> Rects { get; } = new();
 
 	public override async Task GameLoop(CancellationToken token)
 	{
@@ -311,11 +313,9 @@ public class KillTest : MinigameDefBase
 	}
 }
 
-//TODO Dialog Base Class
 
-
-
-public class LaurinsRain : MinigameDefBase{
+public class LaurinsRain : MinigameDefBase
+{
 	// [Element] 
 	// public Rectangle Rect {get; set;} = new(){ // With this method it is not possible to enable the OnClick event
 	// 	X = 100,
@@ -325,7 +325,7 @@ public class LaurinsRain : MinigameDefBase{
 	// 	Fill = "red",	
 	// 	};
 
-	
+
 	// [Element]
 	// public Rectangle RectOnclick {get; set;}
 	// public LaurinsRain(){ // With this, onclick is enabled => First make initialise all elements, then add properties in the constructor
@@ -339,36 +339,41 @@ public class LaurinsRain : MinigameDefBase{
 	// 	};
 	// }
 
-    public override string BackgroundImage {get; set;} = "images/HM3_hallwayN.jpg"; // Background Image
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg"; // Background Image
 	public GameObjectContainer<Rectangle> Rects { get; } = new(); // Gameobject container that contains rectangles that are to be moved
 
 	[Element]
-	public Rectangle? Down {get; set; }
-	
-	[Element]
-	public Rectangle? Quit {get; set; }
+	public Rectangle? Down { get; set; }
 
-	public LaurinsRain(){
-		Down = new(){ // Initialise button for spawning new rects
+	[Element]
+	public Rectangle? Quit { get; set; }
+
+	public LaurinsRain()
+	{
+		Down = new()
+		{ // Initialise button for spawning new rects
 			X = 0,
 			Y = 0,
 			Width = 100,
 			Height = 100,
 			Fill = "green",
-			OnClick = (args) => Rects.Transform((r) => {r.Y += 30; Update();}) // When clicked, every rectangle in the container moves down by 30 pixels
+			OnClick = (args) => Rects.Transform((r) => { r.Y += 30; Update(); }) // When clicked, every rectangle in the container moves down by 30 pixels
 		};
-		Quit = new(){ // Initialise button for quitting the game
+		Quit = new()
+		{ // Initialise button for quitting the game
 			X = 0,
 			Y = 100,
 			Width = 100,
 			Height = 100,
 			Fill = "red",
-			OnClick = (args) => Finish(null, "HM305")
+			OnClick = (args) => Finish(null, "test")
 		};
 
-		for (var i = 100; i <=1920; i += 100){ // Initialise row of elements at once
-			var Rect = new Rectangle(){
-				X = i+20,
+		for (var i = 100; i <= 1920; i += 100)
+		{ // Initialise row of elements at once
+			var Rect = new Rectangle()
+			{
+				X = i + 20,
 				Y = 0,
 				Width = 50,
 				Height = 50,
@@ -378,12 +383,8 @@ public class LaurinsRain : MinigameDefBase{
 			AddElement(Rect);
 		}
 	}
-	
 
 
-<<<<<<< HEAD
-}
-=======
 }
 
 public class AudioTest : MinigameDefBase
@@ -897,4 +898,3 @@ public class IOServicesTest : MinigameDefBase
 // 		});
 // 	}
 // }
->>>>>>> main
