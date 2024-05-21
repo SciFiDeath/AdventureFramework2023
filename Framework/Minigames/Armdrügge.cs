@@ -15,6 +15,8 @@ public class MyMinigame6 : MinigameDefBase
     int enemyYcord = 758;
     int score = 0;
 
+    GameObjectContainer<Rectangle> Quadrate { get; set; } = new();
+
     public MyMinigame6()
     {
 
@@ -62,7 +64,7 @@ public class MyMinigame6 : MinigameDefBase
                       Ycord = Ycord - 107;
                       clickcount++;
                       imageswap();
-                      imageswap();
+                      Console.WriteLine(Elements);
                   }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
               }
           );
@@ -80,46 +82,40 @@ public class MyMinigame6 : MinigameDefBase
 
         if (clickcount == 6)
         {
-            score++;
-            enemyYcord = 758;
-            enemycounter = 0;
-            clickcount = 0;
+
+            Quadrate.KillAll();
+
             score++;
             enemyYcord = 758;
             enemycounter = 0;
             clickcount = 0;
             Ycord = 758;
-
         }
         else if (enemycounter == 6)
-        else if (enemycounter == 6)
-                {
+        {
+            Quadrate.KillAll();
 
-                    score--;
-                    enemyYcord = 758;
-                    enemycounter = 0;
-                    clickcount = 0;
-                    Ycord = 758;
-
-                }
+            score--;
+            enemyYcord = 758;
+            enemycounter = 0;
+            clickcount = 0;
+            Ycord = 758;
+        }
         if (score == 0)
-            if (score == 0)
-            {
-                BackgroundImage = "/images/Armdrücken test.jpg";
-                Update();
-            }
-            else if (score == 1)
+        {
+            BackgroundImage = "/images/Armdrücken test.jpg";
+            Update();
+        }
         else if (score == 1)
-                    {
-                        BackgroundImage = "/images/calculator.png";
-                        Update();
-                    }
-                    else if (score == -1)
+        {
+            BackgroundImage = "/images/calculator.png";
+            Update();
+        }
         else if (score == -1)
-                            {
-                                BackgroundImage = "/images/HM3_hallwayN.jpg";
-                                Update();
-                            }
+        {
+            BackgroundImage = "/images/HM3_hallwayN.jpg";
+            Update();
+        }
         Update();
     }
 
@@ -130,20 +126,20 @@ public class MyMinigame6 : MinigameDefBase
         while (enemycounter < 6 && await timer.WaitForNextTickAsync())
         {
             List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
-            AddElement(
-                   new Rectangle()
-                   {
-                       X = 1445,
-                       Y = enemyYcord,
-                       Y = enemyYcord,
-                       Width = 10,
-                       Height = 21,
-                       Fill = "transparent",
-                       Stroke = colors[enemycounter],
-                       Stroke = colors[enemycounter],
-                       StrokeWidth = 100
-                   }
-               );
+            var x = new Rectangle()
+            {
+                X = 1445,
+                Y = enemyYcord,
+                Width = 50,
+                Height = 21,
+                Fill = colors[enemycounter],
+                //  Stroke = colors[enemycounter],
+                // StrokeWidth = 100
+            };
+
+            AddElement(x);
+            Quadrate.Add(x);
+
             enemycounter++;
             enemyYcord = enemyYcord - 107;
 
@@ -159,20 +155,19 @@ public class MyMinigame6 : MinigameDefBase
         //Stroke also Füllfarbe wird mit der Liste berechnet, für jeden Klick erhöht sich counter und somit verändert sich die Farbe
         if (counter < colors.Count)
         {
-            AddElement(
-                   new Rectangle()
-                   {
-                       Id = "Quadrat" + counter,
-                       Id = "Quadrat" + counter,
-                       X = 150,
-                       Y = Ycord,
-                       Width = 10,
-                       Height = 21,
-                       Fill = "transparent",
-                       Stroke = colors[counter],
-                       StrokeWidth = 100
-                   }
-               );
+            var x = new Rectangle()
+            {
+                X = 150,
+                Y = Ycord,
+                Width = 50,
+                Height = 21,
+                Fill = colors[counter],
+                //Stroke = colors[counter],
+                // StrokeWidth = 100
+            };
+
+            AddElement(x);
+            Quadrate.Add(x);
         }
         Update();
     }
