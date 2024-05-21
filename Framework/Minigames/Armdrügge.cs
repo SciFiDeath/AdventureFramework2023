@@ -62,6 +62,7 @@ public class MyMinigame6 : MinigameDefBase
                       Ycord = Ycord - 107;
                       clickcount++;
                       imageswap();
+                      imageswap();
                   }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
               }
           );
@@ -83,34 +84,42 @@ public class MyMinigame6 : MinigameDefBase
             enemyYcord = 758;
             enemycounter = 0;
             clickcount = 0;
-            Ycord = 758;
-
-        }
-        else if (enemycounter == 6)
-        {
-
-            score--;
+            score++;
             enemyYcord = 758;
             enemycounter = 0;
             clickcount = 0;
             Ycord = 758;
 
         }
+        else if (enemycounter == 6)
+        else if (enemycounter == 6)
+                {
+
+                    score--;
+                    enemyYcord = 758;
+                    enemycounter = 0;
+                    clickcount = 0;
+                    Ycord = 758;
+
+                }
         if (score == 0)
-        {
-            BackgroundImage = "/images/Armdrücken test.jpg";
-            Update();
-        }
+            if (score == 0)
+            {
+                BackgroundImage = "/images/Armdrücken test.jpg";
+                Update();
+            }
+            else if (score == 1)
         else if (score == 1)
-        {
-            BackgroundImage = "/images/calculator.png";
-            Update();
-        }
+                    {
+                        BackgroundImage = "/images/calculator.png";
+                        Update();
+                    }
+                    else if (score == -1)
         else if (score == -1)
-        {
-            BackgroundImage = "/images/HM3_hallwayN.jpg";
-            Update();
-        }
+                            {
+                                BackgroundImage = "/images/HM3_hallwayN.jpg";
+                                Update();
+                            }
         Update();
     }
 
@@ -126,9 +135,11 @@ public class MyMinigame6 : MinigameDefBase
                    {
                        X = 1445,
                        Y = enemyYcord,
+                       Y = enemyYcord,
                        Width = 10,
                        Height = 21,
                        Fill = "transparent",
+                       Stroke = colors[enemycounter],
                        Stroke = colors[enemycounter],
                        StrokeWidth = 100
                    }
@@ -151,6 +162,7 @@ public class MyMinigame6 : MinigameDefBase
             AddElement(
                    new Rectangle()
                    {
+                       Id = "Quadrat" + counter,
                        Id = "Quadrat" + counter,
                        X = 150,
                        Y = Ycord,

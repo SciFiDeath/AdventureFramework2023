@@ -1,12 +1,9 @@
-# ToDo Amos und Gian
+# ToDo Amos and Gian
+- When progress bar is full (Counter = 5) change background image (whether player won or opponent won) -> Create new images
+- When the background image is changed, the circle that is clicked must also change its position
+- If the frog is licked = Make the game easier 
+- Possibly different background image when won/lost? -> Create new images
+- When progress bar is full the squares in the progress bar must be changed/deleted.
 
-- Weg herausfinden wie man die Progressbar des "Gegners" auffülen lässt, damit es sehr schwer ist, aber möglich
-- Wenn Progressbar voll ist (Counter = 5) Hintergrundbild ändern (Wenn Spieler gewonnen hat oder wenn Gegner gewonnen hat) -> Noch neue Bilder machen
-- Wenn Hintergrundbild geändert wird muss der Kreis, auf den man Klickt, auch seine Position verändern
-- Wenn Frosch abgeleckt wurde = Spiel einfacher machen (Zusammenhängend mit Punkt 1)
-- Evtl anderes Hintergrund Bild wenn gewonnen/verloren? -> Noch neue Bilder machen
-
-# Probleme
-
-- Wenn man zu oft auf den Kreis Klick gibt es einen Fehler, da es nicht genug Farben hat
-
+# Problems
+- When enemy progress bar is full, the image does not change. -> Problems with EnemyState
