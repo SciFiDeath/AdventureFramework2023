@@ -46,6 +46,13 @@ public partial class GameBase : ComponentBase
 
 	protected void ChangeSlide(string slideId)
 	{
+		// for debug, throw an exception if the slide does not exist
+		if (Debug)
+		{
+			SlideService.GetSlide(slideId);
+		}
+
+
 		Parameters.SlideId = slideId;
 		// still a bit hacky, but I guess
 		GameState.CurrentSlide = slideId;
