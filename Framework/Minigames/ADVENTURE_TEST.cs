@@ -103,7 +103,7 @@ public class MyMinigame1 : MinigameDefBase
             Update();
             BackgroundImage = "/images/FIGHTER.png";
             Update();
-
+            TaskComplete = false;
         }
 
 
