@@ -4,7 +4,7 @@ namespace Framework.Minigames.MinigameDefClasses;
 
 public class MyMinigame1 : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "/images/FIGHTER.png";
+    public override string BackgroundImage { get; set; } = "/images/Stance.JPG";
 
 
 
@@ -22,25 +22,21 @@ public class MyMinigame1 : MinigameDefBase
 
     public int VillanHealth = 100;
     public int PlayerHealth = 100;
-    public bool TaskComplete = true;
+    public bool TaskComplete = false;
     public int AttackBuff = 1;
     public override async Task GameLoop(CancellationToken ct)
     {
         while (true)
         {
             ct.ThrowIfCancellationRequested();
-
-            Health_Bar();
-            Villan_Health_Bar();
             await Task.Delay(100, ct);
-            VillanAttack();
-            TaskComplete = false;
+            await VillanAttack();
             Update();
-            await Task.Delay(4000);
+            await Task.Delay(2000);
         }
 
     }
-    async public void Villan_Health_Bar()
+    public void Villan_Health_Bar()
     {
         Villan_HealthBar.Width = VillanHealth * 10;
         Update();
@@ -51,7 +47,7 @@ public class MyMinigame1 : MinigameDefBase
         }
 
     }
-    async public void Health_Bar()
+    public void Health_Bar()
     {
         HealthBar.Width = PlayerHealth * 10;
         Update();
@@ -79,29 +75,45 @@ public class MyMinigame1 : MinigameDefBase
     {
 
 
-        BackgroundImage = "/images/calculator.png";
+        BackgroundImage = "/images/Drink1.JPG";
         Update();
-        await Task.Delay(2000);
-        BackgroundImage = "/images/FIGHTER.png";
+        await Task.Delay(1000);
+        BackgroundImage = "/images/Drink2.JPG";
         Update();
+        await Task.Delay(1500);
+        BackgroundImage = "/images/Stance.JPG";
         PlayerHealth = PlayerHealth + 25;
         if (PlayerHealth > 100)
         {
             PlayerHealth = 100;
         }
+        Health_Bar();
+        Update();
+        await Task.Delay(1000);
         TaskComplete = true;
     }
-    async public void VillanAttack()
+    async public Task VillanAttack()
     {
         if (TaskComplete == true)
         {
             var rand = new Random();
-            BackgroundImage = "/images/calculator.png";
+
+            int picture = rand.Next(0, 1);
+            if (picture == 0)
+            {
+                BackgroundImage = "/images/VillanKick.JPG";
+            }
+            else if (picture == 1)
+            {
+                BackgroundImage = "/images/VillanStrike.JPG";
+            }
             Update();
+            await Task.Delay(250);
             PlayerHealth -= rand.Next(10, 21);
-            await Task.Delay(2000);
+            Health_Bar();
             Update();
-            BackgroundImage = "/images/FIGHTER.png";
+            await Task.Delay(1500);
+            BackgroundImage = "/images/Stance.JPG";
             Update();
             TaskComplete = false;
         }
@@ -114,13 +126,13 @@ public class MyMinigame1 : MinigameDefBase
     async public void Attack_1()
     {
 
-        BackgroundImage = "/images/calculator.png";
+        BackgroundImage = "/images/PlayerStrike.JPG";
         Update();
-        await Task.Delay(2000);
-        BackgroundImage = "/images/FIGHTER.png";
+        await Task.Delay(1500);
+        BackgroundImage = "/images/Stance.JPG";
+        VillanHealth = VillanHealth - 10 * AttackBuff;
+        Villan_Health_Bar();
         Update();
-        //VillanHealth = VillanHealth - 10 * AttackBuff;
-        PlayerHealth = PlayerHealth - 10 * AttackBuff;
         AttackBuff = 1;
         TaskComplete = true;
     }
@@ -128,22 +140,24 @@ public class MyMinigame1 : MinigameDefBase
     async public void Attack_2()
     {
 
-        BackgroundImage = "/images/calculator.png";
+        BackgroundImage = "/images/PlayerKick.JPG";
         Update();
-        await Task.Delay(2000);
-        BackgroundImage = "/images/FIGHTER.png";
-        Update();
+        await Task.Delay(1500);
+        BackgroundImage = "/images/Stance.JPG";
         VillanHealth = VillanHealth - 10 * AttackBuff;
+        Villan_Health_Bar();
+        Update();
         AttackBuff = 1;
         TaskComplete = true;
     }
     async public void Status_Attack()
     {
 
-        BackgroundImage = "/images/calculator.png";
+        BackgroundImage = "/images/PlayerPush.JPG";
         Update();
-        await Task.Delay(2000);
-        BackgroundImage = "/images/FIGHTER.png";
+        await Task.Delay(1500);
+        BackgroundImage = "/images/Stance.JPG";
+        Villan_Health_Bar();
         Update();
         AttackBuff = 2;
         TaskComplete = true;
@@ -161,16 +175,25 @@ public class MyMinigame1 : MinigameDefBase
             Fill = "blue",
             OnClick = async (args) =>
             {
-                AttackButton1.Y += 5;
-                Update();
-                await Task.Delay(50);
-                AttackButton1.Y -= 5;
-                Update();
-                Attack_1();
-                Update();
+                if (TaskComplete == false)
+                {
+                    TaskComplete = true;
+                    AttackButton1.Fill = "grey";
+                    AttackButton1.Y += 5;
+                    Update();
+                    await Task.Delay(50);
+                    AttackButton1.Y -= 5;
+                    Update();
+                    Attack_1();
+                    Update();
+                }
+                else if (TaskComplete == true)
+                {
+                    AttackButton1.Fill = "grey";
+                    Update();
+                }
+
             }
-
-
         };
         moving_rects.Add(AttackButton1);
         AddElement(AttackButton1);
@@ -187,13 +210,23 @@ public class MyMinigame1 : MinigameDefBase
             Fill = "blue",
             OnClick = async (args) =>
             {
-                AttackButton2.Y += 5;
-                Update();
-                await Task.Delay(50);
-                AttackButton2.Y -= 5;
-                Update();
-                Attack_2();
-                Update();
+                if (TaskComplete == false)
+                {
+                    TaskComplete = true;
+                    AttackButton2.Fill = "grey";
+                    AttackButton2.Y += 5;
+                    Update();
+                    await Task.Delay(50);
+                    AttackButton2.Y -= 5;
+                    Update();
+                    Attack_2();
+                    Update();
+                }
+                else if (TaskComplete == true)
+                {
+                    AttackButton2.Fill = "grey";
+                    Update();
+                }
             }
         };
 
@@ -210,13 +243,23 @@ public class MyMinigame1 : MinigameDefBase
             Fill = "blue",
             OnClick = async (args) =>
             {
-                StatusButton.Y += 5;
-                Update();
-                await Task.Delay(50);
-                StatusButton.Y -= 5;
-                Update();
-                Status_Attack();
-                Update();
+                if (TaskComplete == false)
+                {
+                    TaskComplete = true;
+                    StatusButton.Fill = "grey";
+                    StatusButton.Y += 5;
+                    Update();
+                    await Task.Delay(50);
+                    StatusButton.Y -= 5;
+                    Update();
+                    Status_Attack();
+                    Update();
+                }
+                else if (TaskComplete == true)
+                {
+                    StatusButton.Fill = "grey";
+                    Update();
+                }
             }
         };
 
@@ -233,13 +276,25 @@ public class MyMinigame1 : MinigameDefBase
             Fill = "blue",
             OnClick = async (args) =>
             {
-                HealButton.Y += 5;
-                Update();
-                await Task.Delay(50);
-                HealButton.Y -= 5;
-                Update();
-                Healing();
-                Update();
+                if (TaskComplete == false)
+                {
+                    TaskComplete = true;
+                    HealButton.Fill = "grey";
+
+                    HealButton.Y += 5;
+                    Update();
+                    await Task.Delay(50);
+                    HealButton.Y -= 5;
+                    Update();
+                    Healing();
+                    Update();
+
+                }
+                else if (TaskComplete == true)
+                {
+                    HealButton.Fill = "grey";
+                    Update();
+                }
             }
         };
 
