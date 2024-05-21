@@ -3,8 +3,8 @@ using GameStateInventory;
 using FrameworkItems;
 using JsonUtilities;
 using Microsoft.JSInterop;
-
 using static InventoryEvent;
+using Blazored.Video;
 namespace Framework.InventoryUI;
 
 

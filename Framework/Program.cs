@@ -27,6 +27,7 @@ builder.Services.AddBlazoredToast();
 // First register both of those, then execute the initialization for both
 // builder.Services.AddScoped<SlideService>();
 builder.Services.AddScoped<SlideService>();
+
 builder.Services.AddScoped<GameState>();
 
 builder.Services.AddScoped<SlidesVerifier>();

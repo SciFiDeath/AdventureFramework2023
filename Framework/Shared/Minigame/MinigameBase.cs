@@ -290,6 +290,14 @@ public abstract class MinigameDefBase
 		Elements.Add(element);
 	}
 
+	public void AddElementsInContainer(GameObjectContainer<SVGElement> container){
+		SVGElement[] elements = container.Values;
+
+		foreach (SVGElement element in elements){
+			Elements.Add(element);
+		}
+	}
+
 }
 
 /* 

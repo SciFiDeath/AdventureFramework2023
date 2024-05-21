@@ -179,6 +179,22 @@ public class GameStateData
 	public List<string> Items { get; set; } = [];
 	public Dictionary<string, bool> GameState { get; set; } = [];
 	public string CurrentSlide { get; set; } = "";
+
+	//public Dictionary<string, Dictionary<string, > DialogueProgress {get; set;} = [];
 }
 
+public class DialogueProgress
+{
+
+	public string QuestName { get; set; }
+	public List<List<string>> Messages { get; set; }
+	public int Progress { get; set; }
+	public DialogueProgress(string questName, List<List<string>> messages, int progress)
+	{
+		QuestName = questName;
+		Messages = messages;
+		Progress = progress;
+	}
+
+}
 
