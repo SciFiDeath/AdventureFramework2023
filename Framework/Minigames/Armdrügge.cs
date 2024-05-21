@@ -80,7 +80,7 @@ public class MyMinigame6 : MinigameDefBase
     {
 
 
-        if (clickcount == 6)
+        if (clickcount == 7)
         {
 
             Quadrate.KillAll();
@@ -91,7 +91,7 @@ public class MyMinigame6 : MinigameDefBase
             clickcount = 0;
             Ycord = 758;
         }
-        else if (enemycounter == 6)
+        else if (enemycounter == 7)
         {
             Quadrate.KillAll();
 
@@ -123,18 +123,17 @@ public class MyMinigame6 : MinigameDefBase
     {
         using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(1000));
 
-        while (enemycounter < 6 && await timer.WaitForNextTickAsync())
+        while (enemycounter < 7 && await timer.WaitForNextTickAsync())
         {
-            List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
+            List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red", "red" };
             var x = new Rectangle()
             {
                 X = 1445,
                 Y = enemyYcord,
-                Width = 50,
+                Width = 150,
                 Height = 21,
                 Fill = colors[enemycounter],
-                //  Stroke = colors[enemycounter],
-                // StrokeWidth = 100
+
             };
 
             AddElement(x);
@@ -151,7 +150,7 @@ public class MyMinigame6 : MinigameDefBase
 
     public void progressClick(int Ycord, int counter)
     {
-        List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
+        List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red", "red" };
         //Stroke also Füllfarbe wird mit der Liste berechnet, für jeden Klick erhöht sich counter und somit verändert sich die Farbe
         if (counter < colors.Count)
         {
