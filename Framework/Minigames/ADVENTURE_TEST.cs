@@ -30,6 +30,7 @@ public class MyMinigame1 : MinigameDefBase
         {
             ct.ThrowIfCancellationRequested();
             await Task.Delay(100, ct);
+            await Task.Delay(2000);
             await VillanAttack();
             Update();
             await Task.Delay(2000);
@@ -114,6 +115,10 @@ public class MyMinigame1 : MinigameDefBase
             Update();
             await Task.Delay(1500);
             BackgroundImage = "/images/Stance.JPG";
+            AttackButton1.Fill = "blue";
+            AttackButton2.Fill = "blue";
+            StatusButton.Fill = "blue";
+            HealButton.Fill = "blue";
             Update();
             TaskComplete = false;
         }
@@ -133,6 +138,7 @@ public class MyMinigame1 : MinigameDefBase
         VillanHealth = VillanHealth - 10 * AttackBuff;
         Villan_Health_Bar();
         Update();
+        await Task.Delay(1000);
         AttackBuff = 1;
         TaskComplete = true;
     }
@@ -147,6 +153,7 @@ public class MyMinigame1 : MinigameDefBase
         VillanHealth = VillanHealth - 10 * AttackBuff;
         Villan_Health_Bar();
         Update();
+        await Task.Delay(1000);
         AttackBuff = 1;
         TaskComplete = true;
     }
@@ -159,6 +166,7 @@ public class MyMinigame1 : MinigameDefBase
         BackgroundImage = "/images/Stance.JPG";
         Villan_Health_Bar();
         Update();
+        await Task.Delay(1000);
         AttackBuff = 2;
         TaskComplete = true;
 
@@ -179,6 +187,9 @@ public class MyMinigame1 : MinigameDefBase
                 {
                     TaskComplete = true;
                     AttackButton1.Fill = "grey";
+                    AttackButton2.Fill = "grey";
+                    StatusButton.Fill = "grey";
+                    HealButton.Fill = "grey";
                     AttackButton1.Y += 5;
                     Update();
                     await Task.Delay(50);
@@ -190,6 +201,9 @@ public class MyMinigame1 : MinigameDefBase
                 else if (TaskComplete == true)
                 {
                     AttackButton1.Fill = "grey";
+                    AttackButton2.Fill = "grey";
+                    StatusButton.Fill = "grey";
+                    HealButton.Fill = "grey";
                     Update();
                 }
 
@@ -213,7 +227,10 @@ public class MyMinigame1 : MinigameDefBase
                 if (TaskComplete == false)
                 {
                     TaskComplete = true;
+                    AttackButton1.Fill = "grey";
                     AttackButton2.Fill = "grey";
+                    StatusButton.Fill = "grey";
+                    HealButton.Fill = "grey";
                     AttackButton2.Y += 5;
                     Update();
                     await Task.Delay(50);
@@ -224,7 +241,10 @@ public class MyMinigame1 : MinigameDefBase
                 }
                 else if (TaskComplete == true)
                 {
+                    AttackButton1.Fill = "grey";
                     AttackButton2.Fill = "grey";
+                    StatusButton.Fill = "grey";
+                    HealButton.Fill = "grey";
                     Update();
                 }
             }
@@ -246,7 +266,10 @@ public class MyMinigame1 : MinigameDefBase
                 if (TaskComplete == false)
                 {
                     TaskComplete = true;
+                    AttackButton1.Fill = "grey";
+                    AttackButton2.Fill = "grey";
                     StatusButton.Fill = "grey";
+                    HealButton.Fill = "grey";
                     StatusButton.Y += 5;
                     Update();
                     await Task.Delay(50);
@@ -257,7 +280,10 @@ public class MyMinigame1 : MinigameDefBase
                 }
                 else if (TaskComplete == true)
                 {
+                    AttackButton1.Fill = "grey";
+                    AttackButton2.Fill = "grey";
                     StatusButton.Fill = "grey";
+                    HealButton.Fill = "grey";
                     Update();
                 }
             }
@@ -279,6 +305,9 @@ public class MyMinigame1 : MinigameDefBase
                 if (TaskComplete == false)
                 {
                     TaskComplete = true;
+                    AttackButton1.Fill = "grey";
+                    AttackButton2.Fill = "grey";
+                    StatusButton.Fill = "grey";
                     HealButton.Fill = "grey";
 
                     HealButton.Y += 5;
@@ -292,6 +321,9 @@ public class MyMinigame1 : MinigameDefBase
                 }
                 else if (TaskComplete == true)
                 {
+                    AttackButton1.Fill = "grey";
+                    AttackButton2.Fill = "grey";
+                    StatusButton.Fill = "grey";
                     HealButton.Fill = "grey";
                     Update();
                 }
