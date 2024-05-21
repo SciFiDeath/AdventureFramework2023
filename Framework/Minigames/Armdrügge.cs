@@ -2,21 +2,22 @@ using System.Data;
 using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
-
+ 
 namespace Framework.Minigames.MinigameDefClasses;
-
+ 
 public class MyMinigame6 : MinigameDefBase
 {
     public override string BackgroundImage { get; set; } = "/images/Armdrücken test.jpg";
-
+ 
+    int enemycounter = 0;
+    int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
+    int Ycord = 758; //Unterster Startpunkt
+    int enemyYcord = 758;
+    int score = 0;
+ 
     public MyMinigame6()
     {
-        int enemycounter = 0;
-        int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
-        int Ycord = 758; //Unterster Startpunkt
-        int enemyYcord = 758;
-        int score = 0;
-
+ 
         AddElement(
               new Rectangle()
               {
@@ -30,7 +31,7 @@ public class MyMinigame6 : MinigameDefBase
                   StrokeWidth = 40,
               }
           );
-
+ 
         AddElement(
               new Rectangle()
               {
@@ -44,7 +45,7 @@ public class MyMinigame6 : MinigameDefBase
                   StrokeWidth = 40,
               }
           );
-
+ 
         AddElement(
               new Circle()
               {
@@ -60,84 +61,87 @@ public class MyMinigame6 : MinigameDefBase
                       progressClick(Ycord, clickcount);
                       Ycord = Ycord - 107;
                       clickcount++;
-                      imageswap(ref clickcount, ref enemycounter, ref Ycord, ref enemyYcord, ref score);
+                      imageswap();
                   }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
               }
           );
         Update();
-
-        EnemyState enemyState = new EnemyState
-        {
-            Ycord = enemyYcord,
-            EnemyCounter = enemycounter,
-            EnemyYcord = enemyYcord
-        };
-
-        _ = StartEnemyClick(enemyState);
+ 
+ 
+ 
+        _ = StartEnemyClick();
         Update();
     }
-
-    public void imageswap(ref int yourscore, ref int enemyscore, ref int Ycord, ref int enemyYcord, ref int gamescore)
+ 
+    public void imageswap()
     {
-
-
-        if (yourscore == 6)
+ 
+ 
+        if (clickcount == 6)
         {
-            gamescore++;
-            yourscore = 0;
-            Ycord = 758;
-        }
-        else if (enemyscore == 5)
-        {
-            gamescore--;
-            enemyscore = 0;
+            score++;
             enemyYcord = 758;
+            enemycounter = 0;
+            clickcount = 0;
+            Ycord = 758;
+ 
         }
-        if (gamescore == 0)
+        else if (enemycounter == 6)
+        {
+ 
+            score--;
+            enemyYcord = 758;
+            enemycounter = 0;
+            clickcount = 0;
+            Ycord = 758;
+ 
+        }
+        if (score == 0)
         {
             BackgroundImage = "/images/Armdrücken test.jpg";
             Update();
         }
-        else if (gamescore == 1)
+        else if (score == 1)
         {
             BackgroundImage = "/images/calculator.png";
             Update();
         }
-        else if (gamescore == -1)
+        else if (score == -1)
         {
             BackgroundImage = "/images/HM3_hallwayN.jpg";
             Update();
         }
         Update();
     }
-
-    public async Task StartEnemyClick(EnemyState enemyState)
+ 
+    public async Task StartEnemyClick()
     {
         using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(1000));
-
-        while (enemyState.EnemyCounter < 6 && await timer.WaitForNextTickAsync())
+ 
+        while (enemycounter < 6 && await timer.WaitForNextTickAsync())
         {
             List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
             AddElement(
                    new Rectangle()
                    {
                        X = 1445,
-                       Y = enemyState.EnemyYcord,
+                       Y = enemyYcord,
                        Width = 10,
                        Height = 21,
                        Fill = "transparent",
-                       Stroke = colors[enemyState.EnemyCounter],
+                       Stroke = colors[enemycounter],
                        StrokeWidth = 100
                    }
                );
-
-            enemyState.EnemyCounter++;
-            enemyState.EnemyYcord = enemyState.EnemyYcord - 107;
-
+            enemycounter++;
+            enemyYcord = enemyYcord - 107;
+ 
+            imageswap();
+ 
             Update();
         }
     }
-
+ 
     public void progressClick(int Ycord, int counter)
     {
         List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red" };
@@ -147,6 +151,7 @@ public class MyMinigame6 : MinigameDefBase
             AddElement(
                    new Rectangle()
                    {
+                       Id = "Quadrat" + counter,
                        X = 150,
                        Y = Ycord,
                        Width = 10,
@@ -159,11 +164,5 @@ public class MyMinigame6 : MinigameDefBase
         }
         Update();
     }
-
-    public class EnemyState
-    {
-        public int Ycord { get; set; }
-        public int EnemyCounter { get; set; }
-        public int EnemyYcord { get; set; }
-    }
+ 
 }
