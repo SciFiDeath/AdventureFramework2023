@@ -1,6 +1,15 @@
 using System.Numerics;
 using Framework.Minigames.MinigameDefClasses;
 using Microsoft.AspNetCore.Components.Web;
+<<<<<<< HEAD
+=======
+using Framework.Sound;
+using Framework.Video;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using Framework.Mouse;
+using Framework.Keyboard;
+>>>>>>> main
 
 namespace Framework.Minigames;
 
@@ -372,4 +381,520 @@ public class LaurinsRain : MinigameDefBase{
 	
 
 
+<<<<<<< HEAD
 }
+=======
+}
+
+public class AudioTest : MinigameDefBase
+{
+
+
+	[Element]
+	public Rectangle Dingrect { get; set; }
+	[Element]
+	public Rectangle Track { get; set; }
+	[Element]
+	public Rectangle Sfx { get; set; }
+	[Element]
+	public Rectangle StopRect { get; set; }
+
+	public override string BackgroundImage { get; set; } = "images/HM305_fromEntrance.jpg"; // Background Image
+
+	public async Task PlayAudio(string path)
+	{
+		await SoundService.PlaySound(path); // Play sound 
+	}
+
+	public async Task PlayMusic(string path)
+	{
+		await SoundService.PlayMusic(path); // Play music 
+	}
+	public async Task StopMusic()
+	{
+		await SoundService.StopMusic(); // Stop music 
+	}
+
+
+	public AudioTest()
+	{
+		Dingrect = new()
+		{ // button for playing first track
+			X = 0,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = (args) => _ = PlayMusic("/audio/ambient-piano-loop-85bpm.wav") // When clicked, piano music is played
+		};
+		Track = new()
+		{ // Button for playing second track
+			X = 0,
+			Y = 200,
+			Width = 100,
+			Height = 100,
+			Fill = "blue",
+			OnClick = (args) => _ = PlayMusic("/audio/doom-soundtrack.wav") // When clicked, the Backgroundtrack is played 
+																			// OnClick = (args) => _ = StopMusic()
+		};
+		Sfx = new()
+		{ // Button for playing sound effect 
+			X = 0,
+			Y = 400,
+			Width = 100,
+			Height = 100,
+			Fill = "yellow",
+			OnClick = (args) => _ = PlayAudio("/audio/ding.wav") // When clicked, a 'ding' sound is played
+		};
+		StopRect = new()
+		{ // Button to stop the currenty playing track
+			X = 0,
+			Y = 600,
+			Width = 100,
+			Height = 100,
+			Fill = "red",
+			OnClick = (args) => _ = StopMusic() // When clicked, the music is stopped
+		};
+	}
+
+
+}
+
+public class VideoTest : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
+
+	[Element]
+	public Rectangle PlaceLeft { get; set;}
+	[Element]
+	public Rectangle PlaceRight { get; set;}
+	[Element]
+	public Rectangle Play { get; set; }
+	[Element]
+	public Rectangle Pause { get; set; }
+	[Element]
+	public Rectangle Letfinish { get; set; }
+
+	public async Task PlaceVideo(string x, string y, string height, string width, string src)
+	{
+		await VideoService.PlaceVideo(x, y, height, width, src); // Function to set up the video
+	}
+
+	public async Task PlayVideo()
+	{
+		await VideoService.PlayVideo(); // Function to play the video
+	}
+
+	public async Task PauseVideo()
+	{
+		await VideoService.PauseVideo(); // Function to pause the video
+	}
+
+	public async Task LetFinish()
+	{
+		await VideoService.LetFinish(); // Wait until the video finishes,
+		Console.WriteLine("Finished"); // then do something
+	}
+
+
+
+	public VideoTest(){
+		PlaceLeft = new(){
+            X = 0,
+            Y = 0,
+            Width = 100,
+            Height = 100,
+            Fill = "red",
+            OnClick = (args) => _ = PlaceVideo("200", "200", "500", "500", "/videos/axel f.mp4")
+        };
+		PlaceRight = new(){
+			X = 200,
+			Y = 0,
+			Width = 100,
+			Height = 100,
+			Fill = "blue",
+			OnClick = (args) => _ = PlaceVideo("500", "200", "500", "500", "/videos/axel f.mp4")
+		};
+		Play = new(){
+            X = 0,
+            Y = 100,
+            Width = 100,
+            Height = 100,
+            Fill = "yellow",
+            OnClick = (args) => _ = PlayVideo()
+        };
+		Pause = new(){
+            X = 0,
+            Y = 200,
+            Width = 100,
+            Height = 100,
+            Fill = "green",
+            OnClick = (args) => _ = PauseVideo()
+        };
+		
+		Letfinish = new(){
+            X = 0,
+            Y = 400,
+            Width = 100,
+            Height = 100,
+            Fill = "violet",
+            OnClick = (args) => _ = LetFinish()
+        };
+		
+		
+	}
+}
+
+public class ElementStyleTest : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayW.jpg";
+
+	[Element]
+	public Rectangle Rectangle { get; set; } = new()
+	{
+		X = 100,
+		Y = 100,
+		Width = 200,
+		Height = 100,
+		Fill = "red",
+		CustomStyle = "fill: blue",
+		OnClick = (args) => Console.WriteLine("click"),
+		OnDoubleClick = (args) => Console.WriteLine("doubleclick"),
+		OnMouseEnter = (args) => Console.WriteLine("enter"),
+		OnMouseLeave = (args) => Console.WriteLine("leave"),
+	};
+
+	[Element]
+	public Image Image { get; set; } = new()
+	{
+		ImagePath = "InventoryImages/SurfaceCharger.jpeg",
+		X = 100,
+		Y = 400,
+		Width = 300,
+		// Height = 100,
+		Opacity = 0.9,
+	};
+
+	[Element]
+	public Text Text { get; set; } = new()
+	{
+		InnerText = "Hello World",
+		X = 500,
+		Y = 500,
+		FontSize = 100,
+		FontFamily = "Comic Sans MS",
+		TextLength = 1000,
+		// StretchLetters = true,
+		// Selectable = true,
+	};
+
+	[Element]
+	public Polygon Polygon { get; set; } = new()
+	{
+		Points = [[500, 500], [1000, 500], [800, 700], [650, 600]],
+		Fill = "white",
+		Opacity = 0.5,
+	};
+
+	[Element]
+	public Polyline Polyline { get; set; } = new()
+	{
+		Points = [[1000, 500], [1500, 500], [1300, 700], [1150, 600]],
+		Stroke = "blue",
+		StrokeWidth = 20,
+		Opacity = 0.5,
+		Fill = "none"
+	};
+
+	[Element]
+	public Line Line { get; set; } = new()
+	{
+		X1 = 1500,
+		X2 = 1700,
+		Y1 = 0,
+		Y2 = 1000,
+		Stroke = "aquamarine",
+		StrokeWidth = 400,
+		StrokeOpacity = 0.2,
+	};
+
+	[Element]
+	public Circle Circle { get; set; } = new()
+	{
+		CX = 2000,
+		CY = 0,
+		R = 750,
+		Fill = "darkviolet",
+		FillOpacity = 0.3,
+		Stroke = "black",
+		StrokeWidth = 20,
+
+	};
+
+	[Element]
+	public Ellipse Ellipse { get; set; } = new()
+	{
+		CX = 1000,
+		CY = 750,
+		RX = 400,
+		RY = 100,
+		Fill = "goldenrod",
+		FillOpacity = 0.7,
+		Cursor = "pointer"
+	};
+}
+
+public class ElementTest : MinigameDefBase
+{
+
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
+
+	[Element]
+	public RawMarkup Markup { get; set; }
+
+	[Element]
+	public ForeignObject ForeignTest { get; set; }
+
+	public CustomObject CustomTest { get; set; } = new()
+	{
+		CustomTagName = "div",
+		Content = ["Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, sunt at aperiam dolore voluptatem quidem itaque sed id tenetur praesentium, minus error rerum? Nobis excepturi nostrum explicabo? Fugit, neque voluptatibus!", new CustomObject() { CustomTagName = "h1", Content = ["hihihi"] }],
+		Callbacks = new()
+		{
+			{"onclick", (e) => Console.WriteLine("hellooooojoij")}
+		},
+	};
+
+	[Element]
+	public Text Text { get; set; }
+
+	[Element]
+	public CustomObject Gradient { get; set; }
+
+
+	public ElementTest()
+	{
+		Text = new()
+		{
+			FontFamily = "Comic Sans MS",
+			ContentMode = true,
+			X = 10,
+			Y = 50,
+			Content =
+			[
+				new Tspan() {InnerText = "muha", Fill = "red", OnClick = (e) => Console.WriteLine("hello") },
+				"\n\noh noes"
+			]
+		};
+
+		Markup = new()
+		{
+			Markup = @"
+			<foreignObject x=""20"" y=""20"" width=""160"" height=""160"">
+				<div xmlns=""http://www.w3.org/1999/xhtml"">
+				Lorem ipsum dolor sit amet,
+				consectetur adipiscing elit.
+				Sed mollis mollis mi ut ultricies.Nullam magna ipsum,
+				porta vel dui convallis,
+				rutrum imperdiet eros.
+				Aliquam erat volutpat.
+				</div>
+			</foreignObject>
+			"
+		};
+
+		ForeignTest = new()
+		{
+			X = 500,
+			Y = 50,
+			Width = 500,
+			Height = 500,
+			CustomObject = CustomTest
+		};
+		Gradient = new()
+		{
+			Attributes = new()
+			{
+				{"id", "grad"},
+				{"x1", "0%"},
+				{"x2", "100%"},
+				{"y1", "0%"},
+				{"y2", "0%"},
+			},
+			Content = [
+				new CustomObject()
+				{
+					CustomTagName = "stop",
+					Attributes = new()
+					{
+						{"offset", "0%"},
+						{"stop-color", "red"}
+					}
+				},
+				new CustomObject()
+				{
+					CustomTagName = "stop",
+					Attributes = new()
+					{
+						{"offset", "100%"},
+						{"stop-color", "yellow"}
+					}
+				}
+			],
+			CustomTagName = "linearGradient"
+		};
+		AddElement(
+			new Ellipse()
+			{
+				CX = 300,
+				CY = 70,
+				RX = 85,
+				RY = 55,
+				Fill = "url(#grad)"
+			}
+		);
+	}
+}
+
+public class MouseServiceTest : MinigameDefBase
+{
+
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
+	public override async Task GameLoop(CancellationToken ct)
+	{
+		while (true)
+		{
+			var state = MouseService.MouseState;
+			ct.ThrowIfCancellationRequested();
+			Console.WriteLine($"X: {state.X}, Y: {state.Y}");
+			await Task.Delay(50, ct);
+		}
+	}
+
+	public MouseServiceTest()
+	{
+		AddElement(new Rectangle()
+		{
+			X = 100,
+			Y = 100,
+			Width = 100,
+			Height = 100,
+			Fill = "red",
+			OnClick = async (e) => { await MouseService.SetDelay(-1); Console.WriteLine("Disabled"); },
+		});
+		AddElement(new Rectangle()
+		{
+			X = 100,
+			Y = 200,
+			Width = 100,
+			Height = 100,
+			Fill = "green",
+			OnClick = async (e) => { await MouseService.SetDelay(0); Console.WriteLine("No Delay"); },
+		});
+		AddElement(new Rectangle()
+		{
+			X = 100,
+			Y = 300,
+			Width = 100,
+			Height = 100,
+			Fill = "blue",
+			OnClick = async (e) => { await MouseService.SetDelay(500); Console.WriteLine("500ms"); },
+		});
+		AddElement(new Rectangle()
+		{
+			X = 100,
+			Y = 500,
+			Height = 100,
+			Width = 100,
+			Fill = "yellow",
+			OnClick = async (e) => { var x = await MouseService.GetMouseStateAsync(); Console.WriteLine($"AsyncX: {x.X}, AsyncY: {x.Y}"); },
+		});
+		AddElement(new Rectangle()
+		{
+			X = 100,
+			Y = 600,
+			Height = 100,
+			Width = 100,
+			Fill = "purple",
+			OnClick = async (e) =>
+			{
+				var b = (MouseEventArgs)e;
+				var (x, y) = await MouseService.ConvertToSvgCoords(b.ClientX, b.ClientY);
+				Console.WriteLine($"ConvertedX: {x}, ConvertedY: {y}");
+			},
+		});
+	}
+
+}
+
+public class IOServicesTest : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
+
+	public override void OnKeyDown(object? sender, KeyEventArgs e)
+	{
+		Console.WriteLine($"Key: {e.Key}, Down: {e.Down}");
+	}
+
+	public override void OnKeyUp(object? sender, KeyEventArgs e)
+	{
+		Console.WriteLine($"Key: {e.Key}, Down: {e.Down}");
+	}
+
+	public override void OnMouseDown(object? sender, ClickEventArgs e)
+	{
+		Console.WriteLine($"Button: {e.Button}, Down: {e.Down}, X: {e.X}, Y: {e.Y}");
+	}
+
+	public override void OnMouseUp(object? sender, ClickEventArgs e)
+	{
+		Console.WriteLine($"Button: {e.Button}, Down: {e.Down}, X: {e.X}, Y: {e.Y}");
+	}
+}
+
+// public class KeyboardStateTest : MinigameDefBase
+// {
+// 	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg";
+
+// 	// public Rectangle ToggleA { get; set; }
+
+// 	// public Rectangle ShowA { get; set; }
+
+// 	public Dictionary<string, bool> States { get; set; }
+
+
+// 	public KeyboardStateTest()
+// 	{
+// 		// States = KeyboardService.GetStaticKeyboardState();
+
+// 		AddElement(new Rectangle
+// 		{
+// 			X = 100,
+// 			Y = 100,
+// 			Width = 100,
+// 			Height = 100,
+// 			Fill = "red",
+// 			OnClick = (e) => States["KeyA"] = !States["KeyA"],
+// 		});
+
+// 		AddElement(new Rectangle()
+// 		{
+// 			X = 100,
+// 			Y = 200,
+// 			Width = 100,
+// 			Height = 100,
+// 			Fill = "blue",
+// 			OnClick = (e) => Console.WriteLine(KeyboardService.GetKeyState("KeyA")),
+// 		});
+// 		AddElement(new Rectangle()
+// 		{
+// 			X = 100,
+// 			Y = 300,
+// 			Width = 100,
+// 			Height = 100,
+// 			Fill = "green",
+// 			OnClick = (e) => States = KeyboardService.GetKeyboardState(),
+// 		});
+// 	}
+// }
+>>>>>>> main

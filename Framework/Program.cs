@@ -8,6 +8,8 @@ using Framework.Slides;
 using Framework.Keyboard;
 using Framework.Mouse;
 using Framework.Sound;
+using Framework.Video;
+
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -61,5 +63,7 @@ customCulture.NumberFormat.NumberDecimalSeparator = ".";
 Thread.CurrentThread.CurrentCulture = customCulture;
 
 builder.Services.AddScoped<SoundService>();
+
+builder.Services.AddScoped<VideoService>();
 
 await builder.Build().RunAsync();
