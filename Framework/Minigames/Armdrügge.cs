@@ -15,6 +15,13 @@ public class MyMinigame6 : MinigameDefBase
     int enemyYcord = 758;
     int score = 0;
 
+    int circleX = 1200;
+
+    int circleY = 500;
+
+    bool gameover = false;
+
+    string redcol = "red";
     GameObjectContainer<Rectangle> Quadrate { get; set; } = new();
 
     public MyMinigame6()
@@ -48,26 +55,8 @@ public class MyMinigame6 : MinigameDefBase
               }
           );
 
-        AddElement(
-              new Circle()
-              {
-                  //Hand zum klicken
-                  R = 100,
-                  CX = 550,
-                  CY = 500,
-                  Fill = "orange",
-                  Stroke = "red",
-                  StrokeWidth = 40,
-                  OnClick = (args) =>
-                  {
-                      progressClick(Ycord, clickcount);
-                      Ycord = Ycord - 107;
-                      clickcount++;
-                      imageswap();
-                      Console.WriteLine(Elements);
-                  }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
-              }
-          );
+
+        circlechanger();
         Update();
 
 
@@ -75,6 +64,35 @@ public class MyMinigame6 : MinigameDefBase
         _ = StartEnemyClick();
         Update();
     }
+
+    public void circlechanger()
+    {
+        AddElement(
+      new Circle()
+      {
+          //Hand zum klicken
+          Id = "Circle1",
+          R = 60,
+          CX = circleX,
+          CY = circleY,
+          Fill = redcol,
+          Stroke = redcol,
+          StrokeWidth = 40,
+          OnClick = (args) =>
+          {
+              progressClick(Ycord, clickcount);
+              Ycord = Ycord - 107;
+              clickcount++;
+              imageswap();
+              Console.WriteLine(Elements);
+              Elements.KillId("Circle1");
+              circlechanger();
+          }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
+      }
+  );
+        Update();
+    }
+
 
     public void imageswap()
     {
@@ -104,26 +122,54 @@ public class MyMinigame6 : MinigameDefBase
         if (score == 0)
         {
             BackgroundImage = "/images/Arm_1.png";
+            circleX = 1200;
+            circleY = 500;
             Update();
+            Elements.KillId("Circle1");
+            circlechanger();
         }
         else if (score == 1)
         {
             BackgroundImage = "/images/Arm_4.png";
+            circleX = 970;
+            circleY = 720;
             Update();
+            Elements.KillId("Circle1");
+            circlechanger();
         }
         else if (score == -1)
         {
             BackgroundImage = "/images/Arm_2_.png";
+            circleX = 1300;
+            circleY = 500;
+            Update();
+            Elements.KillId("Circle1");
+            circlechanger();
+        }
+        else if (score == -2)
+        {
+            Elements.KillId("Circle1");
+            BackgroundImage = "/images/Arm_3.png";
+            gameover = true;
             Update();
         }
+        else if (score == 2)
+        {
+
+            BackgroundImage = "/images/Arm_5.png";
+            redcol = "transparent";
+            gameover = true;
+            Update();
+        }
+
         Update();
     }
 
     public async Task StartEnemyClick()
     {
-        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(1000));
+        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(500));
 
-        while (enemycounter < 7 && await timer.WaitForNextTickAsync())
+        while (enemycounter < 7 && await timer.WaitForNextTickAsync() && gameover == false)
         {
             List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red", "red" };
             var x = new Rectangle()
@@ -143,7 +189,6 @@ public class MyMinigame6 : MinigameDefBase
             enemyYcord = enemyYcord - 107;
 
             imageswap();
-
             Update();
         }
     }
@@ -152,7 +197,7 @@ public class MyMinigame6 : MinigameDefBase
     {
         List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red", "red" };
         //Stroke also Füllfarbe wird mit der Liste berechnet, für jeden Klick erhöht sich counter und somit verändert sich die Farbe
-        if (counter < colors.Count)
+        if (counter < colors.Count && gameover == false)
         {
             var x = new Rectangle()
             {
