@@ -8,8 +8,8 @@ public class DimitriDialogue : MinigameDefBase
 
 
 	//DIALOGUE STUFF
-	private Rectangle QuitButton { get; set;}
-	private Rectangle ForwardButton { get; set;}
+	private Image QuitButton { get; set;}
+	private Image ForwardButton { get; set;}
 
 	private Dialogue dialogue;
 	
@@ -22,7 +22,17 @@ public class DimitriDialogue : MinigameDefBase
 		["npc", "bring me something"],
 		["player", "Hello"],
 		["npc", "did you bring it?"],
-		["npc", "this text is white"]
+		["npc", "this text is white"],
+		["npc", "this text is white"],
+		["npc", "this text is white"],
+		["npc", "this text is white"],
+		["npc", "this text is white"],
+		["npc", "this text is white"],
+		["npc", "this text is white"],
+
+
+
+
 
 	];
 
@@ -53,8 +63,8 @@ public class DimitriDialogue : MinigameDefBase
 		AddElement(QuitButton);
 		AddElement(ForwardButton);
 
-		QuitButton.OnClick = (args) => {quit = true; };
-		ForwardButton.OnClick = (args) => {forward = true; };
+		QuitButton.OnClick = (args) => {quit = true; Console.WriteLine("Quit"); };
+		ForwardButton.OnClick = (args) => {forward = true; Console.WriteLine("Forward");};
 
 		Update();
 
@@ -67,24 +77,23 @@ public class DimitriDialogue : MinigameDefBase
 
 			Update();
 
-
-			//Task.Delay(5000);
 			await WaitForConditionAsync(() => forward || quit);
-
 			
 			foreach (string key in Bubble.Keys){
 				Elements.Remove(key);
-				Bubble.KillId(key);
 			}
 
 			if (quit == true){
+				
+				Update();
 				break;
 			}
-			quit = false;
+
 			forward = false;
 
 			Update();
 		}
+		
 
 	}
 

@@ -788,26 +788,28 @@ public class Dialogue {
 		return longestLength;
 	}
 
-	public Rectangle DrawQuitButton (){
+	public Image DrawQuitButton (){
 
-		return new(){
-			X = 1000,
-			Y = 1000,
-			Width = 100,
-			Height = 100,
-			Fill = "red",
-		};
-
-	}
-
-	public Rectangle DrawForwardButton (){
-		
-		return new(){
+		return new Image(){
+			ImagePath = "UI_Images/backImg.png",
+			ZIndex = 6,
 			X = 200,
 			Y = 1000,
 			Width = 100,
 			Height = 100,
-			Fill = "red",
+		};
+
+	}
+
+	public Image DrawForwardButton (){
+		
+		return new Image(){
+			ImagePath = "UI_Images/arrows/right.png",
+			ZIndex = 6,
+			X = 1000,
+			Y = 1000,
+			Width = 100,
+			Height = 100,
 		};
 
 	}
@@ -826,9 +828,11 @@ public class Dialogue {
     {
         X = TopCenterX,
         Y = TopCenterY,
+		ZIndex = 5,
         Width = textWidth + 20,
         Height = textHeight + 20,
         Fill = "white"
+
     };
 
     // Create the text element for the speaker's message
@@ -837,6 +841,8 @@ public class Dialogue {
         InnerText = message,
         X = TopCenterX,
         Y = TopCenterY + 20,
+		ZIndex = 6,
+
         FontSize = 20,
         Fill = "black"
     };
@@ -847,6 +853,7 @@ public class Dialogue {
         InnerText = speaker,
         X = TopCenterX,
         Y = TopCenterY - 20,
+		ZIndex = 5,
         FontSize = 20,
         Fill = "white"
     };
