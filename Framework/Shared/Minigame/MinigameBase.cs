@@ -73,7 +73,7 @@ public class MinigameBase : ComponentBase
 {
 	// Inject the GameState
 	[Inject]
-	public IMinigameGameState GameState { get; set; } = null!;
+	public GameState GameState { get; set; } = null!;
 
 	// Inject the Keyboard and Mouse services
 	// use the interface so that they cannot break anything
@@ -83,10 +83,10 @@ public class MinigameBase : ComponentBase
 	public MouseService MouseService { get; set; } = null!;
 
 	[Inject]
-	public ISoundService SoundService { get; set; } = null!;
+	public SoundService SoundService { get; set; } = null!;
 
 	[Inject]
-	public IVideoService VideoService { get; set; } = null!;
+	public VideoService VideoService { get; set; } = null!;
 
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
@@ -290,10 +290,12 @@ public abstract class MinigameDefBase
 		Elements.Add(element);
 	}
 
-	public void AddElementsInContainer(GameObjectContainer<SVGElement> container){
+	public void AddElementsInContainer(GameObjectContainer<SVGElement> container)
+	{
 		SVGElement[] elements = container.Values;
 
-		foreach (SVGElement element in elements){
+		foreach (SVGElement element in elements)
+		{
 			Elements.Add(element);
 		}
 	}

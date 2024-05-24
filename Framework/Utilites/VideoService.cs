@@ -11,7 +11,7 @@ public interface IVideoService
 }
 
 
-public class VideoService(IJSRuntime jsRuntime)
+public class VideoService(IJSRuntime jsRuntime) : IVideoService
 {
 
     // [JSInvokable]

@@ -10,7 +10,7 @@ public interface ISoundService
 }
 
 
-public class SoundService(IJSRuntime jsRuntime)
+public class SoundService(IJSRuntime jsRuntime) : ISoundService
 {
 	private readonly IJSRuntime jsRuntime = jsRuntime;
 	private DotNetObjectReference<SoundService> objRef = null!;

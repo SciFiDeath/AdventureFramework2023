@@ -116,4 +116,10 @@ public partial class GameBase
 		}
 	}
 
+	[JSInvokable]
+	public string[] GetItems()
+	{
+		return [.. GameState.GetItemObjects().Keys];
+	}
+
 }

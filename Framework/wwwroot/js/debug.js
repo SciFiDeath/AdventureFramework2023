@@ -70,4 +70,9 @@ window.debug = {
     reRoute: function () {
         this.objRef.invokeMethodAsync("ReRoute");
     },
+    items: function () {
+        this.objRef
+            .invokeMethodAsync("GetItems")
+            .then((items) => console.log(items));
+    },
 };

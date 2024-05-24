@@ -50,7 +50,7 @@ public interface IMinigameGameState
 	bool CheckForItem(string id);
 }
 
-public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState
+public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState, IMinigameGameState
 {
 	// dependencies
 	private readonly IToastService ToastService = toastService;
