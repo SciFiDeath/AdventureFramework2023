@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 
 using JsonUtilities;
-using FrameworkItems;
+using Framework.Items;
 using static InventoryEvent;
 using Microsoft.JSInterop;
 using ObjectEncoding;
@@ -11,7 +11,7 @@ using Blazored.Toast.Services;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 
-namespace GameStateInventory;
+namespace Framework.State;
 
 public interface IGameState
 {
@@ -50,12 +50,12 @@ public interface IMinigameGameState
 	bool CheckForItem(string id);
 }
 
-public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState, IMinigameGameState
+public class GameState(JsonUtility jsonUtility, ItemService items, IToastService toastService) : IGameState, IMinigameGameState
 {
 	// dependencies
 	private readonly IToastService ToastService = toastService;
 	private readonly JsonUtility JsonUtility = jsonUtility;
-	private readonly Items Items = items;
+	private readonly ItemService Items = items;
 
 
 	// initialize with empty data
@@ -129,6 +129,11 @@ public class GameState(JsonUtility jsonUtility, Items items, IToastService toast
 		if (Items.DoesItemExist(id) == false)
 		{
 			throw new Exception("Item doesn't exist in items.json Dictionary");
+		}
+		// make sure there are no duplicates
+		if (ItemsInInventory.Contains(id))
+		{
+			throw new ArgumentException($"Element {id} is already in Inventory");
 		}
 		ItemsInInventory.Add(id);
 

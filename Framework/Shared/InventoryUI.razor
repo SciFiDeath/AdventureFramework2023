@@ -1,5 +1,5 @@
-@namespace GameStateInventory
-@inherits Framework.InventoryUI.InventoryUIBase
+@namespace Framework.InventoryUI
+@inherits InventoryUIBase
 @using Blazored.Toast.Services
 @using Microsoft.JSInterop;
 @using Blazored.Video;
@@ -20,7 +20,8 @@
     
 </div>
 
-<BlazoredVideo @ref="video" class="w-40" autoplay="autoplay" loop="loop" style="max-width:300px;">
+@* ? Why is this here *@
+@* <BlazoredVideo @ref="video" class="w-40" autoplay="autoplay" loop="loop" style="max-width:300px;">
     <source src="monkey.mp4" type="video/mp4" />
 </BlazoredVideo>
 <br/>
@@ -40,4 +41,4 @@
             await video.PausePlayback();
         }
     }
-}
+} *@

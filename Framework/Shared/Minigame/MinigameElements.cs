@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using GameStateInventory;
+using Framework.State;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -627,25 +627,26 @@ public class ForeignObject : SVGElement
 	}
 }
 
-public class DeprecatedDialogue : MinigameDefBase {
-    public override string BackgroundImage {get; set;} = "images/calculator.png"; //! USE LAST SLIDE AS BACKGROUND
-	
+public class DeprecatedDialogue : MinigameDefBase
+{
+	public override string BackgroundImage { get; set; } = "images/calculator.png"; //! USE LAST SLIDE AS BACKGROUND
+
 	private readonly DialogueProgress progress;
 	List<List<string>> Messages = [];
-	
+
 
 	[Element]
-	public Rectangle ForwardDialogue { get; set;} 
-	public Rectangle Quit { get; set;} 
+	public Rectangle ForwardDialogue { get; set; }
+	public Rectangle Quit { get; set; }
 
-	
+
 	public Rectangle TextContainer { get; set; }
-	
+
 	public Text SpeakerText { get; set; }
-	
+
 	public Text SpeakerName { get; set; }
 
-    int TopCenterX = 100;
+	int TopCenterX = 100;
 	int TopCenterY = 100;
 
 	public bool Next = false;
@@ -656,13 +657,14 @@ public class DeprecatedDialogue : MinigameDefBase {
 
 		Messages = messages;
 
-		ForwardDialogue = new(){
+		ForwardDialogue = new()
+		{
 			X = 400,
 			Y = 400,
 			Width = 100,
 			Height = 100,
 			Fill = "blue",
-			OnClick = (args) => {Next = true;}
+			OnClick = (args) => { Next = true; }
 		};
 
 		//progress = new DialogueProgress(questName, Messages, 0);
@@ -670,41 +672,48 @@ public class DeprecatedDialogue : MinigameDefBase {
 
 	}
 
-	public void StartDialogue(){
+	public void StartDialogue()
+	{
 
 		Console.WriteLine("started dialogue");
-		
+
 
 		Console.WriteLine("created forward dialogues");
-		
-		Quit = new(){
+
+		Quit = new()
+		{
 			X = 1000,
 			Y = 1000,
 			Width = 100,
 			Height = 100,
 			Fill = "red",
-			OnClick = (args) => {QuitDialogue();}
+			OnClick = (args) => { QuitDialogue(); }
 		};
 
 		//IterateSpeech();
 	}
-	
-	public void QuitDialogue(){
+
+	public void QuitDialogue()
+	{
 		quit = true;
 		Quit.Kill();
 		ForwardDialogue.Kill();
 	}
 
-	public void IterateSpeech(){
-		
+	public void IterateSpeech()
+	{
+
 		Console.WriteLine("starting IterateSpeech");
-		foreach(List<string> text in Messages){
-			
-			if (quit == true){
-				
+		foreach (List<string> text in Messages)
+		{
+
+			if (quit == true)
+			{
+
 				break;
 			}
-			TextContainer = new(){
+			TextContainer = new()
+			{
 				X = TopCenterX,
 				Y = TopCenterY,
 				Width = 200,
@@ -712,7 +721,8 @@ public class DeprecatedDialogue : MinigameDefBase {
 				Fill = "white"
 			};
 
-			SpeakerText = new(){
+			SpeakerText = new()
+			{
 				InnerText = text[0],
 				X = TopCenterX,
 				Y = TopCenterY + 20,
@@ -721,7 +731,8 @@ public class DeprecatedDialogue : MinigameDefBase {
 
 			};
 
-			SpeakerName = new(){
+			SpeakerName = new()
+			{
 				InnerText = text[1],
 				X = TopCenterX,
 				Y = TopCenterY - 20,
@@ -736,9 +747,10 @@ public class DeprecatedDialogue : MinigameDefBase {
 
 			//progress.Progress += 1;
 			Update();
-			
-			while (Next == false){
-				
+
+			while (Next == false)
+			{
+
 			}
 
 
@@ -754,17 +766,19 @@ public class DeprecatedDialogue : MinigameDefBase {
 	}
 }
 
-public class Dialogue {
+public class Dialogue
+{
 	private readonly DialogueProgress progress;
 	List<List<string>> Messages = [];
 
 	[Element]
-	public Rectangle ForwardDialogue { get; set;} 
-	public Rectangle Quit { get; set;} 
+	public Rectangle ForwardDialogue { get; set; }
+	public Rectangle Quit { get; set; }
 
-    int TopCenterX = 100;
+	int TopCenterX = 100;
 	int TopCenterY = 100;
-	public Dialogue (List<List<string>> messages){
+	public Dialogue(List<List<string>> messages)
+	{
 		Messages = messages;
 	}
 
@@ -788,9 +802,11 @@ public class Dialogue {
 		return longestLength;
 	}
 
-	public Image DrawQuitButton (){
+	public Image DrawQuitButton()
+	{
 
-		return new Image(){
+		return new Image()
+		{
 			ImagePath = "UI_Images/backImg.png",
 			ZIndex = 6,
 			X = 200,
@@ -801,9 +817,11 @@ public class Dialogue {
 
 	}
 
-	public Image DrawForwardButton (){
-		
-		return new Image(){
+	public Image DrawForwardButton()
+	{
+
+		return new Image()
+		{
 			ImagePath = "UI_Images/arrows/right.png",
 			ZIndex = 6,
 			X = 1000,
@@ -814,59 +832,59 @@ public class Dialogue {
 
 	}
 
-	
+
 	public GameObjectContainer<SVGElement> DrawSpeechBubble(string speaker, string message)
-{
-    // Initialize the container for the speech bubble elements
-    GameObjectContainer<SVGElement> Bubble = new GameObjectContainer<SVGElement>();
-	int fontSize = 20;
-    int textHeight = fontSize * 2; // Approximate height based on font size
-	int textWidth = GetLongestMessage(Messages) * fontSize / 2;
+	{
+		// Initialize the container for the speech bubble elements
+		GameObjectContainer<SVGElement> Bubble = new GameObjectContainer<SVGElement>();
+		int fontSize = 20;
+		int textHeight = fontSize * 2; // Approximate height based on font size
+		int textWidth = GetLongestMessage(Messages) * fontSize / 2;
 
-    // Create the rectangle that acts as the text container
-	Rectangle TextContainer = new Rectangle
-    {
-        X = TopCenterX,
-        Y = TopCenterY,
-		ZIndex = 5,
-        Width = textWidth + 20,
-        Height = textHeight + 20,
-        Fill = "white"
+		// Create the rectangle that acts as the text container
+		Rectangle TextContainer = new Rectangle
+		{
+			X = TopCenterX,
+			Y = TopCenterY,
+			ZIndex = 5,
+			Width = textWidth + 20,
+			Height = textHeight + 20,
+			Fill = "white"
 
-    };
+		};
 
-    // Create the text element for the speaker's message
-    Text SpeakerText = new()
-    {
-        InnerText = message,
-        X = TopCenterX,
-        Y = TopCenterY + 20,
-		ZIndex = 6,
+		// Create the text element for the speaker's message
+		Text SpeakerText = new()
+		{
+			InnerText = message,
+			X = TopCenterX,
+			Y = TopCenterY + 20,
+			ZIndex = 6,
 
-        FontSize = 20,
-        Fill = "black"
-    };
+			FontSize = 20,
+			Fill = "black"
+		};
 
-    // Create the text element for the speaker's name
-    Text SpeakerName = new Text
-    {
-        InnerText = speaker,
-        X = TopCenterX,
-        Y = TopCenterY - 20,
-		ZIndex = 5,
-        FontSize = 20,
-        Fill = "white"
-    };
+		// Create the text element for the speaker's name
+		Text SpeakerName = new Text
+		{
+			InnerText = speaker,
+			X = TopCenterX,
+			Y = TopCenterY - 20,
+			ZIndex = 5,
+			FontSize = 20,
+			Fill = "white"
+		};
 
 
-    // Add the elements to the bubble container
-    Bubble.Add(TextContainer);
-    Bubble.Add(SpeakerText);
-    Bubble.Add(SpeakerName);
+		// Add the elements to the bubble container
+		Bubble.Add(TextContainer);
+		Bubble.Add(SpeakerText);
+		Bubble.Add(SpeakerName);
 
-    // Return the assembled speech bubble
-    return Bubble;
-}
+		// Return the assembled speech bubble
+		return Bubble;
+	}
 
 
 }

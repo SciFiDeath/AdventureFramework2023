@@ -1,25 +1,26 @@
 using Microsoft.AspNetCore.Components;
-using GameStateInventory;
-using FrameworkItems;
+using Framework.Items;
 using JsonUtilities;
 using Microsoft.JSInterop;
 using static InventoryEvent;
 using Blazored.Video;
+using Framework.State;
 namespace Framework.InventoryUI;
 
 
 public class InventoryUIBase : ComponentBase
 {
 	[Inject]
-	protected GameState? GameState { get; set; }
+	protected GameState GameState { get; set; } = null!;
 
-	[Inject]
-	protected JsonUtility? JsonUtility { get; set; }
+	//? those have 0 references, why are they here?
+	// [Inject]
+	// protected JsonUtility JsonUtility { get; set; } = null!;
 
-	[Inject]
-	protected Items? Items { get; set; }
+	// [Inject]
+	// protected ItemService Items { get; set; } = null!;
 
-	public Dictionary<string, Item> InvItems = new();
+	public Dictionary<string, Item> InvItems = [];
 	protected override void OnInitialized()
 	{
 		// base.OnInitialized();
