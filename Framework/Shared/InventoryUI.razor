@@ -8,14 +8,13 @@
 @* @inject IToastService _toastService *@
 
 <div class="horizontal-images">
-    @foreach (string id in InvItems.Keys)
+    @* @foreach (var item in GameState.GetItemObjects()) *@
+    @foreach (var item in GameState.GetItemObjects().Values)
     {
-        
         <div class="image-container">
-            <div class="image-text">@InvItems[id].Description</div>
-            <img src="@InvItems[id].Image">
+            <div class="image-text">@item.Description</div>
+            <img src="@item.Image">
        </div>
-    
     }
     
 </div>
