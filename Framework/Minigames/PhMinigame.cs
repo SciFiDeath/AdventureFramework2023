@@ -11,7 +11,6 @@ public class Material : SVGImage
     public int CorrectY { get; set; }
     public int CurrentX { get; set; } = -1;
     public int CurrentY { get; set; } = -1;
-    public PhMinigame Game { get; set; }
 }
 
 public class PhMinigame : MinigameDefBase
@@ -294,10 +293,10 @@ public class PhMinigame : MinigameDefBase
 
     void AddMaterialToGame(Material material)
     {
-        material.Game = this;
+      
         material.Visible = false;
 
-        material.OnClick = (args) => OnMaterialClick(material, args);
+        material.OnClick = (args) => OnMaterialClick(material);
 
         material.PlaceHolder = new Rectangle()
         {
@@ -307,7 +306,7 @@ public class PhMinigame : MinigameDefBase
             Height = material.Height.Value,
             //Fill = "rgba(255,0,0,.50)",
             Fill = "transparent",
-            OnClick = (args) => OnMaterialClick(material, args)
+            OnClick = (args) => OnMaterialClick(material)
         };
 
         material.HintImage = new SVGImage()
@@ -315,7 +314,7 @@ public class PhMinigame : MinigameDefBase
             Width = material.Width,
             Height = material.Height,
             Image = material.HintImageUrl,
-            OnClick = (args) => OnHintClick(material, args),
+            OnClick = (args) => OnHintClick(material),
             Visible = false
         };
 
@@ -324,7 +323,7 @@ public class PhMinigame : MinigameDefBase
         AddElement(material);
     }
 
-    void OnHintClick(Material material, EventArgs args)
+    void OnHintClick(Material material)
     {
         material.CurrentX = material.CorrectX;
         material.CurrentY = material.CorrectY;
@@ -333,7 +332,7 @@ public class PhMinigame : MinigameDefBase
         CheckIsFinished();
     }
 
-    void OnMaterialClick(Material material, EventArgs args)
+    void OnMaterialClick(Material material)
     {
         material.HintImage.Visible = true;
         material.PlaceHolder.Visible = false;
@@ -392,13 +391,19 @@ public class PhMinigame : MinigameDefBase
 
                 isFinished = false;
                 break;
-            }
+            }          
         }
 
         if (isFinished)
         {
+            foreach(var material in Materials)
+            {
+                material.Visible = false;
+                material.HintImage.Visible = false;
+      
+            }
             BackgroundImage = "images/PhMinigame/edited/FinishedGameBackground.png";
-
+            Update();
             Finish(true);
         }
     }
