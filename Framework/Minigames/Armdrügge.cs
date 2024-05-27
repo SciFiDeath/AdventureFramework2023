@@ -7,7 +7,7 @@ namespace Framework.Minigames.MinigameDefClasses;
 
 public class MyMinigame6 : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "/images/Arm_1.png";
+    public override string BackgroundImage { get; set; } = "/images/Arm_0_F.png";
 
     int enemycounter = 0;
     int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
@@ -19,6 +19,8 @@ public class MyMinigame6 : MinigameDefBase
 
     int circleY = 500;
 
+    int frog1 = 1;
+
     bool gameover = false;
 
     string redcol = "red";
@@ -26,25 +28,79 @@ public class MyMinigame6 : MinigameDefBase
 
     public MyMinigame6()
     {
+        AddElement(
+                     new Rectangle()
+                     {
+                         // Progressbar links (Spieler)
+                         Id = "Frog",
+                         X = 80,
+                         Y = 100,
+                         Width = 160,
+                         Height = 160,
+                         Fill = "transparent",
+                         Stroke = "green",
+                         StrokeWidth = 1,
+                         OnClick = (args) =>
+                         {  //ADDITEM NOCH MACHEN FRAMEWORK UPDATEN
+                             frog1 = 3;
+                             gamestart();
+                             Elements.KillId("StartCircle");
+                             Elements.KillId("Frog");
+                             Update();
+                         }
+
+                     }
+                 );
 
         AddElement(
-              new Rectangle()
+              new Circle()
               {
-                  // Progressbar links (Spieler)
-                  X = 80,
-                  Y = 150,
-                  Width = 150,
-                  Height = 700,
-                  Fill = "transparent",
-                  Stroke = "black",
+                  //Hand zum klicken
+                  Id = "StartCircle",
+                  R = 10,
+                  CX = 800,
+                  CY = 640,
+                  Fill = "yellow",
+                  Stroke = "yellow",
                   StrokeWidth = 40,
+                  OnClick = (args) =>
+                  {
+                      gamestart();
+                      Elements.KillId("StartCircle");
+                      Elements.KillId("Frog");
+                      Update();
+
+                  },
               }
           );
+
+    }
+
+    public void gamestart()
+    {
+
+        BackgroundImage = "/images/Arm_1.png";
+        Update();
+        AddElement(
+             new Rectangle()
+             {
+                 // Progressbar links (Spieler)
+                 Id = "PlayerProg",
+                 X = 80,
+                 Y = 150,
+                 Width = 150,
+                 Height = 700,
+                 Fill = "transparent",
+                 Stroke = "black",
+                 StrokeWidth = 40,
+             }
+         );
 
         AddElement(
               new Rectangle()
               {
                   //Progressbar rechts (Gegner)
+                  Id = "EnemyProg",
                   X = 1375,
                   Y = 150,
                   Width = 150,
@@ -64,7 +120,6 @@ public class MyMinigame6 : MinigameDefBase
         _ = StartEnemyClick();
         Update();
     }
-
     public void circlechanger()
     {
         AddElement(
@@ -148,6 +203,7 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (score == -2)
         {
+
             Elements.KillId("Circle1");
             BackgroundImage = "/images/Arm_3.png";
             gameover = true;
@@ -167,7 +223,7 @@ public class MyMinigame6 : MinigameDefBase
 
     public async Task StartEnemyClick()
     {
-        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(500));
+        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(500 * frog1));
 
         while (enemycounter < 7 && await timer.WaitForNextTickAsync() && gameover == false)
         {
