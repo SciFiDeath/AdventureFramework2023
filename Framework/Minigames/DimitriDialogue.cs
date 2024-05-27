@@ -18,21 +18,11 @@ public class DimitriDialogue : MinigameDefBase
 	public required Rectangle NpcHitBox { get; set;} 
 	
 	List<List<string>> messages = [
-		["player", "Hello"],
+		["npc", "Greeting"],
+		["Player", "Hello"],
 		["npc", "bring me something"],
-		["player", "Hello"],
+		["Player", "Hello"],
 		["npc", "did you bring it?"],
-		["npc", "this text is white"],
-		["npc", "this text is white"],
-		["npc", "this text is white"],
-		["npc", "this text is white"],
-		["npc", "this text is white"],
-		["npc", "this text is white"],
-		["npc", "this text is white"],
-
-
-
-
 
 	];
 

@@ -631,15 +631,39 @@ public class Dialogue {
 	//private readonly DialogueProgress progress;
 	List<List<string>> Messages = [];
 
-	[Element]
-	public Rectangle ForwardDialogue { get; set;} 
-	public Rectangle Quit { get; set;} 
+	List<string> Speakers = [];
+    const int CENTERX = 750;
+	const int CENTERY = 530;
 
-    int TopCenterX = 100;
-	int TopCenterY = 100;
-	public Dialogue (List<List<string>> messages){
+	bool ContainsPlayer;
+
+    public Dialogue (List<List<string>> messages){
 		Messages = messages;
+		Speakers = ExtractUniqueSpeakers(messages);
+		ContainsPlayer = Speakers.Contains("Player");
+		
 	}
+
+	//*****************
+	//HELPER FUNCTIONS
+	//*****************
+
+	private List<string> ExtractUniqueSpeakers(List<List<string>> nestedLists)
+    {
+        HashSet<string> uniqueElements = [];
+        
+        foreach (var nestedList in nestedLists)
+        {
+            if (nestedList.Count > 0)
+            {
+                uniqueElements.Add(nestedList[0]);
+            }
+        }
+        
+        return new List<string>(uniqueElements);
+    }
+
+	
 
 	private int GetLongestMessage(List<List<string>> messages)
 	{
@@ -661,12 +685,17 @@ public class Dialogue {
 		return longestLength;
 	}
 
+	//*****************
+	//DRAWING FUNCTIONS
+	//*****************
+	
+
 	public Image DrawQuitButton (){
 
 		return new Image(){
 			ImagePath = "UI_Images/backImg.png",
 			ZIndex = 6,
-			X = 200,
+			X = 100,
 			Y = 1000,
 			Width = 100,
 			Height = 100,
@@ -679,7 +708,7 @@ public class Dialogue {
 		return new Image(){
 			ImagePath = "UI_Images/arrows/right.png",
 			ZIndex = 6,
-			X = 1000,
+			X = 1400,
 			Y = 1000,
 			Width = 100,
 			Height = 100,
@@ -687,59 +716,116 @@ public class Dialogue {
 
 	}
 
+	private List<int> AutoPlacement(string currentSpeaker){
+
+		if (Speakers.Count == 1){
+			return [CENTERX, CENTERY];
+		}
+
+		if (ContainsPlayer){
+
+			Console.WriteLine("Messages Contains Player");
+
+			if (currentSpeaker == "Player"){
+				return [CENTERX, CENTERY + 300];
+			}
+
+			else {
+				return [CENTERX, CENTERY - 200];
+			}
+
+		}
+		else {
+
+			if (currentSpeaker == Speakers[1]){
+				return [CENTERX, CENTERY + 300];
+			}
+
+			else {
+				return [CENTERX, CENTERY - 200];
+			}
+		}
+	}
 	
-	public GameObjectContainer<SVGElement> DrawSpeechBubble(string speaker, string message)
-{
-    // Initialize the container for the speech bubble elements
-    GameObjectContainer<SVGElement> Bubble = new GameObjectContainer<SVGElement>();
-	int fontSize = 20;
-    int textHeight = fontSize * 2; // Approximate height based on font size
-	int textWidth = GetLongestMessage(Messages) * fontSize / 2;
+	public GameObjectContainer<SVGElement> DrawSpeechBubble(string speaker, string message, bool autoPlacement = true)
+	{
+		int x = CENTERX;
+		int y = CENTERY;
 
-    // Create the rectangle that acts as the text container
-	Rectangle TextContainer = new Rectangle
-    {
-        X = TopCenterX,
-        Y = TopCenterY,
-		ZIndex = 5,
-        Width = textWidth + 20,
-        Height = textHeight + 20,
-        Fill = "white"
+		//Change Position depending on speaker
+		if (autoPlacement){
+			List<int> positions = AutoPlacement(speaker);
+			x = positions[0];
+			y = positions[1];
+		}
+		else{
+			x = 100;
+			y = 100;
+		}
 
-    };
+		// Initialize the container for the speech bubble elements
+		GameObjectContainer<SVGElement> Bubble = new GameObjectContainer<SVGElement>();
+		int fontSize = 20;
+		int textHeight = fontSize * 2; // Approximate height based on font size
+		int textWidth = GetLongestMessage(Messages) * fontSize / 2;
 
-    // Create the text element for the speaker's message
-    Text SpeakerText = new()
-    {
-        InnerText = message,
-        X = TopCenterX,
-        Y = TopCenterY + 20,
-		ZIndex = 6,
+		// Create the rectangle that acts as the text container
+		Rectangle TextContainer = new Rectangle
+		{
+			X = x,
+			Y = y,
+			ZIndex = 4,
+			Width = textWidth + 20,
+			Height = textHeight + 40, // Increased height to accommodate speaker name and message
+			Fill = "white"
+		};
 
-        FontSize = 20,
-        Fill = "black"
-    };
+		// Calculate the widths of the speaker name and message text
+		int speakerTextWidth = speaker.Length * fontSize / 2; // Approximate width based on character count
+		int messageTextWidth = message.Length * fontSize / 2; // Approximate width based on character count
 
-    // Create the text element for the speaker's name
-    Text SpeakerName = new Text
-    {
-        InnerText = speaker,
-        X = TopCenterX,
-        Y = TopCenterY - 20,
-		ZIndex = 5,
-        FontSize = 20,
-        Fill = "white"
-    };
+		// Calculate centered positions
+		int containerCenterX = x + (TextContainer.Width / 2);
+		int containerCenterY = y + (TextContainer.Height / 2);
+
+		// Adjust the vertical positions to ensure spacing and that both texts are inside the rectangle
+		int speakerTextX = containerCenterX - (speakerTextWidth / 2);
+		int speakerTextY = y + 20; // Adjust Y position to be inside the rectangle
+
+		int messageTextX = containerCenterX - (messageTextWidth / 2);
+		int messageTextY = speakerTextY + fontSize + 10; // Position message below speaker name with some spacing
+
+		// Create the text element for the speaker's message
+		Text SpeakerText = new()
+		{
+			InnerText = message,
+			X = messageTextX,
+			Y = messageTextY,
+			ZIndex = 6,
+			FontSize = 20,
+			Fill = "black"
+		};
+
+		// Create the text element for the speaker's name
+		Text SpeakerName = new Text
+		{
+			InnerText = speaker,
+			X = speakerTextX,
+			Y = speakerTextY,
+			ZIndex = 5,
+			FontSize = 20,
+			Fill = "black"
+		};
+
+		// Add elements to the bubble container
+		Bubble.Add(TextContainer);
+		Bubble.Add(SpeakerText);
+		Bubble.Add(SpeakerName);
 
 
-    // Add the elements to the bubble container
-    Bubble.Add(TextContainer);
-    Bubble.Add(SpeakerText);
-    Bubble.Add(SpeakerName);
-
-    // Return the assembled speech bubble
-    return Bubble;
-}
+		// Return the assembled speech bubble
+		return Bubble;
+	}
 
 
 }
