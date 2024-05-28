@@ -1,6 +1,11 @@
+using System.Dynamic;
+using System.Globalization;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using GameStateInventory;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Framework.Minigames;
 
@@ -103,6 +108,7 @@ public abstract class SVGElement : GameObject
 	[Style("opacity")] public double? Opacity { get; set; }
 
 
+	public List<object> Content { get; set; } = [];
 
 
 	public override RenderFragment GetRenderFragment()
@@ -112,6 +118,17 @@ public abstract class SVGElement : GameObject
 			builder.OpenElement(0, TagName);
 			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
 			builder.AddMultipleAttributes(2, GetCallbackDictionary());
+			builder.OpenRegion(3);
+			int i = 0;
+			foreach (var item in Content)
+			{
+				if (item is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
+				else if (item is string s) { builder.AddContent(i, s); }
+				else if (item is MarkupString m) { builder.AddContent(i, m); }
+				else if (item is RenderFragment r) { builder.AddContent(i, r); }
+				i++;
+			}
+			builder.CloseRegion();
 			builder.CloseElement();
 		};
 	}
@@ -322,7 +339,7 @@ public abstract class ShapeElement : SVGElement
 	[Style("fill-opacity")] public double? FillOpacity { get; set; }
 	// stroke stuff
 	[Style("stroke")] public string? Stroke { get; set; }
-	[Style("stroke-width")] public int? StrokeWidth { get; set; }
+	[Style("stroke-width")] public double? StrokeWidth { get; set; }
 	[Style("stroke-opacity")] public double? StrokeOpacity { get; set; }
 }
 
@@ -409,6 +426,14 @@ public class Text : SVGElement
 
 	public string? InnerText { get; set; }
 
+	// if true, only the stuff in Content will be rendered
+	public bool ContentMode { get; set; } = false;
+	// you can put strings, MarkupStrings, RenderFragments and Tspan objects in here
+	// strings will be cast to MarkupStrings during render tree construction
+	// the GetRenderFragment() method of Tspan objects is called automatically during rendering
+	//* Is inherited now
+	// public List<object> Content { get; set; } = [];
+
 	[Html("x")] public int? X { get; set; }
 	[Html("y")] public int? Y { get; set; }
 	[Html("dx")] public int? DX { get; set; }
@@ -433,14 +458,62 @@ public class Text : SVGElement
 
 	public override RenderFragment GetRenderFragment()
 	{
+		// render text as a string
+		if (!ContentMode)
+		{
+			return builder =>
+			{
+				builder.OpenElement(0, TagName);
+				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+				builder.AddAttribute(2, "style", Style);
+				builder.AddMultipleAttributes(3, GetCallbackDictionary());
+				builder.AddContent(4, InnerText);
+				builder.CloseElement();
+			};
+		}
+		else
+		{
+			return builder =>
+			{
+				builder.OpenElement(0, TagName);
+				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
+				builder.AddAttribute(2, "style", Style);
+				builder.AddMultipleAttributes(3, GetCallbackDictionary());
+				// to not worry about numbers
+				builder.OpenRegion(4);
+				int i = 0;
+				foreach (var c in Content)
+				{
+					// cover all the possible conversions, ignore other stuff
+					if (c is string s) { builder.AddContent(i, s); }
+					else if (c is MarkupString m) { builder.AddContent(i, m); }
+					else if (c is RenderFragment r) { builder.AddContent(i, r); }
+					else if (c is Text t) { builder.AddContent(i, t.GetRenderFragment()); }
+					i++;
+				}
+				builder.CloseRegion();
+				builder.CloseElement();
+			};
+		}
+	}
+}
+
+public class Tspan : Text
+{
+	public override string TagName { get; } = "tspan";
+}
+
+// probably useful for text and stuff
+public class RawMarkup : GameObject
+{
+	public string Markup { get; set; } = "";
+
+	public override RenderFragment GetRenderFragment()
+	{
+		Console.WriteLine("hel");
 		return builder =>
 		{
-			builder.OpenElement(0, TagName);
-			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-			builder.AddAttribute(2, "style", Style);
-			builder.AddMultipleAttributes(3, GetCallbackDictionary());
-			builder.AddContent(4, InnerText);
-			builder.CloseElement();
+			builder.AddContent(0, (MarkupString)Markup);
 		};
 	}
 }
@@ -460,5 +533,293 @@ public class Image : SVGElement
 
 	// now inherited
 	// [Callback("onclick")] public Action<EventArgs>? OnClick { get; set; }
+
+}
+
+public class CustomObject : SVGElement
+{
+	public override string TagName { get; } = "div";
+	//* this must be set or it will cause unexpected behaviour
+	public string CustomTagName { get; set; } = null!;
+
+	public Dictionary<string, object> Attributes { get; set; } = [];
+	public Dictionary<string, object> Styles { get; set; } = [];
+	public Dictionary<string, Action<EventArgs>> Callbacks { get; set; } = [];
+
+	//* is inherited now
+	// public List<object> Content { get; set; } = [];
+
+	public new string CustomStyle => GetStyle();
+
+	private string GetStyle()
+	{
+		string str = "";
+		foreach (var kvp in Styles)
+		{
+			str += $"{kvp.Key}: {kvp.Value}; ";
+		}
+		return str;
+	}
+
+	public Dictionary<string, object> GetCallbacks()
+	{
+		Dictionary<string, object> dict = [];
+		foreach (var kvp in Callbacks)
+		{
+			dict.Add(
+				kvp.Key,
+				EventCallback.Factory.Create(this, kvp.Value)
+			);
+		}
+		return dict;
+	}
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(0, CustomTagName);
+			builder.AddMultipleAttributes(1, Attributes);
+			builder.AddAttribute(2, "style", CustomStyle);
+			builder.AddMultipleAttributes(3, GetCallbacks());
+			builder.OpenRegion(4);
+			int i = 0;
+			foreach (var c in Content)
+			{
+				if (c is GameObject g) { builder.AddContent(i, g.GetRenderFragment()); }
+				else if (c is string s) { builder.AddContent(i, s); }
+				else if (c is MarkupString m) { builder.AddContent(i, m); }
+				else if (c is RenderFragment r) { builder.AddContent(i, r); }
+				i++;
+			}
+
+			builder.CloseRegion();
+			builder.CloseElement();
+
+		};
+	}
+}
+
+public class ForeignObject : SVGElement
+{
+	public override string TagName { get; } = "foreignObject";
+
+	[Html("x")] public int? X { get; set; }
+	[Html("y")] public int? Y { get; set; }
+	[Html("width")] public int? Width { get; set; }
+	[Html("height")] public int? Height { get; set; }
+
+	public CustomObject CustomObject { get; set; } = null!;
+
+
+	public override RenderFragment GetRenderFragment()
+	{
+		return builder =>
+		{
+			builder.OpenElement(1, TagName);
+			builder.AddAttribute(2, "x", X);
+			builder.AddAttribute(3, "y", Y);
+			builder.AddAttribute(4, "width", Width);
+			builder.AddAttribute(5, "height", Height);
+			builder.AddContent(6, CustomObject.GetRenderFragment());
+			builder.CloseElement();
+		};
+	}
+}
+
+public class Dialogue {
+	//private readonly DialogueProgress progress;
+	List<List<string>> Messages = [];
+
+	List<string> Speakers = [];
+    const int CENTERX = 750;
+	const int CENTERY = 530;
+
+	bool ContainsPlayer;
+
+    public Dialogue (List<List<string>> messages){
+		Messages = messages;
+		Speakers = ExtractUniqueSpeakers(messages);
+		ContainsPlayer = Speakers.Contains("Player");
+		
+	}
+
+	//*****************
+	//HELPER FUNCTIONS
+	//*****************
+
+	private List<string> ExtractUniqueSpeakers(List<List<string>> nestedLists)
+    {
+        HashSet<string> uniqueElements = [];
+        
+        foreach (var nestedList in nestedLists)
+        {
+            if (nestedList.Count > 0)
+            {
+                uniqueElements.Add(nestedList[0]);
+            }
+        }
+        
+        return new List<string>(uniqueElements);
+    }
+
+	
+
+	private int GetLongestMessage(List<List<string>> messages)
+	{
+		int longestLength = 0;
+
+		foreach (var message in messages)
+		{
+			// Ensure that the nested list has at least two elements
+			if (message.Count >= 2)
+			{
+				int currentLength = message[1].Length;
+				if (currentLength > longestLength)
+				{
+					longestLength = currentLength;
+				}
+			}
+		}
+
+		return longestLength;
+	}
+
+	//*****************
+	//DRAWING FUNCTIONS
+	//*****************
+	
+
+	public Image DrawQuitButton (){
+
+		return new Image(){
+			ImagePath = "UI_Images/backImg.png",
+			ZIndex = 6,
+			X = 100,
+			Y = 1000,
+			Width = 100,
+			Height = 100,
+		};
+
+	}
+
+	public Image DrawForwardButton (){
+		
+		return new Image(){
+			ImagePath = "UI_Images/arrows/right.png",
+			ZIndex = 6,
+			X = 1400,
+			Y = 1000,
+			Width = 100,
+			Height = 100,
+		};
+
+	}
+
+	private List<int> AutoPlacement(string currentSpeaker){
+
+		if (Speakers.Count == 1){
+			return [CENTERX, CENTERY];
+		}
+
+		if (ContainsPlayer){
+
+			Console.WriteLine("Messages Contains Player");
+
+			if (currentSpeaker == "Player"){
+				return [CENTERX, CENTERY + 300];
+			}
+
+			else {
+				return [CENTERX, CENTERY - 200];
+			}
+
+		}
+		else {
+
+			if (currentSpeaker == Speakers[1]){
+				return [CENTERX, CENTERY + 300];
+			}
+
+			else {
+				return [CENTERX, CENTERY - 200];
+			}
+		}
+	}
+	
+	public GameObjectContainer<SVGElement> DrawSpeechBubble(string speaker, string message, bool autoPlacement = true, int x = CENTERX, int y = CENTERY)
+	{
+	
+		//Change Position depending on speaker
+		if (autoPlacement){
+			List<int> positions = AutoPlacement(speaker);
+			x = positions[0];
+			y = positions[1];
+		}
+
+		// Initialize the container for the speech bubble elements
+		GameObjectContainer<SVGElement> Bubble = new GameObjectContainer<SVGElement>();
+		int fontSize = 20;
+		int textHeight = fontSize * 2; // Approximate height based on font size
+		int textWidth = GetLongestMessage(Messages) * fontSize / 2;
+
+		// Create the rectangle that acts as the text container
+		Rectangle TextContainer = new Rectangle
+		{
+			X = x,
+			Y = y,
+			ZIndex = 4,
+			Width = textWidth + 20,
+			Height = textHeight + 40, // Increased height to accommodate speaker name and message
+			Fill = "white"
+		};
+
+		// Calculate the widths of the speaker name and message text
+		int speakerTextWidth = speaker.Length * fontSize / 2; // Approximate width based on character count
+		int messageTextWidth = message.Length * fontSize / 2; // Approximate width based on character count
+
+		// Calculate centered positions
+		int containerCenterX = x + (TextContainer.Width / 2);
+		int containerCenterY = y + (TextContainer.Height / 2);
+
+		// Adjust the vertical positions to ensure spacing and that both texts are inside the rectangle
+		int speakerTextX = containerCenterX - (speakerTextWidth / 2);
+		int speakerTextY = y + 20; // Adjust Y position to be inside the rectangle
+
+		int messageTextX = containerCenterX - (messageTextWidth / 2);
+		int messageTextY = speakerTextY + fontSize + 10; // Position message below speaker name with some spacing
+
+		// Create the text element for the speaker's message
+		Text SpeakerText = new()
+		{
+			InnerText = message,
+			X = messageTextX,
+			Y = messageTextY,
+			ZIndex = 6,
+			FontSize = 20,
+			Fill = "black"
+		};
+
+		// Create the text element for the speaker's name
+		Text SpeakerName = new Text
+		{
+			InnerText = speaker,
+			X = speakerTextX,
+			Y = speakerTextY,
+			ZIndex = 5,
+			FontSize = 20,
+			Fill = "black"
+		};
+
+		// Add elements to the bubble container
+		Bubble.Add(TextContainer);
+		Bubble.Add(SpeakerText);
+		Bubble.Add(SpeakerName);
+
+
+		// Return the assembled speech bubble
+		return Bubble;
+	}
+
 
 }

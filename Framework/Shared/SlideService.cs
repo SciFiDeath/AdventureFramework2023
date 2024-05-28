@@ -1,18 +1,60 @@
 using JsonUtilities;
 using Framework.Slides.JsonClasses;
 using GameStateInventory;
+using FrameworkItems;
 
 namespace Framework.Slides;
 
-public class PositionPresets
+public class SlideService(JsonUtility jsonUtility, GameState gameState, SlidesVerifier slidesVerifier)
 {
+	public readonly Dictionary<string, Dictionary<string, string>> PositionPresets = new()
+	{
 
-}
+		{
+			"left", new()
+			{
+				{"id", "pos-preset-left"},
+				{"x", "0"},
+				{"y", "340"},
+				{"width", "150"},
+				{"height", "400"},
+			}
+		},
+		{
+			"right", new()
+			{
+				{"id", "pos-preset-right"},
+				{"x", "1470"},
+				{"y", "340"},
+				{"width", "150"},
+				{"height", "400"},
+			}
+		},
+		{
+			"top", new()
+			{
+				{"id", "pos-preset-top"},
+				{"x", "610"},
+				{"y", "0"},
+				{"width", "400"},
+				{"height", "150"},
+			}
+		},
+		{
+			"bottom", new()
+			{
+				{"id", "pos-preset-bottom"},
+				{"x", "610"},
+				{"y", "930"},
+				{"width", "400"},
+				{"height", "150"},
+			}
+		}
+	};
 
-public class SlideService
-{
-	private readonly JsonUtility jsonUtility;
-	private readonly GameState gameState;
+	private readonly JsonUtility jsonUtility = jsonUtility;
+	private readonly GameState gameState = gameState;
+	private readonly SlidesVerifier slidesVerifier = slidesVerifier;
 
 	public Dictionary<string, JsonSlide> Slides { get; private set; } = null!;
 
@@ -30,20 +72,43 @@ public class SlideService
 		return slides;
 	}
 
-	public SlideService(JsonUtility jsonUtility, GameState gameState)
+	private async Task<Dictionary<string, JsonSlide>> FetchSlidesListFromFileAsync(string fileListFile)
 	{
-		this.jsonUtility = jsonUtility;
-		this.gameState = gameState;
-		// Slides = FetchSlidesAsync("Slides.json").Result;
-		// InverseSlides = Slides.ToDictionary(x => x.Value, x => x.Key);
+		// get the list of paths
+		var fileList = await jsonUtility.LoadFromJsonAsync<List<string>>(fileListFile);
+		var slidesList = new List<Dictionary<string, JsonSlide>>();
+		// iterate over the paths and fetch the slides
+		foreach (var file in fileList)
+		{
+			slidesList.Add(await FetchSlidesAsync(file));
+		}
+		// merge the dictionaries
+		// will raise Exception if duplicate keys are found
+		try
+		{
+			var slides = slidesList.SelectMany(dict => dict)
+				.ToDictionary(pair => pair.Key, pair => pair.Value);
+			return slides;
+		}
+		catch (ArgumentException e)
+		{
+			throw new SlidesJsonException("Duplicate keys in the slides files", e);
+		}
 	}
 
-	public async Task Init()
+	public async Task Init(bool debugMode = false)
 	{
-		Slides = await FetchSlidesAsync("Slides.json");
+		// Slides = await FetchSlidesAsync("Slides.json");
+
+		Slides = await FetchSlidesListFromFileAsync("slidefiles.json");
 		InverseSlides = Slides.ToDictionary(x => x.Value, x => x.Key);
 		// _initCompletionSource.SetResult(true);
 		CreateGameStateEntries();
+		if (debugMode)
+		{
+			slidesVerifier.VerifySlides(Slides);
+		}
+		gameState.CurrentSlide = GetStartSlideId();
 	}
 
 	public JsonSlide GetSlide(string slideId)
@@ -54,7 +119,7 @@ public class SlideService
 		}
 		catch (KeyNotFoundException)
 		{
-			throw new Exception($"No Slide with Id `{slideId}` found");
+			throw new KeyNotFoundException($"No Slide with Id `{slideId}` found");
 		};
 	}
 
@@ -70,20 +135,30 @@ public class SlideService
 		catch (KeyNotFoundException)
 		{
 			//TODO: Implement ToString in JsonSlide
-			throw new Exception("No Id corresponding to given JsonSlide found");
+			throw new KeyNotFoundException("No Id corresponding to given JsonSlide found");
 		}
 	}
 
-	// As of now, this is quite a useless function, but maybe we can add a flag 
-	// to the Slides.json that makes a slide the first one no matter the order
 	public string GetStartSlideId()
 	{
 		// Console.WriteLine(Slides);
-		return Slides.Keys.First();
+		// return Slides.Keys.First();
 		// return "error";
+		// the slide with a tag "START" is the first slide
+		return Slides.First(
+			x =>
+			{
+				if (x.Value.Tags != null)
+				{
+					return x.Value.Tags.Contains("START");
+				}
+				else
+				{
+					return false;
+				}
+			}
+		).Key;
 	}
-
-	// TODO: Add verify slides function
 
 	public void CreateGameStateEntries()
 	{
@@ -101,11 +176,11 @@ public class SlideService
 				{
 					if (visible)
 					{
-						gameState.AddVisibility($"{slide.Key}.{button.Key}", true);
+						gameState.SetState($"{slide.Key}.{button.Key}", true);
 					}
 					else
 					{
-						gameState.AddVisibility($"{slide.Key}.{button.Key}", false);
+						gameState.SetState($"{slide.Key}.{button.Key}", false);
 					}
 				}
 			}
