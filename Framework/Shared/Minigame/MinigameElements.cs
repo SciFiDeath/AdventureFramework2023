@@ -747,20 +747,14 @@ public class Dialogue {
 		}
 	}
 	
-	public GameObjectContainer<SVGElement> DrawSpeechBubble(string speaker, string message, bool autoPlacement = true)
+	public GameObjectContainer<SVGElement> DrawSpeechBubble(string speaker, string message, bool autoPlacement = true, int x = CENTERX, int y = CENTERY)
 	{
-		int x = CENTERX;
-		int y = CENTERY;
-
+	
 		//Change Position depending on speaker
 		if (autoPlacement){
 			List<int> positions = AutoPlacement(speaker);
 			x = positions[0];
 			y = positions[1];
-		}
-		else{
-			x = 100;
-			y = 100;
 		}
 
 		// Initialize the container for the speech bubble elements
