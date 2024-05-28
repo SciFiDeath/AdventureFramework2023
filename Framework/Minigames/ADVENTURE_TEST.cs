@@ -1,7 +1,8 @@
-//add crit 1/1000 for enemy because it's funny
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using Framework.Sound;
+using Framework.Video;
 
 namespace Framework.Minigames.MinigameDefClasses;
 
@@ -23,10 +24,6 @@ public class MyMinigame1 : MinigameDefBase
     public Rectangle? StatusButton { get; set; }
     public Rectangle? HealButton { get; set; }
 
-    public Circle? AttackButton1Info { get; set; }
-    public Circle? AttackButton2Info { get; set; }
-    public Circle? StatusButtonInfo { get; set; }
-    public Circle? HealingButtonInfo { get; set; }
     [Element]
     public Image? MenuBar { get; set; }
     [Element]
@@ -93,6 +90,14 @@ public class MyMinigame1 : MinigameDefBase
             await VillanAttack();
             Update();
             await Task.Delay(2000);
+            if (PlayerHealth <= 0)
+            {
+                Finish(null, "Placeholder.cs");
+            }
+            else if (VillanHealth <= 0)
+            {
+                Finish(null, "Placeholder.cs");
+            }
         }
 
     }
@@ -160,12 +165,17 @@ public class MyMinigame1 : MinigameDefBase
 
 
     }
+    public async Task PlayAudio(string path)
+    {
+        await SoundService.PlaySound(path);
+    }
     async public void Healing()
     {
 
         //RequireItem=Id für Red Bulls
         BackgroundImage = "/images/Edited/RedbullFromBoss_2.png";
         Update();
+        await PlayAudio("/images/BattleUI/drink.wav");
         await Task.Delay(1000);
         BackgroundImage = "/images/Edited/DrinkRedbull.png";
         Update();
@@ -196,6 +206,7 @@ public class MyMinigame1 : MinigameDefBase
             {
                 BackgroundImage = "/images/Edited/PunchFromBoss_1.png";
             }
+            await PlayAudio("/images/BattleUI/punch.wav");
             Update();
             await Task.Delay(250);
             PlayerHealth -= rand.Next(10, 21);
@@ -220,6 +231,7 @@ public class MyMinigame1 : MinigameDefBase
     {
 
         var rand = new Random();
+        await PlayAudio("/images/BattleUI/punch.wav");
         BackgroundImage = "/images/Edited/Right_Punch.png";
         Update();
         await Task.Delay(2000);
@@ -246,6 +258,7 @@ public class MyMinigame1 : MinigameDefBase
     {
 
         var rand = new Random();
+        await PlayAudio("/images/BattleUI/punch.wav");
         BackgroundImage = "/images/Edited/LeftKickAndRightPunch.png";
         Update();
         await Task.Delay(2000);
@@ -263,7 +276,7 @@ public class MyMinigame1 : MinigameDefBase
 
     async public void Status_Attack()
     {
-
+        await PlayAudio("/images/BattleUI/push.wav");
         var rand = new Random();
         BackgroundImage = "/images/Edited/PushBoss.png";
         Update();
@@ -293,7 +306,7 @@ public class MyMinigame1 : MinigameDefBase
             Height = 75,
             Fill = "lightgrey",
             FillOpacity = 0,
-            OnMouseEnter = async (args) => AttackButton1.FillOpacity = 0.3,
+            OnMouseEnter = async (args) => AttackButton1.FillOpacity = 0.3, //jetzt noch OnEnter die Info erscheint
             OnMouseLeave = async (args) => AttackButton1.FillOpacity = 0,
             OnClick = async (args) =>
             {
@@ -310,6 +323,7 @@ public class MyMinigame1 : MinigameDefBase
                     AttackButton1.Y -= 5;
                     Update();
                     Attack_1();
+                    PlayAudio("");
                     Update();
                 }
                 else if (TaskComplete == true)
