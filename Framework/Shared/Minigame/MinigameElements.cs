@@ -835,9 +835,4 @@ public class Dialogue
 		// Return the assembled speech bubble
 		return Bubble;
 	}
-		// Return the assembled speech bubble
-		return Bubble;
-	}
-
-
 }
