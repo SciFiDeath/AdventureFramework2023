@@ -1,68 +1,89 @@
 using System.Data;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Framework.Minigames.MinigameDefClasses;
 
 public class MinigameTut : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "images/IMG_2457.JPG";
-
+    public int errorsspotted { get; set; } = 0;
+    public override string BackgroundImage { get; set; } = "images/IMG_2455.JPG";
     [Element]
-    public Rectangle Rect { get; set; }
+    public Rectangle Rects { get; set; }
+    public Rectangle newRect { get; set; }
+
+    [Element] public Rectangle Error0 { get; set; }
+    [Element] public Rectangle Error1 { get; set; }
+    [Element] public Rectangle Error2 { get; set; }
+    [Element] public Rectangle Error3 { get; set; }
+    [Element] public Rectangle Error4 { get; set; }
+    [Element] public Rectangle Error5 { get; set; }
+    [Element] public Rectangle Error6 { get; set; }
+    [Element] public Rectangle Error7 { get; set; }
+    [Element] public Rectangle Error8 { get; set; }
+    [Element] public Rectangle Error9 { get; set; }
+
+    public GameObjectContainer<Rectangle> Errors { get; set; } = new();
+
     public MinigameTut()
     {
 
-        Rect = new()
-        {
-            Id = "Box",
-            X = 1500,
-            Y = 0,
-            Width = 300,
-            Height = 250,
-            Fill = "red"
-            
-        };
-        var right = new Rectangle()
+        Rects = new()
         {
             X = 1818,
-            Y = 40,
+            Y = 200,
             Width = 100,
-            Height = 1000,
-            Fill = "#ffff9380",
-            OnClick = (args) => nextpage(args)
+            Height = 600,
+            Fill = "red",
+            OnClick = (args) => errorspage(args)
         };
-        AddElement(right);
-        var Rect1 = new Rectangle()
-        {
-            X = 1400,
-            Y = 330,
-            Width = 100,
-            Height = 200,
-            Fill = "red"
-        };
-        AddElement(Rect1);
-        var Rect2 = new Rectangle()
-        {
-            X = 1230,
-            Y = 400,
-            Width = 70,
-            Height = 150,
-            Fill = "red"
-        };
-        AddElement(Rect2);
-        var Rect3 = new Rectangle()
-        {
-            X = 1400,
-            Y = 330,
-            Width = 100,
-            Height = 200,
-            Fill = "red"
-        };
-        AddElement(Rect3);
     }
-    private void nextpage(EventArgs e)
+    public void errorspage(EventArgs e)
+    {
+        BackgroundImage = "images/IMG_2457.jpg";
+        Update();
+        newRect = new()
+        {
+            X = 0,
+            Y = 200,
+            Width = 100,
+            Height = 600,
+            Fill = "red",
+            OnClick = (args) => originalpage(args)
+        };
+        AddElement(newRect);
+        Rects.Kill();
+        Error0 = new()
+        {
+            X = 1280,
+            Y = 10,
+            Width = 250,
+            Height = 250,
+            Fill = "white",
+        };
+        Errors.Add(Error0);
+
+        foreach (var error in Errors)
+        {
+            error.Value.OnClick = (args) => Elements.KillId(error.key);
+        }
+        
+        Update();
+    }
+    public void originalpage(EventArgs e)
     {
         BackgroundImage = "images/IMG_2455.jpg";
         Update();
+        Rects = new()
+        {
+            X = 1818,
+            Y = 200,
+            Width = 100,
+            Height = 600,
+            Fill = "red",
+            OnClick = (args) => errorspage(args)
+        };
+        AddElement(Rects);
+        newRect.Kill();
+        Error0.Kill();
     }
 }
-
