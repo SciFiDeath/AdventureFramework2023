@@ -181,7 +181,7 @@ public class MyMinigame1 : MinigameDefBase
         Update();
         await Task.Delay(1500);
         BackgroundImage = "/images/Edited/FightPoitionToPunch_2.png";
-        PlayerHealth = PlayerHealth + 25;
+        PlayerHealth = PlayerHealth + 30;
         if (PlayerHealth > 100)
         {
             PlayerHealth = 100;
@@ -209,7 +209,7 @@ public class MyMinigame1 : MinigameDefBase
             await PlayAudio("/images/BattleUI/punch.wav");
             Update();
             await Task.Delay(250);
-            PlayerHealth -= rand.Next(10, 21);
+            PlayerHealth -= rand.Next(10, 16);
             Health_Bar();
             Update();
             await Task.Delay(1500);
