@@ -22,14 +22,27 @@ public class MyMinigame1 : MinigameDefBase
     public Rectangle? AttackButton2 { get; set; }
     public Rectangle? StatusButton { get; set; }
     public Rectangle? HealButton { get; set; }
+
     public Circle? AttackButton1Info { get; set; }
     public Circle? AttackButton2Info { get; set; }
     public Circle? StatusButtonInfo { get; set; }
     public Circle? HealingButtonInfo { get; set; }
     [Element]
+    public Image? MenuBar { get; set; }
+    [Element]
     public Rectangle? HealthBar { get; set; }
     [Element]
     public Rectangle? Villan_HealthBar { get; set; }
+    [Element]
+    public Rectangle? Blend { get; set; }
+    [Element]
+    public Rectangle? Blend2 { get; set; }
+    [Element]
+    public Rectangle? Blend3 { get; set; }
+    [Element]
+    public Text? PlayerHPText { get; set; }
+    [Element]
+    public Text? VillanHPText { get; set; }
     public GameObjectContainer<Rectangle> buttons { get; set; } = new(); //pokemon UI 
     public GameObjectContainer<Rectangle> moving_rects { get; set; } = new(); //bilder 
     public GameObjectContainer<Rectangle> decoration { get; set; } = new();
@@ -42,8 +55,8 @@ public class MyMinigame1 : MinigameDefBase
     public GameObjectContainer<Text> moving_rects2 { get; set; } = new(); //bilder 
     public GameObjectContainer<Text> decoration2 { get; set; } = new();
 
-    public int VillanHealth = 100; //default 500
-    public int VillanHealth2 = 100;
+    public int VillanHealth = 300; //default 300
+    public int VillanHealth2 = 300;
     public int PlayerHealth = 100;
     public int PlayerHealth2 = 100;
     public bool TaskComplete = false;
@@ -190,10 +203,10 @@ public class MyMinigame1 : MinigameDefBase
             Update();
             await Task.Delay(1500);
             BackgroundImage = "/images/Edited/FightPoitionToPunch_2.png";
-            AttackButton1.Fill = "blue";
-            AttackButton2.Fill = "blue";
-            StatusButton.Fill = "blue";
-            HealButton.Fill = "blue";
+            Infotext4.Fill = "black";
+            Infotext.Fill = "black";
+            Infotext2.Fill = "black";
+            Infotext3.Fill = "black";
             Update();
             TaskComplete = false;
         }
@@ -247,6 +260,7 @@ public class MyMinigame1 : MinigameDefBase
         AttackBuff = 1;
         TaskComplete = true;
     }
+
     async public void Status_Attack()
     {
 
@@ -268,57 +282,28 @@ public class MyMinigame1 : MinigameDefBase
     }
     public MyMinigame1()
     {
-        AttackButton1Info = new()
-        {
-            Id = "2ADSFG7301573",
-            R = 10,
-            CX = 750,
-            ZIndex = 0,
-            CY = 800,
-            PathLength = 50,
-            Fill = "red",
-            OnClick = async (args) =>
-            {
-                Infotext5 = new()
-                {
-                    Id = "23z4546354534t27354542793",
-                    InnerText = "80% 5*multiplier",
-                    X = 450,
-                    Y = 950,
-                    DX = 50,
-                    DY = 100,
-                    ZIndex = 1,
-                    Fill = "white",
-                    Rotate = 0,
-                    TextLength = 300,
-                    FontSize = 11,
-                    StretchLetters = false,
-                    FontFamily = "Goudy Bookletter 1911",
-                };
-                AddElement(Infotext5);
-                Update();
-            }
-        };
-        AddElement(AttackButton1Info);
 
         AttackButton1 = new()
         {
             Id = "2ADSFG",
             X = 450,
-            Y = 800,
-            ZIndex = 0,
+            Y = 880,
+            ZIndex = 2,
             Width = 300,
-            Height = 100,
-            Fill = "blue",
+            Height = 75,
+            Fill = "lightgrey",
+            FillOpacity = 0,
+            OnMouseEnter = async (args) => AttackButton1.FillOpacity = 0.3,
+            OnMouseLeave = async (args) => AttackButton1.FillOpacity = 0,
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
                 {
                     TaskComplete = true;
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
                     AttackButton1.Y += 5;
                     Update();
                     await Task.Delay(50);
@@ -329,10 +314,10 @@ public class MyMinigame1 : MinigameDefBase
                 }
                 else if (TaskComplete == true)
                 {
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
                     Update();
                 }
 
@@ -341,56 +326,29 @@ public class MyMinigame1 : MinigameDefBase
         moving_rects.Add(AttackButton1);
         AddElement(AttackButton1);
 
-        AttackButton2Info = new()
-        {
-            Id = "2ADSFG730157332235423543454723947",
-            R = 50,
-            CX = 1150,
-            CY = 800,
-            PathLength = 50,
-            Fill = "red",
-            OnClick = async (args) =>
-            {
-                Infotext6 = new()
-                {
-                    Id = "23z75427434353542353425223532556345693",
-                    ContentMode = false,
-                    InnerText = "30% 20*multiplier",
-                    X = 450,
-                    Y = 950,
-                    DX = 50,
-                    DY = 100,
-                    ZIndex = 1,
-                    Fill = "white",
-                    Rotate = 0,
-                    // TextLength = 300
-                    FontSize = 11,
-                    StretchLetters = false,
-                    FontFamily = "Goudy Bookletter 1911",
-                };
-                AddElement(Infotext6);
-                Update();
-            }
-        };
+
 
         AttackButton2 = new()
         {
             Id = "rectbutton55",
             X = 850,
-            Y = 800,
-            ZIndex = 0,
+            Y = 880,
+            ZIndex = 2,
             Width = 300,
-            Height = 100,
-            Fill = "blue",
+            Height = 75,
+            Fill = "lightgrey",
+            FillOpacity = 0.3,
+            OnMouseEnter = async (args) => AttackButton2.FillOpacity = 0.3,
+            OnMouseLeave = async (args) => AttackButton2.FillOpacity = 0,
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
                 {
                     TaskComplete = true;
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
                     AttackButton2.Y += 5;
                     Update();
                     await Task.Delay(50);
@@ -401,68 +359,42 @@ public class MyMinigame1 : MinigameDefBase
                 }
                 else if (TaskComplete == true)
                 {
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
                     Update();
                 }
             }
         };
 
+
         moving_rects.Add(AttackButton2);
         AddElement(AttackButton2);
 
-        StatusButtonInfo = new()
-        {
-            Id = "2ADSFG7301573324723947",
-            R = 50,
-            CX = 750,
-            CY = 950,
-            PathLength = 50,
-            Fill = "red",
-            OnClick = async (args) =>
-            {
-                Infotext7 = new()
-                {
-                    Id = "23z75424575638235235235235793",
-                    ContentMode = false,
-                    InnerText = "90% multiplier+=1",
-                    X = 450,
-                    Y = 950,
-                    DX = 50,
-                    DY = 100,
-                    ZIndex = 1,
-                    Fill = "white",
-                    Rotate = 0,
-                    //TextLength = 300,
-                    FontSize = 11,
-                    StretchLetters = false,
-                    FontFamily = "Goudy Bookletter 1911",
-                };
-                AddElement(Infotext7);
-                Update();
-            }
-        };
+
 
         StatusButton = new()
         {
             Id = "statusrect2345151",
             X = 450,
-            Y = 950,
+            Y = 980,
             Width = 300,
-            Height = 100,
-            ZIndex = 0,
-            Fill = "blue",
+            Height = 75,
+            ZIndex = 2,
+            Fill = "lightgrey",
+            FillOpacity = 0.3,
+            OnMouseEnter = async (args) => StatusButton.FillOpacity = 0.3,
+            OnMouseLeave = async (args) => StatusButton.FillOpacity = 0,
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
                 {
                     TaskComplete = true;
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
                     StatusButton.Y += 5;
                     Update();
                     await Task.Delay(50);
@@ -473,10 +405,10 @@ public class MyMinigame1 : MinigameDefBase
                 }
                 else if (TaskComplete == true)
                 {
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
                     Update();
                 }
             }
@@ -489,18 +421,16 @@ public class MyMinigame1 : MinigameDefBase
         {
             Id = "23z75425647563341525235234323423445654793",
             ContentMode = false,
-            InnerText = "Schubser",
-            X = 450,
-            Y = 950,
-            DX = 50,
-            DY = 100,
+            InnerText = "Push",
+            X = 535,
+            Y = 1035,
             ZIndex = 1,
-            Fill = "white",
+            Fill = "black",
             Rotate = 0,
-            TextLength = 300,
-            FontSize = 11,
+            FontSize = 50,
             StretchLetters = false,
             FontFamily = "Goudy Bookletter 1911",
+
         };
         AddElement(Infotext);
         Update();
@@ -510,15 +440,13 @@ public class MyMinigame1 : MinigameDefBase
             Id = "23z7544566723235235235345121534552793",
             ContentMode = false,
             InnerText = "RedBull",
-            X = 850,
-            Y = 950,
-            DX = 50,
-            DY = 100,
+            X = 920,
+            Y = 1035,
             ZIndex = 1,
-            Fill = "white",
+            Fill = "black",
             Rotate = 0,
-            TextLength = 300,
-            FontSize = 11,
+
+            FontSize = 50,
             StretchLetters = false,
             FontFamily = "Goudy Bookletter 1911",
         };
@@ -529,16 +457,16 @@ public class MyMinigame1 : MinigameDefBase
         {
             Id = "22352533z7542512412423423145431256z5472793",
             ContentMode = false,
-            InnerText = "Kick",
-            X = 450,
-            Y = 800,
+            InnerText = "Punch",
+            X = 475,
+            Y = 835,
             DX = 50,
             DY = 100,
             ZIndex = 1,
-            Fill = "white",
+            Fill = "black",
             Rotate = 0,
-            TextLength = 300,
-            FontSize = 11,
+
+            FontSize = 50,
             StretchLetters = false,
             FontFamily = "Goudy Bookletter 1911",
         };
@@ -549,16 +477,16 @@ public class MyMinigame1 : MinigameDefBase
         {
             Id = "143152352125t2362451413z75434557656442793",
             ContentMode = false,
-            InnerText = "Strong Punch",
-            X = 850,
-            Y = 800,
+            InnerText = "Kick",
+            X = 900,
+            Y = 835,
             DX = 50,
             DY = 100,
             ZIndex = 1,
-            Fill = "white",
+            Fill = "black",
             Rotate = 0,
-            TextLength = 300,
-            FontSize = 11,
+
+            FontSize = 50,
             StretchLetters = false,
             FontFamily = "Goudy Bookletter 1911",
         };
@@ -566,56 +494,27 @@ public class MyMinigame1 : MinigameDefBase
         Update();
 
 
-        HealingButtonInfo = new()
-        {
-            Id = "2ADSFG730157332472394716347576914365",
-            R = 50,
-            CX = 1150,
-            CY = 950,
-            PathLength = 50,
-            Fill = "red",
-            OnClick = async (args) =>
-            {
-                Infotext8 = new()
-                {
-                    Id = "23z252453754223472312543145134465t5243593",
-                    ContentMode = false,
-                    InnerText = "Heal 50",
-                    X = 450,
-                    Y = 950,
-                    DX = 50,
-                    DY = 100,
-                    ZIndex = 1,
-                    Fill = "white",
-                    Rotate = 0,
-                    TextLength = 300,
-                    FontSize = 11,
-                    StretchLetters = false,
-                    FontFamily = "Goudy Bookletter 1911",
-                };
-                AddElement(Infotext8);
-                Update();
-            }
-        };
-
         HealButton = new()
         {
             Id = "healrect777151",
             X = 850,
-            Y = 950,
-            ZIndex = 0,
+            Y = 980,
+            ZIndex = 2,
             Width = 300,
-            Height = 100,
-            Fill = "blue",
+            Height = 75,
+            Fill = "lightgrey",
+            FillOpacity = 0,
+            OnMouseEnter = async (args) => HealButton.FillOpacity = 0.3,
+            OnMouseLeave = async (args) => HealButton.FillOpacity = 0,
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
                 {
                     TaskComplete = true;
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
 
                     HealButton.Y += 5;
                     Update();
@@ -628,10 +527,10 @@ public class MyMinigame1 : MinigameDefBase
                 }
                 else if (TaskComplete == true)
                 {
-                    AttackButton1.Fill = "grey";
-                    AttackButton2.Fill = "grey";
-                    StatusButton.Fill = "grey";
-                    HealButton.Fill = "grey";
+                    Infotext4.Fill = "grey";
+                    Infotext.Fill = "grey";
+                    Infotext2.Fill = "grey";
+                    Infotext3.Fill = "grey";
                     Update();
                 }
             }
@@ -646,7 +545,8 @@ public class MyMinigame1 : MinigameDefBase
             Y = 750,
             Width = PlayerHealth * 7 / 2,
             Height = 35,
-            Fill = "green"
+            Fill = "green",
+            ZIndex = 1
         };
 
         Villan_HealthBar = new()
@@ -658,5 +558,63 @@ public class MyMinigame1 : MinigameDefBase
             Height = VillanHealth * 2,
             Fill = "red"
         };
+
+        MenuBar = new()
+        {
+            Id = "menu4526146276",
+            X = 400,
+            Y = 770,
+            ZIndex = -1,
+            Width = 1200,
+            Height = 400,
+            ImagePath = "/images/BattleUI/Menu.png"
+        };
+        Blend = new()
+        {
+            Id = "beldninidn",
+            X = 1230,
+            Y = 880,
+            Width = 335,
+            Height = 175,
+            ZIndex = -1,
+            Fill = "white"
+        };
+        Blend2 = new()
+        {
+            Id = "b23525n",
+            X = 40,
+            Y = 695,
+            Width = 370,
+            Height = 100,
+            ZIndex = -1,
+            Fill = "white"
+        };
+        Blend3 = new()
+        {
+            Id = "b223gerg5n",
+            X = 1435,
+            Y = 40,
+            Width = 80,
+            Height = 620,
+            ZIndex = -1,
+            Fill = "white"
+        };
+        PlayerHPText = new()
+        {
+            Id = "dqefwei3319",
+            ContentMode = false,
+            InnerText = "Player",
+            X = 100,
+            Y = 735,
+            ZIndex = 1,
+            Fill = "black",
+            Rotate = 0,
+
+            FontSize = 50,
+            StretchLetters = false,
+            FontFamily = "Goudy Bookletter 1911",
+        };
+
+
     }
 }
