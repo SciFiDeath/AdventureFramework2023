@@ -35,7 +35,22 @@ public interface IGameState
 	string GetSaveString();
 }
 
-public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState
+// interface for the minigames so that they don't accidentally overwrite everything
+// they can still brick everything tho, but they have to try harder
+public interface IMinigameGameState
+{
+	void SetState(string name, bool value);
+	bool GetState(string name);
+	bool CheckForState(string name);
+	bool TryGetState(string name, out bool value);
+	void ToggleState(string name);
+	bool TryToggleState(string name);
+	void AddItem(string id);
+	void RemoveItem(string id);
+	bool CheckForItem(string id);
+}
+
+public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState, IMinigameGameState
 {
 	// dependencies
 	private readonly IToastService ToastService = toastService;
@@ -164,6 +179,22 @@ public class GameStateData
 	public List<string> Items { get; set; } = [];
 	public Dictionary<string, bool> GameState { get; set; } = [];
 	public string CurrentSlide { get; set; } = "";
+
+	//public Dictionary<string, Dictionary<string, > DialogueProgress {get; set;} = [];
 }
 
+public class DialogueProgress
+{
+
+	public string QuestName { get; set; }
+	public List<List<string>> Messages { get; set; }
+	public int Progress { get; set; }
+	public DialogueProgress(string questName, List<List<string>> messages, int progress)
+	{
+		QuestName = questName;
+		Messages = messages;
+		Progress = progress;
+	}
+
+}
 

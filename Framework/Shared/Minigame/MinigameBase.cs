@@ -5,6 +5,7 @@ using GameStateInventory;
 using Framework.Keyboard;
 using Framework.Mouse;
 using Framework.Sound;
+using Framework.Video;
 
 namespace Framework.Minigames;
 
@@ -84,6 +85,9 @@ public class MinigameBase : ComponentBase
 	[Inject]
 	public SoundService SoundService { get; set; } = null!;
 
+	[Inject]
+	public VideoService VideoService { get; set; } = null!;
+
 	[Parameter]
 	public string MinigameDefClass { get; set; } = null!;
 
@@ -125,6 +129,7 @@ public class MinigameBase : ComponentBase
 			MinigameDef.KeyboardService = KeyboardService;
 			MinigameDef.MouseService = MouseService;
 			MinigameDef.SoundService = SoundService;
+			MinigameDef.VideoService = VideoService;
 
 			// Run the Init method
 			MinigameDef.Init();
@@ -152,11 +157,12 @@ public abstract class MinigameDefBase
 
 	public abstract string BackgroundImage { get; set; }
 
-	public GameState GameState { get; set; } = null!;
+	public IMinigameGameState GameState { get; set; } = null!;
 	public IKeyboardService KeyboardService { get; set; } = null!;
 	public IMouseService MouseService { get; set; } = null!;
 
-	public SoundService SoundService { get; set; } = null!;
+	public ISoundService SoundService { get; set; } = null!;
+	public IVideoService VideoService { get; set; } = null!;
 
 	public void Init()
 	{
@@ -232,6 +238,9 @@ public abstract class MinigameDefBase
 		MouseService.OnMouseDown -= OnMouseDown;
 		MouseService.OnMouseUp -= OnMouseUp;
 
+		// stop the mouse tracking
+		MouseService.SetDelay(-1);
+
 		// Stop the GameLoop
 		Cts.Cancel();
 		Cts.Dispose();
@@ -279,6 +288,16 @@ public abstract class MinigameDefBase
 	public void AddElement(GameObject element)
 	{
 		Elements.Add(element);
+	}
+
+	public void AddElementsInContainer(GameObjectContainer<SVGElement> container)
+	{
+		SVGElement[] elements = container.Values;
+
+		foreach (SVGElement element in elements)
+		{
+			Elements.Add(element);
+		}
 	}
 
 }
