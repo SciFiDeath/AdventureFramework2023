@@ -11,10 +11,13 @@
     @* @foreach (var item in GameState.GetItemObjects()) *@
     @foreach (var item in GameState.GetItemObjects().Values)
     {
-        <div class="image-container">
-            <div class="image-text">@item.Description</div>
-            <img src="@item.Image">
-       </div>
+        <div class="item-container">
+            <img class="image" src="@item.Image">
+            <div class="text-container">
+                <div class="title">@item.Name</div>
+                <div class="description">@item.Description</div>
+        </div>
+        </div>
     }
     
 </div>
