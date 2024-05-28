@@ -11,6 +11,8 @@ public class Material : SVGImage
     public int CorrectY { get; set; }
     public int CurrentX { get; set; } = -1;
     public int CurrentY { get; set; } = -1;
+    //public Text Explanation { get; set; }
+
 }
 
 public class PhMinigame : MinigameDefBase
@@ -293,7 +295,7 @@ public class PhMinigame : MinigameDefBase
 
     void AddMaterialToGame(Material material)
     {
-      
+
         material.Visible = false;
 
         material.OnClick = (args) => OnMaterialClick(material);
@@ -320,6 +322,7 @@ public class PhMinigame : MinigameDefBase
 
         AddElement(material.PlaceHolder);
         AddElement(material.HintImage);
+        
         AddElement(material);
     }
 
@@ -362,14 +365,12 @@ public class PhMinigame : MinigameDefBase
 
         HideHint(material);
     }
-
     void PlaceMaterialTo(Material material, int x, int y)
     {
         PlaceImageToWhiteBoardCenter(material, WhiteBoardRectangles[x, y]);
         material.CurrentX = x;
         material.CurrentY = y;
     }
-
     public void PlaceImageToWhiteBoardCenter(SVGImage image, Rectangle whiteBoard)
     {
         image.X = whiteBoard.X + whiteBoard.Width / 2 - image.Width / 2;
@@ -391,20 +392,20 @@ public class PhMinigame : MinigameDefBase
 
                 isFinished = false;
                 break;
-            }          
+            }
         }
 
         if (isFinished)
         {
-            foreach(var material in Materials)
+            foreach (var material in Materials)
             {
                 material.Visible = false;
                 material.HintImage.Visible = false;
-      
+
             }
             BackgroundImage = "images/PhMinigame/edited/FinishedGameBackground.png";
-            Update();
             Finish(true);
+            Update();
         }
     }
 }
