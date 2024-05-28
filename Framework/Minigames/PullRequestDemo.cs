@@ -11,7 +11,7 @@ public class Demo : MinigameDefBase
 	{
 		Rect.X += 20;
 		Update();
-		if (Rect.X > 300)
+		if (Rect.X > 600)
 		{
 			Finish(null, "HM305Beamer");
 		}
