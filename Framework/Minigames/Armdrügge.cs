@@ -203,7 +203,8 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (score == -2)
         {
-
+            Elements.KillId("EnemyProg");
+            Elements.KillId("PlayerProg");
             Elements.KillId("Circle1");
             BackgroundImage = "/images/Arm_3.png";
             gameover = true;
@@ -211,7 +212,9 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (score == 2)
         {
-
+            Task.Delay(50);
+            Elements.KillId("EnemyProg");
+            Elements.KillId("PlayerProg");
             BackgroundImage = "/images/Arm_5.png";
             redcol = "transparent";
             gameover = true;
