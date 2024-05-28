@@ -1,7 +1,7 @@
 using Framework.Slides;
 using Microsoft.AspNetCore.Components;
 using Framework.Game.Parameters;
-using GameStateInventory;
+using Framework.State;
 using Framework.Sound;
 
 
