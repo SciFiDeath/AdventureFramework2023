@@ -58,16 +58,16 @@ public class MinigameTut : MinigameDefBase
             Y = 10,
             Width = 250,
             Height = 250,
-            Fill = "transperant",
-            OnClick = (args) => spotted(Error0.X, Error0.Y, Error0.Width, Error0.Height)
+            Fill = "#0000ffff",
+            OnClick = (args) => ChangeColor(args, Error0)
 
         };
-        AddElement(Error0);
+        Errors.Add(Error0);
 
-        foreach (var error in Errors)
-        {
-            error.Value.OnClick = (args) => Elements.KillId(error.key);
-        }
+        //foreach (var error in Errors)
+        //{
+        //    error.Value.OnClick = (args) => Elements.KillId(error.key);
+        //}
 
         Update();
     }
@@ -86,19 +86,25 @@ public class MinigameTut : MinigameDefBase
         };
         AddElement(Rects);
         newRect.Kill();
-        Error0.Kill();
-    }
-    public void spotted(int? x, int? y, int width, int height)
-    {
 
-        var rect = new Rectangle()
-        { 
-            X = x, 
-            Y = y,
-            Width = width,
-            Height = height,
-            Fill = "red"
-        }; 
+        Update();
     }
-    
+    //public void spotted(int? x, int? y, int width, int height)
+    //{
+
+    //    var rect = new Rectangle()
+    //    { 
+    //        X = x, 
+    //        Y = y,
+    //        Width = width,
+    //        Height = height,
+    //        Fill = "red"
+    //    }; 
+    //}
+    public void ChangeColor(EventArgs e ,Rectangle rect)
+    {
+        rect.Fill = "white";
+        Update();
+    }
+
 }
