@@ -23,7 +23,7 @@ public class MinigameTut : MinigameDefBase
     [Element] public Rectangle Error8 { get; set; }
     [Element] public Rectangle Error9 { get; set; }
 
-    
+
 
     public MinigameTut()
     {
@@ -54,25 +54,33 @@ public class MinigameTut : MinigameDefBase
         };
         AddElement(newRect);
         Rects.Kill();
+        bool found = false;
         Error0 = new()
         {
-            Id = "box",
-            X = 1280,
+            X = 1200,
             Y = 10,
-            Width = 250,
+            Width = 350,
             Height = 250,
-            Fill = "white",
-            OnClick = (args) => Error0.Visible = false;
+            Fill = "transparent",
+            OnClick = (args) => ChangeColor(args, Error0)
 
-    };
+        };
         Errors.Add(Error0);
         AddElement(Error0);
         Update();
-        //foreach (var error in Errors)
-        //{
-        //    error.Value.OnClick = (args) => Elements.KillId(error.Key);
-        //}
+        Error1 = new()
+        {
+            X = 1000,
+            Y = 350,
+            Width = 110,
+            Height = 240,
+            Fill = "transparent",
+            OnClick = (args) => ChangeColor(args, Error1)
 
+        };
+        Errors.Add(Error1);
+        AddElement(Error1);
+        Update();
     }
     public void originalpage(EventArgs e)
     {
@@ -90,6 +98,7 @@ public class MinigameTut : MinigameDefBase
         AddElement(Rects);
         newRect.Kill();
         Update();
+        //Error0.Kill();
     }
     //public void spotted(EventArgs e, int? x, int? y, int width, int height, Rectangle rect)
     //{
@@ -105,13 +114,32 @@ public class MinigameTut : MinigameDefBase
     //    AddElement(rectspot);
     //}
 
-    //public void ChangeColor(EventArgs e, Rectangle rect)
+    public void ChangeColor(EventArgs e, Rectangle rect)
+    {
+        rect.Fill = "rgba(0,255,0,.5)";
+        Update();
+        errorsspotted++;
+        endgame();
+    }
+    public void endgame() 
+    {
+        if (errorsspotted == 2) 
+        {
+            Finish(null, "test");
+        }
+    }
+    //public string? color(bool i)
     //{
-    //    rect = new()
+    //    if (i == false)
     //    {
-    //        Fill = "red"
-    //    };
+    //        return "red";
+    //    }
+    //    else { return "white"; }
     //    Update();
-    ////}
-
+    //}
 }
+////    public void foundfun (EventArgs e, bool i)
+////    {
+////        i = true;
+////    }
+////}
