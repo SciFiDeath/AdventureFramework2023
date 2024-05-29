@@ -115,7 +115,9 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 
 		if (!removed)
 		{
-			throw new ArgumentException($"Element {id} is not in Inventory");
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is not in Inventory");
 		}
 		// Console.WriteLine($"Successfully removed {id} from inventory");
 		ToastService.ShowSuccess($"Removed {Items.items[id].Name} from inventory");
@@ -132,7 +134,9 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 		// make sure there are no duplicates
 		if (ItemsInInventory.Contains(id))
 		{
-			throw new ArgumentException($"Element {id} is already in Inventory");
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is already in Inventory");
 		}
 		ItemsInInventory.Add(id);
 
