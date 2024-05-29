@@ -10,7 +10,8 @@ public class MinigameTut : MinigameDefBase
     [Element]
     public Rectangle Rects { get; set; }
     public Rectangle newRect { get; set; }
-
+    public Rectangle rectspot { get; set; }
+    public GameObjectContainer<Rectangle> Errors { get; set; } = new();
     [Element] public Rectangle Error0 { get; set; }
     [Element] public Rectangle Error1 { get; set; }
     [Element] public Rectangle Error2 { get; set; }
@@ -22,7 +23,7 @@ public class MinigameTut : MinigameDefBase
     [Element] public Rectangle Error8 { get; set; }
     [Element] public Rectangle Error9 { get; set; }
 
-    public GameObjectContainer<Rectangle> Errors { get; set; } = new();
+    
 
     public MinigameTut()
     {
@@ -37,6 +38,7 @@ public class MinigameTut : MinigameDefBase
             OnClick = (args) => errorspage(args)
         };
     }
+
     public void errorspage(EventArgs e)
     {
         BackgroundImage = "images/IMG_2457.jpg";
@@ -54,22 +56,23 @@ public class MinigameTut : MinigameDefBase
         Rects.Kill();
         Error0 = new()
         {
+            Id = "box",
             X = 1280,
             Y = 10,
             Width = 250,
             Height = 250,
-            Fill = "#0000ffff",
-            OnClick = (args) => ChangeColor(args, Error0)
+            Fill = "white",
+            OnClick = (args) => Error0.Visible = false;
 
-        };
+    };
         Errors.Add(Error0);
-
+        AddElement(Error0);
+        Update();
         //foreach (var error in Errors)
         //{
-        //    error.Value.OnClick = (args) => Elements.KillId(error.key);
+        //    error.Value.OnClick = (args) => Elements.KillId(error.Key);
         //}
 
-        Update();
     }
     public void originalpage(EventArgs e)
     {
@@ -86,25 +89,29 @@ public class MinigameTut : MinigameDefBase
         };
         AddElement(Rects);
         newRect.Kill();
-
         Update();
     }
-    //public void spotted(int? x, int? y, int width, int height)
+    //public void spotted(EventArgs e, int? x, int? y, int width, int height, Rectangle rect)
     //{
-
-    //    var rect = new Rectangle()
-    //    { 
-    //        X = x, 
+    //    rect.Visible = false;
+    //    rectspot = new Rectangle()
+    //    {
+    //        X = x,
     //        Y = y,
     //        Width = width,
     //        Height = height,
     //        Fill = "red"
-    //    }; 
+    //    };
+    //    AddElement(rectspot);
     //}
-    public void ChangeColor(EventArgs e ,Rectangle rect)
-    {
-        rect.Fill = "white";
-        Update();
-    }
+
+    //public void ChangeColor(EventArgs e, Rectangle rect)
+    //{
+    //    rect = new()
+    //    {
+    //        Fill = "red"
+    //    };
+    //    Update();
+    ////}
 
 }
