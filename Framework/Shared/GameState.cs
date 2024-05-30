@@ -7,6 +7,9 @@ using ObjectEncoding;
 //Notifications
 using Blazored.Toast.Services;
 
+using Framework.Toast;
+using Blazored.Toast;
+
 namespace Framework.State;
 
 public interface IGameState
@@ -115,10 +118,15 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 
 		if (!removed)
 		{
-			throw new ArgumentException($"Element {id} is not in Inventory");
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is not in Inventory");
 		}
 		// Console.WriteLine($"Successfully removed {id} from inventory");
-		ToastService.ShowSuccess($"Removed {Items.items[id].Name} from inventory");
+		// ToastService.ShowSuccess($"Removed {Items.items[id].Name} from inventory");
+		ToastParameters parameters = new();
+		parameters.Add(nameof(ToastMessage.Message), $"Removed {Items.items[id].Name} from inventory");
+		ToastService.ShowToast<ToastMessage>(parameters);
 		OnItemAdded?.Invoke(this, EventArgs.Empty);
 	}
 
@@ -132,11 +140,17 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 		// make sure there are no duplicates
 		if (ItemsInInventory.Contains(id))
 		{
-			throw new ArgumentException($"Element {id} is already in Inventory");
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is already in Inventory");
 		}
 		ItemsInInventory.Add(id);
 
-		ToastService.ShowSuccess($"Added {Items.items[id].Name} to inventory");
+		// ToastService.ShowSuccess($"Added {Items.items[id].Name} to inventory");
+
+		ToastParameters parameters = new();
+		parameters.Add(nameof(ToastMessage.Message), $"Added {Items.items[id].Name} to inventory");
+		ToastService.ShowToast<ToastMessage>(parameters);
 
 		// //Event handler for updateing inventory images
 		// InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
