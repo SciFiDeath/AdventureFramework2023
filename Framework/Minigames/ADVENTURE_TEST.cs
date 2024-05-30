@@ -3,12 +3,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using Framework.Sound;
 using Framework.Video;
+using Framework.Game;
+using Framework.InventoryUI;
+using Framework.Slides;
 
 namespace Framework.Minigames.MinigameDefClasses;
 
 public class MyMinigame1 : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "/images/Edited/FightPoitionToPunch_2.png";
+    public override string BackgroundImage { get; set; } = "/images/BossFight/FightPoitionToPunch_2.png";
 
 
     public Text? Infotext { get; set; }
@@ -24,6 +27,8 @@ public class MyMinigame1 : MinigameDefBase
     public Rectangle? StatusButton { get; set; }
     public Rectangle? HealButton { get; set; }
 
+    [Element]
+    public Image? RedBull { get; set; }
     [Element]
     public Image? MenuBar { get; set; }
     [Element]
@@ -106,14 +111,14 @@ public class MyMinigame1 : MinigameDefBase
         while (VillanHealth2 > VillanHealth)
         {
             VillanHealth2 -= 1;
-            Villan_HealthBar.Height = VillanHealth2 * 2;
+            Villan_HealthBar.Width = VillanHealth2 * 2;
             Update();
             await Task.Delay(5);
         }
         while (VillanHealth2 < VillanHealth)
         {
             VillanHealth2 += 1;
-            Villan_HealthBar.Height = VillanHealth2 * 2;
+            Villan_HealthBar.Width = VillanHealth2 * 2;
             Update();
             await Task.Delay(5);
         }
@@ -171,25 +176,36 @@ public class MyMinigame1 : MinigameDefBase
     }
     async public void Healing()
     {
-
-        //RequireItem=Id für Red Bulls
-        BackgroundImage = "/images/Edited/RedbullFromBoss_2.png";
-        Update();
-        await PlayAudio("/images/BattleUI/drink.wav");
-        await Task.Delay(1000);
-        BackgroundImage = "/images/Edited/DrinkRedbull.png";
-        Update();
-        await Task.Delay(1500);
-        BackgroundImage = "/images/Edited/FightPoitionToPunch_2.png";
-        PlayerHealth = PlayerHealth + 30;
-        if (PlayerHealth > 100)
+        if (GameState.CheckForItem("RedBull"))
         {
-            PlayerHealth = 100;
+            //es gibt keine inventory amount
+            BackgroundImage = "/images/BossFight/RedbullFromBoss_2.png";
+            Update();
+            await PlayAudio("/images/BossFight/drink.wav");
+            await Task.Delay(1000);
+            BackgroundImage = "/images/BossFight/DrinkRedbull.png";
+            Update();
+            await Task.Delay(1500);
+            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
+            PlayerHealth = PlayerHealth + 30;
+            if (PlayerHealth > 100)
+            {
+                PlayerHealth = 100;
+            }
+            Health_Bar();
+            Update();
+            await Task.Delay(1000);
+            TaskComplete = true;
         }
-        Health_Bar();
-        Update();
-        await Task.Delay(1000);
-        TaskComplete = true;
+        else
+        {
+            TaskComplete = true;
+            RedBull.X = 200;
+            await Task.Delay(750);
+            Console.WriteLine("abbbbbbbbbbbbbbbbbbbqhd");
+            RedBull.X = 1000;
+            Console.WriteLine("ahhhahdioqhd");
+        }
     }
     async public Task VillanAttack()
     {
@@ -200,20 +216,20 @@ public class MyMinigame1 : MinigameDefBase
             int picture = rand.Next(0, 1);
             if (picture == 0)
             {
-                BackgroundImage = "/images/Edited/KickFromBoss.png";
+                BackgroundImage = "/images/BossFight/KickFromBoss.png";
             }
             else if (picture == 1)
             {
-                BackgroundImage = "/images/Edited/PunchFromBoss_1.png";
+                BackgroundImage = "/images/BossFight/PunchFromBoss_1.png";
             }
-            await PlayAudio("/images/BattleUI/punch.wav");
+            await PlayAudio("/images/BossFight/punch.wav");
             Update();
             await Task.Delay(250);
             PlayerHealth -= rand.Next(10, 16);
             Health_Bar();
             Update();
             await Task.Delay(1500);
-            BackgroundImage = "/images/Edited/FightPoitionToPunch_2.png";
+            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
             Infotext4.Fill = "black";
             Infotext.Fill = "black";
             Infotext2.Fill = "black";
@@ -231,11 +247,11 @@ public class MyMinigame1 : MinigameDefBase
     {
 
         var rand = new Random();
-        await PlayAudio("/images/BattleUI/punch.wav");
-        BackgroundImage = "/images/Edited/Right_Punch.png";
+        await PlayAudio("/images/BossFight/punch.wav");
+        BackgroundImage = "/images/BossFight/Right_Punch.png";
         Update();
         await Task.Delay(2000);
-        BackgroundImage = "/images/Edited/FightPoitionToPunch_2.png";
+        BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
         Update();
         HitPropability = 1; //rand.Next(1, 10)
         CritPropability = rand.Next(1, 25);
@@ -258,11 +274,11 @@ public class MyMinigame1 : MinigameDefBase
     {
 
         var rand = new Random();
-        await PlayAudio("/images/BattleUI/punch.wav");
-        BackgroundImage = "/images/Edited/LeftKickAndRightPunch.png";
+        await PlayAudio("/images/BossFight/punch.wav");
+        BackgroundImage = "/images/BossFight/LeftKickAndRightPunch.png";
         Update();
         await Task.Delay(2000);
-        BackgroundImage = "/images/Edited/FightPoitionToPunch_2.png";
+        BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
         Update();
         HitPropability = rand.Next(1, 10);
         if (HitPropability < 4)
@@ -276,12 +292,12 @@ public class MyMinigame1 : MinigameDefBase
 
     async public void Status_Attack()
     {
-        await PlayAudio("/images/BattleUI/push.wav");
+        await PlayAudio("/images/BossFight/push.wav");
         var rand = new Random();
-        BackgroundImage = "/images/Edited/PushBoss.png";
+        BackgroundImage = "/images/BossFight/PushBoss.png";
         Update();
         await Task.Delay(2000);
-        BackgroundImage = "/images/Edited/FightPoitionToPunch_2.png";
+        BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
         Update();
         HitPropability = rand.Next(1, 10);
         if (HitPropability < 10)
@@ -351,7 +367,7 @@ public class MyMinigame1 : MinigameDefBase
             Width = 300,
             Height = 75,
             Fill = "lightgrey",
-            FillOpacity = 0.3,
+            FillOpacity = 0,
             OnMouseEnter = async (args) => AttackButton2.FillOpacity = 0.3,
             OnMouseLeave = async (args) => AttackButton2.FillOpacity = 0,
             OnClick = async (args) =>
@@ -397,7 +413,7 @@ public class MyMinigame1 : MinigameDefBase
             Height = 75,
             ZIndex = 2,
             Fill = "lightgrey",
-            FillOpacity = 0.3,
+            FillOpacity = 0,
             OnMouseEnter = async (args) => StatusButton.FillOpacity = 0.3,
             OnMouseLeave = async (args) => StatusButton.FillOpacity = 0,
             OnClick = async (args) =>
@@ -566,10 +582,10 @@ public class MyMinigame1 : MinigameDefBase
         Villan_HealthBar = new()
         {
             Id = "Villanheatlthbar4252564642515",
-            X = 1450,
-            Y = 50,
-            Width = 50,
-            Height = VillanHealth * 2,
+            X = 950,
+            Y = 100,
+            Width = VillanHealth * 2,
+            Height = 50,
             Fill = "red"
         };
 
@@ -581,7 +597,18 @@ public class MyMinigame1 : MinigameDefBase
             ZIndex = -1,
             Width = 1200,
             Height = 400,
-            ImagePath = "/images/BattleUI/Menu.png"
+            ImagePath = "/images/BossFight/Menu.png"
+        };
+        RedBull = new()
+        {
+            Id = "redbull46276",
+            X = 10000,
+            Y = 370,
+            ZIndex = -1,
+            Width = 1200,
+            Height = 400,
+            ImagePath = "/images/BossFight/no_redbull.png"
+
         };
         Blend = new()
         {
@@ -606,10 +633,10 @@ public class MyMinigame1 : MinigameDefBase
         Blend3 = new()
         {
             Id = "b223gerg5n",
-            X = 1435,
-            Y = 40,
-            Width = 80,
-            Height = 620,
+            X = 935,
+            Y = 50,
+            Width = 630,
+            Height = 120,
             ZIndex = -1,
             Fill = "white"
         };
@@ -628,7 +655,21 @@ public class MyMinigame1 : MinigameDefBase
             StretchLetters = false,
             FontFamily = "Goudy Bookletter 1911",
         };
+        VillanHPText = new()
+        {
+            Id = "dqefw2341512r2",
+            ContentMode = false,
+            InnerText = "Ultimate End Boss",
+            X = 950,
+            Y = 90,
+            ZIndex = 1,
+            Fill = "black",
+            Rotate = 0,
 
+            FontSize = 50,
+            StretchLetters = false,
+            FontFamily = "Goudy Bookletter 1911",
+        };
 
     }
 }
