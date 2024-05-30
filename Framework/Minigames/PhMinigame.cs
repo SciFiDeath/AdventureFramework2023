@@ -11,8 +11,8 @@ public class Material : SVGImage
     public int CorrectY { get; set; }
     public int CurrentX { get; set; } = -1;
     public int CurrentY { get; set; } = -1;
-    //public Text Explanation { get; set; }
-
+    public Text Label { get; set; }
+    public string LabelText { get; set; }
 }
 
 public class PhMinigame : MinigameDefBase
@@ -23,6 +23,9 @@ public class PhMinigame : MinigameDefBase
     static int RowCount = 8;
     int WhiteBoardRectangleWidth = 128;
     int WhiteBoardRectangleHeight = 105;
+    int NumberOfVerticalSticks = 7;
+    int NumberOfHorizontalSticks = 4;
+
     List<Material> Materials { get; set; } = new List<Material>();
     public Rectangle[,] WhiteBoardRectangles = new Rectangle[ColumnCount, RowCount];
 
@@ -36,6 +39,7 @@ public class PhMinigame : MinigameDefBase
         CreateBackgroundElement();
         CreateWhiteBoardRectangles();
         CreateMaterials();
+
     }
 
     void CreateBackgroundElement()
@@ -85,6 +89,7 @@ public class PhMinigame : MinigameDefBase
 
                 AddElement(WhiteBoard);
                 WhiteBoardRectangles[x, y] = WhiteBoard;
+
             }
         }
     }
@@ -104,6 +109,8 @@ public class PhMinigame : MinigameDefBase
                 CorrectY = 1,
                 PlaceHolderX = 1430,
                 PlaceHolderY = 680,
+                LabelText = $"Horizontal Sticks, There are: {NumberOfHorizontalSticks} sticks"
+
             },
             new Material()
             {
@@ -152,6 +159,8 @@ public class PhMinigame : MinigameDefBase
                 CorrectY = 2,
                 PlaceHolderX = 1430,
                 PlaceHolderY = 820,
+                LabelText = $"Vertical Sticks, There are : {NumberOfVerticalSticks} sticks"
+
             },
             new Material()
             {
@@ -236,10 +245,11 @@ public class PhMinigame : MinigameDefBase
                 CorrectY = 1,
                 PlaceHolderX = 1420,
                 PlaceHolderY = 30,
+                LabelText = "Potentiometer"
             },
             new Material()
             {
-                Id = "OpenSwitch1",
+                Id = "Switch 1",
                 Image = "images/PhMinigame/edited/Switch1.png",
                 HintImageUrl = "images/PhMinigame/edited/Switch_hint.png",
                 Height = 170,
@@ -248,10 +258,11 @@ public class PhMinigame : MinigameDefBase
                 CorrectY = 6,
                 PlaceHolderX = 1425,
                 PlaceHolderY = 245,
+                LabelText = "Switch 1"
             },
             new Material()
             {
-                Id = "OpenSwitch2",
+                Id = "Switch 2",
                 Image = "images/PhMinigame/edited/Switch2.png",
                 HintImageUrl = "images/PhMinigame/edited/Switch_hint.png",
                 Height = 170,
@@ -260,10 +271,11 @@ public class PhMinigame : MinigameDefBase
                 CorrectY = 6,
                 PlaceHolderX = 1430,
                 PlaceHolderY = 460,
+                LabelText = "Switch 2"
             },
             new Material()
             {
-                Id = "HorizontalLamp",
+                Id = "Lamp",
                 Image = "images/PhMinigame/edited/HorizontalLamp.png",
                 HintImageUrl = "images/PhMinigame/edited/HorizontalLamp_hint.png",
                 Height = 80,
@@ -272,6 +284,7 @@ public class PhMinigame : MinigameDefBase
                 CorrectY = 4,
                 PlaceHolderX = 1430,
                 PlaceHolderY = 940,
+                LabelText = "Lamp"
             },
             new Material()
             {
@@ -284,6 +297,7 @@ public class PhMinigame : MinigameDefBase
                 CorrectY = 1,
                 PlaceHolderX = 1190,
                 PlaceHolderY = 78,
+                LabelText = "Battery"
             },
         };
 
@@ -320,11 +334,23 @@ public class PhMinigame : MinigameDefBase
             Visible = false
         };
 
+        material.Label = new Text()
+        {
+            X = material.PlaceHolderX + 50,
+            Y = material.PlaceHolderY + 115,
+            InnerText = material.LabelText,
+            Fill = "white",
+        };
+
+
+
         AddElement(material.PlaceHolder);
         AddElement(material.HintImage);
-        
+        AddElement(material.Label);
         AddElement(material);
     }
+
+
 
     void OnHintClick(Material material)
     {
@@ -332,6 +358,7 @@ public class PhMinigame : MinigameDefBase
         material.CurrentY = material.CorrectY;
 
         PlaceImageToWhiteBoardCenter(material, WhiteBoardRectangles[material.CorrectX, material.CorrectY]);
+
         CheckIsFinished();
     }
 
@@ -401,6 +428,7 @@ public class PhMinigame : MinigameDefBase
             {
                 material.Visible = false;
                 material.HintImage.Visible = false;
+                SelectedMaterial = null;
 
             }
             BackgroundImage = "images/PhMinigame/edited/FinishedGameBackground.png";
