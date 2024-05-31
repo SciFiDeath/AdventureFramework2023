@@ -32,6 +32,9 @@ public interface IGameState
 
 	void SetFromSaveString(string saveString);
 	string GetSaveString();
+
+	int RedBullCount { get; }
+	void ChangeRedBull(int amount);
 }
 
 // interface for the minigames so that they don't accidentally overwrite everything
@@ -47,6 +50,9 @@ public interface IMinigameGameState
 	void AddItem(string id);
 	void RemoveItem(string id);
 	bool CheckForItem(string id);
+
+	int RedBullCount { get; }
+	void ChangeRedBull(int amount);
 }
 
 public class GameState(JsonUtility jsonUtility, ItemService items, IToastService toastService) : IGameState, IMinigameGameState
@@ -66,7 +72,21 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 	// should be set by the slide service
 	public string CurrentSlide { get { return Data.CurrentSlide; } set { Data.CurrentSlide = value; } }
 
-	public event EventHandler? OnItemAdded;
+	// Red Bull methods
+	private int RedBulls { get { return Data.RedBulls; } set { Data.RedBulls = value; } }
+	public int RedBullCount => RedBulls;
+	public void ChangeRedBull(int amount)
+	{
+		RedBulls += amount;
+		if (RedBulls < 0)
+		{
+			RedBulls = 0;
+		}
+		// to update UI
+		OnGameStateChange?.Invoke(this, EventArgs.Empty);
+	}
+
+	public event EventHandler? OnGameStateChange;
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
 	{
@@ -127,7 +147,7 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 		ToastParameters parameters = new();
 		parameters.Add(nameof(ToastMessage.Message), $"Removed {Items.items[id].Name} from inventory");
 		ToastService.ShowToast<ToastMessage>(parameters);
-		OnItemAdded?.Invoke(this, EventArgs.Empty);
+		OnGameStateChange?.Invoke(this, EventArgs.Empty);
 	}
 
 	public void AddItem(string id)
@@ -153,8 +173,8 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 		ToastService.ShowToast<ToastMessage>(parameters);
 
 		// //Event handler for updateing inventory images
-		// InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
-		OnItemAdded?.Invoke(this, EventArgs.Empty);
+		// InventoryEvent.OnGameStateChange(this, new ItemAddedEventArgs { ItemId = id });
+		OnGameStateChange?.Invoke(this, EventArgs.Empty);
 	}
 
 	public bool CheckForItem(string id)
@@ -196,6 +216,7 @@ public class GameStateData
 	public List<string> Items { get; set; } = [];
 	public Dictionary<string, bool> GameState { get; set; } = [];
 	public string CurrentSlide { get; set; } = "";
+	public int RedBulls { get; set; } = 0;
 
 	//public Dictionary<string, Dictionary<string, > DialogueProgress {get; set;} = [];
 }
