@@ -2,24 +2,31 @@ using System.Data;
 using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using Framework.Sound;
 
 namespace Framework.Minigames.MinigameDefClasses;
 
 public class MyMinigame6 : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "/images/Arm_0_F.png";
-
+    public override string BackgroundImage { get; set; } = "/Armdrücken_assets/Arm_0_F.png";
+    [Element]
+    public Rectangle ProgressBar { get; set; }
     int enemycounter = 0;
-    int clickcount = 0; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
+    int clickcount = 400; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
+
+    int clickcount2 = 400;
     int Ycord = 758; //Unterster Startpunkt
-    int enemyYcord = 758;
+
     int score = 0;
+
+    int soundint = 0;
+
 
     int circleX = 1200;
 
     int circleY = 500;
-
     int frog1 = 1;
+
 
     bool gameover = false;
 
@@ -32,7 +39,7 @@ public class MyMinigame6 : MinigameDefBase
                      new Rectangle()
                      {
                          // Progressbar links (Spieler)
-                         Id = "Frog",
+                         Id = "Frog4",
                          X = 80,
                          Y = 100,
                          Width = 160,
@@ -41,12 +48,14 @@ public class MyMinigame6 : MinigameDefBase
                          Stroke = "green",
                          StrokeWidth = 1,
                          OnClick = (args) =>
-                         {  //ADDITEM NOCH MACHEN FRAMEWORK UPDATEN
-                             frog1 = 3;
+
+                         {  //ADITEM NOCH MACHEN FRAMEWORK UPDATEN
                              gamestart();
                              Elements.KillId("StartCircle");
-                             Elements.KillId("Frog");
+                             Elements.KillId("Frog4");
                              Update();
+                             frog1 = 3;
+
                          }
 
                      }
@@ -67,49 +76,31 @@ public class MyMinigame6 : MinigameDefBase
                   {
                       gamestart();
                       Elements.KillId("StartCircle");
-                      Elements.KillId("Frog");
+                      Elements.KillId("Frog4");
                       Update();
 
                   },
               }
           );
-
     }
-
     public void gamestart()
     {
 
-        BackgroundImage = "/images/Arm_1.png";
+        BackgroundImage = "/Armdrücken_assets/Arm_1.png";
         Update();
-        AddElement(
-             new Rectangle()
-             {
-                 // Progressbar links (Spieler)
-                 Id = "PlayerProg",
-                 X = 80,
-                 Y = 150,
-                 Width = 150,
-                 Height = 700,
-                 Fill = "transparent",
-                 Stroke = "black",
-                 StrokeWidth = 40,
-             }
-         );
 
-        AddElement(
-              new Rectangle()
-              {
-                  //Progressbar rechts (Gegner)
-                  Id = "EnemyProg",
-                  X = 1375,
-                  Y = 150,
-                  Width = 150,
-                  Height = 700,
-                  Fill = "transparent",
-                  Stroke = "black",
-                  StrokeWidth = 40,
-              }
-          );
+
+        ProgressBar = new()
+        {
+            Id = "ProgressBar11",
+            X = 350,
+            Y = 50,
+            Width = 400,
+            Height = 35,
+            Fill = "yellow"
+        };
+        AddElement(ProgressBar);
+        Update();
 
 
         circlechanger();
@@ -119,6 +110,16 @@ public class MyMinigame6 : MinigameDefBase
 
         _ = StartEnemyClick();
         Update();
+    }
+
+    public void sounds()
+    {
+        List<string> Gamesounds = new List<string> { "/Armdrücken_assets/Armwrestling3.wav", "/Armdrücken_assets/Armwrestling2.wav", "/Armdrücken_assets/Armwrestling1.wav" };
+
+        Random rnd = new Random();
+        int randomint = rnd.Next(0, 3);
+        SoundService.PlaySound(Gamesounds[randomint]);
+
     }
     public void circlechanger()
     {
@@ -136,10 +137,9 @@ public class MyMinigame6 : MinigameDefBase
           OnClick = (args) =>
           {
               progressClick(Ycord, clickcount);
-              Ycord = Ycord - 107;
               clickcount++;
+              Update();
               imageswap();
-              Console.WriteLine(Elements);
               Elements.KillId("Circle1");
               circlechanger();
           }, //OnClick wird Funktion ausgeführt, die die Füllung macht und Ycord wird angepasst, damit es hoch geht
@@ -148,35 +148,48 @@ public class MyMinigame6 : MinigameDefBase
         Update();
     }
 
+    async public void Progress()
+    {
+        while (clickcount2 > clickcount)
+        {
+
+            ProgressBar.Width = clickcount2;
+            Update();
+            await Task.Delay(5);
+        }
+
+        while (clickcount2 < clickcount)
+        {
+
+            ProgressBar.Width = clickcount2;
+            Update();
+            await Task.Delay(5);
+        }
+
+
+        Update();
+
+    }
 
     public void imageswap()
     {
 
 
-        if (clickcount == 7)
+        if (clickcount2 >= 800)
         {
-
-            Quadrate.KillAll();
-
             score++;
-            enemyYcord = 758;
-            enemycounter = 0;
-            clickcount = 0;
-            Ycord = 758;
+            clickcount2 = 400;
+            ProgressBar.Fill = "yellow";
         }
-        else if (enemycounter == 7)
+        else if (clickcount2 <= 0)
         {
-            Quadrate.KillAll();
-
             score--;
-            enemyYcord = 758;
-            enemycounter = 0;
-            clickcount = 0;
-            Ycord = 758;
+            clickcount2 = 400;
+            ProgressBar.Fill = "yellow";
         }
         if (score == 0)
         {
-            BackgroundImage = "/images/Arm_1.png";
+            BackgroundImage = "/Armdrücken_assets/Arm_1.png";
             circleX = 1200;
             circleY = 500;
             Update();
@@ -185,7 +198,7 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (score == 1)
         {
-            BackgroundImage = "/images/Arm_4.png";
+            BackgroundImage = "/Armdrücken_assets/Arm_4.png";
             circleX = 970;
             circleY = 720;
             Update();
@@ -194,7 +207,7 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (score == -1)
         {
-            BackgroundImage = "/images/Arm_2_.png";
+            BackgroundImage = "/Armdrücken_assets/Arm_2_.png";
             circleX = 1300;
             circleY = 500;
             Update();
@@ -203,20 +216,21 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (score == -2)
         {
-            Elements.KillId("EnemyProg");
-            Elements.KillId("PlayerProg");
+
+            Update();
+            Elements.KillId("ProgressBar11");
             Elements.KillId("Circle1");
-            BackgroundImage = "/images/Arm_3.png";
+            Update();
+            BackgroundImage = "/Armdrücken_assets/Arm_3.png";
             gameover = true;
             Update();
         }
         else if (score == 2)
         {
-            Task.Delay(50);
-            Elements.KillId("EnemyProg");
-            Elements.KillId("PlayerProg");
-            BackgroundImage = "/images/Arm_5.png";
+            ProgressBar.Fill = "transparent";
+            BackgroundImage = "/Armdrücken_assets/Arm_5.png";
             redcol = "transparent";
+            Update();
             gameover = true;
             Update();
         }
@@ -226,27 +240,38 @@ public class MyMinigame6 : MinigameDefBase
 
     public async Task StartEnemyClick()
     {
-        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(500 * frog1));
+        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(300));
 
-        while (enemycounter < 7 && await timer.WaitForNextTickAsync() && gameover == false)
+
+        while (await timer.WaitForNextTickAsync() && gameover == false)
         {
-            List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red", "red" };
-            var x = new Rectangle()
+
+            clickcount2 = clickcount2 + -45;
+            soundint = soundint + 1;
+
+            switch (clickcount2)
             {
-                X = 1445,
-                Y = enemyYcord,
-                Width = 150,
-                Height = 21,
-                Fill = colors[enemycounter],
+                case <= 300:
+                    ProgressBar.Fill = "Red";  // Covers 0 to 25
+                    Update();
+                    break;
 
-            };
+                case >= 500:
+                    ProgressBar.Fill = "green";
+                    Update();
+                    break;
+            }
 
-            AddElement(x);
-            Quadrate.Add(x);
+            if (soundint >= 8)
+            {
+                sounds();
+                Update();
+                soundint = 0;
+            }
 
-            enemycounter++;
-            enemyYcord = enemyYcord - 107;
 
+
+            Progress();
             imageswap();
             Update();
         }
@@ -256,21 +281,27 @@ public class MyMinigame6 : MinigameDefBase
     {
         List<string> colors = new List<string> { "LightGoldenrodYellow", "yellow", "Gold", "orange", "DarkOrange", "red", "red" };
         //Stroke also Füllfarbe wird mit der Liste berechnet, für jeden Klick erhöht sich counter und somit verändert sich die Farbe
-        if (counter < colors.Count && gameover == false)
+        if (gameover == false)
         {
-            var x = new Rectangle()
-            {
-                X = 150,
-                Y = Ycord,
-                Width = 50,
-                Height = 21,
-                Fill = colors[counter],
-                //Stroke = colors[counter],
-                // StrokeWidth = 100
-            };
+            clickcount2 = clickcount2 + 12 * frog1;
 
-            AddElement(x);
-            Quadrate.Add(x);
+
+            switch (clickcount2)
+            {
+                case <= 300:
+                    ProgressBar.Fill = "Red";  // Covers 0 to 25
+                    Update();
+                    break;
+
+                case >= 500:
+                    ProgressBar.Fill = "green";
+                    Update();
+                    break;
+            }
+
+
+            Progress();
+            Update();
         }
         Update();
     }

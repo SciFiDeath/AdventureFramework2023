@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Reflection;
-using GameStateInventory;
+using Framework.State;
 using Framework.Keyboard;
 using Framework.Mouse;
 using Framework.Sound;
