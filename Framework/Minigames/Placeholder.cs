@@ -206,7 +206,7 @@ public class MinigameTut : MinigameDefBase
     }
     public void ChangeColor(EventArgs e, Rectangle rect)
     {
-        rect.Fill = "rgba(0,255,0,.5)";
+        rect.Fill = "rgba(0,255,0,0.5)";
         Update();
         errorsspotted++;
         if (errorsspotted == 10)
