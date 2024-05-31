@@ -6,7 +6,7 @@ namespace Framework.Minigames.MinigameDefClasses;
 public class MinigameTut : MinigameDefBase
 {
     public int errorsspotted = 0;
-    public override string BackgroundImage { get; set; } = "images/IMG_2455.JPG";
+    public override string BackgroundImage { get; set; } = "minigame_assets/FindErrors_Rejda/IMG_2455.JPG";
     [Element]
     public Rectangle Rects { get; set; }
     public Rectangle newRect { get; set; }
@@ -41,7 +41,7 @@ public class MinigameTut : MinigameDefBase
 
     public void errorspage(EventArgs e)
     {
-        BackgroundImage = "images/IMG_2457.jpg";
+        BackgroundImage = "minigame_assets/FindErrors_Rejda/IMG_2457.jpg";
         Update();
         newRect = new()
         {
@@ -146,7 +146,7 @@ public class MinigameTut : MinigameDefBase
         Errors.Add(Error6);
         AddElement(Error6);
         Update();
-        Error7 = new() //türkis lid moved
+        Error7 = new() //tï¿½rkis lid moved
         {
             X = 750,
             Y = 600,
@@ -188,7 +188,7 @@ public class MinigameTut : MinigameDefBase
     }
     public void originalpage(EventArgs e)
     {
-        BackgroundImage = "images/IMG_2455.jpg";
+        BackgroundImage = "minigame_assets/FindErrors_Rejda/IMG_2455.jpg";
         Update();
         Rects = new()
         {
