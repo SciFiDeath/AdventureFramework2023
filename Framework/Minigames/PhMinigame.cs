@@ -1,9 +1,9 @@
 ﻿
 namespace Framework.Minigames.MinigameDefClasses;
-public class Material : SVGImage
+public class Material : Image
 {
     public Rectangle PlaceHolder { get; set; }
-    public SVGImage HintImage { get; set; }
+    public Image HintImage { get; set; }
     public string HintImageUrl { get; set; }
     public int PlaceHolderX { get; set; }
     public int PlaceHolderY { get; set; }
@@ -101,7 +101,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "HorizontalStick1",
-                Image = "images/PhMinigame/edited/HorizontalStick.png",
+                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
@@ -115,7 +115,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "HorizontalStick2",
-                Image = "images/PhMinigame/edited/HorizontalStick.png",
+                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
@@ -127,7 +127,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "HorizontalStick3",
-                Image = "images/PhMinigame/edited/HorizontalStick.png",
+                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
@@ -139,7 +139,7 @@ public class PhMinigame : MinigameDefBase
              new Material()
             {
                 Id = "HorizontalStick4",
-                Image = "images/PhMinigame/edited/HorizontalStick.png",
+                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
@@ -151,7 +151,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick1",
-                Image = "images/PhMinigame/edited/VerticalStick.png",
+                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
@@ -165,7 +165,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick2",
-                Image = "images/PhMinigame/edited/VerticalStick.png",
+                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
@@ -177,7 +177,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick3",
-                Image = "images/PhMinigame/edited/VerticalStick.png",
+                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
@@ -189,7 +189,7 @@ public class PhMinigame : MinigameDefBase
              new Material()
             {
                 Id = "VerticalStick4",
-                Image = "images/PhMinigame/edited/VerticalStick.png",
+                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
@@ -201,7 +201,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick5",
-                Image = "images/PhMinigame/edited/VerticalStick.png",
+                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
@@ -213,7 +213,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick6",
-                Image = "images/PhMinigame/edited/VerticalStick.png",
+                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
@@ -225,7 +225,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick7",
-                Image = "images/PhMinigame/edited/VerticalStick.png",
+                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
                 HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
@@ -237,7 +237,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Potentiometer",
-                Image = "images/PhMinigame/edited/Potentiometer.png",
+                ImagePath = "images/PhMinigame/edited/Potentiometer.png",
                 HintImageUrl = "images/PhMinigame/edited/Potentiometer_hint.png",
                 Height = 170,
                 Width = 190,
@@ -250,7 +250,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Switch 1",
-                Image = "images/PhMinigame/edited/Switch1.png",
+                ImagePath = "images/PhMinigame/edited/Switch1.png",
                 HintImageUrl = "images/PhMinigame/edited/Switch_hint.png",
                 Height = 170,
                 Width = 190,
@@ -263,7 +263,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Switch 2",
-                Image = "images/PhMinigame/edited/Switch2.png",
+                ImagePath = "images/PhMinigame/edited/Switch2.png",
                 HintImageUrl = "images/PhMinigame/edited/Switch_hint.png",
                 Height = 170,
                 Width = 190,
@@ -276,7 +276,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Lamp",
-                Image = "images/PhMinigame/edited/HorizontalLamp.png",
+                ImagePath = "images/PhMinigame/edited/HorizontalLamp.png",
                 HintImageUrl = "images/PhMinigame/edited/HorizontalLamp_hint.png",
                 Height = 80,
                 Width = 190,
@@ -289,7 +289,7 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Battery",
-                Image = "images/PhMinigame/edited/Battery.png",
+                ImagePath = "images/PhMinigame/edited/Battery.png",
                 HintImageUrl = "images/PhMinigame/edited/Battery_hint.png",
                 Height = 170,
                 Width = 190,
@@ -325,11 +325,11 @@ public class PhMinigame : MinigameDefBase
             OnClick = (args) => OnMaterialClick(material)
         };
 
-        material.HintImage = new SVGImage()
+        material.HintImage = new Image()
         {
             Width = material.Width,
             Height = material.Height,
-            Image = material.HintImageUrl,
+            ImagePath = material.HintImageUrl,
             OnClick = (args) => OnHintClick(material),
             Visible = false
         };
@@ -398,7 +398,7 @@ public class PhMinigame : MinigameDefBase
         material.CurrentX = x;
         material.CurrentY = y;
     }
-    public void PlaceImageToWhiteBoardCenter(SVGImage image, Rectangle whiteBoard)
+    public void PlaceImageToWhiteBoardCenter(Image image, Rectangle whiteBoard)
     {
         image.X = whiteBoard.X + whiteBoard.Width / 2 - image.Width / 2;
         image.Y = whiteBoard.Y + whiteBoard.Height / 2 - image.Width / 2;
@@ -432,7 +432,7 @@ public class PhMinigame : MinigameDefBase
 
             }
             BackgroundImage = "images/PhMinigame/edited/FinishedGameBackground.png";
-            Finish(true);
+            Finish(null, null);
             Update();
         }
     }
