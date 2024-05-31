@@ -1,4 +1,4 @@
-
+/*
 using System.Data;
 using System.Security.Cryptography.X509Certificates;
 
@@ -87,3 +87,4 @@ public class MyMinigame6 : MinigameDefBase
 		Rect1.Kill();
 	}
 }
+*/
