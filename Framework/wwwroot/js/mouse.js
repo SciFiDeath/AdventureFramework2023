@@ -12,10 +12,18 @@ window.mouse = {
     init: function (objRef, disableContextMenu) {
         window.mouse.objRef = objRef;
         window.addEventListener("mousedown", (event) => {
-            objRef.invokeMethodAsync("MouseDown", event.button);
+            objRef.invokeMethodAsync(
+                "MouseDown",
+                event.button,
+                this.getSvgMousePos(event.clientX, event.clientY)
+            );
         });
         window.addEventListener("mouseup", (event) => {
-            objRef.invokeMethodAsync("MouseUp", event.button);
+            objRef.invokeMethodAsync(
+                "MouseUp",
+                event.button,
+                this.getSvgMousePos(event.clientX, event.clientY)
+            );
         });
         if (disableContextMenu) {
             window.addEventListener("contextmenu", (event) => {
@@ -69,6 +77,12 @@ window.mouse = {
     getSvgMousePos: function () {
         return convertToSvgCoords2(this.absMousePos.x, this.absMousePos.y);
     },
+
+    // kinda stupid, but I don't want to move convertToSvgCoords2 to this object
+    // could break some things, cause weird behaviour of JSInterop or something
+    convertCoords: function (x, y) {
+        return convertToSvgCoords2(x, y);
+    },
 };
 
 // const container = document.getElementById("container");
@@ -97,7 +111,7 @@ function convertToSvgCoords2(x, y) {
     // first, convert to px coords relative to container
     // then, scale that in the same way the svg is scaled
     return {
-        x: Math.round((x - containerRect.x) * (1920 / containerRect.width)),
+        x: Math.round((x - containerRect.x) * (1620 / containerRect.width)),
         y: Math.round((y - containerRect.y) * (1080 / containerRect.height)),
     };
 }
