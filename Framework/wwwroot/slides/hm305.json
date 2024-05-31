@@ -44,7 +44,7 @@
                 "Type": "circle",
                 "Points": "100,100,50",
                 "Actions": [
-                    ["Route", "MinigameTest3"],
+                    ["Route", "PianoMinigame"],
                     ["StopMusic", ""]
                 ],
                 "Visible": true
