@@ -1,4 +1,7 @@
 @using Framework.InventoryUI
+@using Framework.State
+
+@inject GameState GameState
 
 @namespace Framework.PauseMenu
 
@@ -20,5 +23,9 @@
 
     private void ToggleMenu() {
         showMenu = !showMenu;
+    }
+
+    protected override void OnInitialized() {
+        GameState.OnGameStateChange += (sender, e) => StateHasChanged();
     }
 }
