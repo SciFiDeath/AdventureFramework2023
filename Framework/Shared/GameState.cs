@@ -1,17 +1,16 @@
 using Microsoft.AspNetCore.Components;
 
 using JsonUtilities;
-using FrameworkItems;
-using static InventoryEvent;
-using Microsoft.JSInterop;
+using Framework.Items;
+// using static InventoryEvent;
 using ObjectEncoding;
-using Framework.Minigames;
 //Notifications
 using Blazored.Toast.Services;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
 
-namespace GameStateInventory;
+using Framework.Toast;
+using Blazored.Toast;
+
+namespace Framework.State;
 
 public interface IGameState
 {
@@ -50,12 +49,12 @@ public interface IMinigameGameState
 	bool CheckForItem(string id);
 }
 
-public class GameState(JsonUtility jsonUtility, Items items, IToastService toastService) : IGameState, IMinigameGameState
+public class GameState(JsonUtility jsonUtility, ItemService items, IToastService toastService) : IGameState, IMinigameGameState
 {
 	// dependencies
 	private readonly IToastService ToastService = toastService;
 	private readonly JsonUtility JsonUtility = jsonUtility;
-	private readonly Items Items = items;
+	private readonly ItemService Items = items;
 
 
 	// initialize with empty data
@@ -67,6 +66,7 @@ public class GameState(JsonUtility jsonUtility, Items items, IToastService toast
 	// should be set by the slide service
 	public string CurrentSlide { get { return Data.CurrentSlide; } set { Data.CurrentSlide = value; } }
 
+	public event EventHandler? OnItemAdded;
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
 	{
@@ -118,9 +118,16 @@ public class GameState(JsonUtility jsonUtility, Items items, IToastService toast
 
 		if (!removed)
 		{
-			throw new ArgumentException($"Element {id} is not in Inventory");
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is not in Inventory");
 		}
 		// Console.WriteLine($"Successfully removed {id} from inventory");
+		// ToastService.ShowSuccess($"Removed {Items.items[id].Name} from inventory");
+		ToastParameters parameters = new();
+		parameters.Add(nameof(ToastMessage.Message), $"Removed {Items.items[id].Name} from inventory");
+		ToastService.ShowToast<ToastMessage>(parameters);
+		OnItemAdded?.Invoke(this, EventArgs.Empty);
 	}
 
 	public void AddItem(string id)
@@ -130,12 +137,24 @@ public class GameState(JsonUtility jsonUtility, Items items, IToastService toast
 		{
 			throw new Exception("Item doesn't exist in items.json Dictionary");
 		}
+		// make sure there are no duplicates
+		if (ItemsInInventory.Contains(id))
+		{
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is already in Inventory");
+		}
 		ItemsInInventory.Add(id);
 
-		ToastService.ShowSuccess($"Added {id} to inventory");
+		// ToastService.ShowSuccess($"Added {Items.items[id].Name} to inventory");
 
-		//Event handler for updateing inventory images
-		InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
+		ToastParameters parameters = new();
+		parameters.Add(nameof(ToastMessage.Message), $"Added {Items.items[id].Name} to inventory");
+		ToastService.ShowToast<ToastMessage>(parameters);
+
+		// //Event handler for updateing inventory images
+		// InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
+		OnItemAdded?.Invoke(this, EventArgs.Empty);
 	}
 
 	public bool CheckForItem(string id)
@@ -143,10 +162,8 @@ public class GameState(JsonUtility jsonUtility, Items items, IToastService toast
 		return ItemsInInventory.Contains(id);
 	}
 
-	public List<string> GetItemStrings()
-	{
-		return ItemsInInventory;
-	}
+	public List<string> GetItemStrings() => ItemsInInventory;
+
 	public Dictionary<string, Item> GetItemObjects()
 	{
 		Dictionary<string, Item> ItemObjects = new();
