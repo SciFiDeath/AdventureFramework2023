@@ -1,14 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
 @using Blazored.Toast;
-@using Blazored.Toast.Configuration;
 
 <main>
     <div id="container">
         @Body
-        <BlazoredToasts 
-            Position=ToastPosition.TopLeft
-            Timeout=2
-        />
+        <BlazoredToasts />
     </div>
 </main>

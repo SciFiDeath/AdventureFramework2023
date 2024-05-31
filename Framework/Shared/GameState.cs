@@ -7,9 +7,6 @@ using ObjectEncoding;
 //Notifications
 using Blazored.Toast.Services;
 
-using Framework.Toast;
-using Blazored.Toast;
-
 namespace Framework.State;
 
 public interface IGameState
@@ -32,9 +29,6 @@ public interface IGameState
 
 	void SetFromSaveString(string saveString);
 	string GetSaveString();
-
-	int RedBullCount { get; }
-	void ChangeRedBull(int amount);
 }
 
 // interface for the minigames so that they don't accidentally overwrite everything
@@ -50,9 +44,6 @@ public interface IMinigameGameState
 	void AddItem(string id);
 	void RemoveItem(string id);
 	bool CheckForItem(string id);
-
-	int RedBullCount { get; }
-	void ChangeRedBull(int amount);
 }
 
 public class GameState(JsonUtility jsonUtility, ItemService items, IToastService toastService) : IGameState, IMinigameGameState
@@ -72,21 +63,7 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 	// should be set by the slide service
 	public string CurrentSlide { get { return Data.CurrentSlide; } set { Data.CurrentSlide = value; } }
 
-	// Red Bull methods
-	private int RedBulls { get { return Data.RedBulls; } set { Data.RedBulls = value; } }
-	public int RedBullCount => RedBulls;
-	public void ChangeRedBull(int amount)
-	{
-		RedBulls += amount;
-		if (RedBulls < 0)
-		{
-			RedBulls = 0;
-		}
-		// to update UI
-		OnGameStateChange?.Invoke(this, EventArgs.Empty);
-	}
-
-	public event EventHandler? OnGameStateChange;
+	public event EventHandler? OnItemAdded;
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
 	{
@@ -138,16 +115,11 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 
 		if (!removed)
 		{
-			return;
-			//? maybe not throw an exception?
-			// throw new ArgumentException($"Element {id} is not in Inventory");
+			throw new ArgumentException($"Element {id} is not in Inventory");
 		}
 		// Console.WriteLine($"Successfully removed {id} from inventory");
-		// ToastService.ShowSuccess($"Removed {Items.items[id].Name} from inventory");
-		ToastParameters parameters = new();
-		parameters.Add(nameof(ToastMessage.Message), $"Removed {Items.items[id].Name} from inventory");
-		ToastService.ShowToast<ToastMessage>(parameters);
-		OnGameStateChange?.Invoke(this, EventArgs.Empty);
+		ToastService.ShowSuccess($"Removed {Items.items[id].Name} from inventory");
+		OnItemAdded?.Invoke(this, EventArgs.Empty);
 	}
 
 	public void AddItem(string id)
@@ -160,21 +132,15 @@ public class GameState(JsonUtility jsonUtility, ItemService items, IToastService
 		// make sure there are no duplicates
 		if (ItemsInInventory.Contains(id))
 		{
-			return;
-			//? maybe not throw an exception?
-			// throw new ArgumentException($"Element {id} is already in Inventory");
+			throw new ArgumentException($"Element {id} is already in Inventory");
 		}
 		ItemsInInventory.Add(id);
 
-		// ToastService.ShowSuccess($"Added {Items.items[id].Name} to inventory");
-
-		ToastParameters parameters = new();
-		parameters.Add(nameof(ToastMessage.Message), $"Added {Items.items[id].Name} to inventory");
-		ToastService.ShowToast<ToastMessage>(parameters);
+		ToastService.ShowSuccess($"Added {Items.items[id].Name} to inventory");
 
 		// //Event handler for updateing inventory images
-		// InventoryEvent.OnGameStateChange(this, new ItemAddedEventArgs { ItemId = id });
-		OnGameStateChange?.Invoke(this, EventArgs.Empty);
+		// InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
+		OnItemAdded?.Invoke(this, EventArgs.Empty);
 	}
 
 	public bool CheckForItem(string id)
@@ -216,7 +182,6 @@ public class GameStateData
 	public List<string> Items { get; set; } = [];
 	public Dictionary<string, bool> GameState { get; set; } = [];
 	public string CurrentSlide { get; set; } = "";
-	public int RedBulls { get; set; } = 0;
 
 	//public Dictionary<string, Dictionary<string, > DialogueProgress {get; set;} = [];
 }

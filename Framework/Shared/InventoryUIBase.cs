@@ -22,7 +22,7 @@ public class InventoryUIBase : ComponentBase
 
 	protected override void OnInitialized()
 	{
-		// GameState.OnGameStateChange += (sender, e) => StateHasChanged();
+		GameState.OnItemAdded += (sender, e) => StateHasChanged();
 
 
 		// base.OnInitialized();
