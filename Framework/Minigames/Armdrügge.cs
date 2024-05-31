@@ -1,17 +1,10 @@
-using System.Data;
-using System.Diagnostics.Metrics;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using Framework.Sound;
-
 namespace Framework.Minigames.MinigameDefClasses;
 
-public class MyMinigame6 : MinigameDefBase
+public class ArmDrugge : MinigameDefBase
 {
     public override string BackgroundImage { get; set; } = "/Armdrücken_assets/Arm_0_F.png";
     [Element]
     public Rectangle ProgressBar { get; set; }
-    int enemycounter = 0;
     int clickcount = 400; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
 
     int clickcount2 = 400;
@@ -33,7 +26,7 @@ public class MyMinigame6 : MinigameDefBase
     string redcol = "red";
     GameObjectContainer<Rectangle> Quadrate { get; set; } = new();
 
-    public MyMinigame6()
+    public ArmDrugge()
     {
         AddElement(
                      new Rectangle()
