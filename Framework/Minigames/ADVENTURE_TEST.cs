@@ -20,8 +20,6 @@ public class MyMinigame1 : MinigameDefBase
     public Text? Infotext4 { get; set; }
     public Text? Infotext5 { get; set; }
     public Text? Infotext6 { get; set; }
-    public Text? Infotext7 { get; set; }
-    public Text? Infotext8 { get; set; }
     public Rectangle? AttackButton1 { get; set; }
     public Rectangle? AttackButton2 { get; set; }
     public Rectangle? StatusButton { get; set; }
@@ -45,19 +43,19 @@ public class MyMinigame1 : MinigameDefBase
     public Text? PlayerHPText { get; set; }
     [Element]
     public Text? VillanHPText { get; set; }
-    public GameObjectContainer<Rectangle> buttons { get; set; } = new(); //pokemon UI 
-    public GameObjectContainer<Rectangle> moving_rects { get; set; } = new(); //bilder 
+    public GameObjectContainer<Rectangle> buttons { get; set; } = new(); 
+    public GameObjectContainer<Rectangle> moving_rects { get; set; } = new(); 
     public GameObjectContainer<Rectangle> decoration { get; set; } = new();
 
-    public GameObjectContainer<Circle> buttons1 { get; set; } = new(); //pokemon UI 
-    public GameObjectContainer<Circle> moving_rects1 { get; set; } = new(); //bilder 
+    public GameObjectContainer<Circle> buttons1 { get; set; } = new();  
+    public GameObjectContainer<Circle> moving_rects1 { get; set; } = new();
     public GameObjectContainer<Circle> decoration1 { get; set; } = new();
 
-    public GameObjectContainer<Text> buttons2 { get; set; } = new(); //pokemon UI 
-    public GameObjectContainer<Text> moving_rects2 { get; set; } = new(); //bilder 
+    public GameObjectContainer<Text> buttons2 { get; set; } = new(); 
+    public GameObjectContainer<Text> moving_rects2 { get; set; } = new();
     public GameObjectContainer<Text> decoration2 { get; set; } = new();
 
-    public int VillanHealth = 300; //default 300
+    public int VillanHealth = 300; 
     public int VillanHealth2 = 300;
     public int PlayerHealth = 100;
     public int PlayerHealth2 = 100;
@@ -66,26 +64,7 @@ public class MyMinigame1 : MinigameDefBase
     public int HitPropability = 0;
     public int CritPropability = 13;
     public int Critmultiplier = 1;
-    public int ChooseText = 0;
-    List<List<string>> messages = [
-        ["This Attack has an eighty percent chance hitting the enemy it deals five damage times your multiplier"],
-        ["This Attack has a thirty percent chance of hitting the enemy it deals twenty times your multiplier"],
-        ["This Attack has a ninety percent chance of hitting the enemy it raises your damage multiplier by one this resets after attacking"],
-        ["Heal fifty healthpoints"],
-        ["The attack missed"],
-        ["Player used Kick"],
-        ["Player used Schubser"],
-        ["Opponent used Default Villainkick"],
-        ["Opponent used Default Villainpunch"],
-        ["A critical hit"],
-        ["Player used a Red Bull"],
-        ["Player used strong Punch"],
-        ];
     public override async Task GameLoop(CancellationToken ct)
-    //public string Attackbutton1Infotext = "This Attack has a ninety percent chance hitting the enemy it deals five times your multiplier";
-    //public string Attackbutton2Infotext = "This Attack has a thirty percent chance of hitting the enemy it deals twenty times your multiplier";
-    //public string StatusbuttonInfotext = "This Attack has a ninety percent chance of hitting the enemy it raises your damage multiplier by one this resets after attacking";
-    //public string HealingbuttonInfotext = "Heal fifty healthpoints";
     {
         while (true)
         {
@@ -178,7 +157,6 @@ public class MyMinigame1 : MinigameDefBase
     {
         if (GameState.CheckForItem("RedBull"))
         {
-            //es gibt keine inventory amount
             BackgroundImage = "/images/BossFight/RedbullFromBoss_2.png";
             Update();
             await PlayAudio("/images/BossFight/drink.wav");
@@ -202,9 +180,7 @@ public class MyMinigame1 : MinigameDefBase
             TaskComplete = true;
             RedBull.X = 200;
             await Task.Delay(750);
-            Console.WriteLine("abbbbbbbbbbbbbbbbbbbqhd");
             RedBull.X = 1000;
-            Console.WriteLine("ahhhahdioqhd");
         }
     }
     async public Task VillanAttack()
@@ -247,13 +223,7 @@ public class MyMinigame1 : MinigameDefBase
     {
 
         var rand = new Random();
-        await PlayAudio("/images/BossFight/punch.wav");
-        BackgroundImage = "/images/BossFight/Right_Punch.png";
-        Update();
-        await Task.Delay(2000);
-        BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
-        Update();
-        HitPropability = 1; //rand.Next(1, 10)
+        HitPropability = rand.Next(1, 10); 
         CritPropability = rand.Next(1, 25);
         if (HitPropability < 9)
         {
@@ -261,10 +231,24 @@ public class MyMinigame1 : MinigameDefBase
             {
                 Critmultiplier += 1;
             }
-            VillanHealth = VillanHealth - 20 * AttackBuff * Critmultiplier;
+            await PlayAudio("/images/BossFight/punch.wav");
+            BackgroundImage = "/images/BossFight/Right_Punch.png";
+            Update();
+            Update();
+            VillanHealth = VillanHealth - 9 * AttackBuff * Critmultiplier;
             Critmultiplier = 1;
             Villan_Health_Bar();
             Update();
+            await Task.Delay(2000);
+            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";   
+        }
+        else
+        {
+            Infotext6.Opacity = 1;
+            Infotext6.ZIndex = 6;
+            await Task.Delay(100);
+            Infotext6.Opacity = 0;
+            Infotext6.ZIndex = -1;
         }
         AttackBuff = 1;
         TaskComplete = true;
@@ -273,18 +257,26 @@ public class MyMinigame1 : MinigameDefBase
     async public void Attack_2()
     {
 
-        var rand = new Random();
-        await PlayAudio("/images/BossFight/punch.wav");
-        BackgroundImage = "/images/BossFight/LeftKickAndRightPunch.png";
-        Update();
-        await Task.Delay(2000);
-        BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
-        Update();
+        var rand = new Random();        
         HitPropability = rand.Next(1, 10);
         if (HitPropability < 4)
         {
+            await PlayAudio("/images/BossFight/punch.wav");
+            BackgroundImage = "/images/BossFight/LeftKickAndRightPunch.png";
+            Update();
             VillanHealth = VillanHealth - 19 * AttackBuff;
             Villan_Health_Bar();
+            await Task.Delay(2000);
+            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
+            Update();
+        }
+        else
+        {
+            Infotext6.Opacity = 1;
+            Infotext6.ZIndex = 6;
+            await Task.Delay(100);
+            Infotext6.Opacity = 0;
+            Infotext6.ZIndex = -1;
         }
         AttackBuff = 1;
         TaskComplete = true;
@@ -292,20 +284,28 @@ public class MyMinigame1 : MinigameDefBase
 
     async public void Status_Attack()
     {
-        await PlayAudio("/images/BossFight/push.wav");
         var rand = new Random();
-        BackgroundImage = "/images/BossFight/PushBoss.png";
-        Update();
-        await Task.Delay(2000);
-        BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
-        Update();
         HitPropability = rand.Next(1, 10);
         if (HitPropability < 10)
         {
-            AttackBuff += 1;
+            await PlayAudio("/images/BossFight/push.wav");
+            BackgroundImage = "/images/BossFight/PushBoss.png";
+            Update();
+            await Task.Delay(2000);
+            AttackBuff += 1+1/5;
+            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
+            Update();
             Villan_Health_Bar();
+            Update();
         }
-        ;
+        else
+        {
+            Infotext6.Opacity = 1;
+            Infotext6.ZIndex = 6;
+            await Task.Delay(100);
+            Infotext6.Opacity = 0;
+            Infotext6.ZIndex = -1;
+        }
         TaskComplete = true;
 
     }
@@ -322,8 +322,18 @@ public class MyMinigame1 : MinigameDefBase
             Height = 75,
             Fill = "lightgrey",
             FillOpacity = 0,
-            OnMouseEnter = async (args) => AttackButton1.FillOpacity = 0.3, //jetzt noch OnEnter die Info erscheint
-            OnMouseLeave = async (args) => AttackButton1.FillOpacity = 0,
+            OnMouseEnter = async (args) =>
+            {
+                Infotext5.InnerText = "Dmg: 9" +
+                                "  ACC: 80%";
+                Infotext5.Opacity = 1;
+                Update();
+            },
+            OnMouseLeave = async (args) =>
+            {
+                Infotext5.Opacity = 0;
+                Update();
+            },
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
@@ -368,8 +378,18 @@ public class MyMinigame1 : MinigameDefBase
             Height = 75,
             Fill = "lightgrey",
             FillOpacity = 0,
-            OnMouseEnter = async (args) => AttackButton2.FillOpacity = 0.3,
-            OnMouseLeave = async (args) => AttackButton2.FillOpacity = 0,
+            OnMouseEnter = async (args) =>
+            {
+                Infotext5.InnerText = "Dmg: 20" +
+                                "  ACC: 30%";
+                Infotext5.Opacity = 1;
+                Update();
+            },
+            OnMouseLeave = async (args) =>
+            {
+                Infotext5.Opacity = 0;
+                Update();
+            },
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
@@ -414,8 +434,18 @@ public class MyMinigame1 : MinigameDefBase
             ZIndex = 2,
             Fill = "lightgrey",
             FillOpacity = 0,
-            OnMouseEnter = async (args) => StatusButton.FillOpacity = 0.3,
-            OnMouseLeave = async (args) => StatusButton.FillOpacity = 0,
+            OnMouseEnter = async (args) =>
+            {
+                Infotext5.InnerText = "MUL: 1.2" +
+                                "  ACC: 90%";
+                Infotext5.Opacity = 1;
+                Update();
+            },
+            OnMouseLeave = async (args) =>
+            {
+                Infotext5.Opacity = 0;
+                Update();
+            },
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
@@ -534,8 +564,18 @@ public class MyMinigame1 : MinigameDefBase
             Height = 75,
             Fill = "lightgrey",
             FillOpacity = 0,
-            OnMouseEnter = async (args) => HealButton.FillOpacity = 0.3,
-            OnMouseLeave = async (args) => HealButton.FillOpacity = 0,
+            OnMouseEnter = async (args) =>
+            {
+                Infotext5.InnerText = "VIG: +30" +
+                                "  REQ: RB";
+                Infotext5.Opacity = 1;
+                Update();
+            },
+            OnMouseLeave = async (args) =>
+            {
+                Infotext5.Opacity = 0;
+                Update();
+            },
             OnClick = async (args) =>
             {
                 if (TaskComplete == false)
@@ -617,7 +657,7 @@ public class MyMinigame1 : MinigameDefBase
             Y = 880,
             Width = 335,
             Height = 175,
-            ZIndex = -1,
+            ZIndex = 2,
             Fill = "white"
         };
         Blend2 = new()
@@ -670,6 +710,39 @@ public class MyMinigame1 : MinigameDefBase
             StretchLetters = false,
             FontFamily = "Goudy Bookletter 1911",
         };
+        Infotext5 = new()
+        {
+            Id = "23z4546354534t27354542793",
+            ContentMode = false,
+            Opacity = 0,
+            InnerText = "Dmg: 5" +
+                                "  ACC: 80%",
+            X = 1250,
+            Y = 1000,
+            ZIndex = 5,
+            Fill = "black",
+            FontSize = 40,
+            StretchLetters = false,
+            FontFamily = "Goudy Bookletter 1911",
+        };
+        Update();
+        AddElement(Infotext5);
 
+        Infotext6 = new()
+        {
+            Id = "23z4546354534t2735452356254523142793",
+            ContentMode = false,
+            Opacity = 0,
+            InnerText = "Miss",
+            X = 600,
+            Y = 400,
+            ZIndex = 0,
+            Fill = "Red",
+            FontSize = 200,
+            StretchLetters = false,
+            FontFamily = "Goudy Bookletter 1911",
+        };
+        Update();
+        AddElement(Infotext6);
     }
 }
