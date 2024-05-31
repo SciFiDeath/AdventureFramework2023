@@ -5,7 +5,7 @@ namespace Framework.Minigames.MinigameDefClasses;
 
 public class MinigameTut : MinigameDefBase
 {
-    public int errorsspotted { get; set; } = 0;
+    public int errorsspotted = 0;
     public override string BackgroundImage { get; set; } = "images/IMG_2455.JPG";
     [Element]
     public Rectangle Rects { get; set; }
@@ -204,46 +204,14 @@ public class MinigameTut : MinigameDefBase
         Update();
         //Error0.Kill();
     }
-    //public void spotted(EventArgs e, int? x, int? y, int width, int height, Rectangle rect)
-    //{
-    //    rect.Visible = false;
-    //    rectspot = new Rectangle()
-    //    {
-    //        X = x,
-    //        Y = y,
-    //        Width = width,
-    //        Height = height,
-    //        Fill = "red"
-    //    };
-    //    AddElement(rectspot);
-    //}
-
     public void ChangeColor(EventArgs e, Rectangle rect)
     {
         rect.Fill = "rgba(0,255,0,.5)";
         Update();
         errorsspotted++;
-        endgame();
-    }
-    public void endgame() 
-    {
-        if (errorsspotted == 10) 
+        if (errorsspotted == 10)
         {
-            Finish(null, "test");
+            Finish(null, "IMG_2455");
         }
     }
-    //public string? color(bool i)
-    //{
-    //    if (i == false)
-    //    {
-    //        return "red";
-    //    }
-    //    else { return "white"; }
-    //    Update();
-    //}
 }
-////    public void foundfun (EventArgs e, bool i)
-////    {
-////        i = true;
-////    }
-////}
