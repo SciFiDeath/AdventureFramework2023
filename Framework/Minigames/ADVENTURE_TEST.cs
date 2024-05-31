@@ -11,7 +11,7 @@ namespace Framework.Minigames.MinigameDefClasses;
 
 public class MyMinigame1 : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "/images/BossFight/FightPoitionToPunch_2.png";
+    public override string BackgroundImage { get; set; } = " /BossFight/FightPoitionToPunch_2.png";
 
 
     public Text? Infotext { get; set; }
@@ -43,19 +43,19 @@ public class MyMinigame1 : MinigameDefBase
     public Text? PlayerHPText { get; set; }
     [Element]
     public Text? VillanHPText { get; set; }
-    public GameObjectContainer<Rectangle> buttons { get; set; } = new(); 
-    public GameObjectContainer<Rectangle> moving_rects { get; set; } = new(); 
+    public GameObjectContainer<Rectangle> buttons { get; set; } = new();
+    public GameObjectContainer<Rectangle> moving_rects { get; set; } = new();
     public GameObjectContainer<Rectangle> decoration { get; set; } = new();
 
-    public GameObjectContainer<Circle> buttons1 { get; set; } = new();  
+    public GameObjectContainer<Circle> buttons1 { get; set; } = new();
     public GameObjectContainer<Circle> moving_rects1 { get; set; } = new();
     public GameObjectContainer<Circle> decoration1 { get; set; } = new();
 
-    public GameObjectContainer<Text> buttons2 { get; set; } = new(); 
+    public GameObjectContainer<Text> buttons2 { get; set; } = new();
     public GameObjectContainer<Text> moving_rects2 { get; set; } = new();
     public GameObjectContainer<Text> decoration2 { get; set; } = new();
 
-    public int VillanHealth = 300; 
+    public int VillanHealth = 300;
     public int VillanHealth2 = 300;
     public int PlayerHealth = 100;
     public int PlayerHealth2 = 100;
@@ -64,6 +64,8 @@ public class MyMinigame1 : MinigameDefBase
     public int HitPropability = 0;
     public int CritPropability = 13;
     public int Critmultiplier = 1;
+
+    //Falls Code hängen bleibt bitte ALLES schliessen und über powershell neu öffnen. Framework überlastet?
     public override async Task GameLoop(CancellationToken ct)
     {
         while (true)
@@ -76,18 +78,18 @@ public class MyMinigame1 : MinigameDefBase
             await Task.Delay(2000);
             if (PlayerHealth <= 0)
             {
-                Finish(null, "Placeholder.cs");
+                Finish(null, "Placeholder.cs"); //!!!!!!bitte SlideID von Abspann einfügen
             }
             else if (VillanHealth <= 0)
             {
-                Finish(null, "Placeholder.cs");
+                Finish(null, "Placeholder.cs"); ////!!!!!!!!bitte SlideID von Abspann einfügen
             }
         }
 
     }
     public async void Villan_Health_Bar()
     {
-        while (VillanHealth2 > VillanHealth)
+        while (VillanHealth2 > VillanHealth)    //VilHealth2 eiert Original mit 5ms delay hinterher, für Animation
         {
             VillanHealth2 -= 1;
             Villan_HealthBar.Width = VillanHealth2 * 2;
@@ -149,28 +151,29 @@ public class MyMinigame1 : MinigameDefBase
 
 
     }
-    public async Task PlayAudio(string path)
+    public async Task PlayAudio(string path)//Audio aus DOC
     {
         await SoundService.PlaySound(path);
     }
     async public void Healing()
     {
-        if (GameState.CheckForItem("RedBull"))
+        if (GameState.CheckForItem("RedBull"))//Item mit ID "RedBull" muss in den GameState
         {
-            BackgroundImage = "/images/BossFight/RedbullFromBoss_2.png";
+            BackgroundImage = " /BossFight/RedbullFromBoss_2.png";
             Update();
-            await PlayAudio("/images/BossFight/drink.wav");
+            await PlayAudio(" /BossFight/drink.wav");
             await Task.Delay(1000);
-            BackgroundImage = "/images/BossFight/DrinkRedbull.png";
+            BackgroundImage = " /BossFight/DrinkRedbull.png";
             Update();
             await Task.Delay(1500);
-            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
+            BackgroundImage = " /BossFight/FightPoitionToPunch_2.png";
             PlayerHealth = PlayerHealth + 30;
             if (PlayerHealth > 100)
             {
                 PlayerHealth = 100;
             }
             Health_Bar();
+            GameState.RemoveItem("RedBull"); //Wir hoffen nur ein RedBull wird hier entfernt
             Update();
             await Task.Delay(1000);
             TaskComplete = true;
@@ -180,7 +183,7 @@ public class MyMinigame1 : MinigameDefBase
             TaskComplete = true;
             RedBull.X = 200;
             await Task.Delay(750);
-            RedBull.X = 1000;
+            RedBull.X = 10000;
         }
     }
     async public Task VillanAttack()
@@ -192,20 +195,20 @@ public class MyMinigame1 : MinigameDefBase
             int picture = rand.Next(0, 1);
             if (picture == 0)
             {
-                BackgroundImage = "/images/BossFight/KickFromBoss.png";
+                BackgroundImage = " /BossFight/KickFromBoss.png";
             }
             else if (picture == 1)
             {
-                BackgroundImage = "/images/BossFight/PunchFromBoss_1.png";
+                BackgroundImage = " /BossFight/PunchFromBoss_1.png";
             }
-            await PlayAudio("/images/BossFight/punch.wav");
+            await PlayAudio(" /BossFight/punch.wav");
             Update();
             await Task.Delay(250);
             PlayerHealth -= rand.Next(10, 16);
             Health_Bar();
             Update();
             await Task.Delay(1500);
-            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
+            BackgroundImage = " /BossFight/FightPoitionToPunch_2.png";
             Infotext4.Fill = "black";
             Infotext.Fill = "black";
             Infotext2.Fill = "black";
@@ -223,30 +226,29 @@ public class MyMinigame1 : MinigameDefBase
     {
 
         var rand = new Random();
-        HitPropability = rand.Next(1, 10); 
-        CritPropability = rand.Next(1, 25);
+        HitPropability = rand.Next(1, 11);
+        CritPropability = rand.Next(1, 26);
         if (HitPropability < 9)
         {
             if (CritPropability == 13)
             {
                 Critmultiplier += 1;
             }
-            await PlayAudio("/images/BossFight/punch.wav");
-            BackgroundImage = "/images/BossFight/Right_Punch.png";
-            Update();
+            await PlayAudio(" /BossFight/punch.wav");
+            BackgroundImage = " /BossFight/Right_Punch.png";
             Update();
             VillanHealth = VillanHealth - 9 * AttackBuff * Critmultiplier;
-            Critmultiplier = 1;
             Villan_Health_Bar();
+            Critmultiplier = 1;
             Update();
             await Task.Delay(2000);
-            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";   
+            BackgroundImage = " /BossFight/FightPoitionToPunch_2.png";
         }
         else
         {
             Infotext6.Opacity = 1;
-            Infotext6.ZIndex = 6;
-            await Task.Delay(100);
+            Infotext6.ZIndex = 1000000;
+            await Task.Delay(500);
             Infotext6.Opacity = 0;
             Infotext6.ZIndex = -1;
         }
@@ -257,17 +259,17 @@ public class MyMinigame1 : MinigameDefBase
     async public void Attack_2()
     {
 
-        var rand = new Random();        
-        HitPropability = rand.Next(1, 10);
+        var rand = new Random();
+        HitPropability = rand.Next(1, 11);
         if (HitPropability < 4)
         {
-            await PlayAudio("/images/BossFight/punch.wav");
-            BackgroundImage = "/images/BossFight/LeftKickAndRightPunch.png";
+            await PlayAudio(" /BossFight/punch.wav");
+            BackgroundImage = " /BossFight/LeftKickAndRightPunch.png";
             Update();
             VillanHealth = VillanHealth - 19 * AttackBuff;
             Villan_Health_Bar();
             await Task.Delay(2000);
-            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
+            BackgroundImage = " /BossFight/FightPoitionToPunch_2.png";
             Update();
         }
         else
@@ -285,15 +287,15 @@ public class MyMinigame1 : MinigameDefBase
     async public void Status_Attack()
     {
         var rand = new Random();
-        HitPropability = rand.Next(1, 10);
+        HitPropability = rand.Next(1, 11);
         if (HitPropability < 10)
         {
-            await PlayAudio("/images/BossFight/push.wav");
-            BackgroundImage = "/images/BossFight/PushBoss.png";
+            await PlayAudio(" /BossFight/push.wav");
+            BackgroundImage = " /BossFight/PushBoss.png";
             Update();
             await Task.Delay(2000);
-            AttackBuff += 1+1/5;
-            BackgroundImage = "/images/BossFight/FightPoitionToPunch_2.png";
+            AttackBuff += 1 + 1 / 5;
+            BackgroundImage = " /BossFight/FightPoitionToPunch_2.png";
             Update();
             Villan_Health_Bar();
             Update();
@@ -324,6 +326,7 @@ public class MyMinigame1 : MinigameDefBase
             FillOpacity = 0,
             OnMouseEnter = async (args) =>
             {
+                AttackButton1.FillOpacity = 0.3; //Anmerkung: Opacity funktioniert nicht wie es sollte, es ist entweder unsichtbar oder deckend
                 Infotext5.InnerText = "Dmg: 9" +
                                 "  ACC: 80%";
                 Infotext5.Opacity = 1;
@@ -331,6 +334,7 @@ public class MyMinigame1 : MinigameDefBase
             },
             OnMouseLeave = async (args) =>
             {
+                AttackButton1.FillOpacity = 0;
                 Infotext5.Opacity = 0;
                 Update();
             },
@@ -349,7 +353,6 @@ public class MyMinigame1 : MinigameDefBase
                     AttackButton1.Y -= 5;
                     Update();
                     Attack_1();
-                    PlayAudio("");
                     Update();
                 }
                 else if (TaskComplete == true)
@@ -380,6 +383,7 @@ public class MyMinigame1 : MinigameDefBase
             FillOpacity = 0,
             OnMouseEnter = async (args) =>
             {
+                AttackButton2.FillOpacity = 0.3;
                 Infotext5.InnerText = "Dmg: 20" +
                                 "  ACC: 30%";
                 Infotext5.Opacity = 1;
@@ -387,6 +391,7 @@ public class MyMinigame1 : MinigameDefBase
             },
             OnMouseLeave = async (args) =>
             {
+                AttackButton2.FillOpacity = 0;
                 Infotext5.Opacity = 0;
                 Update();
             },
@@ -436,6 +441,7 @@ public class MyMinigame1 : MinigameDefBase
             FillOpacity = 0,
             OnMouseEnter = async (args) =>
             {
+                StatusButton.FillOpacity = 0.3;
                 Infotext5.InnerText = "MUL: 1.2" +
                                 "  ACC: 90%";
                 Infotext5.Opacity = 1;
@@ -443,6 +449,7 @@ public class MyMinigame1 : MinigameDefBase
             },
             OnMouseLeave = async (args) =>
             {
+                StatusButton.FillOpacity = 0;
                 Infotext5.Opacity = 0;
                 Update();
             },
@@ -566,6 +573,7 @@ public class MyMinigame1 : MinigameDefBase
             FillOpacity = 0,
             OnMouseEnter = async (args) =>
             {
+                HealButton.FillOpacity = 0.3;
                 Infotext5.InnerText = "VIG: +30" +
                                 "  REQ: RB";
                 Infotext5.Opacity = 1;
@@ -573,6 +581,7 @@ public class MyMinigame1 : MinigameDefBase
             },
             OnMouseLeave = async (args) =>
             {
+                HealButton.FillOpacity = 0;
                 Infotext5.Opacity = 0;
                 Update();
             },
@@ -637,7 +646,7 @@ public class MyMinigame1 : MinigameDefBase
             ZIndex = -1,
             Width = 1200,
             Height = 400,
-            ImagePath = "/images/BossFight/Menu.png"
+            ImagePath = " /BossFight/Menu.png"
         };
         RedBull = new()
         {
@@ -647,7 +656,7 @@ public class MyMinigame1 : MinigameDefBase
             ZIndex = -1,
             Width = 1200,
             Height = 400,
-            ImagePath = "/images/BossFight/no_redbull.png"
+            ImagePath = " /BossFight/no_redbull.png"
 
         };
         Blend = new()
