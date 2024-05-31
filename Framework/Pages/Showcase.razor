@@ -1,0 +1,45 @@
+@page "/showcase"
+
+@using Framework.Minigames
+@using Framework.Keyboard
+@using Framework.Mouse
+
+@inject KeyboardService KeyboardService
+@inject MouseService MouseService
+
+@if (MinigameDefClass != "") {
+    <Minigame MinigameDefClass="@MinigameDefClass" OnFinished='() => MinigameDefClass = ""' />
+} else {
+    @* List of buttons goes here *@
+    @* Just copy-paste and change the MinigameDefClass and text *@
+    <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.MinigameTut"'>MinigameTut</button>
+    <button @onclick='() => MinigameDefClass = "Framework.Minigames.IOServicesTest"'>IoServices</button>
+    <button @onclick='() => MinigameDefClass = "Framework.Minigames.MiniTest"'>MiniTest</button>
+
+}
+
+@code {
+    private string MinigameDefClass = "";
+
+    protected override void OnInitialized()
+    {
+        KeyboardService.OnKeyDown += MoveBack;
+    }
+
+    private void MoveBack(object? sender, KeyEventArgs e)
+    {
+        // if the escape key is pressed, close the minigame
+        if (e.Key == "Escape")
+        {
+            MinigameDefClass = "";
+        }
+
+        // Clear event handlers of IO services
+        KeyboardService.ClearEvents();
+        MouseService.ClearEvents();
+
+        // reattach the event handler for the back button
+        KeyboardService.OnKeyDown += MoveBack;
+        StateHasChanged();
+    }
+}
