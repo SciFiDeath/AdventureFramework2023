@@ -89,7 +89,7 @@ public class LockpickingMinigame : MinigameDefBase
     public Text Confirm  { get; set; } = new();
 
 
-    public override string BackgroundImage {get; set;} = "images/LockerVonVorne.png";
+    public override string BackgroundImage {get; set;} = "LockPick_assets/images/LockerVonVorne.png";
     
     public interface IGameObject
     {
@@ -103,7 +103,7 @@ public class LockpickingMinigame : MinigameDefBase
     }
     public LockpickingMinigame()
     {
-        if(BackgroundImage == "images/LockerVonVorne.png")
+        if(BackgroundImage == "LockPick_assets/images/LockerVonVorne.png")
         {
             rectLock = new()
             {
@@ -112,9 +112,9 @@ public class LockpickingMinigame : MinigameDefBase
                 Width = 250,
                 Height = 500,
                 Fill = "transparent",
-                OnClick = (args) => { if(BackgroundImage == "images/LockerVonVorne.png")
+                OnClick = (args) => { if(BackgroundImage == "LockPick_assets/images/LockerVonVorne.png")
                     {
-                        BackgroundImage = "images/LockerVonHinten.png";
+                        BackgroundImage = "LockPick_assets/images/LockerVonHinten.png";
                         Update();
                         rect0.Visible = false;
                         rect01.Visible = false;
@@ -141,9 +141,9 @@ public class LockpickingMinigame : MinigameDefBase
                         Number31.Visible = false;
                         Number32.Visible = false;
                     }
-                    else if(BackgroundImage == "images/LockerVonHinten.png")
+                    else if(BackgroundImage == "LockPick_assets/images/LockerVonHinten.png")
                     {
-                        BackgroundImage = "images/LockerVonVorne.png";
+                        BackgroundImage = "LockPick_assets/images/LockerVonVorne.png";
                         Update();
                         rect0.Visible = true;
                         rect01.Visible = true;
@@ -488,7 +488,7 @@ public class LockpickingMinigame : MinigameDefBase
                         {
                             if (Convert.ToInt16(Number3.InnerText) == 8)
                             {
-                                BackgroundImage = "images/GeoeffneterLocker.png";
+                                BackgroundImage = "LockPick_assets/images/GeoeffneterLocker.png";
                                 Update();
                                 Finish(null, "OtherSlide");
                             }
@@ -500,7 +500,7 @@ public class LockpickingMinigame : MinigameDefBase
                                     rectLock.Kill();
                                     PunchNumber.Visible = true;
                                     RageNumber.Visible = true;
-                                    SoundService.PlayMusic("/audio/doom-soundtrack.wav");
+                                    SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
                                 }
                                 if (x == -1)
                                 {
@@ -519,7 +519,7 @@ public class LockpickingMinigame : MinigameDefBase
                                 rectLock.Kill();
                                 PunchNumber.Visible = true;
                                 RageNumber.Visible = true;
-                                SoundService.PlayMusic("/audio/doom-soundtrack.wav");
+                                SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
                             }
                             if (x == -1)
                             {
@@ -537,7 +537,7 @@ public class LockpickingMinigame : MinigameDefBase
                             rectLock.Kill();
                             PunchNumber.Visible = true;
                             RageNumber.Visible = true;
-                            SoundService.PlayMusic("/audio/doom-soundtrack.wav");
+                            SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
                         }
                         if (x == -1)
                         {
@@ -555,7 +555,7 @@ public class LockpickingMinigame : MinigameDefBase
                         rectLock.Kill();
                         PunchNumber.Visible = true;
                         RageNumber.Visible = true;
-                        SoundService.PlayMusic("/audio/doom-soundtrack.wav");
+                        SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
                     }
                     if (x == -1)
                     {
@@ -594,12 +594,12 @@ public class LockpickingMinigame : MinigameDefBase
                     Fill = "transparent",
                     OnClick = (args) => {if (Convert.ToInt16(TriesNumber.InnerText) == 0)
                     {
-                        SoundService.PlaySound("/audio/punch.wav");
+                        SoundService.PlaySound("LockPick_assets/audio/punch.wav");
                         int x = Convert.ToInt16(RageNumber.InnerText) + 1;
                         RageNumber.InnerText = x.ToString();
                         if (x == 80)
                         {
-                            BackgroundImage = "images/GeoeffneterLocker.png";
+                            BackgroundImage = "LockPick_assets/images/GeoeffneterLocker.png";
                             SoundService.StopMusic();
                             Update();
                             Finish(null, "OtherSlide");
