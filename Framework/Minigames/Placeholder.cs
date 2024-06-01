@@ -30,8 +30,8 @@ public class MinigameTut : MinigameDefBase
 
         Rects = new()
         {
-            X = 1818,
-            Y = 200,
+            X = 1818 * (3 / 2),
+            Y = 200 * (3 / 2),
             Width = 100,
             Height = 600,
             Fill = "red",
@@ -41,12 +41,12 @@ public class MinigameTut : MinigameDefBase
 
     public void errorspage(EventArgs e)
     {
-        BackgroundImage = "images/IMG_2457.jpg";
+        BackgroundImage = "images/IMG_2457.JPG";
         Update();
         newRect = new()
         {
             X = 0,
-            Y = 200,
+            Y = 200 * (3 / 2),
             Width = 100,
             Height = 600,
             Fill = "red",
@@ -57,8 +57,8 @@ public class MinigameTut : MinigameDefBase
         bool found = false;
         Error0 = new() //Box
         {
-            X = 1200,
-            Y = 10,
+            X = 1200*(3/2),
+            Y = 10 * (3 / 2),
             Width = 350,
             Height = 250,
             Fill = "transparent",
@@ -70,8 +70,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error1 = new() //blue zylinder
         {
-            X = 1000,
-            Y = 350,
+            X = 1000 * (3 / 2),
+            Y = 350 * (3 / 2),
             Width = 110,
             Height = 240,
             Fill = "transparent",
@@ -83,8 +83,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error2 = new() //purple strip
         {
-            X = 1450,
-            Y = 360,
+            X = 1450 * (3 / 2),
+            Y = 360 * (3 / 2),
             Width = 110,
             Height = 200,
             Fill = "transparent",
@@ -96,8 +96,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error3 = new()//spoons
         {
-            X = 1380,
-            Y = 850,
+            X = 1380 * (3 / 2),
+            Y = 850 * (3 / 2),
             Width = 150,
             Height = 250,
             Fill = "transparent",
@@ -109,8 +109,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error4 = new() // black lid
         {
-            X = 1260,
-            Y = 510,
+            X = 1260 * (3 / 2),
+            Y = 510 * (3 / 2),
             Width = 120,
             Height = 200,
             Fill = "transparent",
@@ -122,8 +122,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error5 = new()//B12 Box upside down
         {
-            X = 1180,
-            Y = 620,
+            X = 1180 * (3 / 2),
+            Y = 620 * (3 / 2),
             Width = 55,
             Height = 100,
             Fill = "transparent",
@@ -135,8 +135,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error6 = new() //blue lid upside down
         {
-            X = 792,
-            Y = 390,
+            X = 792 * (3 / 2),
+            Y = 390 * (3 / 2),
             Width = 100,
             Height = 180,
             Fill = "transparent",
@@ -148,8 +148,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error7 = new() //türkis lid moved
         {
-            X = 750,
-            Y = 600,
+            X = 750 * (3 / 2),
+            Y = 600 * (3 / 2),
             Width = 100,
             Height = 140,
             Fill = "transparent",
@@ -161,8 +161,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error8 = new() //cutting board
         {
-            X = 750,
-            Y = 770,
+            X = 750 * (3 / 2),
+            Y = 770 * (3 / 2),
             Width = 100,
             Height = 300,
             Fill = "transparent",
@@ -174,8 +174,8 @@ public class MinigameTut : MinigameDefBase
         Update();
         Error9 = new()//missing 123
         {
-            X = 560,
-            Y = 630,
+            X = 560 * (3 / 2),
+            Y = 630 * (3 / 2),
             Width = 75,
             Height = 100,
             Fill = "transparent",
