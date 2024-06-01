@@ -1,7 +1,7 @@
 {
     "MusicRoom": {
         "Tags": ["START"],
-        "Image": "images/Music/Music_Room.png",
+        "Image": "minigame_assets/Music_Assets/Music_Room.png",
         "Buttons": {
             "CircleTest": {
                 "Type": "polygon",
@@ -14,5 +14,4 @@
             }
         }
     }
-
 }
