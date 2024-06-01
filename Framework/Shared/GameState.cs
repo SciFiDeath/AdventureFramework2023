@@ -1,81 +1,113 @@
 using Microsoft.AspNetCore.Components;
 
 using JsonUtilities;
-using FrameworkItems;
-using static InventoryEvent;
-using Microsoft.JSInterop;
+using Framework.Items;
+// using static InventoryEvent;
 using ObjectEncoding;
-using Framework.Minigames;
 //Notifications
 using Blazored.Toast.Services;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
 
-namespace GameStateInventory;
+using Framework.Toast;
+using Blazored.Toast;
+
+namespace Framework.State;
 
 public interface IGameState
 {
 	// if value exists, set it, else create new entry
-	void SetVisibility(string name, bool value);
-	bool CheckVisibility(string name);
+	void SetState(string name, bool value);
+	bool GetState(string name);
+	bool CheckForState(string name);
+	bool TryGetState(string name, out bool value);
+	void ToggleState(string name);
+	bool TryToggleState(string name);
 
 	void AddItem(string id);
 	void RemoveItem(string id);
 	bool CheckForItem(string id);
 
-	// minigames probably should be seperated from other stuff
-	// if value exists, set it, else create new entry
-
-	//TODO Implement This:
-	void SetMinigame(string name, MinigameDefBase minigame);
-	void GetMinigame(string name);
+	//* Scrapped idea for minigame saving in GameState
 
 	string CurrentSlide { get; set; }
 
-	// need to think about the name
-	//TODO Implement this:
 	void SetFromSaveString(string saveString);
 	string GetSaveString();
+
+	int RedBullCount { get; }
+	void ChangeRedBull(int amount);
 }
 
-public class GameState
+// interface for the minigames so that they don't accidentally overwrite everything
+// they can still brick everything tho, but they have to try harder
+public interface IMinigameGameState
 {
-	private readonly IToastService ToastService;
+	void SetState(string name, bool value);
+	bool GetState(string name);
+	bool CheckForState(string name);
+	bool TryGetState(string name, out bool value);
+	void ToggleState(string name);
+	bool TryToggleState(string name);
+	void AddItem(string id);
+	void RemoveItem(string id);
+	bool CheckForItem(string id);
 
-	protected JsonUtility JsonUtility { get; set; } = null!;
+	int RedBullCount { get; }
+	void ChangeRedBull(int amount);
+}
 
-	protected Items Items { get; set; }
-	//Initialize Inventory
-	private static List<string> ItemsInInventory = new();
+public class GameState(JsonUtility jsonUtility, ItemService items, IToastService toastService) : IGameState, IMinigameGameState
+{
+	// dependencies
+	private readonly IToastService ToastService = toastService;
+	private readonly JsonUtility JsonUtility = jsonUtility;
+	private readonly ItemService Items = items;
 
-	private static Dictionary<string, bool> State = new();
 
-	public GameState(JsonUtility jsonUtility, Items items, IToastService toastService)
+	// initialize with empty data
+	private GameStateData Data = new();
+
+	// they just point to the data, so you can swap it out by just changing the data, not the properties
+	private List<string> ItemsInInventory { get { return Data.Items; } set { Data.Items = value; } }
+	private Dictionary<string, bool> State { get { return Data.GameState; } set { Data.GameState = value; } }
+	// should be set by the slide service
+	public string CurrentSlide { get { return Data.CurrentSlide; } set { Data.CurrentSlide = value; } }
+
+	// Red Bull methods
+	private int RedBulls { get { return Data.RedBulls; } set { Data.RedBulls = value; } }
+	public int RedBullCount => RedBulls;
+	public void ChangeRedBull(int amount)
 	{
-		JsonUtility = jsonUtility;
-		Items = items;
-		ToastService = toastService;
-
+		RedBulls += amount;
+		if (RedBulls < 0)
+		{
+			RedBulls = 0;
+		}
+		// to update UI
+		OnGameStateChange?.Invoke(this, EventArgs.Empty);
 	}
+
+	public event EventHandler? OnGameStateChange;
 
 	public async Task LoadGameStateAndItemsAsync(string path = "gamestate.json")
 	{
 		State = await JsonUtility.LoadFromJsonAsync<Dictionary<string, bool>>(path);
 		await Items.LoadItemsAsync();
-
 	}
 
-	public void SetVisibility(string name, bool value)
+	public void SetState(string name, bool value)
 	{
-		State[name] = value;
+		if (!State.TryAdd(name, value))
+		{
+			State[name] = value;
+		}
 	}
 
-	public void ChangeVisibility(string name)
+	public void ToggleState(string name)
 	{
 		State[name] = !State[name];
 	}
 
-	public bool CheckVisibility(string name)
+	public bool GetState(string name)
 	{
 		try
 		{
@@ -87,12 +119,17 @@ public class GameState
 			return true;
 		}
 	}
-	public bool CheckForVisibility(string name) => State.ContainsKey(name);
-
-
-	public void AddVisibility(string name, bool value)
+	public bool CheckForState(string name) => State.ContainsKey(name);
+	// kinda pointless, but I had the urge to overengineer
+	public bool TryGetState(string name, out bool value) => State.TryGetValue(name, out value);
+	public bool TryToggleState(string name)
 	{
-		State.Add(name, value);
+		if (State.TryGetValue(name, out bool value))
+		{
+			State[name] = !value;
+			return true;
+		}
+		return false;
 	}
 
 	public void RemoveItem(string id)
@@ -101,9 +138,16 @@ public class GameState
 
 		if (!removed)
 		{
-			throw new ArgumentException($"Element {id} is not in Inventory");
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is not in Inventory");
 		}
 		// Console.WriteLine($"Successfully removed {id} from inventory");
+		// ToastService.ShowSuccess($"Removed {Items.items[id].Name} from inventory");
+		ToastParameters parameters = new();
+		parameters.Add(nameof(ToastMessage.Message), $"Removed {Items.items[id].Name} from inventory");
+		ToastService.ShowToast<ToastMessage>(parameters);
+		OnGameStateChange?.Invoke(this, EventArgs.Empty);
 	}
 
 	public void AddItem(string id)
@@ -113,12 +157,24 @@ public class GameState
 		{
 			throw new Exception("Item doesn't exist in items.json Dictionary");
 		}
+		// make sure there are no duplicates
+		if (ItemsInInventory.Contains(id))
+		{
+			return;
+			//? maybe not throw an exception?
+			// throw new ArgumentException($"Element {id} is already in Inventory");
+		}
 		ItemsInInventory.Add(id);
 
-		ToastService.ShowSuccess($"Added {id} to inventory");
+		// ToastService.ShowSuccess($"Added {Items.items[id].Name} to inventory");
 
-		//Event handler for updateing inventory images
-		InventoryEvent.OnItemAdded(this, new ItemAddedEventArgs { ItemId = id });
+		ToastParameters parameters = new();
+		parameters.Add(nameof(ToastMessage.Message), $"Added {Items.items[id].Name} to inventory");
+		ToastService.ShowToast<ToastMessage>(parameters);
+
+		// //Event handler for updateing inventory images
+		// InventoryEvent.OnGameStateChange(this, new ItemAddedEventArgs { ItemId = id });
+		OnGameStateChange?.Invoke(this, EventArgs.Empty);
 	}
 
 	public bool CheckForItem(string id)
@@ -126,64 +182,57 @@ public class GameState
 		return ItemsInInventory.Contains(id);
 	}
 
-	public List<string> GetItemStrings()
-	{
-		return ItemsInInventory;
-	}
+	public List<string> GetItemStrings() => ItemsInInventory;
+
 	public Dictionary<string, Item> GetItemObjects()
 	{
 		Dictionary<string, Item> ItemObjects = new();
 
 		foreach (string id in ItemsInInventory)
 		{
-			if (Items.items.ContainsKey(id))
+			if (Items.items.TryGetValue(id, out Item? value))
 			{
-				ItemObjects.Add(id, Items.items[id]);
+				ItemObjects.Add(id, value);
 			}
-
 		}
-
 		return ItemObjects;
 	}
 
 	public string GetSaveString()
 	{
-		// Console.WriteLine("GetSaveString called");
-		GameStateData data = new GameStateData(ItemsInInventory, State);
-		// foreach (var item in data.Items)
-		// {
-		// 	Console.WriteLine(item);
-		// }
-		return ObjectEncoder.EncodeObject(data);
+		return ObjectEncoder.EncodeObject(Data);
 	}
 
 	public void SetFromSaveString(string hex)
 	{
-		// Console.WriteLine("SetFromSaveString called");
-		GameStateData? data = ObjectEncoder.DecodeObject<GameStateData>(hex) ?? throw new Exception("GameStateData is null");
-		GameState.State = data.gameState;
-
-		// foreach (var item in data.Items)
-		// {
-		// 	Console.WriteLine(item);
-		// }
-
-		GameState.ItemsInInventory = data.Items;
+		GameStateData data = ObjectEncoder.DecodeObject<GameStateData>(hex) ??
+		throw new Exception("GameStateData is null");
+		Data = data;
 	}
-	public class GameStateData
+}
+
+public class GameStateData
+{
+	public List<string> Items { get; set; } = [];
+	public Dictionary<string, bool> GameState { get; set; } = [];
+	public string CurrentSlide { get; set; } = "";
+	public int RedBulls { get; set; } = 0;
+
+	//public Dictionary<string, Dictionary<string, > DialogueProgress {get; set;} = [];
+}
+
+public class DialogueProgress
+{
+
+	public string QuestName { get; set; }
+	public List<List<string>> Messages { get; set; }
+	public int Progress { get; set; }
+	public DialogueProgress(string questName, List<List<string>> messages, int progress)
 	{
-
-		public List<string> Items { get; }
-		public Dictionary<string, bool> gameState { get; }
-		//public Dictionary<string, object> Minigames => Minigames;
-		public GameStateData(List<string> items, Dictionary<string, bool> gamestate)
-		{
-
-			Items = items;
-			gameState = gamestate;
-		}
+		QuestName = questName;
+		Messages = messages;
+		Progress = progress;
 	}
 
 }
-
 

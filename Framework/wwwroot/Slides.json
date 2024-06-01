@@ -1,5 +1,6 @@
 {
     "HM305": {
+        "Tags": ["START"],
         "Image": "images/HM305_fromEntrance.jpg",
         "Buttons": {
             "Blackboard": {
