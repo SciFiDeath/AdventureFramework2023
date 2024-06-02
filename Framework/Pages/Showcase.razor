@@ -27,6 +27,12 @@
     <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.MinigameTut"'>MinigameTut</button>
     <button @onclick='() => MinigameDefClass = "Framework.Minigames.IOServicesTest"'>IoServices</button>
     <button @onclick='() => MinigameDefClass = "Framework.Minigames.MiniTest"'>MiniTest</button>
+    <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.PianoMinigame"'>
+        <strong>PianoMinigame by Andrii Zhabrovets</strong> <br />
+        You may have to click the button to play the chord multiple times to get it to work fully. <br />
+        It is supposed to play 3 notes, but does not always work. <br />
+        Not Andrii's fault though, it's just the janky way the sound works.
+    </button>
 
 }
 
@@ -35,26 +41,25 @@
 
     protected override void OnInitialized()
     {
-        KeyboardService.OnKeyDown += MoveBack;
+        KeyboardService.OnKeyDown += HandleKeyDown;
     }
 
-    private void MoveBack(object? sender, KeyEventArgs e)
+    private void HandleKeyDown(object? sender, KeyEventArgs e)
     {
         // if the escape key is pressed, close the minigame
         if (e.Key == "Escape")
         {
             MinigameDefClass = "";
+            // Clear event handlers of IO services
+            KeyboardService.ClearEvents();
+            MouseService.ClearEvents();
+
+            // stop music
+            _ = SoundService.StopMusic();
+
+            // reattach the event handler for the back button
+            KeyboardService.OnKeyDown += HandleKeyDown;
+            StateHasChanged();
         }
-
-        // Clear event handlers of IO services
-        KeyboardService.ClearEvents();
-        MouseService.ClearEvents();
-
-        // stop music
-        _ = SoundService.StopMusic();
-
-        // reattach the event handler for the back button
-        KeyboardService.OnKeyDown += MoveBack;
-        StateHasChanged();
     }
 }
