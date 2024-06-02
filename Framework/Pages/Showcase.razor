@@ -3,13 +3,25 @@
 @using Framework.Minigames
 @using Framework.Keyboard
 @using Framework.Mouse
+@using Framework.State
+@using Framework.Sound
 
 @inject KeyboardService KeyboardService
 @inject MouseService MouseService
+@inject GameState GameState
+@inject SoundService SoundService
 
 @if (MinigameDefClass != "") {
     <Minigame MinigameDefClass="@MinigameDefClass" OnFinished='() => MinigameDefClass = ""' />
 } else {
+    <p>
+        Click on the buttons to go to a minigame. Press escape to get out of a minigame. 
+        If you reload the page, go back to the index first and then to this page, 
+        as sound and other stuff won't work if you just stay on this page.
+        Use the "Add 100 RedBulls" button to get 100 RedBulls for testing purposes.
+        You are going to need it for the Bossfight minigame.
+    </p>
+    <button @onclick='() => GameState.ChangeRedBull(100)'>Add 100 RedBulls</button>
     @* List of buttons goes here *@
     @* Just copy-paste and change the MinigameDefClass and text *@
     <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.MinigameTut"'>MinigameTut</button>
@@ -37,6 +49,9 @@
         // Clear event handlers of IO services
         KeyboardService.ClearEvents();
         MouseService.ClearEvents();
+
+        // stop music
+        _ = SoundService.StopMusic();
 
         // reattach the event handler for the back button
         KeyboardService.OnKeyDown += MoveBack;
