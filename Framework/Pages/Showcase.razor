@@ -12,11 +12,12 @@
 @inject SoundService SoundService
 
 @if (MinigameDefClass != "") {
-    <Minigame MinigameDefClass="@MinigameDefClass" OnFinished='() => MinigameDefClass = ""' />
+    <Minigame MinigameDefClass="@MinigameDefClass" OnFinished='async () => { await Task.Delay(1000); MinigameDefClass = ""; }' />
 } else {
     <p style="color:white">
         Click on the buttons to go to a minigame. Press escape to get out of a minigame.
-        If a minigame finishes, you also return here.
+        If a minigame finishes, you also return here. 
+        (it first waits 1 second before returning to this page to give you time to see the end screen)
         If you reload the page, go back to the index first and then to this page, 
         as sound and other stuff won't work if you just stay on this page.
         Use the "Add 100 RedBulls" button to get 100 RedBulls for testing purposes.
