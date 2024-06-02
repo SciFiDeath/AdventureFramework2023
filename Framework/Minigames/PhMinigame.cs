@@ -17,7 +17,7 @@ public class Material : Image
 
 public class PhMinigame : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "images/PhMinigame/edited/Platform1.png";
+    public override string BackgroundImage { get; set; } = "minigame_assets/PhMinigame_assets/edited/Platform1.png";
     public Material? SelectedMaterial { get; set; }
     static int ColumnCount = 6;
     static int RowCount = 8;
@@ -101,8 +101,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "HorizontalStick1",
-                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
                 CorrectX = 2,
@@ -115,8 +115,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "HorizontalStick2",
-                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
                 CorrectX = 3,
@@ -127,8 +127,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "HorizontalStick3",
-                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
                 CorrectX = 2,
@@ -139,8 +139,8 @@ public class PhMinigame : MinigameDefBase
              new Material()
             {
                 Id = "HorizontalStick4",
-                ImagePath = "images/PhMinigame/edited/HorizontalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/HorizontalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
                 Width = 190,
                 CorrectX = 3,
@@ -151,8 +151,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick1",
-                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/VerticalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
                 CorrectX = 4,
@@ -165,8 +165,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick2",
-                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/VerticalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
                 CorrectX = 4,
@@ -177,8 +177,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick3",
-                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/VerticalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
                 CorrectX = 4,
@@ -189,8 +189,8 @@ public class PhMinigame : MinigameDefBase
              new Material()
             {
                 Id = "VerticalStick4",
-                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/VerticalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
                 CorrectX = 4,
@@ -201,8 +201,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick5",
-                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/VerticalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
                 CorrectX = 1,
@@ -213,8 +213,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick6",
-                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/VerticalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
                 CorrectX = 1,
@@ -225,8 +225,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "VerticalStick7",
-                ImagePath = "images/PhMinigame/edited/VerticalStick.png",
-                HintImageUrl = "images/PhMinigame/edited/VerticalStick_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/VerticalStick.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
                 CorrectX = 1,
@@ -237,8 +237,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Potentiometer",
-                ImagePath = "images/PhMinigame/edited/Potentiometer.png",
-                HintImageUrl = "images/PhMinigame/edited/Potentiometer_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/Potentiometer.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Potentiometer_hint.png",
                 Height = 170,
                 Width = 190,
                 CorrectX = 4,
@@ -250,8 +250,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Switch 1",
-                ImagePath = "images/PhMinigame/edited/Switch1.png",
-                HintImageUrl = "images/PhMinigame/edited/Switch_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/Switch1.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Switch_hint.png",
                 Height = 170,
                 Width = 190,
                 CorrectX = 1,
@@ -263,8 +263,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Switch 2",
-                ImagePath = "images/PhMinigame/edited/Switch2.png",
-                HintImageUrl = "images/PhMinigame/edited/Switch_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/Switch2.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Switch_hint.png",
                 Height = 170,
                 Width = 190,
                 CorrectX = 4,
@@ -276,8 +276,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Lamp",
-                ImagePath = "images/PhMinigame/edited/HorizontalLamp.png",
-                HintImageUrl = "images/PhMinigame/edited/HorizontalLamp_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalLamp.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalLamp_hint.png",
                 Height = 80,
                 Width = 190,
                 CorrectX = 1,
@@ -289,8 +289,8 @@ public class PhMinigame : MinigameDefBase
             new Material()
             {
                 Id = "Battery",
-                ImagePath = "images/PhMinigame/edited/Battery.png",
-                HintImageUrl = "images/PhMinigame/edited/Battery_hint.png",
+                ImagePath = "minigame_assets/PhMinigame_assets/edited/Battery.png",
+                HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Battery_hint.png",
                 Height = 170,
                 Width = 190,
                 CorrectX = 1,
@@ -431,7 +431,7 @@ public class PhMinigame : MinigameDefBase
                 SelectedMaterial = null;
 
             }
-            BackgroundImage = "images/PhMinigame/edited/FinishedGameBackground.png";
+            BackgroundImage = "minigame_assets/PhMinigame_assets/edited/FinishedGameBackground.png";
             Finish(null, null);
             Update();
         }
