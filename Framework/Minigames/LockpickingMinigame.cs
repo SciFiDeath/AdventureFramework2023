@@ -6,7 +6,7 @@ namespace Framework.Minigames.MinigameDefClasses;
 public class LockpickingMinigame : MinigameDefBase
 {
     [Element]
-    public Image ImagePath {get; set; } = new();
+    public Image ImagePath { get; set; } = new();
 
     [Element]
     public Rectangle ragemode { get; set; } = new();
@@ -50,47 +50,47 @@ public class LockpickingMinigame : MinigameDefBase
     public Rectangle rect32 { get; set; } = new();
 
     [Element]
-    public Text TriesText  { get; set; } = new();
+    public Text TriesText { get; set; } = new();
     [Element]
-    public Text TriesNumber  { get; set; } = new();
+    public Text TriesNumber { get; set; } = new();
 
     [Element]
-    public Text RageNumber  { get; set; } = new();
+    public Text RageNumber { get; set; } = new();
 
     [Element]
-    public Text Number0  { get; set; } = new();
+    public Text Number0 { get; set; } = new();
     [Element]
-    public Text Number02  { get; set; } = new();
+    public Text Number02 { get; set; } = new();
     [Element]
-    public Text Number01  { get; set; } = new();
+    public Text Number01 { get; set; } = new();
 
     [Element]
-    public Text Number1  { get; set; } = new();
+    public Text Number1 { get; set; } = new();
     [Element]
-    public Text Number11  { get; set; } = new();
+    public Text Number11 { get; set; } = new();
     [Element]
-    public Text Number12  { get; set; } = new();
+    public Text Number12 { get; set; } = new();
 
     [Element]
-    public Text Number2  { get; set; } = new();
+    public Text Number2 { get; set; } = new();
     [Element]
-    public Text Number21  { get; set; } = new();
+    public Text Number21 { get; set; } = new();
     [Element]
-    public Text Number22  { get; set; } = new();
+    public Text Number22 { get; set; } = new();
 
     [Element]
-    public Text Number3  { get; set; } = new();
+    public Text Number3 { get; set; } = new();
     [Element]
-    public Text Number31  { get; set; } = new();
+    public Text Number31 { get; set; } = new();
     [Element]
-    public Text Number32  { get; set; } = new();
+    public Text Number32 { get; set; } = new();
 
     [Element]
-    public Text Confirm  { get; set; } = new();
+    public Text Confirm { get; set; } = new();
 
 
-    public override string BackgroundImage {get; set;} = "LockPick_assets/images/LockerVonVorne.png";
-    
+    public override string BackgroundImage { get; set; } = "minigame_assets/LockPick_assets/images/LockerVonVorne.png";
+
     public interface IGameObject
     {
         public string Id { get; set; }
@@ -103,7 +103,7 @@ public class LockpickingMinigame : MinigameDefBase
     }
     public LockpickingMinigame()
     {
-        if(BackgroundImage == "LockPick_assets/images/LockerVonVorne.png")
+        if (BackgroundImage == "minigame_assets/LockPick_assets/images/LockerVonVorne.png")
         {
             rectLock = new()
             {
@@ -112,9 +112,11 @@ public class LockpickingMinigame : MinigameDefBase
                 Width = 250,
                 Height = 500,
                 Fill = "transparent",
-                OnClick = (args) => { if(BackgroundImage == "LockPick_assets/images/LockerVonVorne.png")
+                OnClick = (args) =>
+                {
+                    if (BackgroundImage == "minigame_assets/LockPick_assets/images/LockerVonVorne.png")
                     {
-                        BackgroundImage = "LockPick_assets/images/LockerVonHinten.png";
+                        BackgroundImage = "minigame_assets/LockPick_assets/images/LockerVonHinten.png";
                         Update();
                         rect0.Visible = false;
                         rect01.Visible = false;
@@ -141,9 +143,9 @@ public class LockpickingMinigame : MinigameDefBase
                         Number31.Visible = false;
                         Number32.Visible = false;
                     }
-                    else if(BackgroundImage == "LockPick_assets/images/LockerVonHinten.png")
+                    else if (BackgroundImage == "minigame_assets/LockPick_assets/images/LockerVonHinten.png")
                     {
-                        BackgroundImage = "LockPick_assets/images/LockerVonVorne.png";
+                        BackgroundImage = "minigame_assets/LockPick_assets/images/LockerVonVorne.png";
                         Update();
                         rect0.Visible = true;
                         rect01.Visible = true;
@@ -170,7 +172,8 @@ public class LockpickingMinigame : MinigameDefBase
                         Number31.Visible = true;
                         Number32.Visible = true;
                     }
-                Update();} 
+                    Update();
+                }
 
             };
 
@@ -181,7 +184,7 @@ public class LockpickingMinigame : MinigameDefBase
                 Width = 225,
                 Height = 80,
                 Fill = "darkgreen",
-                
+
             };
             PunchNumber = new()
             {
@@ -190,7 +193,7 @@ public class LockpickingMinigame : MinigameDefBase
                 Width = 225,
                 Height = 80,
                 Fill = "darkred",
-                
+
             };
             ragetangle = new()
             {
@@ -199,7 +202,7 @@ public class LockpickingMinigame : MinigameDefBase
                 Width = 220,
                 Height = 100,
                 Fill = "darkred",
-                
+
             };
             rect0 = new()
             {
@@ -304,32 +307,35 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "0",
                 X = 962,
-                Y = 606,  
+                Y = 606,
                 FontSize = 50,
                 FontFamily = "Aria",
                 Fill = "black",
-                OnClick = (args) => { int x = Convert.ToInt16(Number0.InnerText);
-                Number01.InnerText = x.ToString();
-                x = x + 1;
-                if (x == 10)
+                OnClick = (args) =>
                 {
-                    x = 0;
+                    int x = Convert.ToInt16(Number0.InnerText);
+                    Number01.InnerText = x.ToString();
+                    x = x + 1;
+                    if (x == 10)
+                    {
+                        x = 0;
+                    }
+                    Number0.InnerText = x.ToString();
+                    x = x + 1;
+                    if (x == 10)
+                    {
+                        x = 0;
+                    }
+                    Number02.InnerText = x.ToString();
+
+                    Update();
                 }
-                Number0.InnerText = x.ToString();
-                x = x + 1;
-                if (x == 10)
-                {
-                    x = 0;
-                }
-                Number02.InnerText = x.ToString();
-                
-                Update(); }
             };
             Number01 = new()
             {
                 InnerText = "9",
                 X = 1015,
-                Y = 600,  
+                Y = 600,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -338,7 +344,7 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "1",
                 X = 910,
-                Y = 600,  
+                Y = 600,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -347,32 +353,35 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "0",
                 X = 962,
-                Y = 689,  
+                Y = 689,
                 FontSize = 50,
                 FontFamily = "Aria",
                 Fill = "black",
-                OnClick = (args) => { int q = Convert.ToInt16(Number1.InnerText);
-                Number11.InnerText = q.ToString();
-                q = q + 1;
-                if (q == 10)
+                OnClick = (args) =>
                 {
-                    q = 0;
+                    int q = Convert.ToInt16(Number1.InnerText);
+                    Number11.InnerText = q.ToString();
+                    q = q + 1;
+                    if (q == 10)
+                    {
+                        q = 0;
+                    }
+                    Number1.InnerText = q.ToString();
+                    q = q + 1;
+                    if (q == 10)
+                    {
+                        q = 0;
+                    }
+                    Number12.InnerText = q.ToString();
+
+                    Update();
                 }
-                Number1.InnerText = q.ToString();
-                q = q + 1;
-                if (q == 10)
-                {
-                    q = 0;
-                }
-                Number12.InnerText = q.ToString();
-                
-                Update(); }
             };
             Number11 = new()
             {
                 InnerText = "9",
                 X = 1015,
-                Y = 680,  
+                Y = 680,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -381,7 +390,7 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "1",
                 X = 913,
-                Y = 682,  
+                Y = 682,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -390,32 +399,35 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "0",
                 X = 962,
-                Y = 772,  
+                Y = 772,
                 FontSize = 50,
                 FontFamily = "Aria",
                 Fill = "black",
-                OnClick = (args) => { int z = Convert.ToInt16(Number2.InnerText);
-                Number21.InnerText = z.ToString();
-                z = z + 1;
-                if (z == 10)
+                OnClick = (args) =>
                 {
-                    z = 0;
+                    int z = Convert.ToInt16(Number2.InnerText);
+                    Number21.InnerText = z.ToString();
+                    z = z + 1;
+                    if (z == 10)
+                    {
+                        z = 0;
+                    }
+                    Number2.InnerText = z.ToString();
+                    z = z + 1;
+                    if (z == 10)
+                    {
+                        z = 0;
+                    }
+                    Number22.InnerText = z.ToString();
+
+                    Update();
                 }
-                Number2.InnerText = z.ToString();
-                z = z + 1;
-                if (z == 10)
-                {
-                    z = 0;
-                }
-                Number22.InnerText = z.ToString();
-                
-                Update(); }
             };
             Number21 = new()
             {
                 InnerText = "9",
                 X = 1015,
-                Y = 762,  
+                Y = 762,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -424,7 +436,7 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "1",
                 X = 914,
-                Y = 766,  
+                Y = 766,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -433,32 +445,35 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "0",
                 X = 962,
-                Y = 853,  
+                Y = 853,
                 FontSize = 50,
                 FontFamily = "Aria",
                 Fill = "black",
-                OnClick = (args) => { int y = Convert.ToInt16(Number3.InnerText);
-                Number31.InnerText = y.ToString();
-                y = y + 1;
-                if (y == 10)
+                OnClick = (args) =>
                 {
-                    y = 0;
+                    int y = Convert.ToInt16(Number3.InnerText);
+                    Number31.InnerText = y.ToString();
+                    y = y + 1;
+                    if (y == 10)
+                    {
+                        y = 0;
+                    }
+                    Number3.InnerText = y.ToString();
+                    y = y + 1;
+                    if (y == 10)
+                    {
+                        y = 0;
+                    }
+                    Number32.InnerText = y.ToString();
+
+                    Update();
                 }
-                Number3.InnerText = y.ToString();
-                y = y + 1;
-                if (y == 10)
-                {
-                    y = 0;
-                }
-                Number32.InnerText = y.ToString();
-                
-                Update(); }
             };
             Number31 = new()
             {
                 InnerText = "9",
                 X = 1015,
-                Y = 844,  
+                Y = 844,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -467,7 +482,7 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "1",
                 X = 914,
-                Y = 843,  
+                Y = 843,
                 FontSize = 35,
                 FontFamily = "Aria",
                 Fill = "black",
@@ -476,21 +491,42 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "Confirm",
                 X = 1400,
-                Y = 1010,  
+                Y = 1010,
                 FontSize = 60,
                 FontFamily = "Aria",
                 Fill = "white",
-                OnClick = (args) => {if (Convert.ToInt16(Number0.InnerText) == 1)
+                OnClick = (args) =>
                 {
-                    if (Convert.ToInt16(Number1.InnerText) == 9)
+                    if (Convert.ToInt16(Number0.InnerText) == 1)
                     {
-                        if (Convert.ToInt16(Number2.InnerText) == 6)
+                        if (Convert.ToInt16(Number1.InnerText) == 9)
                         {
-                            if (Convert.ToInt16(Number3.InnerText) == 8)
+                            if (Convert.ToInt16(Number2.InnerText) == 6)
                             {
-                                BackgroundImage = "LockPick_assets/images/GeoeffneterLocker.png";
-                                Update();
-                                Finish(null, "OtherSlide");
+                                if (Convert.ToInt16(Number3.InnerText) == 8)
+                                {
+                                    BackgroundImage = "minigame_assets/LockPick_assets/images/GeoeffneterLocker.png";
+                                    Update();
+                                    Finish(null, "OtherSlide");
+                                }
+                                else
+                                {
+                                    int x = Convert.ToInt16(TriesNumber.InnerText) - 1;
+                                    if (x == 0)
+                                    {
+                                        rectLock.Kill();
+                                        PunchNumber.Visible = true;
+                                        RageNumber.Visible = true;
+                                        SoundService.PlayMusic("minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
+                                    }
+                                    if (x == -1)
+                                    {
+                                        x = 0;
+
+                                    }
+                                    TriesNumber.InnerText = x.ToString();
+                                    Update();
+                                }
                             }
                             else
                             {
@@ -500,12 +536,11 @@ public class LockpickingMinigame : MinigameDefBase
                                     rectLock.Kill();
                                     PunchNumber.Visible = true;
                                     RageNumber.Visible = true;
-                                    SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
+                                    SoundService.PlayMusic("minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
                                 }
                                 if (x == -1)
                                 {
                                     x = 0;
-                                    
                                 }
                                 TriesNumber.InnerText = x.ToString();
                                 Update();
@@ -519,7 +554,7 @@ public class LockpickingMinigame : MinigameDefBase
                                 rectLock.Kill();
                                 PunchNumber.Visible = true;
                                 RageNumber.Visible = true;
-                                SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
+                                SoundService.PlayMusic("minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
                             }
                             if (x == -1)
                             {
@@ -537,7 +572,7 @@ public class LockpickingMinigame : MinigameDefBase
                             rectLock.Kill();
                             PunchNumber.Visible = true;
                             RageNumber.Visible = true;
-                            SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
+                            SoundService.PlayMusic("minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
                         }
                         if (x == -1)
                         {
@@ -547,30 +582,12 @@ public class LockpickingMinigame : MinigameDefBase
                         Update();
                     }
                 }
-                else
-                {
-                    int x = Convert.ToInt16(TriesNumber.InnerText) - 1;
-                    if (x == 0)
-                    {
-                        rectLock.Kill();
-                        PunchNumber.Visible = true;
-                        RageNumber.Visible = true;
-                        SoundService.PlayMusic("LockPick_assets/audio/doom-soundtrack.wav");
-                    }
-                    if (x == -1)
-                    {
-                        x = 0;
-                    }
-                    TriesNumber.InnerText = x.ToString();
-                    Update();
-                }
-                }
             };
             TriesText = new()
             {
                 InnerText = "Tries:",
                 X = 40,
-                Y = 90,  
+                Y = 90,
                 FontSize = 60,
                 FontFamily = "Aria",
                 Fill = "white",
@@ -579,44 +596,46 @@ public class LockpickingMinigame : MinigameDefBase
             {
                 InnerText = "10",
                 X = 175,
-                Y = 90,  
+                Y = 90,
                 FontSize = 60,
                 FontFamily = "Aria",
                 Fill = "white",
             };
 
-                ragemode = new()
+            ragemode = new()
+            {
+                X = 631,
+                Y = 425,
+                Width = 420,
+                Height = 550,
+                Fill = "transparent",
+                OnClick = (args) =>
                 {
-                    X = 631,
-                    Y = 425,
-                    Width = 420,
-                    Height = 550,
-                    Fill = "transparent",
-                    OnClick = (args) => {if (Convert.ToInt16(TriesNumber.InnerText) == 0)
+                    if (Convert.ToInt16(TriesNumber.InnerText) == 0)
                     {
-                        SoundService.PlaySound("LockPick_assets/audio/punch.wav");
+                        SoundService.PlaySound("minigame_assets/LockPick_assets/audio/punch.wav");
                         int x = Convert.ToInt16(RageNumber.InnerText) + 1;
                         RageNumber.InnerText = x.ToString();
                         if (x == 80)
                         {
-                            BackgroundImage = "LockPick_assets/images/GeoeffneterLocker.png";
+                            BackgroundImage = "minigame_assets/LockPick_assets/images/GeoeffneterLocker.png";
                             SoundService.StopMusic();
                             Update();
                             Finish(null, "OtherSlide");
                         }
                         Update();
-                    } 
                     }
-                };
-                RageNumber = new() 
-                {
-                    InnerText = "0",
-                    X = 805,
-                    Y = 110,
-                    FontSize = 60,
-                    FontFamily = "Aria",
-                    Fill = "white",
-                };
+                }
+            };
+            RageNumber = new()
+            {
+                InnerText = "0",
+                X = 805,
+                Y = 110,
+                FontSize = 60,
+                FontFamily = "Aria",
+                Fill = "white",
+            };
             PunchNumber.Visible = false;
             RageNumber.Visible = false;
         }
