@@ -25,11 +25,8 @@
     @* List of buttons goes here *@
     @* Just copy-paste and change the MinigameDefClass and text *@
     <div style="display:flex; flex-direction:row;">
-        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.MinigameTut"'>MinigameTut</button>
-        <button @onclick='() => MinigameDefClass = "Framework.Minigames.IOServicesTest"'>IoServices</button>
-        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MiniTest"'>MiniTest</button>
         <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.PianoMinigame"'>
-            <strong>PianoMinigame - Andrii</strong><br />
+            <strong>Piano Minigame - Andrii</strong><br />
             You may have to click the button to play the chord multiple times to get it to work fully. <br />
             It is supposed to play 3 notes, but does not always work. <br />
             Not Andrii's fault though, it's just the janky way the sound works.
@@ -41,6 +38,9 @@
             <strong>Boss Fight - Keanu & Davide</strong><br />
             Boss is way too overpowered, you need a ton of RedBulls. <br />
             You can get 100 RedBulls by clicking the button above.
+        </button>
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.LockpickingMinigame"'>
+            <strong>Lockpicking Minigame - Hamza & Luca</strong><br />
         </button>
     </div>
 }
