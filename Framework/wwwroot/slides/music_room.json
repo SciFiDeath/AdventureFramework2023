@@ -1,6 +1,5 @@
 {
     "MusicRoom": {
-        "Tags": ["START"],
         "Image": "minigame_assets/Music_Assets/Music_Room.png",
         "Buttons": {
             "CircleTest": {
