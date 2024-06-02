@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Framework.Minigames.MinigameDefClasses;
 
-public class MinigameTut : MinigameDefBase
+public class FindErrorsMinigame : MinigameDefBase
 {
 	public int errorsspotted = 0;
 	public override string BackgroundImage { get; set; } = "minigame_assets/FindErrors_Rejda/IMG_2455.JPG";
@@ -25,7 +25,7 @@ public class MinigameTut : MinigameDefBase
 
 
 
-	public MinigameTut()
+	public FindErrorsMinigame()
 	{
 
 		Rects = new()
