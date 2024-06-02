@@ -15,7 +15,8 @@
     <Minigame MinigameDefClass="@MinigameDefClass" OnFinished='() => MinigameDefClass = ""' />
 } else {
     <p style="color:white">
-        Click on the buttons to go to a minigame. Press escape to get out of a minigame. 
+        Click on the buttons to go to a minigame. Press escape to get out of a minigame.
+        If a minigame finishes, you also return here.
         If you reload the page, go back to the index first and then to this page, 
         as sound and other stuff won't work if you just stay on this page.
         Use the "Add 100 RedBulls" button to get 100 RedBulls for testing purposes.
@@ -45,16 +46,20 @@
         <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.BiologyMinigame"'>
             <strong>Biology Minigame - Luan</strong>
         </button>
-        @* <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.PhMinigame"'>
-            <strong>Physik Minigame  - Zeynep</strong>
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.PhMinigame"'>
+            <strong>Physik Minigame  - Zeynep</strong><br />
             Works, but placement of some rects is a bit weird.<br />
             Need to contact Zeynep to fix it.
-        </button> *@
-
+        </button>
 
 
         <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.FindErrorsMinigame"'>
             <strong>Find Errors Minigame - Rejda</strong>
+        </button>
+
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.Geography"'>
+            <strong>Geography Minigame - Aaron</strong><br />
+            Does not work, need to contact Aaron to fix it.
         </button>
     </div>
 }
