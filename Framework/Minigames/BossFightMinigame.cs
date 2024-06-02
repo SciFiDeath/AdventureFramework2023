@@ -9,7 +9,7 @@ using Framework.Slides;
 
 namespace Framework.Minigames.MinigameDefClasses;
 
-public class MyMinigame1 : MinigameDefBase
+public class BossFightMinigame : MinigameDefBase
 {
 	public override string BackgroundImage { get; set; } = "minigame_assets/BossFight/FightPoitionToPunch_2.png";
 
@@ -323,7 +323,7 @@ public class MyMinigame1 : MinigameDefBase
 		TaskComplete = true;
 
 	}
-	public MyMinigame1()
+	public BossFightMinigame()
 	{
 
 		AttackButton1 = new()
