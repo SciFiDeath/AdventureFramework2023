@@ -14,7 +14,7 @@
 @if (MinigameDefClass != "") {
     <Minigame MinigameDefClass="@MinigameDefClass" OnFinished='() => MinigameDefClass = ""' />
 } else {
-    <p>
+    <p style="color:white">
         Click on the buttons to go to a minigame. Press escape to get out of a minigame. 
         If you reload the page, go back to the index first and then to this page, 
         as sound and other stuff won't work if you just stay on this page.
@@ -24,16 +24,18 @@
     <button @onclick='() => GameState.ChangeRedBull(100)'>Add 100 RedBulls</button>
     @* List of buttons goes here *@
     @* Just copy-paste and change the MinigameDefClass and text *@
-    <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.MinigameTut"'>MinigameTut</button>
-    <button @onclick='() => MinigameDefClass = "Framework.Minigames.IOServicesTest"'>IoServices</button>
-    <button @onclick='() => MinigameDefClass = "Framework.Minigames.MiniTest"'>MiniTest</button>
-    <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.PianoMinigame"'>
-        <strong>PianoMinigame by Andrii Zhabrovets</strong> <br />
-        You may have to click the button to play the chord multiple times to get it to work fully. <br />
-        It is supposed to play 3 notes, but does not always work. <br />
-        Not Andrii's fault though, it's just the janky way the sound works.
-    </button>
-    <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.ArmDrugge"'>Arm drügge - Amos & Gian</button>
+    <div style="display:flex; flex-direction:row;">
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.MinigameTut"'>MinigameTut</button>
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.IOServicesTest"'>IoServices</button>
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MiniTest"'>MiniTest</button>
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.PianoMinigame"'>
+            <strong>PianoMinigame by Andrii Zhabrovets</strong> <br />
+            You may have to click the button to play the chord multiple times to get it to work fully. <br />
+            It is supposed to play 3 notes, but does not always work. <br />
+            Not Andrii's fault though, it's just the janky way the sound works.
+        </button>
+        <button @onclick='() => MinigameDefClass = "Framework.Minigames.MinigameDefClasses.ArmDrugge"'><strong>Arm drügge - Amos & Gian</strong></button>
+    </div>
 }
 
 @code {
