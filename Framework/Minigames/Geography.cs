@@ -49,8 +49,6 @@ public class Geography : MinigameDefBase{
 
     public Geography()
     {
-        if (lifes != 0)
-        {
             Question = new()
         {
             InnerText = questions[round],
@@ -79,7 +77,8 @@ public class Geography : MinigameDefBase{
             FontSize = 100,
             FontFamily = "sans-serif",
             Fill = "black",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers1num[round])
+            OnClick = (args) => {if (lifes != 0){
+                if (correctAnswersnum[round] == answers1num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -89,11 +88,12 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers1num[round])
+            else if (correctAnswersnum[round] !=answers1num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
+            }
             }
             }
         };
@@ -106,7 +106,8 @@ public class Geography : MinigameDefBase{
             FontSize = 100,
             FontFamily = "sans-serif",
             Fill = "black",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers2num[round])
+            OnClick = (args) => {if (lifes != 0){
+                if (correctAnswersnum[round] == answers2num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -116,11 +117,12 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers2num[round])
+            else if (correctAnswersnum[round] !=answers2num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
+            }
             }
             }
         };
@@ -133,7 +135,8 @@ public class Geography : MinigameDefBase{
             FontSize = 100,
             FontFamily = "sans-serif",
             Fill = "black",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers3num[round])
+            OnClick = (args) => {if (lifes!= 0){
+                if (correctAnswersnum[round] == answers3num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -143,11 +146,12 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers3num[round])
+            else if (correctAnswersnum[round] !=answers3num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
+            }
             }
             }
         };
@@ -160,7 +164,8 @@ public class Geography : MinigameDefBase{
             FontSize = 100,
             FontFamily = "sans-serif",
             Fill = "black",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers4num[round])
+            OnClick = (args) => {if (lifes!= 0){
+                if (correctAnswersnum[round] == answers4num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -170,11 +175,12 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers4num[round])
+            else if (correctAnswersnum[round] !=answers4num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
+            }
             }
             }
         };
@@ -196,7 +202,8 @@ public class Geography : MinigameDefBase{
             Width = 820,
             Height = 200,
             Fill = "red",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers1num[round])
+            OnClick = (args) => {if (lifes !=0){
+                if (correctAnswersnum[round] == answers1num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -206,11 +213,12 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers1num[round])
+            else if (correctAnswersnum[round] !=answers1num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
+            }
             }
             }
             
@@ -224,7 +232,8 @@ public class Geography : MinigameDefBase{
             Width = 830,
             Height = 200,
             Fill = "green",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers2num[round])
+            OnClick = (args) => {if (lifes !=0){
+                if (correctAnswersnum[round] == answers2num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -234,11 +243,12 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers2num[round])
+            else if (correctAnswersnum[round] !=answers2num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
+            }
             }
             }
         };
@@ -250,7 +260,8 @@ public class Geography : MinigameDefBase{
             Width = 820,
             Height = 200,
             Fill = "blue",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers3num[round])
+            OnClick = (args) => {if (lifes !=0){
+                if (correctAnswersnum[round] == answers3num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -260,11 +271,12 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers3num[round])
+            else if (correctAnswersnum[round] !=answers3num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
+            }
             }
             }
         };
@@ -276,7 +288,8 @@ public class Geography : MinigameDefBase{
             Width = 810,
             Height = 200,
             Fill = "yellow",
-            OnClick = (args) => {if (correctAnswersnum[round] == answers4num[round])
+            OnClick = (args) => {if (lifes !=0){
+                if (correctAnswersnum[round] == answers4num[round])
             {
                 round += 1;
                 Question.InnerText = questions [round];
@@ -286,18 +299,15 @@ public class Geography : MinigameDefBase{
                 Answer4.InnerText = answers4[round];
                 Update();
             }
-            if (correctAnswersnum[round] !=answers4num[round])
+            else if (correctAnswersnum[round] !=answers4num[round])
             {
                 lifes -= 1;
                 lifes1.InnerText = "lifes: " + lifes.ToString();
                 Update();
             }
             }
+            }
         };
-
-        }
-
-        
         
     }
 
