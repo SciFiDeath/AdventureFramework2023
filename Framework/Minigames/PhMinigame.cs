@@ -48,8 +48,8 @@ public class PhMinigame : MinigameDefBase
         {
             X = 0,
             Y = 0,
-            Width = 2000,
-            Height = 2000,
+            Width = 1620,
+            Height = 1080,
             Fill = "transparent",
             OnClick = (args) =>
             {
@@ -70,12 +70,11 @@ public class PhMinigame : MinigameDefBase
             {
                 Rectangle WhiteBoard = new Rectangle()
                 {
-                    X = (x * WhiteBoardRectangleWidth) + 380,
+                    X = (x * WhiteBoardRectangleWidth) + 230, //380
                     Y = (y * WhiteBoardRectangleHeight) + 95,
                     Width = WhiteBoardRectangleWidth,
                     Height = WhiteBoardRectangleHeight,
                     Fill = "transparent"
-                    //Fill = "rgba(0,255,0,.5)",
                 };
 
                 int WhiteBoardPointX = x;
@@ -107,7 +106,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 2,
                 CorrectY = 1,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 680,
                 LabelText = $"Horizontal Sticks, There are: {NumberOfHorizontalSticks} sticks"
 
@@ -121,7 +120,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 3,
                 CorrectY = 1,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 680,
             },
             new Material()
@@ -133,7 +132,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 2,
                 CorrectY = 6,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 680,
             },
              new Material()
@@ -145,7 +144,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 3,
                 CorrectY = 6,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 680,
             },
             new Material()
@@ -157,7 +156,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 4,
                 CorrectY = 2,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 820,
                 LabelText = $"Vertical Sticks, There are : {NumberOfVerticalSticks} sticks"
 
@@ -171,7 +170,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 4,
                 CorrectY = 3,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 820,
             },
             new Material()
@@ -183,7 +182,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 4,
                 CorrectY = 4,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 820,
             },
              new Material()
@@ -195,7 +194,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 4,
                 CorrectY = 5,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 820,
             },
             new Material()
@@ -207,7 +206,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 1,
                 CorrectY = 2,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 820,
             },
             new Material()
@@ -219,7 +218,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 1,
                 CorrectY = 3,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 820,
             },
             new Material()
@@ -231,7 +230,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 1,
                 CorrectY = 5,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 820,
             },
             new Material()
@@ -243,7 +242,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 4,
                 CorrectY = 1,
-                PlaceHolderX = 1420,
+                PlaceHolderX = 1275,
                 PlaceHolderY = 30,
                 LabelText = "Potentiometer"
             },
@@ -256,7 +255,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 1,
                 CorrectY = 6,
-                PlaceHolderX = 1425,
+                PlaceHolderX = 1275,
                 PlaceHolderY = 245,
                 LabelText = "Switch 1"
             },
@@ -269,7 +268,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 4,
                 CorrectY = 6,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 460,
                 LabelText = "Switch 2"
             },
@@ -282,7 +281,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 1,
                 CorrectY = 4,
-                PlaceHolderX = 1430,
+                PlaceHolderX = 1280,
                 PlaceHolderY = 940,
                 LabelText = "Lamp"
             },
@@ -295,7 +294,7 @@ public class PhMinigame : MinigameDefBase
                 Width = 190,
                 CorrectX = 1,
                 CorrectY = 1,
-                PlaceHolderX = 1190,
+                PlaceHolderX = 1040, //1190
                 PlaceHolderY = 78,
                 LabelText = "Battery"
             },
@@ -320,7 +319,6 @@ public class PhMinigame : MinigameDefBase
             Y = material.PlaceHolderY,
             Width = material.Width.Value,
             Height = material.Height.Value,
-            //Fill = "rgba(255,0,0,.50)",
             Fill = "transparent",
             OnClick = (args) => OnMaterialClick(material)
         };
