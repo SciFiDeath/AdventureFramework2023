@@ -132,7 +132,28 @@ public class BiologyMinigame : MinigameDefBase
             FontSize = 100,
             FontFamily = "sans-serif",
             Fill = "white",
-            OnClick = (args) =>
+        };
+        TheTexts.Add(TheText);
+
+        TheText2 = new()
+        {
+            InnerText = "Falsch",
+            X = 1100,
+            Y = 1000,
+            FontSize = 100,
+            FontFamily = "sans-serif",
+            Fill = "white",
+        };
+        TheTexts2.Add(TheText2);
+
+        Rect = new()
+        {
+            X = 200,
+            Y = 800,
+            Width = 500,
+            Height = 300,
+            Fill = "green",
+                        OnClick = (args) =>
             {
                 int x = Convert.ToInt16(RealLifeText.InnerText);
                 int y = Convert.ToInt16(RealScoreText.InnerText);
@@ -238,16 +259,15 @@ public class BiologyMinigame : MinigameDefBase
                 Update();
             }
         };
-        TheTexts.Add(TheText);
+        Rects.Add(Rect);
 
-        TheText2 = new()
+        Rect2 = new()
         {
-            InnerText = "Falsch",
-            X = 1100,
-            Y = 1000,
-            FontSize = 100,
-            FontFamily = "sans-serif",
-            Fill = "white",
+            X = 1000,
+            Y = 800,
+            Width = 500,
+            Height = 300,
+            Fill = "red",
             OnClick = (args) =>
             {
                 int x = Convert.ToInt16(RealLifeText.InnerText);
@@ -353,26 +373,6 @@ public class BiologyMinigame : MinigameDefBase
                 TitleOrVictoryOrFailure.InnerText = a.ToString();
                 Update();
             }
-        };
-        TheTexts2.Add(TheText2);
-
-        Rect = new()
-        {
-            X = 200,
-            Y = 800,
-            Width = 500,
-            Height = 300,
-            Fill = "green",
-        };
-        Rects.Add(Rect);
-
-        Rect2 = new()
-        {
-            X = 1000,
-            Y = 800,
-            Width = 500,
-            Height = 300,
-            Fill = "red",
         };
         Rects.Add(Rect2);
     }
