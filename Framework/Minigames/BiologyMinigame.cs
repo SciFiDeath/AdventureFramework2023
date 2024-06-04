@@ -62,15 +62,6 @@ public class BiologyMinigame : MinigameDefBase
             FontFamily = "sans-serif",
             Fill = "yellow"
         };
-        AttentionText = new()
-        {
-            InnerText = "Click on the Text!",
-            X = 500,
-            Y = 200,
-            FontSize = 75,
-            FontFamily = "sans-serif",
-            Fill = "yellow"
-        };
         ScoreText = new()
         {
             InnerText = "Score:",
