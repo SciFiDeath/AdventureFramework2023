@@ -9,38 +9,38 @@ public class BiologyMinigame : MinigameDefBase
     int lives = 3;
     int questionNumber = 0;
     bool answer = true;
-    public override string BackgroundImage {get; set;} = "/minigame_assets/Cooles_Bild.jpg";
+    public override string BackgroundImage { get; set; } = "minigame_assets/Biology_assets/Cooles_Bild.jpg";
     [Element]
-    public Rectangle Rect {get; set;}
+    public Rectangle Rect { get; set; }
     [Element]
-    public Rectangle Rect2{get; set;}
+    public Rectangle Rect2 { get; set; }
     [Element]
-    public Text TheText {get; set;} 
+    public Text TheText { get; set; }
     [Element]
-    public Text TheText2 {get; set;}
+    public Text TheText2 { get; set; }
     [Element]
-    public Text LifeText {get; set;}
+    public Text LifeText { get; set; }
     [Element]
-    public Text QuestionText {get; set;}
+    public Text QuestionText { get; set; }
     [Element]
-    public Text ScoreText {get; set;}
+    public Text ScoreText { get; set; }
     [Element]
-    public Text RealLifeText {get; set;}
+    public Text RealLifeText { get; set; }
     [Element]
-    public Text RealScoreText {get; set;}
+    public Text RealScoreText { get; set; }
     [Element]
-    public Text TitleOrVictoryOrFailure {get; set;}
+    public Text TitleOrVictoryOrFailure { get; set; }
     [Element]
-    public Text AttentionText {get; set;}
+    public Text AttentionText { get; set; }
     [Element]
-    public Text Question {get; set;}
-    public GameObjectContainer<Rectangle> Rects {get; set;} = new();
-    public GameObjectContainer<Rectangle> Rects2 {get; set;} = new();
-    public GameObjectContainer<Text> TheTexts {get; set;} = new();
-    public GameObjectContainer<Text> TheTexts2 {get; set;} = new();
-    public GameObjectContainer<Text> LifeTexts {get; set;} = new();
-    public GameObjectContainer<Text> ScoreTexts {get; set;} = new();
-    public GameObjectContainer<Text> RealScoreTexts {get; set;} = new();
+    public Text Question { get; set; }
+    public GameObjectContainer<Rectangle> Rects { get; set; } = new();
+    public GameObjectContainer<Rectangle> Rects2 { get; set; } = new();
+    public GameObjectContainer<Text> TheTexts { get; set; } = new();
+    public GameObjectContainer<Text> TheTexts2 { get; set; } = new();
+    public GameObjectContainer<Text> LifeTexts { get; set; } = new();
+    public GameObjectContainer<Text> ScoreTexts { get; set; } = new();
+    public GameObjectContainer<Text> RealScoreTexts { get; set; } = new();
     public BiologyMinigame()
     {
         Question = new()
@@ -90,7 +90,7 @@ public class BiologyMinigame : MinigameDefBase
             FontFamily = "sans-serif",
             Fill = "black"
         };
-        
+
         RealLifeText = new()
         {
             InnerText = "3",
@@ -98,7 +98,7 @@ public class BiologyMinigame : MinigameDefBase
             Y = 150,
             FontSize = 65,
             FontFamily = "sans-serif",
-            Fill = "red" 
+            Fill = "red"
         };
 
         LifeText = new()
@@ -109,7 +109,7 @@ public class BiologyMinigame : MinigameDefBase
             FontSize = 65,
             FontFamily = "sans-serif",
             Fill = "red",
-            
+
         };
         LifeTexts.Add(LifeText);
 
@@ -120,7 +120,7 @@ public class BiologyMinigame : MinigameDefBase
             Y = 250,
             FontSize = 65,
             FontFamily = "sans-serif",
-            Fill = "red",            
+            Fill = "red",
         };
         RealScoreTexts.Add(RealScoreText);
 
@@ -132,7 +132,9 @@ public class BiologyMinigame : MinigameDefBase
             FontSize = 100,
             FontFamily = "sans-serif",
             Fill = "white",
-            OnClick = (args) => { int x = Convert.ToInt16(RealLifeText.InnerText);
+            OnClick = (args) =>
+            {
+                int x = Convert.ToInt16(RealLifeText.InnerText);
                 int y = Convert.ToInt16(RealScoreText.InnerText);
                 string z = QuestionText.InnerText;
                 string a = TitleOrVictoryOrFailure.InnerText;
@@ -141,37 +143,37 @@ public class BiologyMinigame : MinigameDefBase
                 {
                     x = x - 1;
                     z = "Pflanzen produzieren Sauerstoff durch Photosynthese";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 != 0 && x > 1 && questionNumber == 2)
                 {
                     x = x - 1;
                     z = "Ein Virus kann sich ohne einen Wirt vermehren";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 != 0 && x > 1 && questionNumber == 3)
                 {
                     x = x - 1;
                     z = "Menschen haben 206 Knochen";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 != 0 && x > 1 && questionNumber == 4)
                 {
                     x = x - 1;
                     z = "Pilze sind Pflanzen";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 != 0 && x > 1 && questionNumber == 5)
                 {
                     x = x - 1;
                     z = "Der Herzschlag beträgt 70/min im Ruhezustand";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 != 0 && x > 1 && questionNumber == 6)
                 {
                     x = x - 1;
                     z = "Fische atmen Luft durch die Lungen";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 == 0 && y < 4 && questionNumber == 1)
                 {
@@ -220,24 +222,24 @@ public class BiologyMinigame : MinigameDefBase
                     x = 0;
                     z = "";
                     a = "Game Over!";
-                    SoundService.PlayMusic("/minigame_assets/SpongeBob sad music.m4a");
+                    SoundService.PlayMusic("minigame_assets/Biology_assets/SpongeBob sad music.m4a");
                 }
                 else if (y == 4)
                 {
                     y = 5;
                     z = "";
                     a = "You win!";
-                    SoundService.PlayMusic("/minigame_assets/Yippee - Meme Sound Effect.m4a");
+                    SoundService.PlayMusic("minigame_assets/Biology_assets/Yippee - Meme Sound Effect.m4a");
                 }
                 RealLifeText.InnerText = x.ToString();
-                RealScoreText.InnerText = y.ToString(); 
+                RealScoreText.InnerText = y.ToString();
                 QuestionText.InnerText = z.ToString();
                 TitleOrVictoryOrFailure.InnerText = a.ToString();
                 Update();
             }
-        };    
+        };
         TheTexts.Add(TheText);
-        
+
         TheText2 = new()
         {
             InnerText = "Falsch",
@@ -246,7 +248,9 @@ public class BiologyMinigame : MinigameDefBase
             FontSize = 100,
             FontFamily = "sans-serif",
             Fill = "white",
-            OnClick = (args) => { int x = Convert.ToInt16(RealLifeText.InnerText);
+            OnClick = (args) =>
+            {
+                int x = Convert.ToInt16(RealLifeText.InnerText);
                 int y = Convert.ToInt16(RealScoreText.InnerText);
                 string z = QuestionText.InnerText;
                 string a = TitleOrVictoryOrFailure.InnerText;
@@ -255,37 +259,37 @@ public class BiologyMinigame : MinigameDefBase
                 {
                     x = x - 1;
                     z = "Pflanzen produzieren Sauerstoff durch Photosynthese";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 == 0 && x > 1 && questionNumber == 2)
                 {
                     x = x - 1;
                     z = "Ein Virus kann sich ohne Wirt vermehren";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 == 0 && x > 1 && questionNumber == 3)
                 {
                     x = x - 1;
                     z = "Menscheb haben 206 Knochen im Körper";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 == 0 && x > 1 && questionNumber == 4)
                 {
                     x = x - 1;
                     z = "Pilze sind Pflanzen";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 == 0 && x > 1 && questionNumber == 5)
                 {
                     x = x - 1;
                     z = "Der Herzschlag beträgt 70/min im Ruhezustand";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 == 0 && x > 1 && questionNumber == 6)
                 {
                     x = x - 1;
                     z = "Fische atmen Luft durch die Lungen";
-                    SoundService.PlaySound("/minigame_assets/buzzer-or-wrong-answer-20582.mp3");
+                    SoundService.PlaySound("minigame_assets/Biology_assets/buzzer-or-wrong-answer-20582.mp3");
                 }
                 else if (questionNumber % 2 != 0 && y < 4 && questionNumber == 1)
                 {
@@ -334,16 +338,16 @@ public class BiologyMinigame : MinigameDefBase
                     x = 0;
                     z = "";
                     a = "Game Over!";
-                    SoundService.PlayMusic("/minigame_assets/SpongeBob sad music.m4a");
+                    SoundService.PlayMusic("minigame_assets/Biology_assets/SpongeBob sad music.m4a");
                 }
                 else if (y == 4)
                 {
                     y = 5;
                     z = "";
                     a = "You win!";
-                    SoundService.PlayMusic("/minigame_assets/Yippee - Meme Sound Effect.m4a");
+                    SoundService.PlayMusic("minigame_assets/Biology_assets/Yippee - Meme Sound Effect.m4a");
                 }
-                RealLifeText.InnerText = x.ToString(); 
+                RealLifeText.InnerText = x.ToString();
                 RealScoreText.InnerText = y.ToString();
                 QuestionText.InnerText = z.ToString();
                 TitleOrVictoryOrFailure.InnerText = a.ToString();
@@ -351,8 +355,8 @@ public class BiologyMinigame : MinigameDefBase
             }
         };
         TheTexts2.Add(TheText2);
-        
-        Rect = new ()
+
+        Rect = new()
         {
             X = 200,
             Y = 800,
@@ -361,8 +365,8 @@ public class BiologyMinigame : MinigameDefBase
             Fill = "green",
         };
         Rects.Add(Rect);
-        
-        Rect2 = new ()
+
+        Rect2 = new()
         {
             X = 1000,
             Y = 800,

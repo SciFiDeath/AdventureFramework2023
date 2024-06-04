@@ -210,7 +210,7 @@ public abstract class MinigameDefBase
 			// await GameLoop(Cts.Token); // not equivalent, but dont' know which to use
 			await Task.Run(() => GameLoop(Cts.Token));
 		}
-		catch (TaskCanceledException)
+		catch (OperationCanceledException)
 		{
 			// This exception was thrown intentionally, so don't show it
 		}

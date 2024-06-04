@@ -226,6 +226,7 @@ public class CodeTerminal : MinigameDefBase
 		};
 	}
 
+
 }
 
 public class KillTest : MinigameDefBase
@@ -908,6 +909,7 @@ public class IOServicesTest : MinigameDefBase
 public class DimitriDialogue : MinigameDefBase
 {
 	public override string BackgroundImage { get; set; } = "images/HM3_hallwayN.jpg"; // Background Image
+
 
 	//DIALOGUE STUFF
 	private Image QuitButton { get; set; }
