@@ -178,42 +178,42 @@ public class BiologyMinigame : MinigameDefBase
                     y = y + 1;
                     currentScore++;
                     z = "Pflanzen produtzieren Sauerstoff durch Photosynthese";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 == 0 && y < 4 && questionNumber == 2)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Ein Virus kann sich ohne Wirt vermehren";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 == 0 && y < 4 && questionNumber == 3)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Menschen haben 206 Knochen im Körper";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 == 0 && y < 4 && questionNumber == 4)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Pilze sind Pflanzen";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 == 0 && y < 4 && questionNumber == 5)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Der Herzschlag beträgt 70/min im Ruhezustand";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 == 0 && y < 4 && questionNumber == 6)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Fische atmen Luft durch die Lungen";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (x == 1)
                 {
@@ -292,42 +292,42 @@ public class BiologyMinigame : MinigameDefBase
                     y = y + 1;
                     currentScore++;
                     z = "Pflanzen produzieren Sauerstoff durch Photosynthese";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 != 0 && y < 4 && questionNumber == 2)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Ein Virus kann sich ohne Wirt vermehren";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 != 0 && y < 4 && questionNumber == 3)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Menschen haben 206 Knochen im Körper";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 != 0 && y < 4 && questionNumber == 4)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Pilze sind Pflanzen";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 != 0 && y < 4 && questionNumber == 5)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Der Herzschlag beträgt 70/min im Ruhezustand";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (questionNumber % 2 != 0 && y < 4 && questionNumber == 6)
                 {
                     y = y + 1;
                     currentScore++;
                     z = "Fische atmen Luft durch Lungen";
-                    SoundService.PlaySound("/audio/ding.wav");
+                    SoundService.PlaySound("/minigame_assets/ding.wav");
                 }
                 else if (x == 1)
                 {
