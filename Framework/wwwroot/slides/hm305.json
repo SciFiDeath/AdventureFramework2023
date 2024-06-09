@@ -33,10 +33,26 @@
                 "Actions": [
                     ["StartBlock", "T"],
                     ["RequireGameState", "!HM305.CircleTest"],
-                    ["SetGameState", "HM305.CircleTest", "true"],
+
+                    ["Sleep", "2000"],
+
+                    ["StartBlock", "A"],
+                    ["RequireItem", "goldkey"],
+
+                    ["RemoveItem", "goldkey"],
+
+                    ["StartBlock", "B"],
+                    ["RequireGameState", "False"],
+
+                    ["EndBlock", "A"],
+                    ["AddItem", "goldkey"],
                     ["Exit", ""],
+
                     ["EndBlock", "T"],
-                    ["SetGameState", "HM305.CircleTest", "false"]
+                    ["SetGameState", "HM305.CircleTest", "false"],
+                    ["Exit", ""],
+                    ["EndBlock", "B"],
+                    ["SetGameState", "HM305.CircleTest", "true"]
                 ],
                 "Visible": true
             },
@@ -52,7 +68,11 @@
             "PresetTest": {
                 "Type": "preset",
                 "Image": "right",
-                "Actions": [["PlayMusic", "audio/doom-soundtrack.wav"]]
+                "Actions": [
+                    ["ChangeRedBull", "10"],
+                    ["RequireRedBull", "=10"],
+                    ["Route", "HM305DoorClosed"]
+                ]
             }
         }
     },

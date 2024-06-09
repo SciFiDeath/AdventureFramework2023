@@ -2,5 +2,6 @@
     "button1": true,
     "LeButton": false,
     "CodeTerminal": true,
-    "Door": true
+    "Door": true,
+    "False": false
 }
