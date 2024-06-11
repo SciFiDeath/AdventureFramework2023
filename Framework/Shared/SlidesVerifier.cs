@@ -100,21 +100,21 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 			{
 				throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" undefined");
 			}
-			// if buttons is empty, OnEnter can't be null or empty
-			if (slide.Buttons.Count == 0)
-			{
-				if (slide.OnEnter is null)
-				{
-					throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" undefined");
-				}
-				else
-				{
-					if (slide.OnEnter.Count == 0)
-					{
-						throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" empty");
-					}
-				}
-			}
+			// // if buttons is empty, OnEnter can't be null or empty
+			// if (slide.Buttons.Count == 0)
+			// {
+			// 	if (slide.OnEnter is null)
+			// 	{
+			// 		throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" undefined");
+			// 	}
+			// 	else
+			// 	{
+			// 		if (slide.OnEnter.Count == 0)
+			// 		{
+			// 			throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" empty");
+			// 		}
+			// 	}
+			// }
 
 			// iterate over buttons and pass on exceptions thrown in button verifier method
 			foreach (var idAndButton in slide.Buttons)
