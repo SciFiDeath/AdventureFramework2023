@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Components;
 using Framework.Game.Parameters;
 using Framework.State;
 using Framework.Sound;
+// using Framework.Toast;
+using Blazored.Toast.Services;
+using Blazored.Toast;
+
 
 
 namespace Framework.Game;
@@ -17,6 +21,9 @@ public partial class GameBase : ComponentBase
 
 	[Inject]
 	protected SoundService SoundService { get; set; } = null!;
+
+	[Inject]
+	protected IToastService ToastService { get; set; } = null!;
 
 	// // private readonly TaskCompletionSource<bool> _tcs = new();
 	// // protected Task InitTask => _tcs.Task;
@@ -76,10 +83,14 @@ public partial class GameBase : ComponentBase
 	{
 		Block block = new()
 		{
-			Stack = new()
+			Stack = []
 		};
-		foreach (List<string> action in actions)
+
+		// no foreach to be able to look back/ahead
+		for (int i = 0; i < actions.Count; i++)
 		{
+			List<string> action = actions[i];
+
 			if (block.Skipping)
 			{
 				if (block.SkippingTo == action[1] && action[0] == "EndBlock")
@@ -148,15 +159,25 @@ public partial class GameBase : ComponentBase
 					}
 					// if the checks have been false
 
-					// if there are blocks on the stack
-					if (block.Stack.Count > 0)
+					// check if there is a StartBlock before
+					List<string> a;
+					try
+					{
+						a = actions[i - 1];
+					}
+					catch (Exception)
+					{
+						// Require is first element, exit entirely
+						return;
+					}
+
+					if (a[0] == "StartBlock")
 					{
 						// start skipping to corresponding EndBlock statement
 						block.Skipping = true;
-						block.SkippingTo = block.Stack.Last();
+						block.SkippingTo = a[1];
 						break;
 					}
-					// if no block is on the stack, just exit entirely
 					else
 					{
 						return;
@@ -184,21 +205,31 @@ public partial class GameBase : ComponentBase
 							break;
 						}
 					}
+
 					// if the checks have been false
 
-					// if there are blocks on the stack
-					if (block.Stack.Count > 0)
+					// check if there is a StartBlock before
+					// stupid naming, but why not
+					List<string> b;
+					try
+					{
+						b = actions[i - 1];
+					}
+					catch (Exception)
+					{
+						// Require is first element, exit entirely
+						return;
+					}
+
+					if (b[0] == "StartBlock")
 					{
 						// start skipping to corresponding EndBlock statement
 						block.Skipping = true;
-						block.SkippingTo = block.Stack.Last();
-						// Console.WriteLine($"Skipping to {block.SkippingTo}");
+						block.SkippingTo = b[1];
 						break;
 					}
-					// if no block is on the stack, just exit entirely
 					else
 					{
-						// Console.WriteLine("return");
 						return;
 					}
 
@@ -214,14 +245,15 @@ public partial class GameBase : ComponentBase
 					await SoundService.StopMusic();
 					break;
 
-				case "StartBlock":
-					block.Stack.Add(action[1]);
-					// Console.WriteLine($"StartBlock {action[1]}");
-					break;
-				case "EndBlock":
-					block.Stack.Remove(block.Stack.Last());
-					// Console.WriteLine($"EndBlock {action[1]}");
-					break;
+				//* They kind of don't do anything on their own
+				// case "StartBlock":
+				// 	block.Stack.Add(action[1]);
+				// 	// Console.WriteLine($"StartBlock {action[1]}");
+				// 	break;
+				// case "EndBlock":
+				// 	block.Stack.Remove(block.Stack.Last());
+				// 	// Console.WriteLine($"EndBlock {action[1]}");
+				// 	break;
 
 				case "Exit":
 					// Console.WriteLine("return");
@@ -234,6 +266,69 @@ public partial class GameBase : ComponentBase
 				case "ChangeRedBull":
 					GameState.ChangeRedBull(int.Parse(action[1]));
 					break;
+
+				// bloody hell, what have I done
+				case "RequireRedBull":
+					// more elegant in a switch
+					switch (action[1][0])
+					{
+						case '=' when GameState.RedBullCount == int.Parse(action[1][1..]):
+							break;
+						case '<' when GameState.RedBullCount < int.Parse(action[1][1..]):
+							break;
+						case '>' when GameState.RedBullCount > int.Parse(action[1][1..]):
+							break;
+						// just use the `when` here and discard the value of action[1][0]
+						case var _ when action[1].ToString().Contains('-'):
+							string[] range = action[1].Split('-');
+							if (GameState.RedBullCount > int.Parse(range[0]) && GameState.RedBullCount < int.Parse(range[1]))
+							{
+								break;
+							}
+							else
+							{
+								goto Skip;
+							}
+						// one danger: if the string is invalid, it will go to skip, which could cause problems
+						// but the SlidesVerifier should catch invalid strings, so it should be fine
+						default:
+							goto Skip;
+					}
+					//* Really important, don't forget to break here
+					//* else it falls through to the "Skip" label and does (mostly) just return
+					break;
+
+				// I used goto, let's fucking go
+				// go here if RequireRedBull condition is not satisfied 
+				Skip:
+					List<string> c;
+					try
+					{
+						c = actions[i - 1];
+					}
+					catch (Exception)
+					{
+						// Require is first element, exit entirely
+						return;
+					}
+
+					if (c[0] == "StartBlock")
+					{
+						// start skipping to corresponding EndBlock statement
+						block.Skipping = true;
+						block.SkippingTo = c[1];
+						break;
+					}
+					else
+					{
+						return;
+					}
+
+				// case "ShowMessage":
+				// 	ToastParameters parameters = new();
+				// 	parameters.Add(nameof(ToastMessage.Message), action[1]);
+				// 	ToastService.ShowToast<ToastMessage>(parameters);
+				// 	break;
 
 				default:
 					break;
