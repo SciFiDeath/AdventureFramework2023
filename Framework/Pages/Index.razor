@@ -19,10 +19,19 @@
         <Game Debug=@debugMode />
     }
     else {
-        <h1 id="test">Hello, world!</h1>
-        <button style="color: white; background-color: rgb(255, 0, 0)" @onclick="StartGame">Game</button>
+        <h1 id="title">Freaky point and click</h1>
         <a href="/testpage">TestPage</a>
         <a href="/showcase">Minigame Showcase</a>
+
+
+        <button id="play_button" style="color: white; background-color: rgb(255, 0, 0)" @onclick="StartGame">Game</button>
+
+        <a id="settings_link" href = "/settings">
+            <button id="settings_button">Settings</button>
+        </a>
+
+
+
     }
 }
 
@@ -31,7 +40,7 @@ else {
     <div style="color: white">Loading...</div>
 }
 
-@code {
+@code {    
     private TaskCompletionSource<bool> _tcs = new();
     private Task initTask => _tcs.Task;
 
@@ -46,6 +55,8 @@ else {
         await KeyboardService.Init();
         await MouseService.Init();
         await SoundService.Init();
+        // Play the background track
+        await SoundService.PlayMusic("/minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
         await VideoService.Init();
         _tcs.SetResult(true);
     }

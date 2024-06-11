@@ -39,9 +39,10 @@ function init(objRef) {
     // create two audio tags, sfx for audio, and music for the background track
     window.sound.sfx = document.createElement('audio');
     window.sound.music = document.createElement('audio');
-    window.sound.music.src = "/audio/ambient-piano-loop-85bpm.wav";
+    window.sound.music.src = "";
     document.body.appendChild(window.sound.sfx);
     document.body.appendChild(window.sound.music);
+    window.sound.music
 
 }
 
