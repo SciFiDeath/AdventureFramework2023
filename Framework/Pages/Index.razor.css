@@ -1,0 +1,12 @@
+h1 {
+    text-align: center;
+    font-family: "Adventure";
+    font-size: 60px;
+    color: white;
+  }
+
+@font-face {
+    font-family: 'Adventure';
+    src: url('fonts/Adventure.otf');
+
+}
