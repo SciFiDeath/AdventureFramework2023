@@ -323,6 +323,18 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 					}
 					continue;
 				}
+				else if (action[0] == "PlayVideo")
+				{
+					foreach (var x in action[1].Split(','))
+					{
+						if (!int.TryParse(x, out _))
+						{
+							throw new SlidesJsonException(
+								$"At action {i}: PlayVideo: \"{action[1]}\" is not a valid argument: \"{x}\" is not a valid number"
+							);
+						}
+					}
+				}
 				else
 				{
 					throw new SlidesJsonException($"At action {i}: Unknown Action \"{action[0]}\"");
