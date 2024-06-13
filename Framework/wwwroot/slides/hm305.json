@@ -70,7 +70,7 @@
                 "Image": "right",
                 "Actions": [
                     ["ChangeRedBull", "10"],
-                    ["RequireRedBull", "=10"],
+                    ["RequireRedBull", ">10"],
                     ["Route", "HM305DoorClosed"]
                 ]
             }
