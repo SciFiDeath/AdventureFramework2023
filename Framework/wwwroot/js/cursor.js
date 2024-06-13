@@ -12,6 +12,13 @@ const rightImg = document.getElementById("right-arrow-img");
 const topImg = document.getElementById("up-arrow-img");
 const bottomImg = document.getElementById("down-arrow-img");
 
+// this is to check if the preset was shown before the DOM update.
+// If it was, you don't have to add new event listeners
+let leftWasShown = false;
+let rightWasShown = false;
+let topWasShown = false;
+let bottomWasShown = false;
+
 // app div containing the entire generated blazor stuff
 // listen for mutations in that div
 const appContainer = document.getElementById("app");
@@ -21,68 +28,219 @@ let observer = new MutationObserver(function (mutations) {
     reassign();
 });
 
-// config for mutation observer
-// observes attribute changes, node deletions/insertions in the entire subtree of the app div
-let config = { attributes: true, childList: true, subtree: true };
-
-// get the pos presets again, if they're not null, attach event listeners
 function reassign() {
-    leftElement = document.getElementById("pos-preset-left");
+    // if this is still false at the end, the image and all tracking will be removed
+    let isContained = false;
 
-    if (leftElement != null) {
-        leftElement.addEventListener("mouseenter", () => {
-            // start showing the image
+    // get the pos presets again, if they're not null, attach mouseenter event listeners
+    // if the preset was shown before, don't add new event listeners
+    // if the preset was not shown before, but the cursor is inside the element,
+    // show the image and start tracking and add event listeners
+    // if it is null, but was shown before, remove the image and tracking
+
+    /*
+    <"optimized" but maybe not fully safe version>
+
+    get element
+
+    if visible:
+        if not wasShown:
+            add event listeners
+            if mouse inside:
+                show, track
+                isContained = true
+        wasShown = true
+
+    if not visible:
+        if wasShown:
+            unshow, untrack
+        wasShown = false
+
+    <at end of function>
+    <safety measure>
+    <should be unnecessary, but just in case>
+    if not isContained:
+        for all presets: unshow, untrack
+
+    
+    <unoptimized but quite safe version>
+
+
+    for all presets: untrack, unshow
+
+    if visible:
+        if not wasShown:
+            add event listeners
+
+            if mouse contained:
+                isContained = true
+                track, show
+
+        wasShown = true
+    
+    else:
+        wasShown = false
+
+
+    */
+
+    // unshow and untrack all images
+    show("left", false);
+    track("left", false);
+
+    show("right", false);
+    track("right", false);
+
+    show("top", false);
+    track("top", false);
+
+    show("bottom", false);
+    track("bottom", false);
+
+    leftElement = document.getElementById("pos-preset-left");
+    // if visible
+    if (leftElement) {
+        // if was not shown before
+        if (!leftWasShown) {
+            leftElement.addEventListener("mouseenter", () => {
+                show("left");
+                track("left");
+                isContained = true;
+            });
+            leftElement.addEventListener("mouseleave", () => {
+                show("left", false);
+                track("left", false);
+            });
+        }
+        if (
+            !isContained &&
+            isPointInsideElement(
+                mouse.absMousePos.x,
+                mouse.absMousePos.y,
+                leftElement
+            )
+        ) {
             show("left");
-            // start tracking the image to mouse cursor
             track("left");
-        });
-        leftElement.addEventListener("mouseleave", () => {
-            // stop showing image
-            show("left", false);
-            // remove mouse tracking
-            track("left", false);
-        });
+            isContained = true;
+        }
+        leftWasShown = true;
+    } else {
+        leftWasShown = false;
     }
 
     rightElement = document.getElementById("pos-preset-right");
 
-    if (rightElement != null) {
-        rightElement.addEventListener("mouseenter", () => {
+    if (rightElement) {
+        if (!rightWasShown) {
+            rightElement.addEventListener("mouseenter", () => {
+                show("right");
+                track("right");
+                isContained = true;
+            });
+            rightElement.addEventListener("mouseleave", () => {
+                show("right", false);
+                track("right", false);
+            });
+        }
+        if (
+            !isContained &&
+            isPointInsideElement(
+                mouse.absMousePos.x,
+                mouse.absMousePos.y,
+                rightElement
+            )
+        ) {
             show("right");
             track("right");
-        });
-        rightElement.addEventListener("mouseleave", () => {
-            show("right", false);
-            track("right", false);
-        });
+            isContained = true;
+        }
+        rightWasShown = true;
+    } else {
+        rightWasShown = false;
     }
 
     topElement = document.getElementById("pos-preset-top");
 
-    if (topElement != null) {
-        topElement.addEventListener("mouseenter", () => {
+    if (topElement) {
+        if (!topWasShown) {
+            topElement.addEventListener("mouseenter", () => {
+                show("top");
+                track("top");
+                isContained = true;
+            });
+            topElement.addEventListener("mouseleave", () => {
+                show("top", false);
+                track("top", false);
+            });
+        }
+        if (
+            !isContained &&
+            isPointInsideElement(
+                mouse.absMousePos.x,
+                mouse.absMousePos.y,
+                topElement
+            )
+        ) {
             show("top");
             track("top");
-        });
-        topElement.addEventListener("mouseleave", () => {
-            show("top", false);
-            track("top", false);
-        });
+            isContained = true;
+        }
+        topWasShown = true;
+    } else {
+        topWasShown = false;
     }
 
     bottomElement = document.getElementById("pos-preset-bottom");
 
-    if (bottomElement != null) {
-        bottomElement.addEventListener("mouseenter", () => {
+    if (bottomElement) {
+        if (!bottomWasShown) {
+            bottomElement.addEventListener("mouseenter", () => {
+                show("bottom");
+                track("bottom");
+                isContained = true;
+            });
+            bottomElement.addEventListener("mouseleave", () => {
+                show("bottom", false);
+                track("bottom", false);
+            });
+        }
+        if (
+            !isContained &&
+            isPointInsideElement(
+                mouse.absMousePos.x,
+                mouse.absMousePos.y,
+                bottomElement
+            )
+        ) {
             show("bottom");
             track("bottom");
-        });
-        bottomElement.addEventListener("mouseleave", () => {
-            show("bottom", false);
-            track("bottom", false);
-        });
+            isContained = true;
+        }
+        bottomWasShown = true;
+    } else {
+        bottomWasShown = false;
+    }
+
+    // safety measure
+    if (!isContained) {
+        show("left", false);
+        track("left", false);
+
+        show("right", false);
+        track("right", false);
+
+        show("top", false);
+        track("top", false);
+
+        show("bottom", false);
+        track("bottom", false);
     }
 }
+
+// config for mutation observer
+// observes attribute changes, node deletions/insertions in the entire subtree of the app div
+let config = { attributes: true, childList: true, subtree: true };
 
 // if start=true, show, if false, stop showing
 function show(dir, start = true) {
@@ -161,6 +319,18 @@ function track(dir, start = true) {
         default:
             break;
     }
+}
+
+// check if a point is inside an element
+// needed to un-display an images on a route event when no present exists anymore at that place
+function isPointInsideElement(x, y, element) {
+    // Get the bounding rectangle of the element
+    const rect = element.getBoundingClientRect();
+
+    // Check if the point is within the bounding rectangle
+    return (
+        x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
+    );
 }
 
 // start looking for mutations
