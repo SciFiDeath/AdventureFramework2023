@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Components;
 using Framework.Game.Parameters;
 using Framework.State;
 using Framework.Sound;
-// using Framework.Toast;
+using Framework.Toast;
 using Blazored.Toast.Services;
 using Blazored.Toast;
+using Framework.Video;
 
 
 
@@ -24,6 +25,9 @@ public partial class GameBase : ComponentBase
 
 	[Inject]
 	protected IToastService ToastService { get; set; } = null!;
+
+	[Inject]
+	protected VideoService VideoService { get; set; } = null!;
 
 	// // private readonly TaskCompletionSource<bool> _tcs = new();
 	// // protected Task InitTask => _tcs.Task;
@@ -324,11 +328,19 @@ public partial class GameBase : ComponentBase
 						return;
 					}
 
-				// case "ShowMessage":
-				// 	ToastParameters parameters = new();
-				// 	parameters.Add(nameof(ToastMessage.Message), action[1]);
-				// 	ToastService.ShowToast<ToastMessage>(parameters);
-				// 	break;
+				case "ShowMessage":
+					ToastParameters parameters = new();
+					parameters.Add(nameof(ToastMessage.Message), action[1]);
+					ToastService.ShowToast<ToastMessage>(parameters);
+					break;
+
+				case "PlayVideo":
+					List<string> coords = [.. action[1].Split(",")];
+					await VideoService.PlaceVideo(coords[0], coords[1], coords[2], coords[3], action[2]);
+					await VideoService.PlayVideo();
+					await VideoService.LetFinish();
+					await VideoService.PlaceVideo("0", "0", "0", "0", "");
+					break;
 
 				default:
 					break;

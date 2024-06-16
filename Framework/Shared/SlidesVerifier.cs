@@ -100,21 +100,21 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 			{
 				throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" undefined");
 			}
-			// if buttons is empty, OnEnter can't be null or empty
-			if (slide.Buttons.Count == 0)
-			{
-				if (slide.OnEnter is null)
-				{
-					throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" undefined");
-				}
-				else
-				{
-					if (slide.OnEnter.Count == 0)
-					{
-						throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" empty");
-					}
-				}
-			}
+			// // if buttons is empty, OnEnter can't be null or empty
+			// if (slide.Buttons.Count == 0)
+			// {
+			// 	if (slide.OnEnter is null)
+			// 	{
+			// 		throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" undefined");
+			// 	}
+			// 	else
+			// 	{
+			// 		if (slide.OnEnter.Count == 0)
+			// 		{
+			// 			throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" empty");
+			// 		}
+			// 	}
+			// }
 
 			// iterate over buttons and pass on exceptions thrown in button verifier method
 			foreach (var idAndButton in slide.Buttons)
@@ -322,6 +322,18 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 						throw new SlidesJsonException($"At action {i}: SetGameState: \"{action[2]}\" is not a possible param");
 					}
 					continue;
+				}
+				else if (action[0] == "PlayVideo")
+				{
+					foreach (var x in action[1].Split(','))
+					{
+						if (!int.TryParse(x, out _))
+						{
+							throw new SlidesJsonException(
+								$"At action {i}: PlayVideo: \"{action[1]}\" is not a valid argument: \"{x}\" is not a valid number"
+							);
+						}
+					}
 				}
 				else
 				{

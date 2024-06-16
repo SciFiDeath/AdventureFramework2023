@@ -69,9 +69,9 @@
                 "Type": "preset",
                 "Image": "right",
                 "Actions": [
-                    ["ChangeRedBull", "10"],
-                    ["RequireRedBull", "=10"],
-                    ["Route", "HM305DoorClosed"]
+                    ["PlayVideo", "0,0,1000,1000", "monkey.mp4"],
+                    ["Route", "HM305DoorClosed"],
+                    ["ShowMessage", "Hello World!"]
                 ]
             }
         }

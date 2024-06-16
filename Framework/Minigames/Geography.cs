@@ -90,13 +90,20 @@ public class Geography : MinigameDefBase
                         Answer2.InnerText = answers2[round];
                         Answer3.InnerText = answers3[round];
                         Answer4.InnerText = answers4[round];
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
                         Update();
                     }
                     else if (correctAnswersnum[round] != answers1num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
@@ -122,13 +129,20 @@ public class Geography : MinigameDefBase
                         Answer2.InnerText = answers2[round];
                         Answer3.InnerText = answers3[round];
                         Answer4.InnerText = answers4[round];
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
                         Update();
                     }
                     else if (correctAnswersnum[round] != answers2num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
@@ -154,13 +168,20 @@ public class Geography : MinigameDefBase
                         Answer2.InnerText = answers2[round];
                         Answer3.InnerText = answers3[round];
                         Answer4.InnerText = answers4[round];
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
                         Update();
                     }
                     else if (correctAnswersnum[round] != answers3num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
@@ -180,19 +201,34 @@ public class Geography : MinigameDefBase
                 {
                     if (correctAnswersnum[round] == answers4num[round])
                     {
-                        round += 1;
-                        Question.InnerText = questions[round];
-                        Answer1.InnerText = answers1[round];
-                        Answer2.InnerText = answers2[round];
-                        Answer3.InnerText = answers3[round];
-                        Answer4.InnerText = answers4[round];
-                        Update();
+                        if (round >= 4)
+                        {
+                            Finish(null, "Geography");
+                        }
+                        else
+                        {
+                            round += 1;
+                            Question.InnerText = questions[round];
+                            Answer1.InnerText = answers1[round];
+                            Answer2.InnerText = answers2[round];
+                            Answer3.InnerText = answers3[round];
+                            Answer4.InnerText = answers4[round];
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
+                            Update();
+
+                        }
                     }
                     else if (correctAnswersnum[round] != answers4num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
@@ -227,13 +263,20 @@ public class Geography : MinigameDefBase
                         Answer2.InnerText = answers2[round];
                         Answer3.InnerText = answers3[round];
                         Answer4.InnerText = answers4[round];
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
                         Update();
                     }
                     else if (correctAnswersnum[round] != answers1num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
@@ -260,13 +303,20 @@ public class Geography : MinigameDefBase
                         Answer2.InnerText = answers2[round];
                         Answer3.InnerText = answers3[round];
                         Answer4.InnerText = answers4[round];
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
                         Update();
                     }
                     else if (correctAnswersnum[round] != answers2num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
@@ -291,13 +341,20 @@ public class Geography : MinigameDefBase
                         Answer2.InnerText = answers2[round];
                         Answer3.InnerText = answers3[round];
                         Answer4.InnerText = answers4[round];
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
                         Update();
                     }
                     else if (correctAnswersnum[round] != answers3num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
@@ -316,24 +373,38 @@ public class Geography : MinigameDefBase
                 {
                     if (correctAnswersnum[round] == answers4num[round])
                     {
-                        round += 1;
-                        Question.InnerText = questions[round];
-                        Answer1.InnerText = answers1[round];
-                        Answer2.InnerText = answers2[round];
-                        Answer3.InnerText = answers3[round];
-                        Answer4.InnerText = answers4[round];
-                        Update();
+                        if (round >= 4)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/result.wav");
+                            Finish(null, "Geography");
+                        }
+                        else
+                        {
+                            round += 1;
+                            Question.InnerText = questions[round];
+                            Answer1.InnerText = answers1[round];
+                            Answer2.InnerText = answers2[round];
+                            Answer3.InnerText = answers3[round];
+                            Answer4.InnerText = answers4[round];
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/victory.wav");
+                            Update();
+                        }
+
                     }
                     else if (correctAnswersnum[round] != answers4num[round])
                     {
                         lifes -= 1;
                         lifes1.InnerText = "lifes: " + lifes.ToString();
+                        SoundService.PlaySound("minigame_assets/Minigame_Geographie/Lose.wav");
                         Update();
+                        if (lifes == 0)
+                        {
+                            SoundService.PlaySound("minigame_assets/Minigame_Geographie/fail.wav");
+                            Finish(null, "Geography");
+                        }
                     }
                 }
             }
         };
-
     }
-
 }
