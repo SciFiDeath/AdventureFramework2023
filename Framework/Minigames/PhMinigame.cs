@@ -11,29 +11,26 @@ public class Material : Image
     public int CorrectY { get; set; }
     public int CurrentX { get; set; } = -1;
     public int CurrentY { get; set; } = -1;
-    public Text Label { get; set; }
-    public string LabelText { get; set; }
+    public int PlaceHolderWidth { get; set; }
+    public int PlaceHolderHeight { get; set; }
+    public bool IsPlacedCorrectly { get; set; }
 }
 
 public class PhMinigame : MinigameDefBase
 {
-    public override string BackgroundImage { get; set; } = "minigame_assets/PhMinigame_assets/edited/Platform1.png";
+    public override string BackgroundImage { get; set; } = "minigame_assets/PhMinigame_assets/edited/Platform.png";
+    
     public Material? SelectedMaterial { get; set; }
     static int ColumnCount = 6;
     static int RowCount = 8;
-    int WhiteBoardRectangleWidth = 128;
-    int WhiteBoardRectangleHeight = 105;
-    int NumberOfVerticalSticks = 7;
-    int NumberOfHorizontalSticks = 4;
-
+    int WhiteBoardRectangleWidth = 110;
+    int WhiteBoardRectangleHeight = 108;
     List<Material> Materials { get; set; } = new List<Material>();
     public Rectangle[,] WhiteBoardRectangles = new Rectangle[ColumnCount, RowCount];
-
     public PhMinigame()
     {
         StartGame();
     }
-
     void StartGame()
     {
         CreateBackgroundElement();
@@ -41,7 +38,6 @@ public class PhMinigame : MinigameDefBase
         CreateMaterials();
 
     }
-
     void CreateBackgroundElement()
     {
         var BackgroundElement = new Rectangle()
@@ -70,7 +66,7 @@ public class PhMinigame : MinigameDefBase
             {
                 Rectangle WhiteBoard = new Rectangle()
                 {
-                    X = (x * WhiteBoardRectangleWidth) + 230, //380
+                    X = (x * WhiteBoardRectangleWidth) + 310, 
                     Y = (y * WhiteBoardRectangleHeight) + 95,
                     Width = WhiteBoardRectangleWidth,
                     Height = WhiteBoardRectangleHeight,
@@ -103,12 +99,14 @@ public class PhMinigame : MinigameDefBase
                 ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
-                Width = 190,
+                Width = 170,
+                PlaceHolderHeight = 12,
+                PlaceHolderWidth = 80,
                 CorrectX = 2,
                 CorrectY = 1,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 680,
-                LabelText = $"Horizontal Sticks, There are: {NumberOfHorizontalSticks} sticks"
+                PlaceHolderX = 1240,
+                PlaceHolderY = 705,
+                
 
             },
             new Material()
@@ -117,11 +115,13 @@ public class PhMinigame : MinigameDefBase
                 ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
-                Width = 190,
+                Width = 170,
+                PlaceHolderHeight = 12,
+                PlaceHolderWidth = 80,
                 CorrectX = 3,
                 CorrectY = 1,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 680,
+                PlaceHolderX = 1240,
+                PlaceHolderY = 725,
             },
             new Material()
             {
@@ -129,11 +129,13 @@ public class PhMinigame : MinigameDefBase
                 ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
-                Width = 190,
+                Width = 170,
+                PlaceHolderHeight = 12,
+                PlaceHolderWidth = 80,
                 CorrectX = 2,
                 CorrectY = 6,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 680,
+                PlaceHolderX = 1240,
+                PlaceHolderY = 740,
             },
              new Material()
             {
@@ -141,11 +143,13 @@ public class PhMinigame : MinigameDefBase
                 ImagePath = "minigame_assets/PhMinigame_assets/edited/HorizontalStick.png",
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalStick_hint.png",
                 Height = 80,
-                Width = 190,
+                Width = 170,
+                PlaceHolderHeight = 12,
+                PlaceHolderWidth = 80,
                 CorrectX = 3,
                 CorrectY = 6,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 680,
+                PlaceHolderX = 1240,
+                PlaceHolderY = 760,
             },
             new Material()
             {
@@ -154,11 +158,13 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 12,
                 CorrectX = 4,
                 CorrectY = 2,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 820,
-                LabelText = $"Vertical Sticks, There are : {NumberOfVerticalSticks} sticks"
+                PlaceHolderX = 1213, 
+                PlaceHolderY = 835, 
+                
 
             },
             new Material()
@@ -168,10 +174,12 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 12,
                 CorrectX = 4,
                 CorrectY = 3,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 820,
+                PlaceHolderX = 1233,
+                PlaceHolderY = 835,
             },
             new Material()
             {
@@ -180,10 +188,12 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 12,
                 CorrectX = 4,
                 CorrectY = 4,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 820,
+                PlaceHolderX = 1257,
+                PlaceHolderY = 835,
             },
              new Material()
             {
@@ -192,10 +202,12 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 12,
                 CorrectX = 4,
                 CorrectY = 5,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 820,
+                PlaceHolderX = 1274,
+                PlaceHolderY = 835,
             },
             new Material()
             {
@@ -204,10 +216,12 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 12,
                 CorrectX = 1,
                 CorrectY = 2,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 820,
+                PlaceHolderX = 1290,
+                PlaceHolderY = 835,
             },
             new Material()
             {
@@ -216,10 +230,12 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 12,
                 CorrectX = 1,
                 CorrectY = 3,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 820,
+                PlaceHolderX = 1310,
+                PlaceHolderY = 835,
             },
             new Material()
             {
@@ -228,10 +244,12 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/VerticalStick_hint.png",
                 Height = 100,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 12,
                 CorrectX = 1,
                 CorrectY = 5,
-                PlaceHolderX = 1280,
-                PlaceHolderY = 820,
+                PlaceHolderX = 1330,
+                PlaceHolderY = 835,
             },
             new Material()
             {
@@ -240,11 +258,13 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Potentiometer_hint.png",
                 Height = 170,
                 Width = 190,
+                PlaceHolderHeight = 170,
+                PlaceHolderWidth= 190,
                 CorrectX = 4,
                 CorrectY = 1,
-                PlaceHolderX = 1275,
+                PlaceHolderX = 1200,
                 PlaceHolderY = 30,
-                LabelText = "Potentiometer"
+                
             },
             new Material()
             {
@@ -253,11 +273,13 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Switch_hint.png",
                 Height = 170,
                 Width = 190,
+                PlaceHolderHeight = 170,
+                PlaceHolderWidth = 190,
                 CorrectX = 1,
                 CorrectY = 6,
-                PlaceHolderX = 1275,
+                PlaceHolderX = 1200,
                 PlaceHolderY = 245,
-                LabelText = "Switch 1"
+                
             },
             new Material()
             {
@@ -266,11 +288,13 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Switch_hint.png",
                 Height = 170,
                 Width = 190,
+                PlaceHolderHeight = 170,
+                PlaceHolderWidth = 190,
                 CorrectX = 4,
                 CorrectY = 6,
-                PlaceHolderX = 1280,
+                PlaceHolderX = 1200,
                 PlaceHolderY = 460,
-                LabelText = "Switch 2"
+                
             },
             new Material()
             {
@@ -279,11 +303,13 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/HorizontalLamp_hint.png",
                 Height = 80,
                 Width = 190,
+                PlaceHolderHeight = 80,
+                PlaceHolderWidth = 190,
                 CorrectX = 1,
                 CorrectY = 4,
-                PlaceHolderX = 1280,
+                PlaceHolderX = 1200,
                 PlaceHolderY = 940,
-                LabelText = "Lamp"
+                
             },
             new Material()
             {
@@ -292,11 +318,13 @@ public class PhMinigame : MinigameDefBase
                 HintImageUrl = "minigame_assets/PhMinigame_assets/edited/Battery_hint.png",
                 Height = 170,
                 Width = 190,
+                PlaceHolderHeight =170,
+                PlaceHolderWidth = 190,
                 CorrectX = 1,
                 CorrectY = 1,
-                PlaceHolderX = 1040, //1190
-                PlaceHolderY = 78,
-                LabelText = "Battery"
+                PlaceHolderX = 1000,
+                PlaceHolderY = 80,
+                
             },
         };
 
@@ -308,7 +336,7 @@ public class PhMinigame : MinigameDefBase
 
     void AddMaterialToGame(Material material)
     {
-
+        
         material.Visible = false;
 
         material.OnClick = (args) => OnMaterialClick(material);
@@ -317,10 +345,11 @@ public class PhMinigame : MinigameDefBase
         {
             X = material.PlaceHolderX,
             Y = material.PlaceHolderY,
-            Width = material.Width.Value,
-            Height = material.Height.Value,
-            Fill = "transparent",
-            OnClick = (args) => OnMaterialClick(material)
+            Width = material.PlaceHolderWidth,
+            Height = material.PlaceHolderHeight,
+            Fill = "rgba(0, 255, 0, 0.4)",
+            OnClick = (args) => OnMaterialClick(material),
+            
         };
 
         material.HintImage = new Image()
@@ -332,38 +361,30 @@ public class PhMinigame : MinigameDefBase
             Visible = false
         };
 
-        material.Label = new Text()
-        {
-            X = material.PlaceHolderX + 50,
-            Y = material.PlaceHolderY + 115,
-            InnerText = material.LabelText,
-            Fill = "white",
-        };
-
-
+        
 
         AddElement(material.PlaceHolder);
         AddElement(material.HintImage);
-        AddElement(material.Label);
         AddElement(material);
+
+        
+
     }
-
-
-
     void OnHintClick(Material material)
     {
         material.CurrentX = material.CorrectX;
         material.CurrentY = material.CorrectY;
-
         PlaceImageToWhiteBoardCenter(material, WhiteBoardRectangles[material.CorrectX, material.CorrectY]);
+        material.IsPlacedCorrectly = true;
 
         CheckIsFinished();
     }
 
     void OnMaterialClick(Material material)
-    {
-        material.HintImage.Visible = true;
-        material.PlaceHolder.Visible = false;
+    {  
+        SelectedMaterial = material;
+        SelectedMaterial.HintImage.Visible = true;
+        SelectedMaterial.PlaceHolder.Visible = false;
 
         PlaceImageToWhiteBoardCenter(material.HintImage, WhiteBoardRectangles[material.CorrectX, material.CorrectY]);
 
@@ -371,16 +392,14 @@ public class PhMinigame : MinigameDefBase
         {
             HideHint(SelectedMaterial);
         }
-
-        SelectedMaterial = material;
-    }
-
+        
+    } 
+  
     void HideHint(Material material)
     {
         material.HintImage.Visible = false;
         Update();
     }
-
     void ResetMaterial(Material material)
     {
         material.PlaceHolder.Visible = true;
@@ -400,11 +419,10 @@ public class PhMinigame : MinigameDefBase
     {
         image.X = whiteBoard.X + whiteBoard.Width / 2 - image.Width / 2;
         image.Y = whiteBoard.Y + whiteBoard.Height / 2 - image.Width / 2;
-
         image.Visible = true;
-
         Update();
     }
+   
     public void CheckIsFinished()
     {
         bool isFinished = true;
