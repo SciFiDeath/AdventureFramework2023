@@ -17,6 +17,8 @@ is always centered and fills out the maximal possible space
         width: 100%;
         height: auto;
         top: auto;
+        display: flex;
+        align-items: center;
     }
 }
 

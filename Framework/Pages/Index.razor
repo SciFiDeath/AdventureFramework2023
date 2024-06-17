@@ -23,14 +23,18 @@
         <a href="/testpage">TestPage</a>
         <a href="/showcase">Minigame Showcase</a>
 
-
         <button id="play_button" style="color: white; background-color: rgb(255, 0, 0)" @onclick="StartGame">Game</button>
 
-        <a id="settings_link" href = "/settings">
+        @* <a id="settings_link" href = "/settings">
             <button id="settings_button">Settings</button>
-        </a>
+        </a> *@
 
-
+        <div>
+            <label for="volume">Volume: </label>
+            <input type="range" id="volume" name="volume" min="0" max="100" @bind="@Volume" />
+            <span>@Volume</span>
+        </div>
+        
 
     }
 }
@@ -40,7 +44,8 @@ else {
     <div style="color: white">Loading...</div>
 }
 
-@code {    
+@code {  
+    private int Volume { get; set; } = 50;  
     private TaskCompletionSource<bool> _tcs = new();
     private Task initTask => _tcs.Task;
 
