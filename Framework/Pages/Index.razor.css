@@ -1,12 +1,64 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0e68c; /* Light khaki color */
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-content {
+  text-align: center;
+}
+
 h1 {
-    text-align: center;
-    font-family: "Adventure";
-    font-size: 60px;
-    color: white;
-  }
+  font-family: "Adventure";
+  font-size: 60px;
+  color: white;
+}
 
 @font-face {
-    font-family: 'Adventure';
-    src: url('fonts/Adventure.otf');
+  font-family: 'Adventure';
+  src: url('fonts/Adventure.otf');
+}
 
+.indy-button {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 16px; /* Smaller padding for smaller buttons */
+  font-size: 16px; /* Smaller font size for buttons */
+  font-family: 'Adventure', 'Arial', sans-serif;
+  color: white;
+  background-color: #8b4513; /* Saddle brown color */
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px #000; /* Shadow for a more adventurous look */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.indy-button:hover {
+  background-color: #a0522d; /* Sienna color for hover effect */
+  transform: scale(1.05);
+}
+
+#play_button {
+  display: block;
+  margin: 20px auto; /* Increased margin for spacing */
+  padding: 12px 24px; /* Larger padding for the "Game" button */
+  font-size: 18px; /* Larger font size for the "Game" button */
+  color: white;
+  background-color: #8b0000; /* Dark red color */
+}
+
+#volume {
+  margin: 10px auto;
+}
+
+.loading {
+  color: white;
+  font-size: 24px;
 }

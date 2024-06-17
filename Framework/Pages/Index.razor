@@ -19,33 +19,26 @@
         <Game Debug=@debugMode />
     }
     else {
-        <h1 id="title">Freaky point and click</h1>
-        <a href="/testpage">TestPage</a>
-        <a href="/showcase">Minigame Showcase</a>
+        <div class="center-content">
+            <h1 id="title">Freaky point and click</h1>
+            <button id="play_button" class="indy-button" @onclick="StartGame">Game</button>
+            <a href="/testpage" class="indy-button">TestPage</a>
+            <a href="/showcase" class="indy-button">Minigame Showcase</a>
 
-        <button id="play_button" style="color: white; background-color: rgb(255, 0, 0)" @onclick="StartGame">Game</button>
-
-        @* <a id="settings_link" href = "/settings">
-            <button id="settings_button">Settings</button>
-        </a> *@
-
-        <div>
-            <label for="volume">Volume: </label>
-            <input type="range" id="volume" name="volume" min="0" max="100" @bind="@Volume" />
-            <span>@Volume</span>
+            <div>
+                <label for="volume">Volume: </label>
+                <input type="range" id="volume" name="volume" min="0" max="100" @bind="@Volume" />
+                <span>@Volume</span>
+            </div>
         </div>
-        
-
     }
 }
-
-
 else {
-    <div style="color: white">Loading...</div>
+    <div class="loading">Loading...</div>
 }
 
-@code {  
-    private int Volume { get; set; } = 50;  
+@code {
+    private int Volume { get; set; } = 50;
     private TaskCompletionSource<bool> _tcs = new();
     private Task initTask => _tcs.Task;
 
@@ -66,7 +59,8 @@ else {
         _tcs.SetResult(true);
     }
 
-    private void StartGame(){
+    private void StartGame()
+    {
         gameStarted = true;
     }
 }
