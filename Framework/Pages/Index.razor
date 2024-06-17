@@ -14,26 +14,31 @@
 @inject SoundService SoundService
 @inject VideoService VideoService
 
-@if (initTask.IsCompletedSuccessfully) {
-    if (gameStarted) {
+@if (initTask.IsCompletedSuccessfully)
+{
+    if (gameStarted)
+    {
         <Game Debug=@debugMode />
     }
-    else {
+    else
+    {
         <div class="center-content">
-            <h1 id="title">Freaky point and click</h1>
+            <h1 id="title">KSR Point and Click</h1>
             <button id="play_button" class="indy-button" @onclick="StartGame">Game</button>
             <a href="/testpage" class="indy-button">TestPage</a>
             <a href="/showcase" class="indy-button">Minigame Showcase</a>
 
-            <div>
-                <label for="volume">Volume: </label>
-                <input type="range" id="volume" name="volume" min="0" max="100" @bind="@Volume" />
-                <span>@Volume</span>
+            <div class="volume-slider">
+                <p>Volume:</p>
+                <label for="volume" class="volume-label">Volume:</label>
+                <input type="range" id="volume" name="volume" min="0" max="100" @bind="@Volume" class="volume-range" />
+                <span class="volume-value">@Volume</span>
             </div>
         </div>
     }
 }
-else {
+else
+{
     <div class="loading">Loading...</div>
 }
 
