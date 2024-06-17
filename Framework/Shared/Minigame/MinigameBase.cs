@@ -193,6 +193,14 @@ public abstract class MinigameDefBase
 		MouseService.OnMouseDown += OnMouseDown;
 		MouseService.OnMouseUp += OnMouseUp;
 
+		if (DefaultRoute == "" && BackButton.Visible)
+		{
+			throw new Exception("DefaultRoute not set with visible BackButton");
+		}
+
+		// make the back button route to the correct slide
+		BackButton.OnClick = (e) => Finish(null, DefaultRoute);
+
 	}
 
 	public CancellationTokenSource Cts = new();
@@ -292,13 +300,30 @@ public abstract class MinigameDefBase
 
 	public void AddElementsInContainer(GameObjectContainer<SVGElement> container)
 	{
-		SVGElement[] elements = container.Values;
-
-		foreach (SVGElement element in elements)
+		foreach (SVGElement element in container.Values)
 		{
 			Elements.Add(element);
 		}
 	}
+
+	// not abstract, as it would cause me too much work to make all minigamedefclasses correct
+	// the ones that need it will have to override it
+	public virtual string DefaultRoute { get; set; } = "";
+
+	[Element]
+	public Image BackButton { get; set; } = new()
+	{
+		ImagePath = "UI_Images/backImg_cropped.png",
+		Width = 50,
+		Height = 50,
+		X = 10,
+		Y = 10,
+		ZIndex = 1000,
+		Cursor = "pointer",
+		Visible = false,
+		//* Set this in Init()
+		// OnClick = (e) => Finish(null, DefaultRoute)
+	};
 
 }
 
@@ -315,38 +340,30 @@ public class FinishedEventArgs : EventArgs
 }
 
 
-public abstract class NamedAttribute : Attribute
+public abstract class NamedAttribute(string name) : Attribute
 {
-	public readonly string name;
-	public NamedAttribute(string name)
-	{
-		this.name = name;
-	}
+	public readonly string name = name;
 }
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
-public sealed class StyleAttribute : NamedAttribute
+public sealed class StyleAttribute(string name) : NamedAttribute(name)
 {
-	public StyleAttribute(string name) : base(name) { }
 }
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
-public sealed class HtmlAttribute : NamedAttribute
+public sealed class HtmlAttribute(string name) : NamedAttribute(name)
 {
-	public HtmlAttribute(string name) : base(name) { }
 }
 
 [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
-public sealed class CallbackAttribute : NamedAttribute
+public sealed class CallbackAttribute(string name) : NamedAttribute(name)
 {
-	public CallbackAttribute(string name) : base(name) { }
 }
 
 [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
 public sealed class ElementAttribute : Attribute { }
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-public sealed class ElementNameAttribute : NamedAttribute
+public sealed class ElementNameAttribute(string name) : NamedAttribute(name)
 {
-	public ElementNameAttribute(string name) : base(name) { }
 }

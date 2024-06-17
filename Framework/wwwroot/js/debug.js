@@ -80,4 +80,7 @@ window.debug = {
             .invokeMethodAsync("RedBull", amount)
             .then((res) => console.log(res));
     },
+    playVideo: function (points, path) {
+        this.action(["PlayVideo", points, path]);
+    },
 };
