@@ -1,6 +1,7 @@
 using Framework.Items;
 using Framework.State;
 using Framework.Slides.JsonClasses;
+using System.Text.RegularExpressions;
 
 
 namespace Framework.Slides;
@@ -99,21 +100,21 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 			{
 				throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" undefined");
 			}
-			// if buttons is empty, OnEnter can't be null or empty
-			if (slide.Buttons.Count == 0)
-			{
-				if (slide.OnEnter is null)
-				{
-					throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" undefined");
-				}
-				else
-				{
-					if (slide.OnEnter.Count == 0)
-					{
-						throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" empty");
-					}
-				}
-			}
+			// // if buttons is empty, OnEnter can't be null or empty
+			// if (slide.Buttons.Count == 0)
+			// {
+			// 	if (slide.OnEnter is null)
+			// 	{
+			// 		throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" undefined");
+			// 	}
+			// 	else
+			// 	{
+			// 		if (slide.OnEnter.Count == 0)
+			// 		{
+			// 			throw new SlidesJsonException($"At Slide \"{id}\": \"Buttons\" emtpy and \"OnEnter\" empty");
+			// 		}
+			// 	}
+			// }
 
 			// iterate over buttons and pass on exceptions thrown in button verifier method
 			foreach (var idAndButton in slide.Buttons)
@@ -278,6 +279,27 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 				{
 					// do nothing here, as the params don't actually matter
 				}
+				else if (action[0] == "ShowMessage")
+				{
+					// do nothing, as long as param is string everything is fine
+				}
+				else if (action[0] == "ChangeRedBull")
+				{
+					if (!int.TryParse(action[1], out _))
+					{
+						throw new SlidesJsonException($"At action {i}: ChangeRedBull: \"{action[1]}\" is not a valid number");
+					}
+				}
+				else if (action[0] == "RequireRedBull")
+				{
+					// beautiful regex to check: https://regexr.com/81ep7
+					string pattern = @"(^=\d+$)|(^<\d+$)|(^>\d+$)|(^\d+-\d+$)";
+
+					if (!Regex.IsMatch(action[1], pattern))
+					{
+						throw new SlidesJsonException($"At action {i}: RequireRedBull: \"{action[1]}\" is not a valid argument");
+					}
+				}
 				else
 				{
 					// if not found yet, it has to be invalid action
@@ -290,7 +312,7 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 				if (action[0] == "SetGameState")
 				{
 					// check if gamestate exists
-					// var x = action[1].StartsWith('!') ? action[1][1..] : action[1];
+					// var x = action[1	].StartsWith('!') ? action[1][1..] : action[1];
 					if (!gameState.CheckForState(action[1]))
 					{
 						throw new SlidesJsonException($"At action {i}: SetGameState: No GameState with key \"{action[1]}\" found");
@@ -301,30 +323,49 @@ public class SlidesVerifier(GameState gameState, ItemService items)
 					}
 					continue;
 				}
+				else if (action[0] == "PlayVideo")
+				{
+					foreach (var x in action[1].Split(','))
+					{
+						if (!int.TryParse(x, out _))
+						{
+							throw new SlidesJsonException(
+								$"At action {i}: PlayVideo: \"{action[1]}\" is not a valid argument: \"{x}\" is not a valid number"
+							);
+						}
+					}
+				}
 				else
 				{
 					throw new SlidesJsonException($"At action {i}: Unknown Action \"{action[0]}\"");
 				}
 			}
 		}
-		// check if the StartBlock match the EndBlock
-		if (!(blockStarts.Count == blockEnds.Count))
+		//* Blocks are now kind of a goto, so those checks are not needed anymore
+		// // check if the StartBlock match the EndBlock
+		// if (!(blockStarts.Count == blockEnds.Count))
+		// {
+		// 	throw new SlidesJsonException($"Block mismatch: Not the same amount of StartBlock and EndBlock");
+		// }
+		// foreach (var x in blockStarts)
+		// {
+		// 	if (!blockEnds.Contains(x))
+		// 	{
+		// 		throw new SlidesJsonException($"Block mismatch: StartBlock \"{x}\" has no matching EndBlock");
+		// 	}
+		// }
+		// foreach (var x in blockEnds)
+		// {
+		// 	if (!blockStarts.Contains(x))
+		// 	{
+		// 		throw new SlidesJsonException($"Block mismatch: EndBlock \"{x}\" has no matching StartBlock");
+		// 	}
+		// }
+
+		// only check required is that EndBlock ids are unique
+		if (blockEnds.Distinct().Count() != blockEnds.Count)
 		{
-			throw new SlidesJsonException($"Block mismatch: Not the same amount of StartBlock and EndBlock");
-		}
-		foreach (var x in blockStarts)
-		{
-			if (!blockEnds.Contains(x))
-			{
-				throw new SlidesJsonException($"Block mismatch: StartBlock \"{x}\" has no matching EndBlock");
-			}
-		}
-		foreach (var x in blockEnds)
-		{
-			if (!blockStarts.Contains(x))
-			{
-				throw new SlidesJsonException($"Block mismatch: EndBlock \"{x}\" has no matching StartBlock");
-			}
+			throw new SlidesJsonException($"Block error: EndBlock ids are not unique");
 		}
 	}
 }
