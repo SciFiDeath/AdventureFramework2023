@@ -10,12 +10,21 @@ body {
 
 .center-content {
   text-align: center;
-  color: white;
+  max-width: 80%; /* Limit width to a percentage of the viewport */
+  padding: 20px; /* Add padding for spacing */
+  margin: 0 auto; /* Center content horizontally */
 }
 
 h1 {
   font-family: "Adventure";
-  font-size: 60px;
+  font-size: 6vw; /* Responsive font size based on viewport width */
+  color: white;
+  margin-bottom: 20px; /* Adjusted margin bottom for spacing */
+}
+
+p {
+  font-family: "Adventure";
+  color: white;
 }
 
 @font-face {
@@ -25,18 +34,18 @@ h1 {
 
 .indy-button {
   display: block;
-  margin: 10px auto;
-  padding: 8px 16px; /* Smaller padding for smaller buttons */
-  font-size: 16px; /* Smaller font size for buttons */
+  margin: 20px auto; /* Increased margin for buttons */
+  padding: 15px 30px; /* Larger padding for buttons */
+  font-size: 2vw; /* Responsive font size based on viewport width */
   font-family: 'Adventure', 'Arial', sans-serif;
   color: white;
   background-color: #8b4513; /* Saddle brown color */
   border: none;
-  border-radius: 5px;
+  border-radius: 10px; /* Rounded corners for buttons */
   text-decoration: none;
   text-align: center;
   cursor: pointer;
-  box-shadow: 3px 3px 5px #000; /* Shadow for a more adventurous look */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
   transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -47,18 +56,45 @@ h1 {
 
 #play_button {
   display: block;
-  margin: 20px auto; /* Increased margin for spacing */
-  padding: 12px 24px; /* Larger padding for the "Game" button */
-  font-size: 18px; /* Larger font size for the "Game" button */
+  margin: 30px auto; /* Increased margin for the "Game" button */
+  padding: 20px 40px; /* Larger padding for the "Game" button */
+  font-size: 2.5vw; /* Responsive font size based on viewport width */
   color: white;
   background-color: #8b0000; /* Dark red color */
 }
 
-#volume {
-  margin: 10px auto;
+.volume-slider {
+  margin: 30px auto; /* Increased margin for the volume slider */
+  width: 80%; /* Adjusted width of the volume slider */
+  max-width: 400px; /* Max width of the volume slider */
 }
 
-.loading {
-  color: white;
-  font-size: 24px;
+.volume-range {
+  width: 100%; /* Full width of the slider track */
+  -webkit-appearance: none; /* Remove default styles */
+  appearance: none;
+  height: 10px; /* Adjusted height of the slider */
+  background-color: #d3d3d3; /* Light gray color for the slider track */
+  outline: none; /* Remove default focus outline */
+  opacity: 0.7; /* Reduced opacity for the slider track */
+  transition: opacity 0.2s;
+  border-radius: 5px; /* Rounded corners for the slider */
+}
+
+.volume-range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styles */
+  appearance: none;
+  width: 20px; /* Adjusted width of the thumb */
+  height: 20px; /* Adjusted height of the thumb */
+  background: #8b4513; /* Brown color for the thumb */
+  cursor: pointer;
+  border-radius: 50%; /* Rounded shape for the thumb */
+}
+
+.volume-range::-moz-range-thumb {
+  width: 20px; /* Adjusted width of the thumb for Firefox */
+  height: 20px; /* Adjusted height of the thumb for Firefox */
+  background: #8b4513; /* Brown color for the thumb */
+  cursor: pointer;
+  border-radius: 50%; /* Rounded shape for the thumb */
 }
