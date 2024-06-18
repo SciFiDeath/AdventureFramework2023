@@ -53,8 +53,6 @@ function init(objRef) {
     window.sound.music.src = "";
     document.body.appendChild(window.sound.sfx);
     document.body.appendChild(window.sound.music);
-    window.sound.music.play();
-
 }
 
 

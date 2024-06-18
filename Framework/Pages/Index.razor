@@ -30,7 +30,7 @@
 
             <div>
                 <label for="volume">Volume: </label>
-                <input type="range" id="volume" name="volume" min="0" max="100" value="100" @onchange="UpdateVolume"/>
+                <input type="range" id="volume" name="volume" min="0" max="100" value="0" @onchange="UpdateVolume"/>
                 <span>@Volume%</span>
             </div>
         </div>
@@ -42,11 +42,12 @@ else
 }
 
 @code {
-    public double Volume { get; set; } = 100;
+    public double Volume { get; set; } = 0;
     private TaskCompletionSource<bool> _tcs = new();
     private Task initTask => _tcs.Task;
 
     private bool gameStarted = false;
+    private bool userinteraction = false;
 
     private bool debugMode = true;
 
@@ -57,16 +58,23 @@ else
         await KeyboardService.Init();
         await MouseService.Init();
         await SoundService.Init();
-        // Play the background track
-        await SoundService.PlayMusic("/minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
         await VideoService.Init();
         _tcs.SetResult(true);
     }
 
     private async Task UpdateVolume(ChangeEventArgs e)
     {
-        Volume = Convert.ToDouble(e.Value); // Take value from slider and assign it to `Volume`
+        Volume = Convert.ToDouble(e.Value); 
+
+        if (!userinteraction){ // user has now interacted with the page => play audio automatically
+            userinteraction = true;
+            // Play soundtrack
+            await SoundService.PlayMusic("/minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
+        }
+
+        Volume = Convert.ToDouble(e.Value); 
         await SoundService.UpdateVolume(Volume);
+        Console.WriteLine("volume changed called huan"+ Volume);
     }
 
     private void StartGame()
@@ -74,4 +82,4 @@ else
         gameStarted = true;
     }
 }
-    using System.Reflection.Metadata;
+    @* using System.Reflection.Metadata; *@
