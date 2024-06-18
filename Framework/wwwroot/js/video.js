@@ -26,10 +26,8 @@ window.video = {
     },
     letFinish: function () {
         return new Promise((resolve, reject) => {
-            // console.log("letFinish called on js");
             this.vidTag.onended = () => {
                 // When the video is finished, change back to VideoService.cs
-                // console.log("onended");
                 resolve();
             };
         });

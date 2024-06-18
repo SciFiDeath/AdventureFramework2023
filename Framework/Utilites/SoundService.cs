@@ -19,7 +19,6 @@ public class SoundService(IJSRuntime jsRuntime) : ISoundService
 	{
 		objRef = DotNetObjectReference.Create(this);
 		await jsRuntime.InvokeVoidAsync("sound.init", objRef);
-		// Console.WriteLine("soundservice initialized correctly");
 	}
 
 	public async Task PlaySound(string path)
