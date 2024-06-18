@@ -28,7 +28,6 @@ public class VideoService(IJSRuntime jsRuntime) : IVideoService
     {
         objRef = DotNetObjectReference.Create(this);
         await jsRuntime.InvokeVoidAsync("video.init", objRef);
-        // Console.WriteLine("videoservice initialized ");
     }
 
     // Here goes all the video methods: 
@@ -48,7 +47,6 @@ public class VideoService(IJSRuntime jsRuntime) : IVideoService
     public async Task LetFinish()
     {
         await jsRuntime.InvokeAsync<object>("video.letFinish");
-        // Console.WriteLine("LetFinish cs finished");
     }
 
 }
