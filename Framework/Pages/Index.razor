@@ -27,8 +27,8 @@
 
             <div>
                 <label for="volume">Volume: </label>
-                <input type="range" id="volume" name="volume" min="0" max="100" @bind="@Volume" />
-                <span>@Volume</span>
+                <input type="range" id="volume" name="volume" min="0" max="100" value="100" @onchange="UpdateVolume"/>
+                <span>@Volume%</span>
             </div>
         </div>
     }
@@ -38,7 +38,7 @@ else {
 }
 
 @code {
-    private int Volume { get; set; } = 50;
+    public double Volume { get; set; } = 100;
     private TaskCompletionSource<bool> _tcs = new();
     private Task initTask => _tcs.Task;
 
@@ -59,8 +59,15 @@ else {
         _tcs.SetResult(true);
     }
 
+    private async Task UpdateVolume(ChangeEventArgs e)
+    {
+        Volume = Convert.ToDouble(e.Value); // Take value from slider and assign it to `Volume`
+        await SoundService.UpdateVolume(Volume);
+    }
+
     private void StartGame()
     {
         gameStarted = true;
     }
 }
+    using System.Reflection.Metadata;

@@ -34,4 +34,7 @@ public class SoundService(IJSRuntime jsRuntime) : ISoundService
 	{
 		await jsRuntime.InvokeVoidAsync("sound.stopMusic");
 	}
+	public async Task UpdateVolume(double volume){
+		await jsRuntime.InvokeVoidAsync("sound.updateVolume", volume/100);
+	}
 }

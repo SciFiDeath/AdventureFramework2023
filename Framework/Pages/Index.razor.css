@@ -10,12 +10,12 @@ body {
 
 .center-content {
   text-align: center;
+  color: white;
 }
 
 h1 {
   font-family: "Adventure";
   font-size: 60px;
-  color: white;
 }
 
 @font-face {
