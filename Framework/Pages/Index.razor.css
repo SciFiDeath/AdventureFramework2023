@@ -13,6 +13,7 @@ body {
   max-width: 80%; /* Limit width to a percentage of the viewport */
   padding: 20px; /* Add padding for spacing */
   margin: 0 auto; /* Center content horizontally */
+  color: white;
 }
 
 h1 {
