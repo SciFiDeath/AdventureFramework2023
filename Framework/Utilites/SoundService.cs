@@ -19,7 +19,6 @@ public class SoundService(IJSRuntime jsRuntime) : ISoundService
 	{
 		objRef = DotNetObjectReference.Create(this);
 		await jsRuntime.InvokeVoidAsync("sound.init", objRef);
-		// Console.WriteLine("soundservice initialized correctly");
 	}
 
 	public async Task PlaySound(string path)
@@ -33,5 +32,8 @@ public class SoundService(IJSRuntime jsRuntime) : ISoundService
 	public async Task StopMusic()
 	{
 		await jsRuntime.InvokeVoidAsync("sound.stopMusic");
+	}
+	public async Task UpdateVolume(double volume){
+		await jsRuntime.InvokeVoidAsync("sound.updateVolume", volume/100);
 	}
 }

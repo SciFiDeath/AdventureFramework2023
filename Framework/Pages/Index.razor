@@ -14,30 +14,54 @@
 @inject SoundService SoundService
 @inject VideoService VideoService
 
-@if (initTask.IsCompletedSuccessfully) {
-    if (gameStarted) {
+@if (initTask.IsCompletedSuccessfully)
+{
+    if (gameStarted)
+    {
         <Game Debug=@debugMode />
     }
-    else {
-        <h1 id="test">Hello, world!</h1>
-        <button style="color: white; background-color: rgb(255, 0, 0)" @onclick="StartGame">Game</button>
-        <a href="/testpage">TestPage</a>
-        <a href="/showcase">Minigame Showcase</a>
+    else
+    {
+        <div class="center-content">
+            <h1 id="title">KSR Point and Click</h1>
+            <button id="play_button" class="indy-button" @onclick="StartGame">Start Game</button>
+            <a href="/testpage" class="indy-button">TestPage</a>
+            <a href="/showcase" class="indy-button">Minigame Showcase</a>
+
+            <div>
+                <label for="volume">Volume: @Volume%</label>
+                <input type="range" id="volume" name="volume" min="0" max="100" value="0" @onchange="UpdateVolume" class="volume-range"/>
+            </div>
+
+            <button id="load_button" class="indy-button" @onclick="ShowInputField">Load</button>
+
+            @if (showInputField)
+            {
+                <div class="input-field-container">
+                    <textarea @bind="inputText" placeholder="Paste your string here" class="@textareaClass"></textarea>
+                    <button class="indy-button confirm-button" @onclick="ConfirmInput">Confirm</button>
+                </div>
+            }
+        </div>
     }
 }
-
-
-else {
-    <div style="color: white">Loading...</div>
+else
+{
+    <div class="loading">Loading...</div>
 }
 
 @code {
+    public double Volume { get; set; } = 0;
     private TaskCompletionSource<bool> _tcs = new();
     private Task initTask => _tcs.Task;
 
     private bool gameStarted = false;
-
+    private bool userinteraction = false;
     private bool debugMode = true;
+
+    private bool showInputField = false;
+    private string inputText = string.Empty;
+    private string textareaClass = "input-textarea"; // Default class for textarea
 
     protected override async Task OnInitializedAsync()
     {
@@ -50,7 +74,62 @@ else {
         _tcs.SetResult(true);
     }
 
-    private void StartGame(){
+    private async Task UpdateVolume(ChangeEventArgs e)
+    {
+        Volume = Convert.ToDouble(e.Value); 
+
+        if (!userinteraction)
+        { 
+            userinteraction = true;
+            await SoundService.PlayMusic("/minigame_assets/LockPick_assets/audio/doom-soundtrack.wav");
+        }
+
+        Volume = Convert.ToDouble(e.Value); 
+        await SoundService.UpdateVolume(Volume);
+    }
+
+    private void StartGame()
+    {
         gameStarted = true;
+    }
+
+    private void ShowInputField()
+    {
+        showInputField = true;
+    }
+
+    private void ConfirmInput()
+    {
+        try
+        {
+            // Validate inputText as a hex string
+            if (IsValidHexString(inputText))
+            {
+                // Process the input as needed
+                GameState.SetFromSaveString(inputText);
+                // Clear input field on successful processing (optional)
+                inputText = string.Empty;
+                textareaClass = "input-textarea"; // Reset textarea class
+                StartGame();
+            }
+            else
+            {
+                // Handle invalid hex input - show red outline
+                textareaClass = "input-textarea error"; // Apply error class
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle specific exception if needed
+            Console.WriteLine($"Error occurred: {ex.Message}");
+            // Handle error state - show red outline
+            textareaClass = "input-textarea error"; // Apply error class
+        }
+    }
+
+    private bool IsValidHexString(string input)
+    {
+        // Example validation method for hex string
+        return System.Text.RegularExpressions.Regex.IsMatch(input, @"\A\b[0-9a-fA-F]+\b\Z");
     }
 }

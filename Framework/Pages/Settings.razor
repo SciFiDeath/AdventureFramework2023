@@ -1,0 +1,13 @@
+@page "/settings"
+
+<h3>Settings</h3>
+
+<div>
+    <label for="volume">Volume: </label>
+    <input type="range" id="volume" name="volume" min="0" max="100" @bind="@Volume" />
+    <span>@Volume</span>
+</div>
+
+@code {
+    private int Volume { get; set; } = 50;
+}

@@ -1,12 +1,137 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0e68c; /* Light khaki color */
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevent overflow */
+}
+
+.center-content {
+  text-align: center;
+  max-width: 80%; /* Limit width to a percentage of the viewport */
+  padding: 20px; /* Add padding for spacing */
+  margin: 0 auto; /* Center content horizontally */
+  color: white;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  
+}
+
 h1 {
-    text-align: center;
-    font-family: "Adventure";
-    font-size: 60px;
-    color: white;
-  }
+  font-family: "Adventure";
+  font-size: 6vw; /* Responsive font size based on viewport width */
+  color: white;
+  margin-bottom: 20px; /* Adjusted margin bottom for spacing */
+}
+
+p {
+  font-family: "Adventure";
+  color: white;
+}
 
 @font-face {
-    font-family: 'Adventure';
-    src: url('fonts/Adventure.otf');
-
+  font-family: 'Adventure';
+  src: url('fonts/Adventure.otf');
 }
+
+.indy-button {
+  display: block;
+  margin: 10px auto; /* Decreased margin for buttons */
+  padding: 10px 20px; /* Smaller padding for buttons */
+  font-size: 1.5vw; /* Smaller font size */
+  font-family: 'Adventure', 'Arial', sans-serif;
+  color: white;
+  background-color: #8b4513; /* Saddle brown color */
+  border: none;
+  border-radius: 10px; /* Rounded corners for buttons */
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* Smaller shadow for depth */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.indy-button:hover {
+  background-color: #a0522d; /* Sienna color for hover effect */
+  transform: scale(1.05);
+}
+
+#play_button {
+  display: block;
+  margin: 20px auto; /* Smaller margin for the "Game" button */
+  padding: 15px 30px; /* Smaller padding for the "Game" button */
+  font-size: 2vw; /* Smaller font size */
+  color: white;
+  background-color: #8b0000; /* Dark red color */
+}
+
+.volume-slider {
+  margin: 20px auto; /* Smaller margin for the volume slider */
+  width: 80%; /* Adjusted width of the volume slider */
+  max-width: 300px; /* Smaller max width of the volume slider */
+}
+
+.volume-range {
+  width: 100%; /* Full width of the slider track */
+  -webkit-appearance: none; /* Remove default styles */
+  appearance: none;
+  height: 10px; /* Adjusted height of the slider */
+  background-color: #d3d3d3; /* Light gray color for the slider track */
+  outline: none; /* Remove default focus outline */
+  opacity: 0.7; /* Reduced opacity for the slider track */
+  transition: opacity 0.2s;
+  border-radius: 5px; /* Rounded corners for the slider */
+}
+
+.volume-range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styles */
+  appearance: none;
+  width: 15px; /* Smaller width of the thumb */
+  height: 15px; /* Smaller height of the thumb */
+  background: #8b4513; /* Brown color for the thumb */
+  cursor: pointer;
+  border-radius: 50%; /* Rounded shape for the thumb */
+}
+
+.volume-range::-moz-range-thumb {
+  width: 15px; /* Smaller width of the thumb for Firefox */
+  height: 15px; /* Smaller height of the thumb for Firefox */
+  background: #8b4513; /* Brown color for the thumb */
+  cursor: pointer;
+  border-radius: 50%; /* Rounded shape for the thumb */
+}
+
+.input-textarea {
+  width: calc(100% - 20px);
+  height: 50px;
+  resize: none;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #d3d3d3; /* Default border color */
+  background-color: white; /* Default background color */
+}
+
+.input-textarea.error {
+  border: 1px solid #ff0000; /* Red border for error */
+  background-color: #ffe6e6; /* Light red background for error */
+}
+
+.input-textarea::placeholder {
+  color: #a9a9a9;
+}
+
+.confirm-button {
+  width: 100%;
+  max-width: 200px;
+}
+
+.loading {
+  font-size: 2em;
+  color: white;
+}
+
+
