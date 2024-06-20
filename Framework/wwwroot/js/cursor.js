@@ -5,12 +5,7 @@ let rightElement = document.getElementById("pos-preset-right");
 let topElement = document.getElementById("pos-preset-top");
 let bottomElement = document.getElementById("pos-preset-bottom");
 
-// define consts for images
-// can't be null as they're in index.html
-const leftImg = document.getElementById("left-arrow-img");
-const rightImg = document.getElementById("right-arrow-img");
-const topImg = document.getElementById("up-arrow-img");
-const bottomImg = document.getElementById("down-arrow-img");
+const arrow = document.getElementById("arrow-img");
 
 // this is to check if the preset was shown before the DOM update.
 // If it was, you don't have to add new event listeners
@@ -25,104 +20,63 @@ const appContainer = document.getElementById("app");
 
 // if mutation occurs, call reassign
 let observer = new MutationObserver(function (mutations) {
-    reassign();
+    reassignAlwaysTrack();
 });
 
-function reassign() {
-    // if this is still false at the end, the image and all tracking will be removed
-    let isContained = false;
+// check for performance impact
+window.addEventListener("mousemove", (event) => {
+    track(event);
+});
 
-    // get the pos presets again, if they're not null, attach mouseenter event listeners
-    // if the preset was shown before, don't add new event listeners
-    // if the preset was not shown before, but the cursor is inside the element,
-    // show the image and start tracking and add event listeners
-    // if it is null, but was shown before, remove the image and tracking
-
+function reassignAlwaysTrack() {
     /*
-    <"optimized" but maybe not fully safe version>
+        hide arrow
 
-    get element
+        get all the presets
 
-    if visible:
-        if not wasShown:
-            add event listeners
-            if mouse inside:
-                show, track
-                isContained = true
-        wasShown = true
-
-    if not visible:
-        if wasShown:
-            unshow, untrack
-        wasShown = false
-
-    <at end of function>
-    <safety measure>
-    <should be unnecessary, but just in case>
-    if not isContained:
-        for all presets: unshow, untrack
-
-    
-    <unoptimized but quite safe version>
+        if preset is not null:
+            if preset wasn't shown before:
+                attach event listeners
+            if mouse is inside preset:
+                show arrow
 
 
-    for all presets: untrack, unshow
+        event listeners:
+        variant 1:
+            mouseenter: rotate arrow, show arrow
+            mouseleave: hide arrow
 
-    if visible:
-        if not wasShown:
-            add event listeners
-
-            if mouse contained:
-                isContained = true
-                track, show
-
-        wasShown = true
-    
-    else:
-        wasShown = false
+        variant 2:
+            mouseenter: track arrow, rotate arrow, show arrow
+            mouseleave: untrack arrow, hide arrow
 
 
     */
-
-    // unshow and untrack all images
-    show("left", false);
-    track("left", false);
-
-    show("right", false);
-    track("right", false);
-
-    show("top", false);
-    track("top", false);
-
-    show("bottom", false);
-    track("bottom", false);
+    arrow.style.display = "none";
 
     leftElement = document.getElementById("pos-preset-left");
+
     // if visible
     if (leftElement) {
-        // if was not shown before
         if (!leftWasShown) {
-            leftElement.addEventListener("mouseenter", () => {
-                show("left");
-                track("left");
-                isContained = true;
+            leftElement.addEventListener("mouseenter", function () {
+                arrow.style.display = "block";
+                arrow.style.transform = "none";
             });
-            leftElement.addEventListener("mouseleave", () => {
-                show("left", false);
-                track("left", false);
+            leftElement.addEventListener("mouseleave", function () {
+                arrow.style.display = "none";
             });
         }
+
         if (
-            !isContained &&
             isPointInsideElement(
                 mouse.absMousePos.x,
                 mouse.absMousePos.y,
                 leftElement
             )
         ) {
-            show("left");
-            track("left");
-            isContained = true;
+            arrow.style.display = "block";
+            arrow.style.transform = "none";
         }
         leftWasShown = true;
     } else {
@@ -133,27 +87,24 @@ function reassign() {
 
     if (rightElement) {
         if (!rightWasShown) {
-            rightElement.addEventListener("mouseenter", () => {
-                show("right");
-                track("right");
-                isContained = true;
+            rightElement.addEventListener("mouseenter", function () {
+                arrow.style.display = "block";
+                arrow.style.transform = "rotate(180deg)";
             });
-            rightElement.addEventListener("mouseleave", () => {
-                show("right", false);
-                track("right", false);
+            rightElement.addEventListener("mouseleave", function () {
+                arrow.style.display = "none";
             });
         }
+
         if (
-            !isContained &&
             isPointInsideElement(
                 mouse.absMousePos.x,
                 mouse.absMousePos.y,
                 rightElement
             )
         ) {
-            show("right");
-            track("right");
-            isContained = true;
+            arrow.style.display = "block";
+            arrow.style.transform = "rotate(180deg)";
         }
         rightWasShown = true;
     } else {
@@ -164,27 +115,24 @@ function reassign() {
 
     if (topElement) {
         if (!topWasShown) {
-            topElement.addEventListener("mouseenter", () => {
-                show("top");
-                track("top");
-                isContained = true;
+            topElement.addEventListener("mouseenter", function () {
+                arrow.style.display = "block";
+                arrow.style.transform = "rotate(270deg)";
             });
-            topElement.addEventListener("mouseleave", () => {
-                show("top", false);
-                track("top", false);
+            topElement.addEventListener("mouseleave", function () {
+                arrow.style.display = "none";
             });
         }
+
         if (
-            !isContained &&
             isPointInsideElement(
                 mouse.absMousePos.x,
                 mouse.absMousePos.y,
                 topElement
             )
         ) {
-            show("top");
-            track("top");
-            isContained = true;
+            arrow.style.display = "block";
+            arrow.style.transform = "rotate(90deg)";
         }
         topWasShown = true;
     } else {
@@ -195,130 +143,36 @@ function reassign() {
 
     if (bottomElement) {
         if (!bottomWasShown) {
-            bottomElement.addEventListener("mouseenter", () => {
-                show("bottom");
-                track("bottom");
-                isContained = true;
+            bottomElement.addEventListener("mouseenter", function () {
+                arrow.style.display = "block";
+                arrow.style.transform = "rotate(270deg)";
             });
-            bottomElement.addEventListener("mouseleave", () => {
-                show("bottom", false);
-                track("bottom", false);
+            bottomElement.addEventListener("mouseleave", function () {
+                arrow.style.display = "none";
             });
         }
+
         if (
-            !isContained &&
             isPointInsideElement(
                 mouse.absMousePos.x,
                 mouse.absMousePos.y,
                 bottomElement
             )
         ) {
-            show("bottom");
-            track("bottom");
-            isContained = true;
+            arrow.style.display = "block";
+            arrow.style.transform = "rotate(90deg)";
         }
         bottomWasShown = true;
     } else {
         bottomWasShown = false;
     }
-
-    // safety measure
-    if (!isContained) {
-        show("left", false);
-        track("left", false);
-
-        show("right", false);
-        track("right", false);
-
-        show("top", false);
-        track("top", false);
-
-        show("bottom", false);
-        track("bottom", false);
-    }
 }
 
-// config for mutation observer
-// observes attribute changes, node deletions/insertions in the entire subtree of the app div
-let config = { attributes: true, childList: true, subtree: true };
-
-// if start=true, show, if false, stop showing
-function show(dir, start = true) {
-    switch (dir) {
-        case "left":
-            start
-                ? (leftImg.style.display = "block")
-                : (leftImg.style.display = "none");
-            break;
-        case "right":
-            start
-                ? (rightImg.style.display = "block")
-                : (rightImg.style.display = "none");
-            break;
-        case "top":
-            start
-                ? (topImg.style.display = "block")
-                : (topImg.style.display = "none");
-            break;
-        case "bottom":
-            start
-                ? (bottomImg.style.display = "block")
-                : (bottomImg.style.display = "none");
-            break;
-        default:
-            break;
-    }
-}
-
-// "template" function for the mouse tracker event listener callbacks
-function trackHelper(event, imgObject) {
-    let width = window.getComputedStyle(imgObject).width;
-    imgObject.style.top = `calc(${event.y}px - calc(${width} / 2))`;
-    imgObject.style.left = `calc(${event.x}px - calc(${width} / 2))`;
-}
-
-// create named callback for every image
-const trackLeft = (event) => {
-    trackHelper(event, leftImg);
-};
-const trackRight = (event) => {
-    trackHelper(event, rightImg);
-};
-const trackTop = (event) => {
-    trackHelper(event, topImg);
-};
-const trackBottom = (event) => {
-    trackHelper(event, bottomImg);
-};
-
-// if start=true, track, if false, stop tracking
-//? maybe combine this with show into one function?
-function track(dir, start = true) {
-    switch (dir) {
-        case "left":
-            start
-                ? window.addEventListener("mousemove", trackLeft)
-                : window.removeEventListener("mousemove", trackLeft);
-            break;
-        case "right":
-            start
-                ? window.addEventListener("mousemove", trackRight)
-                : window.removeEventListener("mousemove", trackRight);
-            break;
-        case "top":
-            start
-                ? window.addEventListener("mousemove", trackTop)
-                : window.removeEventListener("mousemove", trackTop);
-            break;
-        case "bottom":
-            start
-                ? window.addEventListener("mousemove", trackBottom)
-                : window.removeEventListener("mousemove", trackBottom);
-            break;
-
-        default:
-            break;
-    }
+function track(event) {
+    // track arrow position to mouse position
+    let width = window.getComputedStyle(arrow).width;
+    arrow.style.left = event.x - parseInt(width) / 2 + "px";
+    arrow.style.top = event.y - parseInt(width) / 2 + "px";
 }
 
 // check if a point is inside an element
@@ -332,6 +186,10 @@ function isPointInsideElement(x, y, element) {
         x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
     );
 }
+
+// config for mutation observer
+// observes attribute changes, node deletions/insertions in the entire subtree of the app div
+let config = { attributes: true, childList: true, subtree: true };
 
 // start looking for mutations
 observer.observe(appContainer, config);
