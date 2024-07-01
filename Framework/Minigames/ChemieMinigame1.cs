@@ -408,10 +408,15 @@ public class ChemieMinigame1 : MinigameDefBase
 		Mode = "buret";
 		BuretMode = "sulfuric";
 
-		// reset game params
+		// reset buret game params
 		Start = true;
 		BuretDirection = -1;
 		Random = new(); // why not
+
+		// reset droplets
+		Droplets.KillAll();
+		DropletCounter = 0;
+		BeakerLiquid2.Opacity = 0;
 
 		// reset coords of stuff
 		BeakerLiquid.Y = BeakerStartY;
@@ -554,7 +559,6 @@ public class ChemieMinigame1 : MinigameDefBase
 	public const int BeakerSulfuricY = 850;
 	public const int BeakerNitricY = 700;
 
-
 	// constants for buret
 	public const int BuretSpeed = 10;
 	public const int TopY = 650;
@@ -624,7 +628,6 @@ public class ChemieMinigame1 : MinigameDefBase
 				);
 			}
 
-
 			Update();
 			ct.ThrowIfCancellationRequested();
 		}
@@ -632,7 +635,3 @@ public class ChemieMinigame1 : MinigameDefBase
 
 }
 
-public class ChemieMinigame2 : MinigameDefBase
-{
-	public override string BackgroundImage { get; set; } = "minigame_assets/ChemieKeller_assets/note_area_reference.png";
-}

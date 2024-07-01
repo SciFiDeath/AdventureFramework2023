@@ -1,6 +1,5 @@
 {
     "ChemieKeller_s": {
-        "Tags": ["START"],
         "Image": "images/Routing/Keller/ChemieKeller_s_DoorOpened.png",
         "Buttons": {
             "ClosedDoor": {
@@ -46,15 +45,17 @@
                 "Points": "843,339,1277,346,1255,1080,843,1080",
                 "Actions": [
                     ["RequireItem", "nitro_beaker"],
-                    ["PlayVideo", "0,0,1080,1620", "videos/fridge_wait.mp4"],
                     ["RemoveItem", "nitro_beaker"],
-                    ["SetGameState", "ChemieKeller_s.FridgePolygon", "false"]
+                    ["PlayVideo", "0,0,1080,1620", "videos/fridge_wait.mp4"],
+                    ["SetGameState", "ChemieKeller_s.FridgePolygon", "false"],
+                    ["AddItem", "nitrogly_beaker"]
                 ],
                 "Visible": false
             }
         }
     },
     "ChemieKeller_s_e": {
+        "Tags": ["START"],
         "Image": "images/Routing/Keller/ChemieKeller_s_e_DoorOpened.png",
         "Buttons": {
             "ClosedDoor": {
@@ -74,10 +75,17 @@
                 "Image": "right",
                 "Actions": [["Route", "ChemieKeller_s"]]
             },
-            "Door": {
+            "ClosedDoorPolygon": {
                 "Type": "polygon",
                 "Points": "715,345,989,308,991,1079,720,992",
-                "Actions": [["Route", "ChemieKeller_Exit"]]
+                "Actions": [["Route", "ChemieKeller_Exit"]],
+                "Visible": true
+            },
+            "OpenedDoorPolygon": {
+                "Type": "polygon",
+                "Points": "552,250,820,210,833,969,573,902",
+                "Actions": [["Route", "ChemieKeller_Exit"]],
+                "Visible": false
             }
         }
     },
@@ -133,8 +141,8 @@
             ["EndBlock", "A"],
 
             ["StartBlock", "B"],
-            ["RequireItem", "nitro_beaker"],
-            ["Route", "ChemieKeller_Minigame1"],
+            ["RequireItem", "nitrogly_beaker"],
+            ["Route", "ChemieKeller_Minigame2"],
             ["EndBlock", "B"]
         ],
         "Image": "images/Routing/Keller/ChemieKeller_MiniGameArea.png",
@@ -327,17 +335,63 @@
         }
     },
     "ChemieKeller_Exit": {
-        "Image": "images/Routing/Keller/ChemieKeller_Exit_DoorClosed.png",
+        "Image": "images/Routing/Keller/ChemieKeller_Exit_DoorOpened.png",
         "Buttons": {
+            "DoorClosed": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/ChemieKeller_Exit_DoorClosed.png",
+                "Points": "0,0,1620,1080",
+                "Actions": [],
+                "Visible": true
+            },
+            "DoorPolygon": {
+                "Type": "polygon",
+                "Points": "166,0,1219,3,1227,911,146,913",
+                "Actions": [
+                    ["RequireItem", "nitro_pipette"],
+                    ["PlayVideo", "0,0,1080,1620", "videos/explosion_vid.mp4"],
+                    ["RemoveItem", "nitro_pipette"],
+
+                    ["SetGameState", "ChemieKeller_Exit.DoorClosed", "false"],
+                    ["SetGameState", "ChemieKeller_Exit.DoorPolygon", "false"],
+                    ["SetGameState", "ChemieKeller_Exit.Top", "true"],
+
+                    ["SetGameState", "ChemieKeller_s.ClosedDoor", "false"],
+
+                    ["SetGameState", "ChemieKeller_s_e.ClosedDoor", "false"],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_s_e.ClosedDoorPolygon",
+                        "false"
+                    ],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_s_e.OpenedDoorPolygon",
+                        "true"
+                    ]
+                ],
+                "Visible": true
+            },
             "Back": {
                 "Type": "preset",
                 "Image": "bottom",
                 "Actions": [["Route", "ChemieKeller_s_e"]]
+            },
+            "Top": {
+                "Type": "preset",
+                "Image": "top",
+                "Actions": [],
+                "Visible": false
             }
         }
     },
     "ChemieKeller_Minigame1": {
         "Type": "Minigame",
         "MinigameDefClassName": "Framework.Minigames.MinigameDefClasses.ChemieMinigame1"
+    },
+
+    "ChemieKeller_Minigame2": {
+        "Type": "Minigame",
+        "MinigameDefClassName": "Framework.Minigames.MinigameDefClasses.ChemieMinigame2"
     }
 }

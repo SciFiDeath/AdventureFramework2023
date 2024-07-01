@@ -42,5 +42,15 @@
         "name": "Nitroglyceringemisch",
         "description": "Gemisch mit Nitroglycerin, bereit für den Kühlschrank",
         "image": "InventoryImages/nitro_beaker.png"
+    },
+    "nitrogly_beaker": {
+        "name": "Nitroglycerin",
+        "description": "Klumpen Nitroglycerin, instabil",
+        "image": "InventoryImages/nitrogly_beaker.png"
+    },
+    "nitro_pipette": {
+        "name": "Pipette",
+        "description": "Gefüllt mit Nitroglycerin, hochexplosiv",
+        "image": "InventoryImages/pipette.png"
     }
 }

@@ -192,6 +192,7 @@ public abstract class MinigameDefBase
 		KeyboardService.OnKeyUp += OnKeyUp;
 		MouseService.OnMouseDown += OnMouseDown;
 		MouseService.OnMouseUp += OnMouseUp;
+		MouseService.OnMouseMove += OnMouseMove;
 
 		if (DefaultRoute == "" && BackButton.Visible)
 		{
@@ -234,6 +235,7 @@ public abstract class MinigameDefBase
 	public virtual void OnKeyUp(object? sender, KeyEventArgs e) { }
 	public virtual void OnMouseDown(object? sender, ClickEventArgs e) { }
 	public virtual void OnMouseUp(object? sender, ClickEventArgs e) { }
+	public virtual void OnMouseMove(object? sender, MouseState e) { }
 
 	// unsubscribe from the events
 	// really important, because the minigame is still in memory, it would still
@@ -245,6 +247,7 @@ public abstract class MinigameDefBase
 		KeyboardService.OnKeyUp -= OnKeyUp;
 		MouseService.OnMouseDown -= OnMouseDown;
 		MouseService.OnMouseUp -= OnMouseUp;
+		MouseService.OnMouseMove -= OnMouseMove;
 
 		// stop the mouse tracking
 		MouseService.SetDelay(-1);
