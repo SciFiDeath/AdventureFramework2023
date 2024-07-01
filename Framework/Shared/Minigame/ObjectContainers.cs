@@ -39,6 +39,13 @@ public class GameObjectContainer<T> where T : IGameObject
 			);
 		}
 	}
+	public void AddMultiple(IEnumerable<T> elements)
+	{
+		foreach (var element in elements)
+		{
+			Add(element);
+		}
+	}
 
 	public bool Remove(string name)
 	{

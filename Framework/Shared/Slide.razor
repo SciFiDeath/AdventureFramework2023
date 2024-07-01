@@ -38,6 +38,7 @@
 						width=@PointsList[2]
 						height=@PointsList[3]
 						href=@ButtonElement.Image
+						@onclick="async () => { await HandleButtonClick(ButtonElement);}"
 					/>
 					break;
 				case "rect":

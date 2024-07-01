@@ -110,15 +110,19 @@ public abstract class SVGElement : GameObject
 
 	public List<object> Content { get; set; } = [];
 
+	public Dictionary<string, object> Attributes { get; set; } = [];
+
 
 	public override RenderFragment GetRenderFragment()
 	{
 		return builder =>
 		{
 			builder.OpenElement(0, TagName);
-			builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-			builder.AddMultipleAttributes(2, GetCallbackDictionary());
-			builder.OpenRegion(3);
+			builder.AddAttribute(1, "id", Id);
+			builder.AddMultipleAttributes(2, GetElementAttributeDictionary());
+			builder.AddMultipleAttributes(3, Attributes);
+			builder.AddMultipleAttributes(4, GetCallbackDictionary());
+			builder.OpenRegion(5);
 			int i = 0;
 			foreach (var item in Content)
 			{
@@ -464,10 +468,12 @@ public class Text : SVGElement
 			return builder =>
 			{
 				builder.OpenElement(0, TagName);
-				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-				builder.AddAttribute(2, "style", Style);
-				builder.AddMultipleAttributes(3, GetCallbackDictionary());
-				builder.AddContent(4, InnerText);
+				builder.AddAttribute(1, "id", Id);
+				builder.AddMultipleAttributes(2, GetElementAttributeDictionary());
+				builder.AddMultipleAttributes(3, Attributes);
+				builder.AddAttribute(4, "style", Style);
+				builder.AddMultipleAttributes(5, GetCallbackDictionary());
+				builder.AddContent(6, InnerText);
 				builder.CloseElement();
 			};
 		}
@@ -476,11 +482,13 @@ public class Text : SVGElement
 			return builder =>
 			{
 				builder.OpenElement(0, TagName);
-				builder.AddMultipleAttributes(1, GetElementAttributeDictionary());
-				builder.AddAttribute(2, "style", Style);
-				builder.AddMultipleAttributes(3, GetCallbackDictionary());
+				builder.AddAttribute(1, "id", Id);
+				builder.AddMultipleAttributes(2, GetElementAttributeDictionary());
+				builder.AddMultipleAttributes(3, Attributes);
+				builder.AddAttribute(4, "style", Style);
+				builder.AddMultipleAttributes(5, GetCallbackDictionary());
 				// to not worry about numbers
-				builder.OpenRegion(4);
+				builder.OpenRegion(6);
 				int i = 0;
 				foreach (var c in Content)
 				{
@@ -510,7 +518,6 @@ public class RawMarkup : GameObject
 
 	public override RenderFragment GetRenderFragment()
 	{
-		Console.WriteLine("hel");
 		return builder =>
 		{
 			builder.AddContent(0, (MarkupString)Markup);
@@ -542,7 +549,7 @@ public class CustomObject : SVGElement
 	//* this must be set or it will cause unexpected behaviour
 	public string CustomTagName { get; set; } = null!;
 
-	public Dictionary<string, object> Attributes { get; set; } = [];
+	// public Dictionary<string, object> Attributes { get; set; } = [];
 	public Dictionary<string, object> Styles { get; set; } = [];
 	public Dictionary<string, Action<EventArgs>> Callbacks { get; set; } = [];
 
@@ -579,10 +586,11 @@ public class CustomObject : SVGElement
 		return builder =>
 		{
 			builder.OpenElement(0, CustomTagName);
-			builder.AddMultipleAttributes(1, Attributes);
-			builder.AddAttribute(2, "style", CustomStyle);
-			builder.AddMultipleAttributes(3, GetCallbacks());
-			builder.OpenRegion(4);
+			builder.AddAttribute(1, "id", Id);
+			builder.AddMultipleAttributes(2, Attributes);
+			builder.AddAttribute(3, "style", CustomStyle);
+			builder.AddMultipleAttributes(4, GetCallbacks());
+			builder.OpenRegion(5);
 			int i = 0;
 			foreach (var c in Content)
 			{
@@ -616,12 +624,14 @@ public class ForeignObject : SVGElement
 	{
 		return builder =>
 		{
-			builder.OpenElement(1, TagName);
+			builder.OpenElement(0, TagName);
+			builder.AddAttribute(1, "id", Id);
 			builder.AddAttribute(2, "x", X);
 			builder.AddAttribute(3, "y", Y);
 			builder.AddAttribute(4, "width", Width);
 			builder.AddAttribute(5, "height", Height);
-			builder.AddContent(6, CustomObject.GetRenderFragment());
+			builder.AddMultipleAttributes(3, Attributes);
+			builder.AddContent(7, CustomObject.GetRenderFragment());
 			builder.CloseElement();
 		};
 	}

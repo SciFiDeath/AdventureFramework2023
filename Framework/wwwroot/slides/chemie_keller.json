@@ -1,0 +1,343 @@
+{
+    "ChemieKeller_s": {
+        "Tags": ["START"],
+        "Image": "images/Routing/Keller/ChemieKeller_s_DoorOpened.png",
+        "Buttons": {
+            "ClosedDoor": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/ChemieKeller_s_DoorClosed.png",
+                "Points": "0,0,1620,1080",
+                "Actions": [],
+                "Visible": true
+            },
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_s_e"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_s_w"]]
+            },
+            "NitricAcid": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/nitric_acid.png",
+                "Points": "1287,750,127,127",
+                "Actions": [],
+                "Visible": true
+            },
+            "NitricAcidPolygon": {
+                "Type": "polygon",
+                "Points": "1334,756,1329,775,1315,785,1317,857,1387,854,1387,789,1375,774,1369,756",
+                "Actions": [
+                    ["SetGameState", "ChemieKeller_s.NitricAcid", "false"],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_s.NitricAcidPolygon",
+                        "false"
+                    ],
+                    ["AddItem", "nitric_acid"]
+                ],
+                "Visible": true
+            },
+            "FridgePolygon": {
+                "Type": "polygon",
+                "Points": "843,339,1277,346,1255,1080,843,1080",
+                "Actions": [
+                    ["RequireItem", "nitro_beaker"],
+                    ["PlayVideo", "0,0,1080,1620", "videos/fridge_wait.mp4"],
+                    ["RemoveItem", "nitro_beaker"],
+                    ["SetGameState", "ChemieKeller_s.FridgePolygon", "false"]
+                ],
+                "Visible": false
+            }
+        }
+    },
+    "ChemieKeller_s_e": {
+        "Image": "images/Routing/Keller/ChemieKeller_s_e_DoorOpened.png",
+        "Buttons": {
+            "ClosedDoor": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/ChemieKeller_s_e_DoorClosed.png",
+                "Points": "0,0,1620,1080",
+                "Actions": [],
+                "Visible": true
+            },
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_e"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_s"]]
+            },
+            "Door": {
+                "Type": "polygon",
+                "Points": "715,345,989,308,991,1079,720,992",
+                "Actions": [["Route", "ChemieKeller_Exit"]]
+            }
+        }
+    },
+    "ChemieKeller_s_w": {
+        "Image": "images/Routing/Keller/ChemieKeller_s_w_note.png",
+        "Buttons": {
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_s"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_w"]]
+            },
+            "MinigameArea": {
+                "Type": "polygon",
+                "Points": "839,819,1022,708,1461,806,1432,983",
+                "Actions": [["Route", "ChemieKeller_MiniGameArea"]]
+            }
+        }
+    },
+    "ChemieKeller_w": {
+        "Image": "images/Routing/Keller/ChemieKeller_w_note.png",
+        "Buttons": {
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_s_w"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_n_w"]]
+            },
+            "MinigameArea": {
+                "Type": "polygon",
+                "Points": "174,933,592,950,563,1077,1,1080,1,1043",
+                "Actions": [["Route", "ChemieKeller_MiniGameArea"]]
+            }
+        }
+    },
+    "ChemieKeller_MiniGameArea": {
+        "OnEnter": [
+            ["StartBlock", "A"],
+            ["RequireItem", "nitric_acid"],
+            ["StartBlock", "A"],
+            ["RequireItem", "sulfuric_acid"],
+            ["StartBlock", "A"],
+            ["RequireItem", "glycerin"],
+            ["Route", "ChemieKeller_Minigame1"],
+            ["EndBlock", "A"],
+
+            ["StartBlock", "B"],
+            ["RequireItem", "nitro_beaker"],
+            ["Route", "ChemieKeller_Minigame1"],
+            ["EndBlock", "B"]
+        ],
+        "Image": "images/Routing/Keller/ChemieKeller_MiniGameArea.png",
+        "Buttons": {
+            "Back": {
+                "Type": "preset",
+                "Image": "bottom",
+                "Actions": [["Route", "ChemieKeller_w"]]
+            },
+            "Recipe": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/recipe_table.png",
+                "Points": "684,589,306,250",
+                "Actions": [],
+                "Visible": true
+            },
+            "RecipePolygon": {
+                "Type": "polygon",
+                "Points": "839,641,885,631,949,658,965,800,906,826,855,807,732,797,745,635",
+                "Actions": [
+                    [
+                        "SetGameState",
+                        "ChemieKeller_MiniGameArea.Overlay",
+                        "true"
+                    ],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_MiniGameArea.RecipeOverlay",
+                        "true"
+                    ]
+                ]
+            },
+            "Overlay": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/overlay.png",
+                "Points": "0,0,1620,1080",
+                "Actions": [
+                    [
+                        "SetGameState",
+                        "ChemieKeller_MiniGameArea.Overlay",
+                        "false"
+                    ],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_MiniGameArea.RecipeOverlay",
+                        "false"
+                    ]
+                ],
+                "Visible": false
+            },
+            "RecipeOverlay": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/recipe.png",
+                "Points": "451,-131,712,949",
+                "Actions": [],
+                "Visible": false
+            }
+        }
+    },
+    "ChemieKeller_n_w": {
+        "Image": "images/Routing/Keller/ChemieKeller_n_w_.png",
+        "Buttons": {
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_w"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_n"]]
+            }
+        }
+    },
+    "ChemieKeller_n": {
+        "Image": "images/Routing/Keller/ChemieKeller_n.png",
+        "Buttons": {
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_n_w"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_n_e"]]
+            },
+            "SulfuricAcid": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/sulfuric_acid.png",
+                "Points": "996,849,131,131",
+                "Actions": [],
+                "Visible": true
+            },
+            "SulfuricAcidPolygon": {
+                "Type": "polygon",
+                "Points": "1028,961,1056,976,1098,967,1101,890,1085,879,1082,854,1045,854,1038,877,1026,886",
+                "Actions": [
+                    ["SetGameState", "ChemieKeller_n.SulfuricAcid", "false"],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_n.SulfuricAcidPolygon",
+                        "false"
+                    ],
+                    ["SetGameState", "ChemieKeller_n_e.SulfuricAcid", "false"],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_n_e.SulfuricAcidPolygon",
+                        "false"
+                    ],
+                    ["AddItem", "sulfuric_acid"]
+                ],
+                "Visible": true
+            }
+        }
+    },
+    "ChemieKeller_n_e": {
+        "Image": "images/Routing/Keller/ChemieKeller_n_e.png",
+        "Buttons": {
+            "SulfuricAcid": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/sulfuric_acid2.png",
+                "Points": "228,858,114,114",
+                "Actions": [],
+                "Visible": true
+            },
+            "SulfuricAcidPolygon": {
+                "Type": "polygon",
+                "Points": "260,956,283,966,317,957,314,891,303,880,299,866,269,867,264,884,254,894",
+                "Actions": [
+                    ["SetGameState", "ChemieKeller_n.SulfuricAcid", "false"],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_n.SulfuricAcidPolygon",
+                        "false"
+                    ],
+                    ["SetGameState", "ChemieKeller_n_e.SulfuricAcid", "false"],
+                    [
+                        "SetGameState",
+                        "ChemieKeller_n_e.SulfuricAcidPolygon",
+                        "false"
+                    ],
+                    ["AddItem", "sulfuric_acid"]
+                ],
+                "Visible": true
+            },
+
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_n"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_e"]]
+            }
+        }
+    },
+    "ChemieKeller_e": {
+        "Image": "images/Routing/Keller/ChemieKeller_e.png",
+        "Buttons": {
+            "Left": {
+                "Type": "preset",
+                "Image": "left",
+                "Actions": [["Route", "ChemieKeller_n_e"]]
+            },
+            "Right": {
+                "Type": "preset",
+                "Image": "right",
+                "Actions": [["Route", "ChemieKeller_s_e"]]
+            },
+            "Glycerin": {
+                "Type": "image",
+                "Image": "images/Routing/Keller/glycerin.png",
+                "Points": "420,877,109,110",
+                "Actions": [],
+                "Visible": true
+            },
+            "GlycerinPolygon": {
+                "Type": "polygon",
+                "Points": "450,978,473,985,497,978,497,911,483,898,483,881,464,881,464,897,449,911",
+                "Actions": [
+                    ["SetGameState", "ChemieKeller_e.Glycerin", "false"],
+                    ["SetGameState", "ChemieKeller_e.GlycerinPolygon", "false"],
+                    ["AddItem", "glycerin"]
+                ],
+                "Visible": true
+            }
+        }
+    },
+    "ChemieKeller_Exit": {
+        "Image": "images/Routing/Keller/ChemieKeller_Exit_DoorClosed.png",
+        "Buttons": {
+            "Back": {
+                "Type": "preset",
+                "Image": "bottom",
+                "Actions": [["Route", "ChemieKeller_s_e"]]
+            }
+        }
+    },
+    "ChemieKeller_Minigame1": {
+        "Type": "Minigame",
+        "MinigameDefClassName": "Framework.Minigames.MinigameDefClasses.ChemieMinigame1"
+    }
+}
