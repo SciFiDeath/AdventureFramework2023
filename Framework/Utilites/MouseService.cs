@@ -9,6 +9,7 @@ public interface IMouseService
 	// MouseState GetStaticMouseState();
 	event EventHandler<ClickEventArgs> OnMouseDown;
 	event EventHandler<ClickEventArgs> OnMouseUp;
+	event EventHandler<MouseState> OnMouseMove;
 	Task SetDelay(int delay);
 	Task<MouseState> GetMouseStateAsync();
 	Task<(int X, int Y)> ConvertToSvgCoords(double x, double y);
@@ -53,6 +54,8 @@ public class MouseService(IJSRuntime jsRuntime) : IMouseService
 
 	public event EventHandler<ClickEventArgs>? OnMouseDown;
 	public event EventHandler<ClickEventArgs>? OnMouseUp;
+	// only whenever MouseService gets new data from JS
+	public event EventHandler<MouseState>? OnMouseMove;
 
 
 	[JSInvokable]
@@ -94,6 +97,7 @@ public class MouseService(IJSRuntime jsRuntime) : IMouseService
 	{
 		mouseState.X = x;
 		mouseState.Y = y;
+		OnMouseMove?.Invoke(this, mouseState);
 	}
 
 	public async Task SetDelay(int delay)

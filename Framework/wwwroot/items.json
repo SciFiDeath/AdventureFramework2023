@@ -21,5 +21,36 @@
         "name": "frog",
         "description": "One lick away...",
         "image": "InventoryImages/Glass_Frog.jpg"
+    },
+
+    "nitric_acid": {
+        "name": "Salpetersäure",
+        "description": "Zutat für Nitroglycerin, ätzend",
+        "image": "InventoryImages/nitric_acid.png"
+    },
+    "sulfuric_acid": {
+        "name": "Schwefelsäure",
+        "description": "Zutat für Nitroglycerin, ätzend, brandfördernd, giftig",
+        "image": "InventoryImages/sulfuric_acid.png"
+    },
+    "glycerin": {
+        "name": "Glycerin",
+        "description": "Zutat für Nitroglycerin",
+        "image": "InventoryImages/glycerin.png"
+    },
+    "nitro_beaker": {
+        "name": "Nitroglyceringemisch",
+        "description": "Gemisch mit Nitroglycerin, bereit für den Kühlschrank",
+        "image": "InventoryImages/nitro_beaker.png"
+    },
+    "nitrogly_beaker": {
+        "name": "Nitroglycerin",
+        "description": "Klumpen Nitroglycerin, instabil",
+        "image": "InventoryImages/nitrogly_beaker.png"
+    },
+    "nitro_pipette": {
+        "name": "Pipette",
+        "description": "Gefüllt mit Nitroglycerin, hochexplosiv",
+        "image": "InventoryImages/pipette.png"
     }
 }
